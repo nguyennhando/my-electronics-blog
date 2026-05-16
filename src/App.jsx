@@ -865,18 +865,18 @@ function Home() {
       <footer className="border-t border-cyan-500/10 bg-black py-10 text-center text-zinc-400">
   <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
     <Link
-      to="/impressum"
-      className="transition hover:text-cyan-400"
-    >
-      Impressum
-    </Link>
+  to="/impressum"
+  className="transition hover:text-cyan-400"
+>
+  Impressum
+</Link>
 
-    <Link
-      to="/datenschutz"
-      className="transition hover:text-cyan-400"
-    >
-      Datenschutz
-    </Link>
+<Link
+  to="/datenschutz"
+  className="transition hover:text-cyan-400"
+>
+  Datenschutz
+</Link>
   </div>
 
   <p className="mt-4 text-xs text-zinc-500">
