@@ -1,3 +1,7 @@
+import { Routes, Route, Link } from 'react-router-dom';
+import CookieBanner from './components/CookieBanner';
+import Impressum from './pages/Impressum';
+import Datenschutz from './pages/Datenschutz';
 import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { createClient } from "@supabase/supabase-js";
@@ -858,9 +862,30 @@ export default function App() {
         </section>
       </main>
 
-      <footer className="border-t border-white/10 px-5 py-8 text-center text-sm text-zinc-500">
-        © 2026 ElektronikLab — Sichere Elektronik- und Automatisierungsprojekte.
-      </footer>
+      <footer className="border-t border-cyan-500/10 bg-black py-10 text-center text-zinc-400">
+  <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
+    <Link
+      to="/impressum"
+      className="transition hover:text-cyan-400"
+    >
+      Impressum
+    </Link>
+
+    <Link
+      to="/datenschutz"
+      className="transition hover:text-cyan-400"
+    >
+      Datenschutz
+    </Link>
+  </div>
+
+  <p className="mt-4 text-xs text-zinc-500">
+    © 2026 ElektronikLab — Moderne Elektronik- und
+    Automatisierungsprojekte.
+  </p>
+</footer>
+
+<CookieBanner />
     </div>
   );
 }
