@@ -142,7 +142,7 @@ function createEmptyPost() {
   };
 }
 
-export default function App() {
+export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [adminVisible, setAdminVisible] = useState(false);
   const [session, setSession] = useState(null);
@@ -887,5 +887,17 @@ export default function App() {
 
 <CookieBanner />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/impressum" element={<Impressum />} />
+        <Route path="/datenschutz" element={<Datenschutz />} />
+      </Routes>
+    </>
   );
 }
