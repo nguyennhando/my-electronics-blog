@@ -141,13 +141,17 @@ function createEmptyPost() {
 }
 
 function scrollToSection(id) {
-  navigate("/");
+  window.location.hash = `/${id}`;
 
   setTimeout(() => {
-    document
-      .getElementById(id)
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, 80);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, 100);
 }
 
 function Home() {
@@ -190,6 +194,37 @@ function Home() {
   useEffect(() => {
     checkAdmin();
   }, [session]);
+
+  useEffect(() => {
+  const currentHash = window.location.hash;
+
+  if (currentHash.includes("/blog")) {
+    setTimeout(() => {
+      document.getElementById("blog")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
+  }
+
+  if (currentHash.includes("/projekte")) {
+    setTimeout(() => {
+      document.getElementById("projekte")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
+  }
+
+  if (currentHash.includes("/kontakt")) {
+    setTimeout(() => {
+      document.getElementById("kontakt")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
+  }
+}, []);
 
   async function checkAdmin() {
     if (!supabase || !session?.user) {
@@ -954,11 +989,14 @@ function Home() {
 export default function App() {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/impressum" element={<Impressum />} />
-        <Route path="/datenschutz" element={<Datenschutz />} />
-      </Routes>
+     <Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/blog" element={<Home />} />
+  <Route path="/projekte" element={<Home />} />
+  <Route path="/kontakt" element={<Home />} />
+  <Route path="/impressum" element={<Impressum />} />
+  <Route path="/datenschutz" element={<Datenschutz />} />
+</Routes>
       <CookieBanner />
     </>
   );
