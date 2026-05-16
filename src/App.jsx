@@ -325,8 +325,17 @@ export default function App() {
         </section>
 
         {adminVisible && (
-          <section className="mx-auto max-w-7xl px-5 py-14">
-            <div className="rounded-[2rem] border border-cyan-400/20 bg-cyan-400/10 p-6 backdrop-blur-xl">
+          <section className="fixed inset-0 z-[100] overflow-y-auto bg-black/70 px-5 py-8 backdrop-blur-md">
+            <div className="mx-auto max-w-7xl rounded-[2rem] border border-cyan-400/20 bg-[#07111f] p-6 shadow-2xl shadow-cyan-500/20 backdrop-blur-xl">
+              <div className="mb-5 flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setAdminVisible(false)}
+                  className="rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10"
+                >
+                  Schließen
+                </button>
+              </div>
               {!isAdmin ? (
                 <form onSubmit={login} className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
                   <div>
