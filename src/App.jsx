@@ -409,9 +409,16 @@ function Home() {
           </div>
 
           <div className="hidden items-center gap-8 md:flex">
-            <a href="#blog" className="text-sm text-zinc-300 transition hover:text-cyan-300">
-              Blog
-            </a>
+            <button
+  onClick={() =>
+    document
+      .getElementById("blog")
+      ?.scrollIntoView({ behavior: "smooth" })
+  }
+  className="text-sm text-zinc-300 transition hover:text-cyan-300"
+>
+  Blog
+</button>
             <a href="#projekte" className="text-sm text-zinc-300 transition hover:text-cyan-300">
               Projekte
             </a>
@@ -432,23 +439,50 @@ function Home() {
         </nav>
 
         {menuOpen && (
-          <div className="border-t border-white/10 px-5 py-4 md:hidden">
-            <div className="grid gap-2">
-              <a href="#blog" className="rounded-xl px-3 py-2 hover:bg-white/10">
-                Blog
-              </a>
-              <a href="#projekte" className="rounded-xl px-3 py-2 hover:bg-white/10">
-                Projekte
-              </a>
-              <a href="#kontakt" className="rounded-xl px-3 py-2 hover:bg-white/10">
-                Kontakt
-              </a>
-              <button onClick={() => setAdminVisible(true)} className="rounded-xl px-3 py-2 text-left hover:bg-white/10">
-                Admin
-              </button>
-            </div>
-          </div>
-        )}
+  <div className="border-t border-white/10 px-5 py-4 md:hidden">
+    <div className="grid gap-2">
+      <button
+        onClick={() =>
+          document
+            .getElementById("blog")
+            ?.scrollIntoView({ behavior: "smooth" })
+        }
+        className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
+      >
+        Blog
+      </button>
+
+      <button
+        onClick={() =>
+          document
+            .getElementById("projekte")
+            ?.scrollIntoView({ behavior: "smooth" })
+        }
+        className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
+      >
+        Projekte
+      </button>
+
+      <button
+        onClick={() =>
+          document
+            .getElementById("kontakt")
+            ?.scrollIntoView({ behavior: "smooth" })
+        }
+        className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
+      >
+        Kontakt
+      </button>
+
+      <button
+        onClick={() => setAdminVisible(true)}
+        className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
+      >
+        Admin
+      </button>
+    </div>
+  </div>
+)}
       </header>
 
       <main>
