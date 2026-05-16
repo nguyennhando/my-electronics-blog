@@ -142,7 +142,7 @@ function createEmptyPost() {
   };
 }
 
-export default function Home() {
+function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [adminVisible, setAdminVisible] = useState(false);
   const [session, setSession] = useState(null);

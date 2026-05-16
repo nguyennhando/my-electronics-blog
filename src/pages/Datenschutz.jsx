@@ -1,14 +1,14 @@
 export default function Datenschutz() {
   return (
-    <div className="min-h-screen bg-black px-6 py-20 text-white">
-      <div className="mx-auto max-w-5xl rounded-3xl border border-cyan-500/20 bg-zinc-950/80 p-10 shadow-2xl backdrop-blur-xl">
-        <h1 className="text-4xl font-black text-cyan-400">
+    <div className="min-h-screen bg-black px-4 py-10 text-white sm:px-6 sm:py-20">
+      <div className="mx-auto w-full max-w-5xl rounded-3xl border border-cyan-500/20 bg-zinc-950/80 p-5 shadow-2xl backdrop-blur-xl sm:p-10">
+        <h1 className="text-3xl font-black leading-tight text-cyan-400 sm:text-4xl">
           Datenschutzerklärung
         </h1>
 
-        <div className="mt-10 space-y-10 text-zinc-300 leading-8">
+        <div className="mt-8 space-y-8 text-sm leading-7 text-zinc-300 sm:mt-10 sm:text-base sm:leading-8">
           <section>
-            <h2 className="mb-3 text-2xl font-bold text-white">
+            <h2 className="mb-3 text-xl font-bold text-white sm:text-2xl">
               Allgemeine Hinweise
             </h2>
 
@@ -20,7 +20,7 @@ export default function Datenschutz() {
           </section>
 
           <section>
-            <h2 className="mb-3 text-2xl font-bold text-white">
+            <h2 className="mb-3 text-xl font-bold text-white sm:text-2xl">
               Hosting
             </h2>
 
@@ -32,19 +32,19 @@ export default function Datenschutz() {
           </section>
 
           <section>
-            <h2 className="mb-3 text-2xl font-bold text-white">
+            <h2 className="mb-3 text-xl font-bold text-white sm:text-2xl">
               Authentifizierung und Datenbank
             </h2>
 
             <p>
               Für die Anmeldung und Verwaltung von Inhalten wird Supabase
-              verwendet. Dabei können E-Mail-Adressen und Authentifizierungs-
-              daten verarbeitet werden.
+              verwendet. Dabei können E-Mail-Adressen und
+              Authentifizierungsdaten verarbeitet werden.
             </p>
           </section>
 
           <section>
-            <h2 className="mb-3 text-2xl font-bold text-white">
+            <h2 className="mb-3 text-xl font-bold text-white sm:text-2xl">
               Cookies und lokale Speicherung
             </h2>
 
@@ -56,7 +56,7 @@ export default function Datenschutz() {
           </section>
 
           <section>
-            <h2 className="mb-3 text-2xl font-bold text-white">
+            <h2 className="mb-3 text-xl font-bold text-white sm:text-2xl">
               Ihre Rechte
             </h2>
 
