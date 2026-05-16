@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import React, { useEffect, useMemo, useState } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";import { motion } from "framer-motion";
 import { createClient } from "@supabase/supabase-js";
@@ -414,17 +413,21 @@ function Home() {
 
       <header className="sticky top-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-5 sm:py-4">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-cyan-400 text-black shadow-xl shadow-cyan-500/30 sm:h-12 sm:w-12">
-              <CircuitBoard className="h-6 w-6" />
-            </div>
-            <div>
-              <h1 className="text-base font-black sm:text-xl">ElektronikLab</h1>
-              <p className="max-w-[190px] text-[10px] leading-tight text-zinc-400 sm:max-w-none sm:text-xs">
-                Sichere Elektronik- und Automatisierungsprojekte
-              </p>
-            </div>
-          </Link>
+         <Link to="/" className="flex items-center gap-3">
+  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-400 shadow-lg shadow-cyan-500/30">
+    <CircuitBoard className="h-7 w-7 text-black" />
+  </div>
+
+  <div>
+    <h1 className="text-3xl font-black text-white">
+      ElektronikLab
+    </h1>
+
+    <p className="text-sm text-zinc-400">
+      Sichere Elektronik- und Automatisierungsprojekte
+    </p>
+  </div>
+</Link>
 
           <div className="hidden items-center gap-8 md:flex">
             <button
