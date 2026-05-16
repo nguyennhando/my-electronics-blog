@@ -1,24 +1,21 @@
-import { Routes, Route, Link } from 'react-router-dom';
-import CookieBanner from './components/CookieBanner';
-import Impressum from './pages/Impressum';
-import Datenschutz from './pages/Datenschutz';
 import React, { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";import { motion } from "framer-motion";
 import { createClient } from "@supabase/supabase-js";
+import CookieBanner from "./components/CookieBanner";
+import Impressum from "./pages/Impressum";
+import Datenschutz from "./pages/Datenschutz";
 import {
   CircuitBoard,
   Cpu,
   RadioTower,
   Bot,
   Gauge,
-  Zap,
   Search,
   Menu,
   X,
   CalendarDays,
   User,
   ArrowRight,
-  Eye,
   Lock,
   Save,
   Trash2,
@@ -120,6 +117,7 @@ function getIcon(category) {
 
 function formatDate(date) {
   if (!date) return "Kein Datum";
+
   return new Intl.DateTimeFormat("de-DE", {
     day: "2-digit",
     month: "long",
@@ -142,7 +140,18 @@ function createEmptyPost() {
   };
 }
 
+function scrollToSection(id) {
+  navigate("/");
+
+  setTimeout(() => {
+    document
+      .getElementById(id)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 80);
+}
+
 function Home() {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [adminVisible, setAdminVisible] = useState(false);
   const [session, setSession] = useState(null);
@@ -222,6 +231,7 @@ function Home() {
 
   async function login(e) {
     e.preventDefault();
+
     if (!supabase) {
       setMessage("Supabase ist noch nicht konfiguriert. Bitte .env.local erstellen.");
       return;
@@ -256,6 +266,7 @@ function Home() {
 
   async function savePost(e) {
     e.preventDefault();
+
     if (!supabase || !isAdmin) {
       setMessage("Keine Berechtigung. Nur Admins dürfen Beiträge speichern.");
       return;
@@ -339,6 +350,7 @@ function Home() {
 
   const filteredPosts = useMemo(() => {
     const q = search.toLowerCase();
+
     return posts.filter((post) => {
       const categoryMatch = category === "Alle" || post.category === category;
       const tags = Array.isArray(post.tags) ? post.tags : [];
@@ -351,6 +363,11 @@ function Home() {
       return categoryMatch && searchMatch;
     });
   }, [posts, search, category]);
+
+  function closeMobileAndScroll(id) {
+    setMenuOpen(false);
+    setTimeout(() => scrollToSection(id), 50);
+  }
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#050816] text-white">
@@ -410,22 +427,31 @@ function Home() {
 
           <div className="hidden items-center gap-8 md:flex">
             <button
-  onClick={() =>
-    document
-      .getElementById("blog")
-      ?.scrollIntoView({ behavior: "smooth" })
-  }
-  className="text-sm text-zinc-300 transition hover:text-cyan-300"
->
-  Blog
-</button>
-            <a href="#projekte" className="text-sm text-zinc-300 transition hover:text-cyan-300">
-              Projekte
-            </a>
-            <a href="#kontakt" className="text-sm text-zinc-300 transition hover:text-cyan-300">
-              Kontakt
-            </a>
+              type="button"
+              onClick={() => scrollToSection("blog")}
+              className="text-sm text-zinc-300 transition hover:text-cyan-300"
+            >
+              Blog
+            </button>
+
             <button
+              type="button"
+              onClick={() => scrollToSection("projekte")}
+              className="text-sm text-zinc-300 transition hover:text-cyan-300"
+            >
+              Projekte
+            </button>
+
+            <button
+              type="button"
+              onClick={() => scrollToSection("kontakt")}
+              className="text-sm text-zinc-300 transition hover:text-cyan-300"
+            >
+              Kontakt
+            </button>
+
+            <button
+              type="button"
               onClick={() => setAdminVisible(true)}
               className="rounded-full border border-white/10 px-5 py-2 text-sm font-semibold transition hover:bg-white/10"
             >
@@ -433,56 +459,56 @@ function Home() {
             </button>
           </div>
 
-          <button className="rounded-xl border border-white/10 p-2 md:hidden" onClick={() => setMenuOpen((v) => !v)}>
+          <button
+            type="button"
+            className="rounded-xl border border-white/10 p-2 md:hidden"
+            onClick={() => setMenuOpen((value) => !value)}
+            aria-label="Menü öffnen"
+          >
             {menuOpen ? <X /> : <Menu />}
           </button>
         </nav>
 
         {menuOpen && (
-  <div className="border-t border-white/10 px-5 py-4 md:hidden">
-    <div className="grid gap-2">
-      <button
-        onClick={() =>
-          document
-            .getElementById("blog")
-            ?.scrollIntoView({ behavior: "smooth" })
-        }
-        className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
-      >
-        Blog
-      </button>
+          <div className="border-t border-white/10 px-5 py-4 md:hidden">
+            <div className="grid gap-2">
+              <button
+                type="button"
+                onClick={() => closeMobileAndScroll("blog")}
+                className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
+              >
+                Blog
+              </button>
 
-      <button
-        onClick={() =>
-          document
-            .getElementById("projekte")
-            ?.scrollIntoView({ behavior: "smooth" })
-        }
-        className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
-      >
-        Projekte
-      </button>
+              <button
+                type="button"
+                onClick={() => closeMobileAndScroll("projekte")}
+                className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
+              >
+                Projekte
+              </button>
 
-      <button
-        onClick={() =>
-          document
-            .getElementById("kontakt")
-            ?.scrollIntoView({ behavior: "smooth" })
-        }
-        className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
-      >
-        Kontakt
-      </button>
+              <button
+                type="button"
+                onClick={() => closeMobileAndScroll("kontakt")}
+                className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
+              >
+                Kontakt
+              </button>
 
-      <button
-        onClick={() => setAdminVisible(true)}
-        className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
-      >
-        Admin
-      </button>
-    </div>
-  </div>
-)}
+              <button
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setAdminVisible(true);
+                }}
+                className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
+              >
+                Admin
+              </button>
+            </div>
+          </div>
+        )}
       </header>
 
       <main>
@@ -501,14 +527,16 @@ function Home() {
             </p>
 
             <div className="mt-7 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
-              <a
-                href="#blog"
+              <button
+                type="button"
+                onClick={() => scrollToSection("blog")}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-cyan-400 px-5 py-3.5 text-sm font-bold text-black shadow-xl shadow-cyan-500/30 transition hover:bg-cyan-300 sm:w-auto sm:px-7 sm:py-4 sm:text-base"
               >
                 Projekte entdecken <ArrowRight className="h-5 w-5" />
-              </a>
+              </button>
 
               <button
+                type="button"
                 onClick={() => setAdminVisible(true)}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 px-5 py-3.5 text-sm font-bold transition hover:bg-white/10 sm:w-auto sm:px-7 sm:py-4 sm:text-base"
               >
@@ -731,8 +759,8 @@ function Home() {
                 onChange={(e) => setCategory(e.target.value)}
                 className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-3 outline-none ring-cyan-400/30 focus:ring-4"
               >
-                {categories.map((c) => (
-                  <option key={c}>{c}</option>
+                {categories.map((currentCategory) => (
+                  <option key={currentCategory}>{currentCategory}</option>
                 ))}
               </select>
             </div>
@@ -743,6 +771,7 @@ function Home() {
           <div className="grid gap-4 min-[620px]:grid-cols-2 xl:grid-cols-3 xl:gap-6">
             {filteredPosts.map((post) => {
               const Icon = getIcon(post.category);
+
               return (
                 <motion.article
                   whileHover={{ y: -5 }}
@@ -775,6 +804,7 @@ function Home() {
 
                     <div className="mt-5 flex gap-2 sm:mt-6 sm:gap-3">
                       <button
+                        type="button"
                         onClick={() => setSelectedPost(post)}
                         className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base"
                       >
@@ -783,11 +813,11 @@ function Home() {
 
                       {isAdmin && (
                         <>
-                          <button onClick={() => editPost(post)} className="rounded-2xl border border-white/10 p-3 transition hover:bg-white/10">
+                          <button type="button" onClick={() => editPost(post)} className="rounded-2xl border border-white/10 p-3 transition hover:bg-white/10">
                             <Edit3 className="h-5 w-5" />
                           </button>
 
-                          <button onClick={() => deletePost(post.id)} className="rounded-2xl border border-red-500/20 p-3 text-red-400 transition hover:bg-red-500/10">
+                          <button type="button" onClick={() => deletePost(post.id)} className="rounded-2xl border border-red-500/20 p-3 text-red-400 transition hover:bg-red-500/10">
                             <Trash2 className="h-5 w-5" />
                           </button>
                         </>
@@ -850,7 +880,9 @@ function Home() {
             <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
               <div>
                 <p className="text-sm font-black uppercase tracking-widest">Kontakt</p>
-                <h2 className="mt-3 text-[1.85rem] font-black leading-tight min-[390px]:text-3xl sm:mt-4 sm:text-5xl lg:text-6xl">Zusammenarbeit an modernen Elektronikprojekten.</h2>
+                <h2 className="mt-3 text-[1.85rem] font-black leading-tight min-[390px]:text-3xl sm:mt-4 sm:text-5xl lg:text-6xl">
+                  Zusammenarbeit an modernen Elektronikprojekten.
+                </h2>
                 <p className="mt-4 max-w-2xl text-[15px] leading-7 text-black/80 sm:mt-6 sm:text-lg sm:leading-9">
                   Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder individuelle Entwicklungen.
                 </p>
@@ -897,29 +929,20 @@ function Home() {
       </main>
 
       <footer className="border-t border-cyan-500/10 bg-black py-10 text-center text-zinc-400">
-  <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-    <Link
-  to="/impressum"
-  className="transition hover:text-cyan-400"
->
-  Impressum
-</Link>
+        <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
+          <Link to="/impressum" className="transition hover:text-cyan-400">
+            Impressum
+          </Link>
 
-<Link
-  to="/datenschutz"
-  className="transition hover:text-cyan-400"
->
-  Datenschutz
-</Link>
-  </div>
+          <Link to="/datenschutz" className="transition hover:text-cyan-400">
+            Datenschutz
+          </Link>
+        </div>
 
-  <p className="mt-4 text-xs text-zinc-500">
-    © 2026 ElektronikLab — Moderne Elektronik- und
-    Automatisierungsprojekte.
-  </p>
-</footer>
-
-<CookieBanner />
+        <p className="mt-4 text-xs text-zinc-500">
+          © 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.
+        </p>
+      </footer>
     </div>
   );
 }
@@ -932,6 +955,7 @@ export default function App() {
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/datenschutz" element={<Datenschutz />} />
       </Routes>
+      <CookieBanner />
     </>
   );
 }
