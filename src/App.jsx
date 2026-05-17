@@ -298,6 +298,32 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  const heroSlides = [
+    {
+      image: posts[0]?.image_url || demoPosts[0].image_url,
+      category: posts[0]?.category || "IoT",
+      readTime: posts[0]?.read_time || "5 Min.",
+      title: posts[0]?.title || "KI-basierte Qualitätskontrolle",
+      text: posts[0]?.excerpt || "Automatische Fehlererkennung mit moderner KI.",
+    },
+    {
+      image: posts[1]?.image_url || demoPosts[1].image_url,
+      category: posts[1]?.category || "Robotik",
+      readTime: posts[1]?.read_time || "6 Min.",
+      title: posts[1]?.title || "Industrieautomation",
+      text: posts[1]?.excerpt || "SPS-Steuerung und Förderbandautomatisierung.",
+    },
+    {
+      image: posts[2]?.image_url || demoPosts[2].image_url,
+      category: posts[2]?.category || "Embedded",
+      readTime: posts[2]?.read_time || "8 Min.",
+      title: posts[2]?.title || "ESP32 Smart Home",
+      text: posts[2]?.excerpt || "MQTT, Sensorik und Echtzeitüberwachung.",
+    },
+  ];
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
   const hasSupabase = Boolean(supabase);
 
   function scrollToSection(id) {
@@ -342,6 +368,14 @@ function Home() {
       }, 150);
     }
   }, [location.pathname]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [heroSlides.length]);
 
   async function checkAdmin() {
     if (!supabase || !session?.user) {
@@ -415,6 +449,38 @@ function Home() {
     setIsAdmin(false);
     setMessage("Sie wurden abgemeldet.");
   }
+
+  async function uploadImage(e) {
+  const file = e.target.files[0];
+
+  if (!file || !supabase) return;
+
+  setMessage("Bild wird hochgeladen...");
+
+  const fileExt = file.name.split(".").pop();
+
+  const fileName = `${Date.now()}.${fileExt}`;
+
+  const { error } = await supabase.storage
+    .from("blog-images")
+    .upload(fileName, file);
+
+  if (error) {
+    setMessage("Bild Upload fehlgeschlagen.");
+    return;
+  }
+
+  const { data } = supabase.storage
+    .from("blog-images")
+    .getPublicUrl(fileName);
+
+  setEditingPost((prev) => ({
+    ...prev,
+    image_url: data.publicUrl,
+  }));
+
+  setMessage("Bild erfolgreich hochgeladen.");
+}
 
   async function savePost(e) {
     e.preventDefault();
@@ -624,19 +690,56 @@ function Home() {
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7 }}>
-            <div className="mx-auto w-full max-w-md overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.04] shadow-2xl backdrop-blur-xl sm:max-w-none sm:rounded-[2rem]">
-              <img src={selectedPost.image_url} alt={selectedPost.title} className="h-52 w-full object-cover min-[390px]:h-60 sm:h-[420px]" />
-              <div className="p-4 sm:p-7">
-                <div className="mb-4 flex flex-wrap gap-2">
-                  <span className="rounded-full bg-cyan-400 px-3 py-1 text-xs font-black text-black">{selectedPost.category}</span>
-                  <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-zinc-300">{selectedPost.read_time}</span>
+          <div className="relative">
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0, x: 40, scale: 0.96 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="mx-auto w-full max-w-md overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.04] shadow-2xl backdrop-blur-xl sm:max-w-none sm:rounded-[2rem]">
+                <img
+                  src={heroSlides[currentSlide].image}
+                  alt={heroSlides[currentSlide].title}
+                  className="h-52 w-full object-cover min-[390px]:h-60 sm:h-[420px]"
+                />
+
+                <div className="p-4 sm:p-7">
+                  <div className="mb-4 flex flex-wrap gap-2">
+                    <span className="rounded-full bg-cyan-400 px-3 py-1 text-xs font-black text-black">
+                      {heroSlides[currentSlide].category}
+                    </span>
+
+                    <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-zinc-300">
+                      {heroSlides[currentSlide].readTime}
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl font-black leading-tight sm:text-3xl">
+                    {heroSlides[currentSlide].title}
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-7 text-zinc-300 sm:mt-4 sm:text-base sm:leading-8">
+                    {heroSlides[currentSlide].text}
+                  </p>
                 </div>
-                <h3 className="text-xl font-black leading-tight sm:text-3xl">{selectedPost.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-zinc-300 sm:mt-4 sm:text-base sm:leading-8">{selectedPost.excerpt}</p>
               </div>
+            </motion.div>
+
+            <div className="mt-5 flex justify-center gap-2">
+              {heroSlides.map((slide, index) => (
+                <button
+                  key={slide.title}
+                  type="button"
+                  onClick={() => setCurrentSlide(index)}
+                  className={`h-2.5 rounded-full transition-all ${
+                    currentSlide === index ? "w-8 bg-cyan-400" : "w-2.5 bg-white/20 hover:bg-white/40"
+                  }`}
+                  aria-label={`Slide ${index + 1}`}
+                />
+              ))}
             </div>
-          </motion.div>
+          </div>
         </section>
 
         <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5 sm:py-10">
@@ -768,12 +871,35 @@ function Home() {
                       <option>Embedded</option>
                     </select>
 
-                    <input
-                      value={editingPost.image_url}
-                      onChange={(e) => setEditingPost({ ...editingPost, image_url: e.target.value })}
-                      placeholder="Bild URL"
-                      className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2"
-                    />
+                   <div className="lg:col-span-2">
+  <label className="mb-2 block text-sm text-zinc-400">
+    Bild hochladen
+  </label>
+
+  <input
+    type="file"
+    accept="image/*"
+    onChange={uploadImage}
+    className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white
+    file:mr-4
+    file:rounded-xl
+    file:border-0
+    file:bg-cyan-400
+    file:px-4
+    file:py-2
+    file:font-bold
+    file:text-black
+    hover:file:bg-cyan-300"
+  />
+
+  {editingPost.image_url && (
+    <img
+      src={editingPost.image_url}
+      alt="Preview"
+      className="mt-4 h-48 w-full rounded-2xl object-cover border border-white/10"
+    />
+  )}
+</div>
 
                     <input
                       value={editingPost.tags}
