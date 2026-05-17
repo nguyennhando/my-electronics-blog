@@ -1034,48 +1034,73 @@ function Home() {
           </div>
         </section>
 
-        <section id="projekte" className="mx-auto max-w-6xl px-4 py-10 sm:px-5 sm:py-20">
+        <section id="projekte" className="mx-auto max-w-7xl px-4 py-10 sm:px-5 sm:py-20">
           <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] backdrop-blur-xl sm:rounded-[2.5rem]">
-            <div className="grid lg:grid-cols-2">
-              <img src={selectedPost.image_url} alt={selectedPost.title} className="h-56 w-full object-cover min-[390px]:h-64 sm:h-full sm:min-h-[450px]" />
+            <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04]">
 
-              <div className="p-4 sm:p-8 lg:p-12">
-                <div className="mb-4 flex flex-wrap gap-3 text-sm text-zinc-400">
-                  <span className="inline-flex items-center gap-2">
-                    <User className="h-4 w-4" /> ElektronikLab
-                  </span>
-                  <span className="inline-flex items-center gap-2">
-                    <CalendarDays className="h-4 w-4" /> {formatDate(selectedPost.created_at)}
-                  </span>
-                </div>
+  <img
+    src={selectedPost.image_url}
+    alt={selectedPost.title}
+    className="h-[260px] w-full object-cover sm:h-[420px] lg:h-[560px]"
+  />
 
-                <h2 className="text-2xl font-black leading-tight min-[390px]:text-3xl sm:text-4xl lg:text-5xl">{selectedPost.title}</h2>
+  <div className="p-6 sm:p-10 lg:p-14">
 
-                <p className="mt-5 text-[15px] leading-7 text-zinc-300 sm:mt-8 sm:text-lg sm:leading-9">{selectedPost.content}</p>
+    <div className="mb-5 flex flex-wrap gap-3 text-sm text-zinc-400">
+      <span className="inline-flex items-center gap-2">
+        <User className="h-4 w-4" />
+        ElektronikLab
+      </span>
 
-                <div className="mt-8 flex flex-wrap gap-3">
-                  {(selectedPost.tags || []).map((tag) => (
-                    <span key={tag} className="rounded-full bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-300">
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
+      <span className="inline-flex items-center gap-2">
+        <CalendarDays className="h-4 w-4" />
+        {formatDate(selectedPost.created_at)}
+      </span>
+    </div>
 
-                <div className="mt-8 grid grid-cols-1 gap-4 sm:mt-10 sm:grid-cols-2">
-                  <div className="rounded-2xl bg-black/30 p-5">
-                    <Layers3 className="mb-3 h-6 w-6 text-cyan-300" />
-                    <p className="text-sm text-zinc-400">Architektur</p>
-                    <p className="mt-1 font-bold">Modular & Erweiterbar</p>
-                  </div>
+    <h2 className="max-w-5xl text-3xl font-black leading-tight sm:text-5xl">
+      {selectedPost.title}
+    </h2>
 
-                  <div className="rounded-2xl bg-black/30 p-5">
-                    <Server className="mb-3 h-6 w-6 text-cyan-300" />
-                    <p className="text-sm text-zinc-400">Daten</p>
-                    <p className="mt-1 font-bold">Geschützt durch RLS</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <p className="mt-8 max-w-5xl whitespace-pre-line text-base leading-8 text-zinc-300 sm:text-lg sm:leading-9">
+      {selectedPost.content}
+    </p>
+
+    <div className="mt-10 flex flex-wrap gap-3">
+      {(selectedPost.tags || []).map((tag) => (
+        <span
+          key={tag}
+          className="rounded-full bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-300"
+        >
+          #{tag}
+        </span>
+      ))}
+    </div>
+
+    <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="rounded-2xl bg-black/30 p-5">
+        <Layers3 className="mb-3 h-6 w-6 text-cyan-300" />
+        <p className="text-sm text-zinc-400">
+          Architektur
+        </p>
+        <p className="mt-1 font-bold">
+          Modular & Erweiterbar
+        </p>
+      </div>
+
+      <div className="rounded-2xl bg-black/30 p-5">
+        <Server className="mb-3 h-6 w-6 text-cyan-300" />
+        <p className="text-sm text-zinc-400">
+          Daten
+        </p>
+        <p className="mt-1 font-bold">
+          Geschützt durch RLS
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
           </div>
         </section>
 
