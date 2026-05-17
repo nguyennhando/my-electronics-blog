@@ -732,7 +732,7 @@ function Home() {
   </a>
 
   <a
-    href="https://github.com/nguyennhando/finanzmanager"
+    href="https://github.com/nguyennhando?tab=repositories"
     target="_blank"
     rel="noopener noreferrer"
     className="inline-flex items-center rounded-2xl border border-white/10 bg-white/5 px-6 py-4 font-bold text-white transition hover:bg-white/10"
