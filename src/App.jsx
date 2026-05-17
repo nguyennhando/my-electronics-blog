@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";import { motion } from "framer-motion";
+import { Routes, Route, Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import { createClient } from "@supabase/supabase-js";
 import CookieBanner from "./components/CookieBanner";
 import Impressum from "./pages/Impressum";
@@ -140,22 +141,152 @@ function createEmptyPost() {
   };
 }
 
-function scrollToSection(id) {
-  window.location.hash = `/${id}`;
+function Background() {
+  return (
+    <div className="fixed inset-0 -z-10 overflow-hidden bg-[#050816]">
+      <div
+        className="absolute inset-0 opacity-[0.22]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(34,211,238,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,.12) 1px, transparent 1px)",
+          backgroundSize: "42px 42px",
+        }}
+      />
+      <div
+        className="absolute inset-0 opacity-[0.16]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 20px 20px, rgba(34,211,238,.9) 1.5px, transparent 2px), radial-gradient(circle at 80px 80px, rgba(59,130,246,.9) 1.5px, transparent 2px)",
+          backgroundSize: "120px 120px",
+        }}
+      />
+      <svg className="absolute inset-0 h-full w-full opacity-[0.18]" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="circuit-pattern" width="180" height="180" patternUnits="userSpaceOnUse">
+            <path
+              d="M20 40 H80 V90 H140 M40 140 H100 V110 H160 M30 80 H60 M120 30 V70 M90 130 H150"
+              fill="none"
+              stroke="rgba(34,211,238,.75)"
+              strokeWidth="1.5"
+            />
+            <circle cx="20" cy="40" r="4" fill="rgba(34,211,238,.75)" />
+            <circle cx="80" cy="90" r="4" fill="rgba(34,211,238,.75)" />
+            <circle cx="140" cy="90" r="4" fill="rgba(34,211,238,.75)" />
+            <circle cx="160" cy="110" r="4" fill="rgba(59,130,246,.75)" />
+            <circle cx="120" cy="30" r="4" fill="rgba(59,130,246,.75)" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#circuit-pattern)" />
+      </svg>
+      <div className="absolute inset-0 bg-gradient-to-b from-[#050816]/70 via-[#050816]/85 to-[#050816]" />
+      <div className="absolute left-1/2 top-[-220px] h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-cyan-500/25 blur-3xl sm:h-[600px] sm:w-[600px]" />
+      <div className="absolute bottom-[-220px] right-[-180px] h-[420px] w-[420px] rounded-full bg-blue-600/25 blur-3xl sm:h-[600px] sm:w-[600px]" />
+    </div>
+  );
+}
 
-  setTimeout(() => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+function BlogPostPage() {
+  const { id } = useParams();
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadPost() {
+      setLoading(true);
+
+      const demoPost = demoPosts.find((item) => String(item.id) === String(id));
+      if (demoPost) {
+        setPost(demoPost);
+        setLoading(false);
+        return;
+      }
+
+      if (!supabase) {
+        setPost(null);
+        setLoading(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("posts")
+        .select("id,title,category,image_url,excerpt,content,tags,read_time,published,created_at,updated_at")
+        .eq("id", id)
+        .single();
+
+      if (error) {
+        setPost(null);
+      } else {
+        setPost(data);
+      }
+
+      setLoading(false);
     }
-  }, 100);
+
+    loadPost();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#050816] px-4 py-20 text-center text-zinc-300">
+        <Background />
+        Beitrag wird geladen...
+      </div>
+    );
+  }
+
+  if (!post) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#050816] px-6 text-white">
+        <Background />
+        <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-10 text-center backdrop-blur-xl">
+          <h1 className="text-3xl font-black">Beitrag nicht gefunden</h1>
+          <Link to="/" className="mt-6 inline-flex rounded-2xl bg-cyan-400 px-6 py-3 font-bold text-black">
+            Zurück zur Startseite
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#050816] px-4 py-10 text-white sm:px-6 sm:py-20">
+      <Background />
+      <div className="mx-auto max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] backdrop-blur-xl">
+        <img src={post.image_url} alt={post.title} className="h-72 w-full object-cover sm:h-[420px]" />
+
+        <div className="p-6 sm:p-10">
+          <div className="mb-5 flex flex-wrap gap-3 text-sm text-zinc-400">
+            <span className="rounded-full bg-cyan-400 px-4 py-2 font-bold text-black">{post.category}</span>
+            <span>{formatDate(post.created_at)}</span>
+            {post.read_time && <span>{post.read_time}</span>}
+          </div>
+
+          <h1 className="text-3xl font-black leading-tight sm:text-5xl">{post.title}</h1>
+
+          <p className="mt-8 whitespace-pre-line text-base leading-8 text-zinc-300 sm:text-lg sm:leading-9">
+            {post.content}
+          </p>
+
+          <div className="mt-10 flex flex-wrap gap-3">
+            {(post.tags || []).map((tag) => (
+              <span key={tag} className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-sm text-cyan-300">
+                #{tag}
+              </span>
+            ))}
+          </div>
+
+          <Link to="/" className="mt-10 inline-flex rounded-2xl bg-cyan-400 px-6 py-4 font-bold text-black transition hover:bg-cyan-300">
+            ← Zurück zur Startseite
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function Home() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [adminVisible, setAdminVisible] = useState(false);
   const [session, setSession] = useState(null);
@@ -172,6 +303,19 @@ function Home() {
   const [message, setMessage] = useState("");
 
   const hasSupabase = Boolean(supabase);
+
+  function scrollToSection(id) {
+    navigate(`/${id}`);
+
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 120);
+  }
+
+  function closeMobileAndScroll(id) {
+    setMenuOpen(false);
+    setTimeout(() => scrollToSection(id), 50);
+  }
 
   useEffect(() => {
     if (!supabase) return;
@@ -196,35 +340,13 @@ function Home() {
   }, [session]);
 
   useEffect(() => {
-  const currentHash = window.location.hash;
-
-  if (currentHash.includes("/blog")) {
-    setTimeout(() => {
-      document.getElementById("blog")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
-  }
-
-  if (currentHash.includes("/projekte")) {
-    setTimeout(() => {
-      document.getElementById("projekte")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
-  }
-
-  if (currentHash.includes("/kontakt")) {
-    setTimeout(() => {
-      document.getElementById("kontakt")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
-  }
-}, []);
+    const section = location.pathname.replace("/", "");
+    if (["blog", "projekte", "kontakt"].includes(section)) {
+      setTimeout(() => {
+        document.getElementById(section)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 150);
+    }
+  }, [location.pathname]);
 
   async function checkAdmin() {
     if (!supabase || !session?.user) {
@@ -399,96 +521,35 @@ function Home() {
     });
   }, [posts, search, category]);
 
-  function closeMobileAndScroll(id) {
-    setMenuOpen(false);
-    setTimeout(() => scrollToSection(id), 50);
-  }
-
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#050816] text-white">
-      <div className="fixed inset-0 -z-10 overflow-hidden bg-[#050816]">
-        <div
-          className="absolute inset-0 opacity-[0.22]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(34,211,238,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,.12) 1px, transparent 1px)",
-            backgroundSize: "42px 42px",
-          }}
-        />
-        <div
-          className="absolute inset-0 opacity-[0.16]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 20px 20px, rgba(34,211,238,.9) 1.5px, transparent 2px), radial-gradient(circle at 80px 80px, rgba(59,130,246,.9) 1.5px, transparent 2px)",
-            backgroundSize: "120px 120px",
-          }}
-        />
-        <svg className="absolute inset-0 h-full w-full opacity-[0.18]" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="circuit-pattern" width="180" height="180" patternUnits="userSpaceOnUse">
-              <path
-                d="M20 40 H80 V90 H140 M40 140 H100 V110 H160 M30 80 H60 M120 30 V70 M90 130 H150"
-                fill="none"
-                stroke="rgba(34,211,238,.75)"
-                strokeWidth="1.5"
-              />
-              <circle cx="20" cy="40" r="4" fill="rgba(34,211,238,.75)" />
-              <circle cx="80" cy="90" r="4" fill="rgba(34,211,238,.75)" />
-              <circle cx="140" cy="90" r="4" fill="rgba(34,211,238,.75)" />
-              <circle cx="160" cy="110" r="4" fill="rgba(59,130,246,.75)" />
-              <circle cx="120" cy="30" r="4" fill="rgba(59,130,246,.75)" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#circuit-pattern)" />
-        </svg>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050816]/70 via-[#050816]/85 to-[#050816]" />
-        <div className="absolute left-1/2 top-[-220px] h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-cyan-500/25 blur-3xl sm:h-[600px] sm:w-[600px]" />
-        <div className="absolute bottom-[-220px] right-[-180px] h-[420px] w-[420px] rounded-full bg-blue-600/25 blur-3xl sm:h-[600px] sm:w-[600px]" />
-      </div>
+      <Background />
 
       <header className="sticky top-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-5 sm:py-4">
-         <Link to="/" className="flex items-center gap-3">
-  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-400 shadow-lg shadow-cyan-500/30">
-    <CircuitBoard className="h-7 w-7 text-black" />
-  </div>
+          <Link to="/" className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-cyan-400 text-black shadow-lg shadow-cyan-500/30 sm:h-12 sm:w-12">
+              <CircuitBoard className="h-6 w-6" />
+            </div>
 
-  <div>
-    <h1 className="text-3xl font-black text-white">
-      ElektronikLab
-    </h1>
-
-    <p className="text-sm text-zinc-400">
-      Sichere Elektronik- und Automatisierungsprojekte
-    </p>
-  </div>
-</Link>
+            <div>
+              <h1 className="text-base font-black text-white sm:text-xl">ElektronikLab</h1>
+              <p className="max-w-[190px] text-[10px] leading-tight text-zinc-400 sm:max-w-none sm:text-xs">
+                Sichere Elektronik- und Automatisierungsprojekte
+              </p>
+            </div>
+          </Link>
 
           <div className="hidden items-center gap-8 md:flex">
-            <button
-              type="button"
-              onClick={() => scrollToSection("blog")}
-              className="text-sm text-zinc-300 transition hover:text-cyan-300"
-            >
+            <button type="button" onClick={() => scrollToSection("blog")} className="text-sm text-zinc-300 transition hover:text-cyan-300">
               Blog
             </button>
-
-            <button
-              type="button"
-              onClick={() => scrollToSection("projekte")}
-              className="text-sm text-zinc-300 transition hover:text-cyan-300"
-            >
+            <button type="button" onClick={() => scrollToSection("projekte")} className="text-sm text-zinc-300 transition hover:text-cyan-300">
               Projekte
             </button>
-
-            <button
-              type="button"
-              onClick={() => scrollToSection("kontakt")}
-              className="text-sm text-zinc-300 transition hover:text-cyan-300"
-            >
+            <button type="button" onClick={() => scrollToSection("kontakt")} className="text-sm text-zinc-300 transition hover:text-cyan-300">
               Kontakt
             </button>
-
             <button
               type="button"
               onClick={() => setAdminVisible(true)}
@@ -511,30 +572,15 @@ function Home() {
         {menuOpen && (
           <div className="border-t border-white/10 px-5 py-4 md:hidden">
             <div className="grid gap-2">
-              <button
-                type="button"
-                onClick={() => closeMobileAndScroll("blog")}
-                className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
-              >
+              <button type="button" onClick={() => closeMobileAndScroll("blog")} className="rounded-xl px-3 py-2 text-left hover:bg-white/10">
                 Blog
               </button>
-
-              <button
-                type="button"
-                onClick={() => closeMobileAndScroll("projekte")}
-                className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
-              >
+              <button type="button" onClick={() => closeMobileAndScroll("projekte")} className="rounded-xl px-3 py-2 text-left hover:bg-white/10">
                 Projekte
               </button>
-
-              <button
-                type="button"
-                onClick={() => closeMobileAndScroll("kontakt")}
-                className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
-              >
+              <button type="button" onClick={() => closeMobileAndScroll("kontakt")} className="rounded-xl px-3 py-2 text-left hover:bg-white/10">
                 Kontakt
               </button>
-
               <button
                 type="button"
                 onClick={() => {
@@ -842,13 +888,12 @@ function Home() {
                     </div>
 
                     <div className="mt-5 flex gap-2 sm:mt-6 sm:gap-3">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedPost(post)}
-                        className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base"
+                      <Link
+                        to={`/post/${post.id}`}
+                        className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base"
                       >
                         Beitrag lesen
-                      </button>
+                      </Link>
 
                       {isAdmin && (
                         <>
@@ -978,9 +1023,7 @@ function Home() {
           </Link>
         </div>
 
-        <p className="mt-4 text-xs text-zinc-500">
-          © 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.
-        </p>
+        <p className="mt-4 text-xs text-zinc-500">© 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.</p>
       </footer>
     </div>
   );
@@ -989,14 +1032,15 @@ function Home() {
 export default function App() {
   return (
     <>
-     <Routes>
-  <Route path="/" element={<Home />} />
-  <Route path="/blog" element={<Home />} />
-  <Route path="/projekte" element={<Home />} />
-  <Route path="/kontakt" element={<Home />} />
-  <Route path="/impressum" element={<Impressum />} />
-  <Route path="/datenschutz" element={<Datenschutz />} />
-</Routes>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/blog" element={<Home />} />
+        <Route path="/projekte" element={<Home />} />
+        <Route path="/kontakt" element={<Home />} />
+        <Route path="/post/:id" element={<BlogPostPage />} />
+        <Route path="/impressum" element={<Impressum />} />
+        <Route path="/datenschutz" element={<Datenschutz />} />
+      </Routes>
       <CookieBanner />
     </>
   );
