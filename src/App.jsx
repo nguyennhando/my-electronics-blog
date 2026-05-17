@@ -1027,7 +1027,7 @@ function Home() {
   <div className="grid gap-6 lg:grid-cols-3">
     <div className="group overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-2xl shadow-cyan-500/10 lg:col-span-2">
       <img
-        src={selectedPost.image_url}
+        src="/my-electronics-blog/images/finance-main.jpg"
         alt={selectedPost.title}
         className="h-[520px] w-full object-cover transition duration-700 group-hover:scale-105"
       />
@@ -1036,7 +1036,7 @@ function Home() {
     <div className="grid gap-6">
       <div className="group overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-xl shadow-cyan-500/10">
         <img
-          src="/images/finance-chart.jpg"
+          src="/my-electronics-blog/images/finance-chart.jpg"
           alt="Diagramm"
           className="h-[247px] w-full object-cover transition duration-700 group-hover:scale-110"
         />
@@ -1044,7 +1044,7 @@ function Home() {
 
       <div className="group overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-xl shadow-cyan-500/10">
         <img
-          src="/images/finance-dashboard.jpg"
+          src="/my-electronics-blog/images/finance-dashboard.jpg"
           alt="Dashboard"
           className="h-[247px] w-full object-cover transition duration-700 group-hover:scale-110"
         />
