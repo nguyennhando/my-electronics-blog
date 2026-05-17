@@ -118,7 +118,6 @@ function getIcon(category) {
 
 function formatDate(date) {
   if (!date) return "Kein Datum";
-
   return new Intl.DateTimeFormat("de-DE", {
     day: "2-digit",
     month: "long",
@@ -213,11 +212,8 @@ function BlogPostPage() {
         .eq("id", id)
         .single();
 
-      if (error) {
-        setPost(null);
-      } else {
-        setPost(data);
-      }
+      if (error) setPost(null);
+      else setPost(data);
 
       setLoading(false);
     }
@@ -306,7 +302,6 @@ function Home() {
 
   function scrollToSection(id) {
     navigate(`/${id}`);
-
     setTimeout(() => {
       document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 120);
@@ -531,7 +526,6 @@ function Home() {
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-cyan-400 text-black shadow-lg shadow-cyan-500/30 sm:h-12 sm:w-12">
               <CircuitBoard className="h-6 w-6" />
             </div>
-
             <div>
               <h1 className="text-base font-black text-white sm:text-xl">ElektronikLab</h1>
               <p className="max-w-[190px] text-[10px] leading-tight text-zinc-400 sm:max-w-none sm:text-xs">
@@ -853,7 +847,7 @@ function Home() {
 
           {loading && <p className="mb-5 text-zinc-400">Lade Daten...</p>}
 
-          <div className="grid gap-4 min-[620px]:grid-cols-2 xl:grid-cols-3 xl:gap-6">
+          <div className="grid auto-rows-fr gap-4 min-[620px]:grid-cols-2 xl:grid-cols-3 xl:gap-6">
             {filteredPosts.map((post) => {
               const Icon = getIcon(post.category);
 
@@ -861,11 +855,11 @@ function Home() {
                 <motion.article
                   whileHover={{ y: -5 }}
                   key={post.id}
-                  className="overflow-hidden rounded-[1.4rem] border border-white/10 bg-white/[0.04] backdrop-blur-xl sm:rounded-[2rem]"
+                  className="flex h-full min-h-[560px] flex-col overflow-hidden rounded-[1.4rem] border border-white/10 bg-white/[0.04] backdrop-blur-xl sm:rounded-[2rem]"
                 >
-                  <img src={post.image_url} alt={post.title} className="h-44 w-full object-cover min-[390px]:h-48 sm:h-56" />
+                  <img src={post.image_url} alt={post.title} className="h-44 w-full shrink-0 object-cover min-[390px]:h-48 sm:h-56" />
 
-                  <div className="p-4 sm:p-6">
+                  <div className="flex flex-1 flex-col p-4 sm:p-6">
                     <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
                       <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">
                         <Icon className="h-3.5 w-3.5" /> {post.category}
@@ -887,7 +881,7 @@ function Home() {
                       ))}
                     </div>
 
-                    <div className="mt-5 flex gap-2 sm:mt-6 sm:gap-3">
+                    <div className="mt-auto flex gap-2 pt-6 sm:gap-3">
                       <Link
                         to={`/post/${post.id}`}
                         className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base"
