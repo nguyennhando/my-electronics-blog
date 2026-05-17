@@ -341,7 +341,7 @@ function Home() {
 
   useEffect(() => {
     const section = location.pathname.replace("/", "");
-    if (["blog", "galerie", "kontakt"].includes(section)) {
+    if (["blog", "projekte", "kontakt"].includes(section)) {
       setTimeout(() => {
         document.getElementById(section)?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 150);
