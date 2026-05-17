@@ -1013,75 +1013,45 @@ function Home() {
           </div>
         </section>
 
-        <section id="projekte" className="mx-auto max-w-7xl px-4 py-10 sm:px-5 sm:py-20">
-          <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] backdrop-blur-xl sm:rounded-[2.5rem]">
-            <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04]">
-
-  <img
-    src={selectedPost.image_url}
-    alt={selectedPost.title}
-    className="h-[260px] w-full object-cover sm:h-[420px] lg:h-[560px]"
-  />
-
-  <div className="p-6 sm:p-10 lg:p-14">
-
-    <div className="mb-5 flex flex-wrap gap-3 text-sm text-zinc-400">
-      <span className="inline-flex items-center gap-2">
-        <User className="h-4 w-4" />
-        ElektronikLab
-      </span>
-
-      <span className="inline-flex items-center gap-2">
-        <CalendarDays className="h-4 w-4" />
-        {formatDate(selectedPost.created_at)}
-      </span>
-    </div>
-
-    <h2 className="max-w-5xl text-3xl font-black leading-tight sm:text-5xl">
-      {selectedPost.title}
-    </h2>
-
-    <p className="mt-8 max-w-5xl whitespace-pre-line text-base leading-8 text-zinc-300 sm:text-lg sm:leading-9">
-      {selectedPost.content}
+<section id="projekte" className="mx-auto max-w-7xl px-4 py-16 sm:px-5 sm:py-24">
+  <div className="mb-10">
+    <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">
+      Galerie
     </p>
 
-    <div className="mt-10 flex flex-wrap gap-3">
-      {(selectedPost.tags || []).map((tag) => (
-        <span
-          key={tag}
-          className="rounded-full bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-300"
-        >
-          #{tag}
-        </span>
-      ))}
-    </div>
-
-    <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
-      <div className="rounded-2xl bg-black/30 p-5">
-        <Layers3 className="mb-3 h-6 w-6 text-cyan-300" />
-        <p className="text-sm text-zinc-400">
-          Architektur
-        </p>
-        <p className="mt-1 font-bold">
-          Modular & Erweiterbar
-        </p>
-      </div>
-
-      <div className="rounded-2xl bg-black/30 p-5">
-        <Server className="mb-3 h-6 w-6 text-cyan-300" />
-        <p className="text-sm text-zinc-400">
-          Daten
-        </p>
-        <p className="mt-1 font-bold">
-          Geschützt durch RLS
-        </p>
-      </div>
-    </div>
-
+    <h2 className="mt-3 text-4xl font-black sm:text-5xl">
+      Projektbilder
+    </h2>
   </div>
-</div>
-          </div>
-        </section>
+
+  <div className="grid gap-6 lg:grid-cols-3">
+    <div className="group overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-2xl shadow-cyan-500/10 lg:col-span-2">
+      <img
+        src={selectedPost.image_url}
+        alt={selectedPost.title}
+        className="h-[520px] w-full object-cover transition duration-700 group-hover:scale-105"
+      />
+    </div>
+
+    <div className="grid gap-6">
+      <div className="group overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-xl shadow-cyan-500/10">
+        <img
+          src={selectedPost.image_url}
+          alt="Diagramm"
+          className="h-[247px] w-full object-cover transition duration-700 group-hover:scale-110"
+        />
+      </div>
+
+      <div className="group overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-xl shadow-cyan-500/10">
+        <img
+          src={selectedPost.image_url}
+          alt="Dashboard"
+          className="h-[247px] w-full object-cover transition duration-700 group-hover:scale-110"
+        />
+      </div>
+    </div>
+  </div>
+</section>
 
         <section id="kontakt" className="mx-auto max-w-7xl px-4 pb-12 sm:px-5 sm:pb-24">
           <div className="rounded-[1.5rem] bg-cyan-400 p-4 text-black shadow-2xl shadow-cyan-500/30 sm:rounded-[2.5rem] sm:p-8 lg:p-12">
@@ -1097,7 +1067,7 @@ function Home() {
               </div>
 
               <div className="rounded-[1.25rem] bg-[#050816] p-3 text-white sm:rounded-[2rem] sm:p-8">
-                <div className="grid gap-5">
+                <div className="grid h-full gap-5">
                   <div className="flex items-center gap-3 rounded-2xl border border-white/10 p-3 sm:gap-4 sm:p-4">
                     <Mail className="h-6 w-6 text-cyan-300" />
                     <div>
