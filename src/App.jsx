@@ -858,14 +858,14 @@ function Home() {
               const Icon = getIcon(post.category);
 
               return (
-              <motion.article
-  whileHover={{ y: -5 }}
-  key={post.id}
-  className="flex h-full flex-col overflow-hidden rounded-[1.4rem] border border-white/10 bg-white/[0.04] backdrop-blur-xl sm:rounded-[2rem]"
->
+                <motion.article
+                  whileHover={{ y: -5 }}
+                  key={post.id}
+                  className="overflow-hidden rounded-[1.4rem] border border-white/10 bg-white/[0.04] backdrop-blur-xl sm:rounded-[2rem]"
+                >
                   <img src={post.image_url} alt={post.title} className="h-44 w-full object-cover min-[390px]:h-48 sm:h-56" />
 
-                  <div className="mt-5 flex gap-2 sm:mt-6 sm:gap-3">
+                  <div className="p-4 sm:p-6">
                     <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
                       <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">
                         <Icon className="h-3.5 w-3.5" /> {post.category}
