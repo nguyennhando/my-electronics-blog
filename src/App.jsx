@@ -142,44 +142,23 @@ function createEmptyPost() {
 
 function Background() {
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden bg-[#050816]">
-      <div
-        className="absolute inset-0 opacity-[0.22]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(34,211,238,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,.12) 1px, transparent 1px)",
-          backgroundSize: "42px 42px",
-        }}
-      />
+    <div className="fixed inset-0 -z-10 overflow-hidden bg-[#07111f]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.45),transparent_30%),radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.42),transparent_32%),radial-gradient(circle_at_20%_80%,rgba(168,85,247,0.38),transparent_34%),radial-gradient(circle_at_80%_80%,rgba(236,72,153,0.34),transparent_32%)]" />
+
+      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-900/30 to-fuchsia-600/20" />
+
       <div
         className="absolute inset-0 opacity-[0.16]"
         style={{
           backgroundImage:
-            "radial-gradient(circle at 20px 20px, rgba(34,211,238,.9) 1.5px, transparent 2px), radial-gradient(circle at 80px 80px, rgba(59,130,246,.9) 1.5px, transparent 2px)",
-          backgroundSize: "120px 120px",
+            "linear-gradient(rgba(255,255,255,.16) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.16) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
         }}
       />
-      <svg className="absolute inset-0 h-full w-full opacity-[0.18]" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <pattern id="circuit-pattern" width="180" height="180" patternUnits="userSpaceOnUse">
-            <path
-              d="M20 40 H80 V90 H140 M40 140 H100 V110 H160 M30 80 H60 M120 30 V70 M90 130 H150"
-              fill="none"
-              stroke="rgba(34,211,238,.75)"
-              strokeWidth="1.5"
-            />
-            <circle cx="20" cy="40" r="4" fill="rgba(34,211,238,.75)" />
-            <circle cx="80" cy="90" r="4" fill="rgba(34,211,238,.75)" />
-            <circle cx="140" cy="90" r="4" fill="rgba(34,211,238,.75)" />
-            <circle cx="160" cy="110" r="4" fill="rgba(59,130,246,.75)" />
-            <circle cx="120" cy="30" r="4" fill="rgba(59,130,246,.75)" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#circuit-pattern)" />
-      </svg>
-      <div className="absolute inset-0 bg-gradient-to-b from-[#050816]/70 via-[#050816]/85 to-[#050816]" />
-      <div className="absolute left-1/2 top-[-220px] h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-cyan-500/25 blur-3xl sm:h-[600px] sm:w-[600px]" />
-      <div className="absolute bottom-[-220px] right-[-180px] h-[420px] w-[420px] rounded-full bg-blue-600/25 blur-3xl sm:h-[600px] sm:w-[600px]" />
+
+      <div className="absolute left-[-120px] top-[-120px] h-[520px] w-[520px] rounded-full bg-cyan-400/35 blur-3xl" />
+      <div className="absolute right-[-160px] top-[15%] h-[560px] w-[560px] rounded-full bg-blue-500/35 blur-3xl" />
+      <div className="absolute bottom-[-180px] left-[20%] h-[520px] w-[520px] rounded-full bg-fuchsia-500/30 blur-3xl" />
     </div>
   );
 }
