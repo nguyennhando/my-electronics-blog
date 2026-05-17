@@ -723,7 +723,7 @@ function Home() {
           <div className="mt-10 flex flex-wrap gap-4">
 
   <a
-    href="https://drive.google.com/drive/folders/1y6MZUhoZJCIou-SL9BHbkA-CjpXxKGz5?usp=drive_link"
+    href="https://drive.google.com/drive/folders/1y6MZUhoZJCIou-SL9BHbkA-CjpXxKGz5?usp=sharing"
     target="_blank"
     rel="noopener noreferrer"
     className="inline-flex items-center rounded-2xl bg-cyan-400 px-6 py-4 font-bold text-black transition hover:bg-cyan-300"
