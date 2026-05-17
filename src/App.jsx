@@ -719,6 +719,28 @@ function Home() {
               ))}
             </div>
           </div>
+
+          <div className="mt-10 flex flex-wrap gap-4">
+
+  <a
+    href="https://drive.google.com/drive/folders/1y6MZUhoZJCIou-SL9BHbkA-CjpXxKGz5?usp=drive_link"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center rounded-2xl bg-cyan-400 px-6 py-4 font-bold text-black transition hover:bg-cyan-300"
+  >
+    PDF Dokumentation
+  </a>
+
+  <a
+    href="https://github.com/nguyennhando/finanzmanager"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center rounded-2xl border border-white/10 bg-white/5 px-6 py-4 font-bold text-white transition hover:bg-white/10"
+  >
+    Source Code
+  </a>
+
+</div>
         </section>
 
         <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5 sm:py-10">
