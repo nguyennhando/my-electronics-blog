@@ -584,7 +584,7 @@ function Home() {
               Blog
             </button>
             <button type="button" onClick={() => scrollToSection("projekte")} className="text-sm text-zinc-300 transition hover:text-cyan-300">
-              Projekte
+              Galerie
             </button>
             <button type="button" onClick={() => scrollToSection("kontakt")} className="text-sm text-zinc-300 transition hover:text-cyan-300">
               Kontakt
