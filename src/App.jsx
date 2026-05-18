@@ -670,56 +670,59 @@ function Home() {
           </motion.div>
 
           <div className="relative">
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0, x: 40, scale: 0.96 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="mx-auto h-[620px] w-full max-w-md overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.04] shadow-2xl backdrop-blur-xl sm:max-w-none sm:rounded-[2rem]">
-                <img
-                  src={heroSlides[currentSlide].image}
-                  alt={heroSlides[currentSlide].title}
-                  className="h-[420px] w-full object-cover"
-                />
+  <motion.div
+    key={currentSlide}
+    initial={{ opacity: 0, x: 40, scale: 0.96 }}
+    animate={{ opacity: 1, x: 0, scale: 1 }}
+    transition={{ duration: 0.6 }}
+  >
+    <div className="relative mx-auto h-[620px] w-full max-w-md overflow-hidden rounded-[2rem] p-[2px] sm:max-w-none">
+      <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 opacity-90 blur-[1px]" />
 
-                <div className="h-[200px] overflow-hidden p-4 sm:p-7">
-                  <div className="mb-4 flex flex-wrap gap-2">
-                    <span className="rounded-full bg-cyan-400 px-3 py-1 text-xs font-black text-black">
-                      {heroSlides[currentSlide].category}
-                    </span>
+      <div className="relative h-full w-full overflow-hidden rounded-[2rem] bg-[#080d1f] shadow-[0_0_45px_rgba(34,211,238,0.28)]">
+        <img
+          src={heroSlides[currentSlide].image}
+          alt={heroSlides[currentSlide].title}
+          className="h-[420px] w-full object-cover"
+        />
 
-                    <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-zinc-300">
-                      {heroSlides[currentSlide].readTime}
-                    </span>
-                  </div>
+        <div className="h-[200px] overflow-hidden p-4 sm:p-7">
+          <div className="mb-4 flex flex-wrap gap-2">
+            <span className="rounded-full bg-cyan-400 px-3 py-1 text-xs font-black text-black">
+              {heroSlides[currentSlide].category}
+            </span>
 
-                  <h3 className="text-xl font-black leading-tight sm:text-3xl">
-                    {heroSlides[currentSlide].title}
-                  </h3>
-
-                  <p className="mt-3 text-sm leading-7 text-zinc-300 sm:mt-4 sm:text-base sm:leading-8">
-                    {heroSlides[currentSlide].text}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            <div className="mt-5 flex justify-center gap-2">
-              {heroSlides.map((slide, index) => (
-                <button
-                  key={slide.title}
-                  type="button"
-                  onClick={() => setCurrentSlide(index)}
-                  className={`h-2.5 rounded-full transition-all ${
-                    currentSlide === index ? "w-8 bg-cyan-400" : "w-2.5 bg-white/20 hover:bg-white/40"
-                  }`}
-                  aria-label={`Slide ${index + 1}`}
-                />
-              ))}
-            </div>
+            <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-zinc-300">
+              {heroSlides[currentSlide].readTime}
+            </span>
           </div>
 
+          <h3 className="text-xl font-black leading-tight sm:text-3xl">
+            {heroSlides[currentSlide].title}
+          </h3>
+
+          <p className="mt-3 text-sm leading-7 text-zinc-300 sm:mt-4 sm:text-base sm:leading-8">
+            {heroSlides[currentSlide].text}
+          </p>
+        </div>
+      </div>
+    </div>
+  </motion.div>
+
+  <div className="mt-5 flex justify-center gap-2">
+    {heroSlides.map((slide, index) => (
+      <button
+        key={slide.title}
+        type="button"
+        onClick={() => setCurrentSlide(index)}
+        className={`h-2.5 rounded-full transition-all ${
+          currentSlide === index ? "w-8 bg-cyan-400" : "w-2.5 bg-white/20 hover:bg-white/40"
+        }`}
+        aria-label={`Slide ${index + 1}`}
+      />
+    ))}
+  </div>
+</div>
           <div className="mt-10 flex flex-wrap gap-4">
 
   <a
