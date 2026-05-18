@@ -676,14 +676,14 @@ function Home() {
               animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="mx-auto w-full max-w-md overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.04] shadow-2xl backdrop-blur-xl sm:max-w-none sm:rounded-[2rem]">
+              <div className="mx-auto h-[620px] w-full max-w-md overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/[0.04] shadow-2xl backdrop-blur-xl sm:max-w-none sm:rounded-[2rem]">
                 <img
                   src={heroSlides[currentSlide].image}
                   alt={heroSlides[currentSlide].title}
-                  className="h-52 w-full object-cover min-[390px]:h-60 sm:h-[420px]"
+                  className="h-[420px] w-full object-cover"
                 />
 
-                <div className="p-4 sm:p-7">
+                <div className="h-[200px] overflow-hidden p-4 sm:p-7">
                   <div className="mb-4 flex flex-wrap gap-2">
                     <span className="rounded-full bg-cyan-400 px-3 py-1 text-xs font-black text-black">
                       {heroSlides[currentSlide].category}
