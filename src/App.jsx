@@ -623,13 +623,7 @@ function Home() {
                 Projekte entdecken <ArrowRight className="h-5 w-5" />
               </button>
 
-              <button
-                type="button"
-                onClick={() => setAdminVisible(true)}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 px-5 py-3.5 text-sm font-bold transition hover:bg-white/10 sm:w-auto sm:px-7 sm:py-4 sm:text-base"
-              >
-                Admin öffnen <Lock className="h-5 w-5" />
-              </button>
+
             </div>
           </motion.div>
 
