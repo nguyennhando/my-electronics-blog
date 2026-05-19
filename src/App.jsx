@@ -1390,7 +1390,7 @@ function Home() {
                 <div className="rounded-[1.2rem] sm:rounded-[1.95rem] bg-[#050816] p-3 sm:p-8 text-white">
                   <div className="grid h-full gap-5">
                     {[
-                      { icon: Mail, label: "E-Mail", value: "kontakt@elektroniklab.de" },
+                      { icon: Mail, label: "E-Mail", value: "donguyennhan.de@gmail.com" },
                       { icon: Phone, label: "Telefon", value: "+49 176 12345678" },
                       {
                         icon: CircuitBoard,
