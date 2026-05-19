@@ -1219,8 +1219,8 @@ function Home() {
               <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">
                 Technik Blog
               </p>
-              <h2 className="mt-2 text-[1.85rem] font-black leading-tight min-[390px]:text-3xl sm:mt-3 sm:text-5xl lg:text-6xl">
-                Elektronikprojekte & Dokumentationen
+              <h2 className="mt-2 text-[1.75rem] font-black leading-[1.1] tracking-tight min-[390px]:text-[2rem] sm:mt-3 sm:text-4xl lg:text-5xl">
+              Elektronikprojekte & Dokumentationen
               </h2>
             </div>
 
