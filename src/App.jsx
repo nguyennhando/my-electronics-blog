@@ -198,6 +198,7 @@ function BlogPostPage() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [lightbox, setLightbox] = useState(false);
 
   useEffect(() => {
     async function loadPost() {
@@ -254,12 +255,45 @@ function BlogPostPage() {
     <div className="min-h-screen bg-[#050816] px-4 py-10 text-white sm:px-6 sm:py-20">
       <Background />
       <div className="mx-auto max-w-5xl">
+        {/* ── Lightbox Overlay ── */}
+        {lightbox && (
+          <div
+            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-md px-4"
+            onClick={() => setLightbox(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.88 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.25 }}
+              className="relative max-h-[90vh] max-w-5xl w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={post.image_url}
+                alt={post.title}
+                className="w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl"
+              />
+              <button
+                onClick={() => setLightbox(false)}
+                className="absolute -top-4 -right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </motion.div>
+          </div>
+        )}
+
         <GradientBorder
           gradient={`from-cyan-400 via-blue-500 to-purple-500`}
           rounded="rounded-[2rem]"
           innerClassName="overflow-hidden rounded-[2rem] bg-[#07111f] backdrop-blur-xl"
         >
-          <img src={post.image_url} alt={post.title} className="h-72 w-full object-cover sm:h-[420px]" />
+          <img
+            src={post.image_url}
+            alt={post.title}
+            onClick={() => setLightbox(true)}
+            className="h-72 w-full object-cover sm:h-[420px] cursor-zoom-in transition duration-300 hover:brightness-110"
+          />
           <div className="p-6 sm:p-10">
             <div className="mb-5 flex flex-wrap gap-3 text-sm text-zinc-400">
               <span className="rounded-full bg-cyan-400 px-4 py-2 font-bold text-black">{post.category}</span>
