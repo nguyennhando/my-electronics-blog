@@ -32,6 +32,7 @@ import {
   Workflow,
   Server,
   AlertTriangle,
+  ExternalLink,
 } from "lucide-react";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -53,6 +54,7 @@ const demoPosts = [
     published: true,
     created_at: "2026-05-14T12:00:00Z",
     read_time: "8 Min.",
+    external_link: "https://github.com/nguyennhando",
   },
   {
     id: "demo-2",
@@ -68,6 +70,7 @@ const demoPosts = [
     published: true,
     created_at: "2026-05-08T12:00:00Z",
     read_time: "6 Min.",
+    external_link: "",
   },
   {
     id: "demo-3",
@@ -83,6 +86,7 @@ const demoPosts = [
     published: true,
     created_at: "2026-04-29T12:00:00Z",
     read_time: "5 Min.",
+    external_link: "",
   },
 ];
 
@@ -152,6 +156,7 @@ function createEmptyPost() {
     tags: "ESP32, Sensorik",
     read_time: "5 Min.",
     published: true,
+    external_link: "",
   };
 }
 
@@ -210,7 +215,7 @@ function BlogPostPage() {
       }
       const { data, error } = await supabase
         .from("posts")
-        .select("id,title,category,image_url,excerpt,content,tags,read_time,published,created_at,updated_at")
+        .select("id,title,category,image_url,excerpt,content,tags,read_time,published,created_at,updated_at,external_link")
         .eq("id", id)
         .single();
       if (error) setPost(null);
@@ -272,7 +277,22 @@ function BlogPostPage() {
                 </span>
               ))}
             </div>
-            <Link to="/" className="mt-10 inline-flex rounded-2xl bg-cyan-400 px-6 py-4 font-bold text-black transition hover:bg-cyan-300">
+
+            {/* ── External Link Button ── */}
+            {post.external_link && (
+              <div className="mt-8">
+                <a
+                  href={post.external_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-2xl border border-cyan-400/40 bg-cyan-400/10 px-6 py-4 font-bold text-cyan-300 transition hover:bg-cyan-400/20 hover:border-cyan-400/70"
+                >
+                  <ExternalLink className="h-5 w-5" /> Zum Projekt
+                </a>
+              </div>
+            )}
+
+            <Link to="/" className="mt-6 inline-flex rounded-2xl bg-cyan-400 px-6 py-4 font-bold text-black transition hover:bg-cyan-300">
               ← Zurück zur Startseite
             </Link>
           </div>
@@ -379,7 +399,7 @@ function Home() {
     setLoading(true);
     const { data, error } = await supabase
       .from("posts")
-      .select("id,title,category,image_url,excerpt,content,tags,read_time,published,created_at,updated_at")
+      .select("id,title,category,image_url,excerpt,content,tags,read_time,published,created_at,updated_at,external_link")
       .order("created_at", { ascending: false });
     setLoading(false);
     if (error) {
@@ -432,6 +452,7 @@ function Home() {
         : editingPost.tags,
       read_time: editingPost.read_time || "5 Min.",
       published: Boolean(editingPost.published),
+      external_link: editingPost.external_link?.trim() || null,
     };
     if (!payload.title || !payload.excerpt || !payload.content) {
       setMessage("Titel, Kurzbeschreibung und Inhalt sind Pflichtfelder."); return;
@@ -451,7 +472,7 @@ function Home() {
 
   function editPost(post) {
     setEditingMode(true); setAdminVisible(true);
-    setEditingPost({ ...post, tags: Array.isArray(post.tags) ? post.tags.join(", ") : "" });
+    setEditingPost({ ...post, tags: Array.isArray(post.tags) ? post.tags.join(", ") : "", external_link: post.external_link || "" });
   }
 
   async function deletePost(id) {
@@ -816,6 +837,15 @@ function Home() {
                         placeholder="Tags: ESP32, MQTT, Sensorik"
                         className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2"
                       />
+
+                      {/* ── External Link Input ── */}
+                      <input
+                        value={editingPost.external_link || ""}
+                        onChange={(e) => setEditingPost({ ...editingPost, external_link: e.target.value })}
+                        placeholder="Externer Link (optional): https://github.com/..."
+                        className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2"
+                      />
+
                       <textarea
                         value={editingPost.excerpt}
                         onChange={(e) => setEditingPost({ ...editingPost, excerpt: e.target.value })}
