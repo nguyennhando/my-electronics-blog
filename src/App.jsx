@@ -37,57 +37,6 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
 
-const demoPosts = [
-  {
-    id: "demo-1",
-    title: "Intelligente Smart-Home-Steuerung mit ESP32 und MQTT",
-    category: "IoT",
-    image_url:
-      "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=1200&q=80",
-    excerpt:
-      "Entwicklung einer modularen Smart-Home-Plattform zur Steuerung von Licht, Sensoren, Energieverbrauch und Sicherheitsfunktionen.",
-    content:
-      "Dieses Projekt basiert auf einem ESP32-Mikrocontroller und verwendet MQTT für die Kommunikation zwischen Sensoren, Relais und Dashboard. Die Plattform kann Temperatur, Luftfeuchtigkeit, Bewegungen und Energieverbrauch überwachen. Zusätzlich wurde eine mobile Weboberfläche integriert, um Lampen, Steckdosen und Lüfter in Echtzeit zu steuern. Besonderer Fokus lag auf Stabilität, geringer Latenz und einfacher Erweiterbarkeit.",
-    tags: ["ESP32", "MQTT", "Smart Home", "Sensorik"],
-    published: true,
-    created_at: "2026-05-14T12:00:00Z",
-    read_time: "8 Min.",
-    external_link: "https://github.com/nguyennhando",
-  },
-  {
-    id: "demo-2",
-    title: "Automatisiertes Energie-Monitoring für Schaltschrankanlagen",
-    category: "Messtechnik",
-    image_url:
-      "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=80",
-    excerpt:
-      "Messsystem zur Analyse von Spannung, Strom, Leistung und Netzqualität in industriellen Verteilungen.",
-    content:
-      "Das System nutzt Stromsensoren, Spannungsmessung und digitale Signalverarbeitung zur kontinuierlichen Analyse elektrischer Verbraucher. Die Daten werden über RS485 übertragen und in einem Dashboard visualisiert. Zusätzlich können Grenzwerte definiert werden, um Warnmeldungen oder automatische Abschaltungen auszulösen.",
-    tags: ["Monitoring", "RS485", "Leistung", "Elektronik"],
-    published: true,
-    created_at: "2026-05-08T12:00:00Z",
-    read_time: "6 Min.",
-    external_link: "",
-  },
-  {
-    id: "demo-3",
-    title: "Mini-Roboter mit Hinderniserkennung und Motorsteuerung",
-    category: "Robotik",
-    image_url:
-      "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80",
-    excerpt:
-      "Kompakter Lernroboter mit Ultraschallsensor, PWM-Motorregelung und autonomer Navigation.",
-    content:
-      "Der Roboter erkennt Hindernisse mit einem Ultraschallsensor und passt die Fahrtrichtung automatisch an. Die Motoren werden über PWM geregelt und ein Mikrocontroller übernimmt die Entscheidungslogik. Das Projekt eignet sich hervorragend zum Lernen von Embedded-Programmierung, Sensorik und Robotik.",
-    tags: ["Robotik", "PWM", "Arduino", "Motorsteuerung"],
-    published: true,
-    created_at: "2026-04-29T12:00:00Z",
-    read_time: "5 Min.",
-    external_link: "",
-  },
-];
-
 const features = [
   {
     icon: Cpu,
