@@ -281,8 +281,8 @@ function HeroSlideshow({ slides, onDiscover }) {
         </div>
 
         {/* Static main headline */}
-        <h2 className="max-w-4xl text-[2.05rem] font-black leading-[1.08] tracking-tight min-[390px]:text-[2.35rem] sm:text-5xl lg:text-7xl">
-          Technische Projekte dokumentieren und weiterentwickeln.
+        <h2 className="max-w-4xl text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+        Technische Projekte dokumentieren und weiterentwickeln.
         </h2>
 
         {/* Static description */}
