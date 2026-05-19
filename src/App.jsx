@@ -95,29 +95,29 @@ const features = [
     icon: Cpu,
     title: "Embedded Entwicklung",
     text: "Firmware, Mikrocontroller, Echtzeitsteuerung und hardwarenahe Programmierung.",
-    gradient: "from-cyan-400 via-blue-500 to-cyan-400",
-    glow: "shadow-cyan-500/20",
+    gradient: "from-blue-500 via-purple-500 to-blue-500",
+    glow: "shadow-blue-500/20",
   },
   {
     icon: Workflow,
     title: "Automatisierung",
     text: "Steuerungssysteme, industrielle Prozesse und intelligente Logik für moderne Anlagen.",
-    gradient: "from-blue-400 via-violet-500 to-blue-400",
+    gradient: "from-blue-500 via-purple-500 to-blue-500",
     glow: "shadow-blue-500/20",
   },
   {
     icon: ShieldCheck,
     title: "Sichere Datenverwaltung",
     text: "Adminzugriff über Supabase Auth und Row Level Security statt unsicherem Frontend-Passwort.",
-    gradient: "from-violet-400 via-fuchsia-500 to-violet-400",
-    glow: "shadow-violet-500/20",
+    gradient: "from-blue-500 via-purple-500 to-blue-500",
+    glow: "shadow-blue-500/20",
   },
   {
     icon: MonitorSmartphone,
     title: "Mobile First Design",
     text: "Responsive Benutzeroberfläche für Smartphone, Tablet und Desktop.",
-    gradient: "from-fuchsia-400 via-pink-500 to-fuchsia-400",
-    glow: "shadow-fuchsia-500/20",
+    gradient: "from-blue-500 via-purple-500 to-blue-500",
+    glow: "shadow-blue-500/20",
   },
 ];
 
@@ -129,10 +129,7 @@ function getIcon(category) {
 }
 
 function getCategoryGradient(category) {
-  if (category === "IoT") return "from-cyan-400 via-blue-400 to-cyan-400";
-  if (category === "Robotik") return "from-fuchsia-400 via-pink-500 to-fuchsia-400";
-  if (category === "Messtechnik") return "from-blue-400 via-violet-500 to-blue-400";
-  return "from-violet-400 via-cyan-400 to-violet-400";
+  return "from-blue-500 via-purple-500 to-blue-500";
 }
 
 function formatDate(date) {
@@ -161,7 +158,7 @@ function createEmptyPost() {
 }
 
 /* ── Reusable gradient-border wrapper ─────────────────────────────────────── */
-function GradientBorder({ children, gradient = "from-cyan-400 via-blue-500 to-purple-500", className = "", innerClassName = "", padding = "p-[1.5px]", rounded = "rounded-[2rem]", stretch = false }) {
+function GradientBorder({ children, gradient = "from-blue-500 via-purple-500 to-blue-500", className = "", innerClassName = "", padding = "p-[1.5px]", rounded = "rounded-[2rem]", stretch = false }) {
   const outerFlex = stretch ? "flex flex-col" : "";
   const innerFlex = stretch ? "flex-1" : "";
   return (
@@ -239,7 +236,7 @@ function BlogPostPage() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#050816] px-6 text-white">
         <Background />
-        <GradientBorder gradient="from-cyan-400 via-blue-500 to-purple-500" rounded="rounded-3xl">
+        <GradientBorder gradient="from-blue-500 via-purple-500 to-blue-500" rounded="rounded-3xl">
           <div className="rounded-3xl bg-[#07111f] p-10 text-center backdrop-blur-xl">
             <h1 className="text-3xl font-black">Beitrag nicht gefunden</h1>
             <Link to="/" className="mt-6 inline-flex rounded-2xl bg-cyan-400 px-6 py-3 font-bold text-black">
@@ -284,7 +281,7 @@ function BlogPostPage() {
         )}
 
         <GradientBorder
-          gradient={`from-cyan-400 via-blue-500 to-purple-500`}
+          gradient="from-blue-500 via-purple-500 to-blue-500"
           rounded="rounded-[2rem]"
           innerClassName="overflow-hidden rounded-[2rem] bg-[#07111f] backdrop-blur-xl"
         >
@@ -740,7 +737,7 @@ function Home() {
           <section className="fixed inset-0 z-[100] overflow-y-auto bg-black/70 px-4 py-6 backdrop-blur-md sm:px-5 sm:py-8">
             <div className="mx-auto max-w-7xl">
               <GradientBorder
-                gradient="from-cyan-400 via-blue-500 to-purple-500"
+                gradient="from-blue-500 via-purple-500 to-blue-500"
                 rounded="rounded-[2rem]"
                 innerClassName="rounded-[1.95rem] bg-[#07111f] p-5 sm:p-6 shadow-2xl shadow-cyan-500/20 backdrop-blur-xl"
               >
@@ -1015,7 +1012,7 @@ function Home() {
 
           <div className="grid gap-6 lg:grid-cols-3">
             <GradientBorder
-              gradient="from-cyan-400 via-blue-500 to-purple-500"
+              gradient="from-blue-500 via-purple-500 to-blue-500"
               rounded="rounded-[2rem]"
               className="group lg:col-span-2"
               innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]"
@@ -1029,7 +1026,7 @@ function Home() {
 
             <div className="grid gap-6">
               <GradientBorder
-                gradient="from-fuchsia-400 via-pink-500 to-violet-500"
+                gradient="from-blue-500 via-purple-500 to-blue-500"
                 rounded="rounded-[2rem]"
                 className="group"
                 innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]"
@@ -1042,7 +1039,7 @@ function Home() {
               </GradientBorder>
 
               <GradientBorder
-                gradient="from-blue-400 via-cyan-400 to-teal-400"
+                gradient="from-blue-500 via-purple-500 to-blue-500"
                 rounded="rounded-[2rem]"
                 className="group"
                 innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]"
