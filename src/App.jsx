@@ -282,13 +282,13 @@ function HeroSlideshow({ slides, onDiscover }) {
 
         {/* Static main headline */}
         <h2 className="max-w-4xl text-[2.05rem] font-black leading-[1.08] tracking-tight min-[390px]:text-[2.35rem] sm:text-5xl lg:text-7xl">
-          Sichere Elektronikprojekte mit moderner Blog-Verwaltung.
+          Technische Projekte dokumentieren und weiterentwickeln.
         </h2>
 
         {/* Static description */}
         <p className="mt-5 max-w-2xl text-[15px] leading-7 text-zinc-300 sm:mt-8 sm:text-lg sm:leading-9">
-          Dieser Blog dokumentiert reale Elektronikprojekte, Embedded-Systeme, Sensorik, Robotik
-          und Automatisierungslösungen.
+          Eine Plattform zur Dokumentation von Elektronik-, Embedded- und Automatisierungsprojekten aus Weiterbildung, Lernen und eigenständiger Entwicklung.
+          Die Website wurde von mir selbst entwickelt, um technische Dokumentationen, Source Code und den Entwicklungsprozess zentral zu organisieren.
         </p>
 
         {/* CTA buttons */}
