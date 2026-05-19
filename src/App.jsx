@@ -833,10 +833,28 @@ function Home() {
                         onChange={(e) => setEditingPost({ ...editingPost, category: e.target.value })}
                         className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4"
                       >
-                        <option>IoT</option>
-                        <option>Robotik</option>
-                        <option>Messtechnik</option>
-                        <option>Embedded</option>
+                        <option>Elektrotechnik</option>
+<option>Elektrokonstruktion</option>
+<option>Automatisierungstechnik</option>
+<option>Steuerungstechnik</option>
+<option>Antriebstechnik</option>
+<option>Schaltschrankbau</option>
+<option>Industrieautomation</option>
+<option>SPS-Programmierung</option>
+<option>CAD-Konstruktion</option>
+<option>Maschinenbau</option>
+<option>Technische Zeichnung</option>
+<option>Mechatronik</option>
+<option>Energietechnik</option>
+<option>Leistungselektronik</option>
+<option>Sensorik</option>
+<option>Mikrocontroller</option>
+<option>Embedded Systems</option>
+<option>IoT</option>
+<option>Robotik</option>
+<option>Softwareentwicklung</option>
+<option>Desktop-Softwareentwicklung</option>
+<option>Technische Softwareentwicklung</option>
                       </select>
 
                       <div className="lg:col-span-2">
