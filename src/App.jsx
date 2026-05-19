@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import { Routes, Route, Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { createClient } from "@supabase/supabase-js";
 import CookieBanner from "./components/CookieBanner";
 import Impressum from "./pages/Impressum";
@@ -15,24 +15,22 @@ import {
   Menu,
   X,
   CalendarDays,
-  User,
   ArrowRight,
-  Lock,
   Save,
   Trash2,
   Edit3,
   Plus,
   LogOut,
   ShieldCheck,
-  Layers3,
   Wrench,
   Mail,
   Phone,
   MonitorSmartphone,
   Workflow,
-  Server,
   AlertTriangle,
   ExternalLink,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -128,10 +126,6 @@ function getIcon(category) {
   return Cpu;
 }
 
-function getCategoryGradient(category) {
-  return "from-blue-500 via-purple-500 to-blue-500";
-}
-
 function formatDate(date) {
   if (!date) return "Kein Datum";
   return new Intl.DateTimeFormat("de-DE", {
@@ -157,16 +151,22 @@ function createEmptyPost() {
   };
 }
 
-/* ── Reusable gradient-border wrapper ─────────────────────────────────────── */
-function GradientBorder({ children, gradient = "from-blue-500 via-purple-500 to-blue-500", className = "", innerClassName = "", padding = "p-[1.5px]", rounded = "rounded-[2rem]", stretch = false }) {
+/* ── Reusable gradient-border wrapper ── */
+function GradientBorder({
+  children,
+  gradient = "from-blue-500 via-purple-500 to-blue-500",
+  className = "",
+  innerClassName = "",
+  padding = "p-[1.5px]",
+  rounded = "rounded-[2rem]",
+  stretch = false,
+}) {
   const outerFlex = stretch ? "flex flex-col" : "";
   const innerFlex = stretch ? "flex-1" : "";
   return (
     <div className={`relative ${rounded} ${padding} ${outerFlex} ${className}`}>
       <div className={`absolute inset-0 ${rounded} bg-gradient-to-r ${gradient} opacity-70`} />
-      <div className={`relative ${rounded} ${innerFlex} ${innerClassName}`}>
-        {children}
-      </div>
+      <div className={`relative ${rounded} ${innerFlex} ${innerClassName}`}>{children}</div>
     </div>
   );
 }
@@ -191,6 +191,286 @@ function Background() {
   );
 }
 
+/* ══════════════════════════════════════════════
+   HERO SLIDESHOW — Split Layout with Stagger
+══════════════════════════════════════════════ */
+
+const SLIDE_INTERVAL = 5000;
+
+// Framer Motion variants
+const textContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.08, delayChildren: 0.05 },
+  },
+  exit: {
+    transition: { staggerChildren: 0.04, staggerDirection: -1 },
+  },
+};
+
+const textItemVariants = {
+  hidden: { opacity: 0, y: 22 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
+  exit: { opacity: 0, y: -14, transition: { duration: 0.25, ease: "easeIn" } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, x: 48, scale: 0.96 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    scale: 1,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.15 },
+  },
+  exit: {
+    opacity: 0,
+    x: -32,
+    scale: 0.97,
+    transition: { duration: 0.28, ease: "easeIn" },
+  },
+};
+
+const glowVariants = {
+  initial: { scale: 1, opacity: 0.6 },
+  animate: {
+    scale: [1, 1.12, 1],
+    opacity: [0.6, 0.85, 0.6],
+    transition: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+  },
+};
+
+function HeroSlideshow({ slides, onDiscover }) {
+  const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const timerRef = useRef(null);
+
+  const startTimer = () => {
+    clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setDirection(1);
+      setCurrent((prev) => (prev + 1) % slides.length);
+    }, SLIDE_INTERVAL);
+  };
+
+  useEffect(() => {
+    startTimer();
+    return () => clearInterval(timerRef.current);
+  }, [slides.length]);
+
+  function goTo(idx) {
+    setDirection(idx > current ? 1 : -1);
+    setCurrent(idx);
+    startTimer();
+  }
+  function prev() {
+    goTo((current - 1 + slides.length) % slides.length);
+  }
+  function next() {
+    goTo((current + 1) % slides.length);
+  }
+
+  const slide = slides[current];
+
+  return (
+    <section className="relative mx-auto grid max-w-7xl items-center gap-8 px-4 py-10 sm:px-5 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-24">
+      {/* ── LEFT: Staggered text ── */}
+      <div className="relative z-10">
+        {/* Static badge */}
+        <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-2 text-xs text-cyan-300 sm:px-4 sm:text-sm">
+          <ShieldCheck className="h-4 w-4" /> Geschützter Adminbereich mit Supabase Auth
+        </div>
+
+        {/* Static main headline */}
+        <h2 className="max-w-4xl text-[2.05rem] font-black leading-[1.08] tracking-tight min-[390px]:text-[2.35rem] sm:text-5xl lg:text-7xl">
+          Sichere Elektronikprojekte mit moderner Blog-Verwaltung.
+        </h2>
+
+        {/* Static description */}
+        <p className="mt-5 max-w-2xl text-[15px] leading-7 text-zinc-300 sm:mt-8 sm:text-lg sm:leading-9">
+          Dieser Blog dokumentiert reale Elektronikprojekte, Embedded-Systeme, Sensorik, Robotik
+          und Automatisierungslösungen.
+        </p>
+
+        {/* CTA buttons */}
+        <div className="mt-7 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
+          <button
+            type="button"
+            onClick={onDiscover}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-cyan-400 px-5 py-3.5 text-sm font-bold text-black shadow-xl shadow-cyan-500/30 transition hover:bg-cyan-300 sm:w-auto sm:px-7 sm:py-4 sm:text-base"
+          >
+            Projekte entdecken <ArrowRight className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="mt-8 flex flex-wrap gap-4">
+          <a
+            href="https://drive.google.com/drive/folders/1y6MZUhoZJCIou-SL9BHbkA-CjpXxKGz5?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center rounded-2xl bg-cyan-400 px-6 py-4 font-bold text-black transition hover:bg-cyan-300"
+          >
+            PDF Dokumentation
+          </a>
+          <a
+            href="https://github.com/nguyennhando?tab=repositories"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center rounded-2xl border border-white/10 bg-white/5 px-6 py-4 font-bold text-white transition hover:bg-white/10"
+          >
+            Source Code
+          </a>
+        </div>
+      </div>
+
+      {/* ── RIGHT: Animated slide card ── */}
+      <div className="relative flex flex-col items-center">
+        {/* Ambient glow behind card */}
+        <motion.div
+          variants={glowVariants}
+          initial="initial"
+          animate="animate"
+          className="pointer-events-none absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-cyan-400/20 via-blue-500/20 to-purple-500/20 blur-3xl"
+        />
+
+        {/* Card wrapper with gradient border */}
+        <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] p-[2px] lg:max-w-none">
+          {/* Animated border gradient */}
+          <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 opacity-90" />
+
+          <div className="relative overflow-hidden rounded-[1.95rem] bg-[#080d1f]" style={{ height: "520px" }}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={current}
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="flex flex-col h-full"
+              >
+                {/* Image */}
+                <div className="relative h-[280px] shrink-0 overflow-hidden">
+                  <motion.img
+                    src={slide.image}
+                    alt={slide.title}
+                    className="h-full w-full object-cover"
+                    initial={{ scale: 1.06 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.7, ease: "easeOut" }}
+                  />
+                  {/* Image overlay gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#080d1f]/60 via-transparent to-transparent" />
+
+                  {/* Category badge — floats over image */}
+                  <motion.div
+                    variants={textItemVariants}
+                    className="absolute left-4 top-4 flex items-center gap-2"
+                  >
+                    <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black text-black shadow-lg shadow-cyan-500/30">
+                      {slide.category}
+                    </span>
+                    <span className="rounded-full bg-black/40 px-3 py-1.5 text-xs text-zinc-300 backdrop-blur-sm">
+                      {slide.readTime}
+                    </span>
+                  </motion.div>
+                </div>
+
+                {/* Card text body — fixed height, overflow hidden so card never resizes */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`text-${current}`}
+                    variants={textContainerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    className="flex-1 overflow-hidden p-5 sm:p-6"
+                  >
+                    <motion.h3
+                      variants={textItemVariants}
+                      className="text-xl font-black leading-tight text-white sm:text-2xl lg:text-xl xl:text-2xl"
+                    >
+                      {slide.title}
+                    </motion.h3>
+                    <motion.p
+                      variants={textItemVariants}
+                      className="mt-3 line-clamp-2 text-sm leading-6 text-zinc-400 sm:text-base sm:leading-7"
+                    >
+                      {slide.text}
+                    </motion.p>
+
+                    {/* Tags row */}
+                    <motion.div variants={textItemVariants} className="mt-4 flex flex-wrap gap-2">
+                      {(slide.tags || []).slice(0, 3).map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full border border-cyan-400/20 bg-cyan-400/8 px-3 py-1 text-xs text-cyan-300"
+                        >
+                          #{tag}
+                        </span>
+                      ))}
+                    </motion.div>
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* ── Progress bar strip — outside AnimatePresence, always at bottom ── */}
+            <div className="absolute bottom-0 left-0 right-0 flex gap-[3px] px-5 pb-5">
+              {slides.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => goTo(idx)}
+                  aria-label={`Slide ${idx + 1}`}
+                  className="relative h-[3px] flex-1 overflow-hidden rounded-full bg-white/10"
+                >
+                  {idx === current && (
+                    <motion.span
+                      key={current}
+                      className="absolute inset-y-0 left-0 rounded-full bg-cyan-400"
+                      initial={{ width: "0%" }}
+                      animate={{ width: "100%" }}
+                      transition={{ duration: SLIDE_INTERVAL / 1000, ease: "linear" }}
+                    />
+                  )}
+                  {idx < current && (
+                    <span className="absolute inset-0 rounded-full bg-cyan-400/40" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Prev / Next arrows ── */}
+        <div className="mt-4 flex gap-3">
+          <button
+            type="button"
+            onClick={prev}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-400 transition hover:border-cyan-400/40 hover:bg-white/10 hover:text-cyan-300"
+            aria-label="Vorherige Folie"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <span className="flex items-center gap-1 text-xs text-zinc-600">
+            <span className="font-bold text-zinc-400">{current + 1}</span>/{slides.length}
+          </span>
+          <button
+            type="button"
+            onClick={next}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-400 transition hover:border-cyan-400/40 hover:bg-white/10 hover:text-cyan-300"
+            aria-label="Nächste Folie"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   BLOG POST PAGE
+══════════════════════════════════════════════ */
 function BlogPostPage() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
@@ -213,7 +493,9 @@ function BlogPostPage() {
       }
       const { data, error } = await supabase
         .from("posts")
-        .select("id,title,category,image_url,excerpt,content,tags,read_time,published,created_at,updated_at,external_link")
+        .select(
+          "id,title,category,image_url,excerpt,content,tags,read_time,published,created_at,updated_at,external_link"
+        )
         .eq("id", id)
         .single();
       if (error) setPost(null);
@@ -239,7 +521,10 @@ function BlogPostPage() {
         <GradientBorder gradient="from-blue-500 via-purple-500 to-blue-500" rounded="rounded-3xl">
           <div className="rounded-3xl bg-[#07111f] p-10 text-center backdrop-blur-xl">
             <h1 className="text-3xl font-black">Beitrag nicht gefunden</h1>
-            <Link to="/" className="mt-6 inline-flex rounded-2xl bg-cyan-400 px-6 py-3 font-bold text-black">
+            <Link
+              to="/"
+              className="mt-6 inline-flex rounded-2xl bg-cyan-400 px-6 py-3 font-bold text-black"
+            >
               Zurück zur Startseite
             </Link>
           </div>
@@ -252,7 +537,6 @@ function BlogPostPage() {
     <div className="min-h-screen bg-[#050816] px-4 py-10 text-white sm:px-6 sm:py-20">
       <Background />
       <div className="mx-auto max-w-5xl">
-        {/* ── Lightbox Overlay ── */}
         {lightbox && (
           <div
             className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-md px-4"
@@ -293,7 +577,9 @@ function BlogPostPage() {
           />
           <div className="p-6 sm:p-10">
             <div className="mb-5 flex flex-wrap gap-3 text-sm text-zinc-400">
-              <span className="rounded-full bg-cyan-400 px-4 py-2 font-bold text-black">{post.category}</span>
+              <span className="rounded-full bg-cyan-400 px-4 py-2 font-bold text-black">
+                {post.category}
+              </span>
               <span>{formatDate(post.created_at)}</span>
               {post.read_time && <span>{post.read_time}</span>}
             </div>
@@ -303,13 +589,14 @@ function BlogPostPage() {
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               {(post.tags || []).map((tag) => (
-                <span key={tag} className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-sm text-cyan-300">
+                <span
+                  key={tag}
+                  className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-sm text-cyan-300"
+                >
                   #{tag}
                 </span>
               ))}
             </div>
-
-            {/* ── External Link Button ── */}
             {post.external_link && (
               <div className="mt-8">
                 <a
@@ -322,8 +609,10 @@ function BlogPostPage() {
                 </a>
               </div>
             )}
-
-            <Link to="/" className="mt-6 inline-flex rounded-2xl bg-cyan-400 px-6 py-4 font-bold text-black transition hover:bg-cyan-300">
+            <Link
+              to="/"
+              className="mt-6 inline-flex rounded-2xl bg-cyan-400 px-6 py-4 font-bold text-black transition hover:bg-cyan-300"
+            >
               ← Zurück zur Startseite
             </Link>
           </div>
@@ -333,6 +622,9 @@ function BlogPostPage() {
   );
 }
 
+/* ══════════════════════════════════════════════
+   HOME PAGE
+══════════════════════════════════════════════ */
 function Home() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -351,32 +643,21 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const heroSlides = [
-    {
-      image: posts[0]?.image_url || demoPosts[0].image_url,
-      category: posts[0]?.category || "IoT",
-      readTime: posts[0]?.read_time || "5 Min.",
-      title: posts[0]?.title || "KI-basierte Qualitätskontrolle",
-      text: posts[0]?.excerpt || "Automatische Fehlererkennung mit moderner KI.",
-    },
-    {
-      image: posts[1]?.image_url || demoPosts[1].image_url,
-      category: posts[1]?.category || "Robotik",
-      readTime: posts[1]?.read_time || "6 Min.",
-      title: posts[1]?.title || "Industrieautomation",
-      text: posts[1]?.excerpt || "SPS-Steuerung und Förderbandautomatisierung.",
-    },
-    {
-      image: posts[2]?.image_url || demoPosts[2].image_url,
-      category: posts[2]?.category || "Embedded",
-      readTime: posts[2]?.read_time || "8 Min.",
-      title: posts[2]?.title || "ESP32 Smart Home",
-      text: posts[2]?.excerpt || "MQTT, Sensorik und Echtzeitüberwachung.",
-    },
-  ];
-
-  const [currentSlide, setCurrentSlide] = useState(0);
   const hasSupabase = Boolean(supabase);
+
+  // Build hero slides from posts
+  const heroSlides = useMemo(
+    () =>
+      posts.slice(0, 3).map((p) => ({
+        image: p.image_url,
+        category: p.category,
+        readTime: p.read_time || "5 Min.",
+        title: p.title,
+        text: p.excerpt,
+        tags: Array.isArray(p.tags) ? p.tags : [],
+      })),
+    [posts]
+  );
 
   function scrollToSection(id) {
     navigate(`/${id}`);
@@ -392,15 +673,22 @@ function Home() {
 
   useEffect(() => {
     if (!supabase) return;
-    supabase.auth.getSession().then(({ data }) => { setSession(data.session); });
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+    });
     const { data: listener } = supabase.auth.onAuthStateChange((_event, currentSession) => {
       setSession(currentSession);
     });
     return () => listener.subscription.unsubscribe();
   }, []);
 
-  useEffect(() => { loadPosts(); }, [session]);
-  useEffect(() => { checkAdmin(); }, [session]);
+  useEffect(() => {
+    loadPosts();
+  }, [session]);
+
+  useEffect(() => {
+    checkAdmin();
+  }, [session]);
 
   useEffect(() => {
     const section = location.pathname.replace("/", "");
@@ -411,17 +699,16 @@ function Home() {
     }
   }, [location.pathname]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [heroSlides.length]);
-
   async function checkAdmin() {
-    if (!supabase || !session?.user) { setIsAdmin(false); return; }
+    if (!supabase || !session?.user) {
+      setIsAdmin(false);
+      return;
+    }
     const { data, error } = await supabase.rpc("is_admin");
-    if (error) { setIsAdmin(false); return; }
+    if (error) {
+      setIsAdmin(false);
+      return;
+    }
     setIsAdmin(Boolean(data));
   }
 
@@ -430,30 +717,50 @@ function Home() {
     setLoading(true);
     const { data, error } = await supabase
       .from("posts")
-      .select("id,title,category,image_url,excerpt,content,tags,read_time,published,created_at,updated_at,external_link")
+      .select(
+        "id,title,category,image_url,excerpt,content,tags,read_time,published,created_at,updated_at,external_link"
+      )
       .order("created_at", { ascending: false });
     setLoading(false);
     if (error) {
-      setMessage("Beiträge konnten nicht geladen werden. Prüfen Sie Supabase und RLS-Policies.");
+      setMessage(
+        "Beiträge konnten nicht geladen werden. Prüfen Sie Supabase und RLS-Policies."
+      );
       return;
     }
-    if (data?.length) { setPosts(data); setSelectedPost(data[0]); }
+    if (data?.length) {
+      setPosts(data);
+      setSelectedPost(data[0]);
+    }
   }
 
   async function login(e) {
     e.preventDefault();
-    if (!supabase) { setMessage("Supabase ist noch nicht konfiguriert. Bitte .env.local erstellen."); return; }
-    setLoading(true); setMessage("");
-    const { error } = await supabase.auth.signInWithPassword({ email: loginEmail, password: loginPassword });
+    if (!supabase) {
+      setMessage("Supabase ist noch nicht konfiguriert. Bitte .env.local erstellen.");
+      return;
+    }
+    setLoading(true);
+    setMessage("");
+    const { error } = await supabase.auth.signInWithPassword({
+      email: loginEmail,
+      password: loginPassword,
+    });
     setLoading(false);
-    if (error) { setMessage("Login fehlgeschlagen. E-Mail, Passwort oder Adminrechte prüfen."); return; }
-    setLoginEmail(""); setLoginPassword(""); setMessage("Login erfolgreich.");
+    if (error) {
+      setMessage("Login fehlgeschlagen. E-Mail, Passwort oder Adminrechte prüfen.");
+      return;
+    }
+    setLoginEmail("");
+    setLoginPassword("");
+    setMessage("Login erfolgreich.");
   }
 
   async function logout() {
     if (!supabase) return;
     await supabase.auth.signOut();
-    setIsAdmin(false); setMessage("Sie wurden abgemeldet.");
+    setIsAdmin(false);
+    setMessage("Sie wurden abgemeldet.");
   }
 
   async function uploadImage(e) {
@@ -463,7 +770,10 @@ function Home() {
     const fileExt = file.name.split(".").pop();
     const fileName = `${Date.now()}.${fileExt}`;
     const { error } = await supabase.storage.from("blog-images").upload(fileName, file);
-    if (error) { setMessage("Bild Upload fehlgeschlagen."); return; }
+    if (error) {
+      setMessage("Bild Upload fehlgeschlagen.");
+      return;
+    }
     const { data } = supabase.storage.from("blog-images").getPublicUrl(fileName);
     setEditingPost((prev) => ({ ...prev, image_url: data.publicUrl }));
     setMessage("Bild erfolgreich hochgeladen.");
@@ -471,22 +781,30 @@ function Home() {
 
   async function savePost(e) {
     e.preventDefault();
-    if (!supabase || !isAdmin) { setMessage("Keine Berechtigung. Nur Admins dürfen Beiträge speichern."); return; }
+    if (!supabase || !isAdmin) {
+      setMessage("Keine Berechtigung. Nur Admins dürfen Beiträge speichern.");
+      return;
+    }
     const payload = {
       title: editingPost.title.trim(),
       category: editingPost.category,
       image_url: editingPost.image_url.trim(),
       excerpt: editingPost.excerpt.trim(),
       content: editingPost.content.trim(),
-      tags: typeof editingPost.tags === "string"
-        ? editingPost.tags.split(",").map((tag) => tag.trim()).filter(Boolean)
-        : editingPost.tags,
+      tags:
+        typeof editingPost.tags === "string"
+          ? editingPost.tags
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter(Boolean)
+          : editingPost.tags,
       read_time: editingPost.read_time || "5 Min.",
       published: Boolean(editingPost.published),
       external_link: editingPost.external_link?.trim() || null,
     };
     if (!payload.title || !payload.excerpt || !payload.content) {
-      setMessage("Titel, Kurzbeschreibung und Inhalt sind Pflichtfelder."); return;
+      setMessage("Titel, Kurzbeschreibung und Inhalt sind Pflichtfelder.");
+      return;
     }
     setLoading(true);
     const request = editingMode
@@ -494,26 +812,41 @@ function Home() {
       : supabase.from("posts").insert(payload).select().single();
     const { data, error } = await request;
     setLoading(false);
-    if (error) { setMessage("Speichern fehlgeschlagen. Prüfen Sie Adminrechte und RLS-Policies."); return; }
+    if (error) {
+      setMessage("Speichern fehlgeschlagen. Prüfen Sie Adminrechte und RLS-Policies.");
+      return;
+    }
     setMessage("Beitrag wurde sicher gespeichert.");
-    setEditingPost(createEmptyPost()); setEditingMode(false);
+    setEditingPost(createEmptyPost());
+    setEditingMode(false);
     await loadPosts();
     if (data) setSelectedPost(data);
   }
 
   function editPost(post) {
-    setEditingMode(true); setAdminVisible(true);
-    setEditingPost({ ...post, tags: Array.isArray(post.tags) ? post.tags.join(", ") : "", external_link: post.external_link || "" });
+    setEditingMode(true);
+    setAdminVisible(true);
+    setEditingPost({
+      ...post,
+      tags: Array.isArray(post.tags) ? post.tags.join(", ") : "",
+      external_link: post.external_link || "",
+    });
   }
 
   async function deletePost(id) {
-    if (!supabase || !isAdmin) { setMessage("Keine Berechtigung. Nur Admins dürfen Beiträge löschen."); return; }
+    if (!supabase || !isAdmin) {
+      setMessage("Keine Berechtigung. Nur Admins dürfen Beiträge löschen.");
+      return;
+    }
     const confirmed = window.confirm("Diesen Beitrag wirklich löschen?");
     if (!confirmed) return;
     setLoading(true);
     const { error } = await supabase.from("posts").delete().eq("id", id);
     setLoading(false);
-    if (error) { setMessage("Löschen fehlgeschlagen. Prüfen Sie Adminrechte und RLS-Policies."); return; }
+    if (error) {
+      setMessage("Löschen fehlgeschlagen. Prüfen Sie Adminrechte und RLS-Policies.");
+      return;
+    }
     setMessage("Beitrag wurde gelöscht.");
     await loadPosts();
   }
@@ -555,7 +888,12 @@ function Home() {
 
           <div className="hidden items-center gap-8 md:flex">
             {["blog", "projekte", "kontakt"].map((id) => (
-              <button key={id} type="button" onClick={() => scrollToSection(id)} className="text-sm text-zinc-300 transition hover:text-cyan-300 capitalize">
+              <button
+                key={id}
+                type="button"
+                onClick={() => scrollToSection(id)}
+                className="text-sm text-zinc-300 transition hover:text-cyan-300 capitalize"
+              >
                 {id === "projekte" ? "Galerie" : id.charAt(0).toUpperCase() + id.slice(1)}
               </button>
             ))}
@@ -581,14 +919,26 @@ function Home() {
         {menuOpen && (
           <div className="border-t border-white/10 px-5 py-4 md:hidden">
             <div className="grid gap-2">
-              {[["blog", "Blog"], ["projekte", "Projekte"], ["kontakt", "Kontakt"]].map(([id, label]) => (
-                <button key={id} type="button" onClick={() => closeMobileAndScroll(id)} className="rounded-xl px-3 py-2 text-left hover:bg-white/10">
+              {[
+                ["blog", "Blog"],
+                ["projekte", "Projekte"],
+                ["kontakt", "Kontakt"],
+              ].map(([id, label]) => (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => closeMobileAndScroll(id)}
+                  className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
+                >
                   {label}
                 </button>
               ))}
               <button
                 type="button"
-                onClick={() => { setMenuOpen(false); setAdminVisible(true); }}
+                onClick={() => {
+                  setMenuOpen(false);
+                  setAdminVisible(true);
+                }}
                 className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
               >
                 Admin
@@ -599,102 +949,11 @@ function Home() {
       </header>
 
       <main>
-        {/* ── Hero ── */}
-        <section className="mx-auto grid max-w-7xl items-center gap-8 px-4 py-10 sm:px-5 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-24">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-2 text-xs text-cyan-300 sm:px-4 sm:text-sm">
-              <ShieldCheck className="h-4 w-4" /> Geschützter Adminbereich mit Supabase Auth
-            </div>
-
-            <h2 className="max-w-4xl text-[2.05rem] font-black leading-[1.08] tracking-tight min-[390px]:text-[2.35rem] sm:text-5xl lg:text-7xl">
-              Sichere Elektronikprojekte mit moderner Blog-Verwaltung.
-            </h2>
-
-            <p className="mt-5 max-w-2xl text-[15px] leading-7 text-zinc-300 sm:mt-8 sm:text-lg sm:leading-9">
-              Dieser Blog dokumentiert reale Elektronikprojekte, Embedded-Systeme, Sensorik, Robotik und Automatisierungslösungen. Beiträge werden über einen geschützten Adminzugang verwaltet und sicher in Supabase gespeichert.
-            </p>
-
-            <div className="mt-7 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
-              <button
-                type="button"
-                onClick={() => scrollToSection("blog")}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-cyan-400 px-5 py-3.5 text-sm font-bold text-black shadow-xl shadow-cyan-500/30 transition hover:bg-cyan-300 sm:w-auto sm:px-7 sm:py-4 sm:text-base"
-              >
-                Projekte entdecken <ArrowRight className="h-5 w-5" />
-              </button>
-
-
-            </div>
-          </motion.div>
-
-          {/* Hero Slideshow */}
-          <div className="relative">
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0, x: 40, scale: 0.96 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="relative mx-auto h-[620px] w-full max-w-md overflow-hidden rounded-[2rem] p-[2px] sm:max-w-none">
-                <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 opacity-90 blur-[1px]" />
-                <div className="relative h-full w-full overflow-hidden rounded-[2rem] bg-[#080d1f] shadow-[0_0_45px_rgba(34,211,238,0.28)]">
-                  <img
-                    src={heroSlides[currentSlide].image}
-                    alt={heroSlides[currentSlide].title}
-                    className="h-[420px] w-full object-cover"
-                  />
-                  <div className="h-[200px] overflow-hidden p-4 sm:p-7">
-                    <div className="mb-4 flex flex-wrap gap-2">
-                      <span className="rounded-full bg-cyan-400 px-3 py-1 text-xs font-black text-black">
-                        {heroSlides[currentSlide].category}
-                      </span>
-                      <span className="rounded-full bg-white/10 px-3 py-1 text-xs text-zinc-300">
-                        {heroSlides[currentSlide].readTime}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-black leading-tight sm:text-3xl">
-                      {heroSlides[currentSlide].title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-7 text-zinc-300 sm:mt-4 sm:text-base sm:leading-8">
-                      {heroSlides[currentSlide].text}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            <div className="mt-5 flex justify-center gap-2">
-              {heroSlides.map((slide, index) => (
-                <button
-                  key={slide.title}
-                  type="button"
-                  onClick={() => setCurrentSlide(index)}
-                  className={`h-2.5 rounded-full transition-all ${currentSlide === index ? "w-8 bg-cyan-400" : "w-2.5 bg-white/20 hover:bg-white/40"}`}
-                  aria-label={`Slide ${index + 1}`}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-10 flex flex-wrap gap-4">
-            <a
-              href="https://drive.google.com/drive/folders/1y6MZUhoZJCIou-SL9BHbkA-CjpXxKGz5?usp=sharing"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center rounded-2xl bg-cyan-400 px-6 py-4 font-bold text-black transition hover:bg-cyan-300"
-            >
-              PDF Dokumentation
-            </a>
-            <a
-              href="https://github.com/nguyennhando?tab=repositories"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center rounded-2xl border border-white/10 bg-white/5 px-6 py-4 font-bold text-white transition hover:bg-white/10"
-            >
-              Source Code
-            </a>
-          </div>
-        </section>
+        {/* ── Hero Slideshow (Split Layout) ── */}
+        <HeroSlideshow
+          slides={heroSlides}
+          onDiscover={() => scrollToSection("blog")}
+        />
 
         {/* ── Feature Cards ── */}
         <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5 sm:py-10">
@@ -702,11 +961,7 @@ function Home() {
             {features.map((feature) => {
               const Icon = feature.icon;
               return (
-                <motion.div
-                  key={feature.title}
-                  whileHover={{ y: -5 }}
-                  className="group flex flex-col"
-                >
+                <motion.div whileHover={{ y: -5 }} key={feature.title} className="group flex flex-col">
                   <GradientBorder
                     gradient={feature.gradient}
                     rounded="rounded-[1.4rem] sm:rounded-[2rem]"
@@ -718,7 +973,9 @@ function Home() {
                       <Icon className="h-7 w-7" />
                     </div>
                     <h3 className="text-lg font-black sm:text-xl">{feature.title}</h3>
-                    <p className="mt-2 text-sm leading-6 text-zinc-400 sm:mt-3 sm:text-base sm:leading-7">{feature.text}</p>
+                    <p className="mt-2 text-sm leading-6 text-zinc-400 sm:mt-3 sm:text-base sm:leading-7">
+                      {feature.text}
+                    </p>
                   </GradientBorder>
                 </motion.div>
               );
@@ -737,7 +994,9 @@ function Home() {
               >
                 <div className="mb-5 flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-widest text-cyan-300">Sicherer Adminbereich</p>
+                    <p className="text-xs font-bold uppercase tracking-widest text-cyan-300">
+                      Sicherer Adminbereich
+                    </p>
                     <h2 className="text-xl font-black sm:text-3xl">Beitragsverwaltung</h2>
                   </div>
                   <button
@@ -754,7 +1013,8 @@ function Home() {
                     <div className="flex gap-3">
                       <AlertTriangle className="h-5 w-5 shrink-0" />
                       <p>
-                        Supabase ist noch nicht konfiguriert. Erstellen Sie eine <b>.env.local</b> Datei mit VITE_SUPABASE_URL und VITE_SUPABASE_ANON_KEY.
+                        Supabase ist noch nicht konfiguriert. Erstellen Sie eine{" "}
+                        <b>.env.local</b> Datei mit VITE_SUPABASE_URL und VITE_SUPABASE_ANON_KEY.
                       </p>
                     </div>
                   </div>
@@ -767,7 +1027,10 @@ function Home() {
                 )}
 
                 {!session ? (
-                  <form onSubmit={login} className="grid gap-4 lg:grid-cols-[1fr_1fr_auto] lg:items-end">
+                  <form
+                    onSubmit={login}
+                    className="grid gap-4 lg:grid-cols-[1fr_1fr_auto] lg:items-end"
+                  >
                     <div>
                       <label className="mb-2 block text-sm text-zinc-400">Admin E-Mail</label>
                       <input
@@ -788,15 +1051,22 @@ function Home() {
                         className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4"
                       />
                     </div>
-                    <button disabled={loading} className="rounded-2xl bg-cyan-400 px-8 py-4 font-black text-black transition hover:bg-cyan-300 disabled:opacity-60">
+                    <button
+                      disabled={loading}
+                      className="rounded-2xl bg-cyan-400 px-8 py-4 font-black text-black transition hover:bg-cyan-300 disabled:opacity-60"
+                    >
                       Login
                     </button>
                   </form>
                 ) : !isAdmin ? (
                   <div className="rounded-2xl border border-red-400/20 bg-red-400/10 p-5 text-red-100">
-                    Sie sind angemeldet, aber dieses Konto hat keine Adminrechte. Tragen Sie die User-ID in der Tabelle profiles als role = admin ein.
+                    Sie sind angemeldet, aber dieses Konto hat keine Adminrechte. Tragen Sie die
+                    User-ID in der Tabelle profiles als role = admin ein.
                     <div className="mt-4">
-                      <button onClick={logout} className="rounded-2xl bg-white/10 px-5 py-3 font-bold hover:bg-white/15">
+                      <button
+                        onClick={logout}
+                        className="rounded-2xl bg-white/10 px-5 py-3 font-bold hover:bg-white/15"
+                      >
                         Abmelden
                       </button>
                     </div>
@@ -805,17 +1075,27 @@ function Home() {
                   <div>
                     <div className="mb-6 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
                       <div>
-                        <p className="text-sm text-zinc-400">Angemeldet als {session.user.email}</p>
-                        <p className="mt-1 font-bold text-cyan-300">Adminrechte aktiv. Änderungen werden durch RLS geschützt.</p>
+                        <p className="text-sm text-zinc-400">
+                          Angemeldet als {session.user.email}
+                        </p>
+                        <p className="mt-1 font-bold text-cyan-300">
+                          Adminrechte aktiv. Änderungen werden durch RLS geschützt.
+                        </p>
                       </div>
                       <div className="flex flex-col gap-3 sm:flex-row">
                         <button
-                          onClick={() => { setEditingPost(createEmptyPost()); setEditingMode(false); }}
+                          onClick={() => {
+                            setEditingPost(createEmptyPost());
+                            setEditingMode(false);
+                          }}
                           className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-5 py-3 font-bold transition hover:bg-white/10"
                         >
                           <Plus className="h-5 w-5" /> Neuer Beitrag
                         </button>
-                        <button onClick={logout} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#050816] px-5 py-3 font-bold transition hover:bg-black">
+                        <button
+                          onClick={logout}
+                          className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#050816] px-5 py-3 font-bold transition hover:bg-black"
+                        >
                           <LogOut className="h-5 w-5" /> Logout
                         </button>
                       </div>
@@ -830,31 +1110,33 @@ function Home() {
                       />
                       <select
                         value={editingPost.category}
-                        onChange={(e) => setEditingPost({ ...editingPost, category: e.target.value })}
+                        onChange={(e) =>
+                          setEditingPost({ ...editingPost, category: e.target.value })
+                        }
                         className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4"
                       >
                         <option>Elektrotechnik</option>
-<option>Elektrokonstruktion</option>
-<option>Automatisierungstechnik</option>
-<option>Steuerungstechnik</option>
-<option>Antriebstechnik</option>
-<option>Schaltschrankbau</option>
-<option>Industrieautomation</option>
-<option>SPS-Programmierung</option>
-<option>CAD-Konstruktion</option>
-<option>Maschinenbau</option>
-<option>Technische Zeichnung</option>
-<option>Mechatronik</option>
-<option>Energietechnik</option>
-<option>Leistungselektronik</option>
-<option>Sensorik</option>
-<option>Mikrocontroller</option>
-<option>Embedded Systems</option>
-<option>IoT</option>
-<option>Robotik</option>
-<option>Softwareentwicklung</option>
-<option>Desktop-Softwareentwicklung</option>
-<option>Technische Softwareentwicklung</option>
+                        <option>Elektrokonstruktion</option>
+                        <option>Automatisierungstechnik</option>
+                        <option>Steuerungstechnik</option>
+                        <option>Antriebstechnik</option>
+                        <option>Schaltschrankbau</option>
+                        <option>Industrieautomation</option>
+                        <option>SPS-Programmierung</option>
+                        <option>CAD-Konstruktion</option>
+                        <option>Maschinenbau</option>
+                        <option>Technische Zeichnung</option>
+                        <option>Mechatronik</option>
+                        <option>Energietechnik</option>
+                        <option>Leistungselektronik</option>
+                        <option>Sensorik</option>
+                        <option>Mikrocontroller</option>
+                        <option>Embedded Systems</option>
+                        <option>IoT</option>
+                        <option>Robotik</option>
+                        <option>Softwareentwicklung</option>
+                        <option>Desktop-Softwareentwicklung</option>
+                        <option>Technische Softwareentwicklung</option>
                       </select>
 
                       <div className="lg:col-span-2">
@@ -881,23 +1163,28 @@ function Home() {
                         className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2"
                       />
 
-                      {/* ── External Link Input ── */}
                       <input
                         value={editingPost.external_link || ""}
-                        onChange={(e) => setEditingPost({ ...editingPost, external_link: e.target.value })}
+                        onChange={(e) =>
+                          setEditingPost({ ...editingPost, external_link: e.target.value })
+                        }
                         placeholder="Externer Link (optional): https://github.com/..."
                         className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2"
                       />
 
                       <textarea
                         value={editingPost.excerpt}
-                        onChange={(e) => setEditingPost({ ...editingPost, excerpt: e.target.value })}
+                        onChange={(e) =>
+                          setEditingPost({ ...editingPost, excerpt: e.target.value })
+                        }
                         placeholder="Kurzbeschreibung"
                         className="min-h-28 rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2"
                       />
                       <textarea
                         value={editingPost.content}
-                        onChange={(e) => setEditingPost({ ...editingPost, content: e.target.value })}
+                        onChange={(e) =>
+                          setEditingPost({ ...editingPost, content: e.target.value })
+                        }
                         placeholder="Vollständiger Inhalt des Beitrags"
                         className="min-h-52 rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2"
                       />
@@ -905,11 +1192,16 @@ function Home() {
                         <input
                           type="checkbox"
                           checked={editingPost.published}
-                          onChange={(e) => setEditingPost({ ...editingPost, published: e.target.checked })}
+                          onChange={(e) =>
+                            setEditingPost({ ...editingPost, published: e.target.checked })
+                          }
                         />
                         Veröffentlicht
                       </label>
-                      <button disabled={loading} className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-6 py-4 font-black text-black transition hover:bg-cyan-300 disabled:opacity-60 lg:col-span-2">
+                      <button
+                        disabled={loading}
+                        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-6 py-4 font-black text-black transition hover:bg-cyan-300 disabled:opacity-60 lg:col-span-2"
+                      >
                         <Save className="h-5 w-5" /> Beitrag sicher speichern
                       </button>
                     </form>
@@ -924,7 +1216,9 @@ function Home() {
         <section id="blog" className="mx-auto max-w-7xl px-4 py-10 sm:px-5 sm:py-16">
           <div className="mb-7 flex flex-col justify-between gap-5 sm:mb-10 lg:flex-row lg:items-end">
             <div>
-              <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">Technik Blog</p>
+              <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">
+                Technik Blog
+              </p>
               <h2 className="mt-2 text-[1.85rem] font-black leading-tight min-[390px]:text-3xl sm:mt-3 sm:text-5xl lg:text-6xl">
                 Elektronikprojekte & Dokumentationen
               </h2>
@@ -945,7 +1239,9 @@ function Home() {
                 onChange={(e) => setCategory(e.target.value)}
                 className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-3 outline-none ring-cyan-400/30 focus:ring-4"
               >
-                {categories.map((c) => <option key={c}>{c}</option>)}
+                {categories.map((c) => (
+                  <option key={c}>{c}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -955,18 +1251,19 @@ function Home() {
           <div className="grid auto-rows-fr gap-4 min-[620px]:grid-cols-2 xl:grid-cols-3 xl:gap-6">
             {filteredPosts.map((post) => {
               const Icon = getIcon(post.category);
-              const catGradient = getCategoryGradient(post.category);
-
               return (
                 <motion.div whileHover={{ y: -5 }} key={post.id} className="group flex h-full">
                   <GradientBorder
-                    gradient={catGradient}
+                    gradient="from-blue-500 via-purple-500 to-blue-500"
                     rounded="rounded-[1.4rem] sm:rounded-[2rem]"
                     className="flex flex-1"
                     innerClassName="flex flex-1 flex-col overflow-hidden rounded-[1.35rem] sm:rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl min-h-[560px]"
                   >
-                    <img src={post.image_url} alt={post.title} className="h-44 w-full shrink-0 object-cover min-[390px]:h-48 sm:h-56" />
-
+                    <img
+                      src={post.image_url}
+                      alt={post.title}
+                      className="h-44 w-full shrink-0 object-cover min-[390px]:h-48 sm:h-56"
+                    />
                     <div className="flex flex-1 flex-col p-4 sm:p-6">
                       <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
                         <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">
@@ -976,19 +1273,22 @@ function Home() {
                           <CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at)}
                         </span>
                       </div>
-
-                      <h3 className="text-lg font-black leading-tight min-[390px]:text-xl sm:text-2xl">{post.title}</h3>
-
-                      <p className="mt-3 line-clamp-3 text-sm leading-6 text-zinc-400 sm:mt-4 sm:text-base sm:leading-7">{post.excerpt}</p>
-
+                      <h3 className="text-lg font-black leading-tight min-[390px]:text-xl sm:text-2xl">
+                        {post.title}
+                      </h3>
+                      <p className="mt-3 line-clamp-3 text-sm leading-6 text-zinc-400 sm:mt-4 sm:text-base sm:leading-7">
+                        {post.excerpt}
+                      </p>
                       <div className="mt-5 flex flex-wrap gap-2">
                         {(post.tags || []).map((tag) => (
-                          <span key={tag} className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-400">
+                          <span
+                            key={tag}
+                            className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-400"
+                          >
                             #{tag}
                           </span>
                         ))}
                       </div>
-
                       <div className="mt-auto flex gap-2 pt-6 sm:gap-3">
                         <Link
                           to={`/post/${post.id}`}
@@ -998,10 +1298,18 @@ function Home() {
                         </Link>
                         {isAdmin && (
                           <>
-                            <button type="button" onClick={() => editPost(post)} className="rounded-2xl border border-white/10 p-3 transition hover:bg-white/10">
+                            <button
+                              type="button"
+                              onClick={() => editPost(post)}
+                              className="rounded-2xl border border-white/10 p-3 transition hover:bg-white/10"
+                            >
                               <Edit3 className="h-5 w-5" />
                             </button>
-                            <button type="button" onClick={() => deletePost(post.id)} className="rounded-2xl border border-red-500/20 p-3 text-red-400 transition hover:bg-red-500/10">
+                            <button
+                              type="button"
+                              onClick={() => deletePost(post.id)}
+                              className="rounded-2xl border border-red-500/20 p-3 text-red-400 transition hover:bg-red-500/10"
+                            >
                               <Trash2 className="h-5 w-5" />
                             </button>
                           </>
@@ -1021,7 +1329,6 @@ function Home() {
             <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">Galerie</p>
             <h2 className="mt-3 text-4xl font-black sm:text-5xl">Projektbilder</h2>
           </div>
-
           <div className="grid gap-6 lg:grid-cols-3">
             <GradientBorder
               gradient="from-blue-500 via-purple-500 to-blue-500"
@@ -1035,7 +1342,6 @@ function Home() {
                 className="h-[520px] w-full object-cover transition duration-700 group-hover:scale-105"
               />
             </GradientBorder>
-
             <div className="grid gap-6">
               <GradientBorder
                 gradient="from-blue-500 via-purple-500 to-blue-500"
@@ -1049,7 +1355,6 @@ function Home() {
                   className="h-[247px] w-full object-cover transition duration-700 group-hover:scale-110"
                 />
               </GradientBorder>
-
               <GradientBorder
                 gradient="from-blue-500 via-purple-500 to-blue-500"
                 rounded="rounded-[2rem]"
@@ -1076,20 +1381,32 @@ function Home() {
                   Zusammenarbeit an modernen Elektronikprojekten.
                 </h2>
                 <p className="mt-4 max-w-2xl text-[15px] leading-7 text-black/80 sm:mt-6 sm:text-lg sm:leading-9">
-                  Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder individuelle Entwicklungen.
+                  Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle
+                  Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder
+                  individuelle Entwicklungen.
                 </p>
               </div>
-
               <div className="rounded-[1.25rem] sm:rounded-[2rem] p-[1.5px] bg-gradient-to-br from-cyan-400/60 via-blue-400/40 to-purple-500/60">
                 <div className="rounded-[1.2rem] sm:rounded-[1.95rem] bg-[#050816] p-3 sm:p-8 text-white">
                   <div className="grid h-full gap-5">
                     {[
                       { icon: Mail, label: "E-Mail", value: "kontakt@elektroniklab.de" },
                       { icon: Phone, label: "Telefon", value: "+49 176 12345678" },
-                      { icon: CircuitBoard, label: "Schwerpunkt", value: "IoT · Robotik · Embedded · Automatisierung" },
-                      { icon: Wrench, label: "Sicherheit", value: "Auth · RLS · Geschützte Adminrechte" },
+                      {
+                        icon: CircuitBoard,
+                        label: "Schwerpunkt",
+                        value: "IoT · Robotik · Embedded · Automatisierung",
+                      },
+                      {
+                        icon: Wrench,
+                        label: "Sicherheit",
+                        value: "Auth · RLS · Geschützte Adminrechte",
+                      },
                     ].map(({ icon: Icon, label, value }) => (
-                      <div key={label} className="flex items-center gap-3 rounded-2xl border border-white/10 p-3 sm:gap-4 sm:p-4">
+                      <div
+                        key={label}
+                        className="flex items-center gap-3 rounded-2xl border border-white/10 p-3 sm:gap-4 sm:p-4"
+                      >
                         <Icon className="h-6 w-6 text-cyan-300" />
                         <div>
                           <p className="text-sm text-zinc-400">{label}</p>
@@ -1107,10 +1424,16 @@ function Home() {
 
       <footer className="border-t border-cyan-500/10 bg-black py-10 text-center text-zinc-400">
         <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-          <Link to="/impressum" className="transition hover:text-cyan-400">Impressum</Link>
-          <Link to="/datenschutz" className="transition hover:text-cyan-400">Datenschutz</Link>
+          <Link to="/impressum" className="transition hover:text-cyan-400">
+            Impressum
+          </Link>
+          <Link to="/datenschutz" className="transition hover:text-cyan-400">
+            Datenschutz
+          </Link>
         </div>
-        <p className="mt-4 text-xs text-zinc-500">© 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.</p>
+        <p className="mt-4 text-xs text-zinc-500">
+          © 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.
+        </p>
       </footer>
     </div>
   );
