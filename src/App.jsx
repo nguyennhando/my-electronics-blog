@@ -32,6 +32,8 @@ import {
   ExternalLink,
   ChevronLeft,
   ChevronRight,
+  Code2,
+  
 } from "lucide-react";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -310,16 +312,17 @@ function HeroSlideshow({ slides, onDiscover }) {
             rel="noopener noreferrer"
             className="inline-flex items-center rounded-2xl bg-cyan-400 px-6 py-4 font-bold text-black transition hover:bg-cyan-300"
           >
-            PDF Dokumentation
+            Dokumentation
           </a>
           <a
-            href="https://github.com/nguyennhando?tab=repositories"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center rounded-2xl border border-white/10 bg-white/5 px-6 py-4 font-bold text-white transition hover:bg-white/10"
-          >
-            Source Code
-          </a>
+  href="https://github.com/nguyennhando?tab=repositories"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-6 py-4 font-bold text-black shadow-xl shadow-orange-500/30 transition hover:from-orange-400 hover:to-amber-300"
+>
+  <Code2 className="h-5 w-5" />
+  Source Code
+</a>
         </div>
       </div>
 
@@ -1293,7 +1296,8 @@ function Home() {
 
 {/* ── WARNING CARD ── */}
         <section className="mx-auto max-w-7xl px-4 py-8 sm:px-5">
-  <div className="overflow-hidden rounded-[2rem] border border-cyan-400/20 bg-[#07111f]/95 backdrop-blur-xl">
+  <div className="rounded-[2rem] p-[1.5px] bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500">
+  <div className="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl">
     <div className="grid lg:grid-cols-[0.4fr_0.6fr]">
       
       {/* LEFT IMAGE */}
@@ -1357,8 +1361,9 @@ function Home() {
           </p>
         </div>
       </div>
-    </div>
+        </div>
   </div>
+</div>
 </section>
 
         {/* ── Blog Section ── */}
