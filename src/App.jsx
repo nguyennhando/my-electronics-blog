@@ -1291,6 +1291,76 @@ function Home() {
           </section>
         )}
 
+{/* ── WARNING CARD ── */}
+        <section className="mx-auto max-w-7xl px-4 py-8 sm:px-5">
+  <div className="overflow-hidden rounded-[2rem] border border-cyan-400/20 bg-[#07111f]/95 backdrop-blur-xl">
+    <div className="grid lg:grid-cols-[0.4fr_0.6fr]">
+      
+      {/* LEFT IMAGE */}
+      <div className="relative h-48 lg:h-auto">
+        <img
+          src="/my-electronics-blog/images/project-warning.jpg"
+          alt="Projekt Hinweis"
+          className="h-full w-full object-cover"
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
+      </div>
+
+      {/* RIGHT CONTENT */}
+      <div className="flex flex-col justify-center p-5 sm:p-6 lg:p-7">
+        <div className="inline-flex w-fit items-center gap-2 rounded-full border border-yellow-400/20 bg-yellow-400/10 px-4 py-2 text-sm font-bold text-yellow-300">
+          <AlertTriangle className="h-4 w-4" />
+          Wichtiger Hinweis
+        </div>
+
+        <h2 className="mt-5 text-2xl font-black leading-tight text-white sm:text-3xl">
+          Wichtiger Hinweis zu meinen Projekten
+        </h2>
+
+        <div className="mt-6 space-y-5 text-sm leading-7 text-zinc-300 sm:text-base sm:leading-8">
+          <p>
+            <span className="font-bold text-yellow-300">🚨 Hinweis:</span>{" "}
+            Projekte mit der Kennzeichnung{" "}
+            <span className="font-semibold text-cyan-300">
+              „Konzept“
+            </span>{" "}
+            oder{" "}
+            <span className="font-semibold text-cyan-300">
+              „Konzeptprojekt“
+            </span>{" "}
+            befinden sich derzeit noch in der Ideen- bzw. Konzeptphase und
+            wurden bisher noch nicht praktisch umgesetzt.
+          </p>
+
+          <p>
+            Eine zukünftige Weiterentwicklung oder Realisierung dieser Projekte
+            ist jedoch geplant.
+          </p>
+
+          <p>
+            Alle anderen Projekte können über{" "}
+            <span className="font-semibold text-cyan-300">
+              „Beitrag lesen“
+            </span>{" "}
+            geöffnet werden.
+          </p>
+
+          <p>
+            Am Ende der jeweiligen Projektseite befindet sich die Schaltfläche{" "}
+            <span className="font-semibold text-cyan-300">
+              „Zum Projekt“
+            </span>
+            . Dort stehen projektbezogene Dateien wie PDF-Dokumentationen,
+            TIA-Portal-Projekte, AutoCAD-Dateien sowie Source Code und weitere
+            technische Projektdateien zur Verfügung.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
         {/* ── Blog Section ── */}
         <section id="blog" className="mx-auto max-w-7xl px-4 py-10 sm:px-5 sm:py-16">
           <div className="mb-7 flex flex-col justify-between gap-5 sm:mb-10 lg:flex-row lg:items-end">
