@@ -622,6 +622,82 @@ function BlogPostPage() {
   );
 }
 
+function AboutWideCard() {
+  return (
+    <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5">
+      <GradientBorder
+        gradient="from-blue-500 via-purple-500 to-blue-500"
+        rounded="rounded-[2rem]"
+        innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl"
+      >
+        <div className="grid items-stretch gap-6 p-4 sm:p-6 lg:grid-cols-2 lg:gap-8">
+          <div className="grid min-h-full gap-4 lg:grid-rows-2">
+  <img
+    src="/my-electronics-blog/images/about-1.jpg"
+    alt="Nguyen Nhan Do Technik"
+    className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]"
+  />
+
+  <img
+    src="/my-electronics-blog/images/about-2.jpg"
+    alt="Elektronik und Entwicklung"
+    className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]"
+  />
+</div>
+
+          <div className="flex flex-col justify-center">
+            <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">
+              Persönlicher Weg
+            </p>
+
+            <h2 className="mt-3 text-2xl font-black leading-tight sm:text-4xl">
+              Nguyen Nhan Do – Technik lernen. Erfahrung sammeln. Mich weiterentwickeln.
+            </h2>
+
+            <div className="mt-5 text-sm leading-7 text-zinc-300 sm:text-base sm:leading-8">
+              <p>
+                Ich bin 2013 nach Deutschland gekommen – nicht, weil mein Leben in Vietnam schlecht war,
+                sondern weil ich wissen wollte, wie weit ich mich persönlich und beruflich entwickeln kann,
+                wenn ich meine Komfortzone verlasse und in einem völlig neuen Umfeld neu anfange.
+              </p>
+
+              <p className="mt-4">
+                Die ersten Jahre in Deutschland waren für mich vor allem eine Zeit des Ankommens, Lernens
+                und Anpassens. Neben den Sprachkursen habe ich in verschiedenen Bereichen gearbeitet –
+                unter anderem in der Gastronomie, im Management und später auch in der Selbstständigkeit.
+              </p>
+
+              <p className="mt-4">
+                Nach mehreren Jahren unterschiedlicher beruflicher Erfahrungen habe ich mich bewusst
+                entschieden, wieder stärker in die technische Richtung zurückzugehen und mich langfristig im
+                Bereich Elektronik, Messtechnik und Automatisierung weiterzuentwickeln.
+              </p>
+
+              <p className="mt-4">
+                In den letzten Jahren konnte ich praktische Erfahrungen in der Kalibrierung, Fehlersuche,
+                Prüfung und Entwicklung elektronischer Systeme sammeln und gleichzeitig mein technisches
+                Wissen kontinuierlich erweitern.
+              </p>
+
+              <p className="mt-4">
+                Deshalb habe ich zusätzliche Weiterbildungen in SPS-Programmierung, C++/Qt, AutoCAD und
+                EPLAN absolviert, um mein Wissen gezielt auszubauen und neue technische Bereiche besser zu
+                verstehen.
+              </p>
+
+              <p className="mt-4">
+                Dieser Blog ist kein Ort für Motivationstexte oder perfekte Erfolgsgeschichten. Ich möchte
+                hier ehrlich über meinen Weg sprechen – über das Leben und Arbeiten in Deutschland,
+                technische Themen, persönliche Erfahrungen, Herausforderungen und Entwicklung.
+              </p>
+              
+            </div>
+          </div>
+        </div>
+      </GradientBorder>
+    </section>
+  );
+}
 /* ══════════════════════════════════════════════
    HOME PAGE
 ══════════════════════════════════════════════ */
@@ -954,6 +1030,8 @@ function Home() {
           slides={heroSlides}
           onDiscover={() => scrollToSection("blog")}
         />
+
+       <AboutWideCard /> 
 
         {/* ── Feature Cards ── */}
         <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5 sm:py-10">
