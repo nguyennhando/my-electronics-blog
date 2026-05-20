@@ -725,7 +725,7 @@ function Home() {
   // Build hero slides from posts
   const heroSlides = useMemo(
     () =>
-      posts.slice(0, 3).map((p) => ({
+      posts.map((p) => ({
         image: p.image_url,
         category: p.category,
         readTime: p.read_time || "5 Min.",
