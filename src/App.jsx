@@ -10,6 +10,7 @@ import {
   Cpu,
   RadioTower,
   Bot,
+  Globe,
   Gauge,
   Search,
   Menu,
@@ -1469,7 +1470,7 @@ function Home() {
                   <div className="grid h-full gap-5">
                     {[
                       { icon: Mail, label: "E-Mail", value: "donguyennhan.de@gmail.com" },
-                      { icon: Phone, label: "Telefon", value: "+49 176 12345678" },
+                      { icon: Globe, label: "Standort", value: "Deutschland" },
                       {
                         icon: CircuitBoard,
                         label: "Schwerpunkt",
