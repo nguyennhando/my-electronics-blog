@@ -290,8 +290,8 @@ function HeroSlideshow({ slides, onDiscover }) {
 
         {/* Static description */}
         <p className="mt-5 max-w-2xl text-[15px] leading-7 text-zinc-300 sm:mt-8 sm:text-lg sm:leading-9">
-          Eine Plattform zur Dokumentation von Elektronik-, Embedded- und Automatisierungsprojekten aus Weiterbildung, Lernen und eigenständiger Entwicklung.
-          Die Website wurde von mir selbst entwickelt, um technische Dokumentationen, Source Code und den Entwicklungsprozess zentral zu organisieren.
+          Eine eigenständig von mir entwickelte Plattform zur Dokumentation von Elektronik-, Embedded- und Automatisierungsprojekten.
+          Die Website basiert auf React, Vite, Tailwind CSS und Supabase und ermöglicht die zentrale Verwaltung technischer Dokumentationen, Source Codes und Entwicklungsprozesse.
         </p>
 
         {/* CTA buttons */}
