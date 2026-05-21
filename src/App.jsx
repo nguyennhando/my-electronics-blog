@@ -560,11 +560,11 @@ function BlogPostPage() {
                 className="w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl"
               />
               <button
-                onClick={() => setLightbox(false)}
-                className="absolute -top-4 -right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition"
-              >
-                <X className="h-5 w-5" />
-              </button>
+  onClick={() => setLightbox(false)}
+  className="absolute -top-4 -right-4 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400 text-black shadow-xl shadow-cyan-500/40 hover:bg-cyan-300 transition"
+>
+  <X className="h-5 w-5 stroke-[3]" />
+</button>
             </motion.div>
           </div>
         )}
