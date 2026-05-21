@@ -1,5 +1,9 @@
 # ElektronikLab
 
+<p align="center">
+  <img src="./screenshots/home.png" width="100%" />
+</p>
+
 Modern electronics and automation project platform built with React, Vite, TailwindCSS and Supabase.
 
 This website was developed to document technical projects, embedded systems, automation workflows and engineering-related developments in a clean and professional way.
@@ -9,6 +13,40 @@ This website was developed to document technical projects, embedded systems, aut
 ## Status
 
 Project currently under active development.
+
+---
+
+## Screenshots
+
+### Home Page
+
+<p align="center">
+  <img src="./screenshots/home.png" width="100%" />
+</p>
+
+---
+
+### Technical Blog
+
+<p align="center">
+  <img src="./screenshots/blog.png" width="100%" />
+</p>
+
+---
+
+### Admin Dashboard
+
+<p align="center">
+  <img src="./screenshots/admin.png" width="100%" />
+</p>
+
+---
+
+### Mobile View
+
+<p align="center">
+  <img src="./screenshots/mobile.png" width="35%" />
+</p>
 
 ---
 
@@ -126,18 +164,18 @@ npm run build
 ### posts
 
 | Column        | Type      |
-| ------------- | --------- |
-| id            | uuid      |
-| title         | text      |
-| category      | text      |
-| image_url     | text      |
-| excerpt       | text      |
-| content       | text      |
-| tags          | text[]    |
-| read_time     | text      |
-| published     | boolean   |
-| external_link | text      |
-| created_at    | timestamp |
+| ------------- | ---------- |
+| id            | uuid       |
+| title         | text       |
+| category      | text       |
+| image_url     | text       |
+| excerpt       | text       |
+| content       | text       |
+| tags          | text[]     |
+| read_time     | text       |
+| published     | boolean    |
+| external_link | text       |
+| created_at    | timestamp  |
 
 ---
 
