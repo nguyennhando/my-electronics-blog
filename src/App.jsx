@@ -955,7 +955,11 @@ function Home() {
       {/* ── Header ── */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-5 sm:py-4">
-          <Link to="/" className="flex items-center gap-3">
+          <Link
+  to="/"
+  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+  className="flex items-center gap-3"
+>
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-cyan-400 text-black shadow-lg shadow-cyan-500/30 sm:h-12 sm:w-12">
               <CircuitBoard className="h-6 w-6" />
             </div>
