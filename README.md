@@ -1,16 +1,228 @@
-# React + Vite
+# ElektronikLab
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Modern electronics and automation project platform built with React, Vite, TailwindCSS and Supabase.
 
-Currently, two official plugins are available:
+This website was developed to document technical projects, embedded systems, automation workflows and engineering-related developments in a clean and professional way.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Status
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Project currently under active development.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Features
+
+- Responsive modern UI
+- Technical blog system
+- Electronics & automation project showcase
+- Secure admin dashboard
+- Supabase authentication
+- Role-based access control (RLS)
+- Dynamic project management
+- Image upload system
+- Search & category filtering
+- Animated hero slideshow
+- Mobile optimized layout
+- Cookie banner
+- Impressum & Datenschutz pages
+- External project/document links
+
+---
+
+## Technologies
+
+### Frontend
+
+- React
+- Vite
+- TailwindCSS
+- Framer Motion
+- React Router DOM
+- Lucide React
+
+### Backend / Database
+
+- Supabase
+- PostgreSQL
+- Supabase Auth
+- Supabase Storage
+- Row Level Security (RLS)
+
+---
+
+## Project Structure
+
+```bash
+src/
+│
+├── components/
+│   └── CookieBanner.jsx
+│
+├── pages/
+│   ├── Impressum.jsx
+│   └── Datenschutz.jsx
+│
+├── App.jsx
+└── main.jsx
+```
+
+---
+
+## Installation
+
+### Clone repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/elektroniklab.git
+```
+
+### Enter project directory
+
+```bash
+cd elektroniklab
+```
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+---
+
+## Environment Variables
+
+Create a `.env.local` file:
+
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+---
+
+## Start Development Server
+
+```bash
+npm run dev
+```
+
+---
+
+## Build Production Version
+
+```bash
+npm run build
+```
+
+---
+
+## Supabase Setup
+
+### Required Tables
+
+### posts
+
+| Column        | Type      |
+| ------------- | --------- |
+| id            | uuid      |
+| title         | text      |
+| category      | text      |
+| image_url     | text      |
+| excerpt       | text      |
+| content       | text      |
+| tags          | text[]    |
+| read_time     | text      |
+| published     | boolean   |
+| external_link | text      |
+| created_at    | timestamp |
+
+---
+
+### profiles
+
+| Column | Type |
+| ------ | ---- |
+| id     | uuid |
+| role   | text |
+
+---
+
+## Authentication & Security
+
+The admin area is protected with:
+
+- Supabase Authentication
+- Row Level Security (RLS)
+- Admin role validation
+- Protected CRUD operations
+
+Only users with:
+
+```sql
+role = 'admin'
+```
+
+inside the `profiles` table can manage posts.
+
+---
+
+## Storage Bucket
+
+Create a public bucket:
+
+```bash
+blog-images
+```
+
+Used for:
+
+- project thumbnails
+- uploaded blog images
+- technical documentation assets
+
+---
+
+## Design Philosophy
+
+The UI design focuses on:
+
+- modern engineering aesthetics
+- dark technical interface
+- glassmorphism
+- responsive layouts
+- smooth animations
+- industrial / cyber inspired visuals
+
+---
+
+## Future Improvements
+
+Planned future features:
+
+- multilingual support
+- markdown editor
+- syntax highlighting
+- PDF project viewer
+- project timelines
+- analytics dashboard
+- dark/light theme switcher
+- comment system
+
+---
+
+## Author
+
+Nguyen Nhan Do
+
+Germany
+
+Electronics • Automation • Embedded Systems • Engineering
+
+---
+
+## License
+
+This project is licensed under the MIT License.
