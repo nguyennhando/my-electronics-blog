@@ -307,13 +307,14 @@ function HeroSlideshow({ slides, onDiscover }) {
 
         <div className="mt-8 flex flex-wrap gap-4">
           <a
-            href="https://drive.google.com/drive/folders/1y6MZUhoZJCIou-SL9BHbkA-CjpXxKGz5?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center rounded-2xl bg-cyan-400 px-6 py-4 font-bold text-black transition hover:bg-cyan-300"
-          >
-            Dokumentation
-          </a>
+  href="https://drive.google.com/drive/folders/1y6MZUhoZJCIou-SL9BHbkA-CjpXxKGz5?usp=sharing"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center gap-3 rounded-2xl border border-zinc-600/40 bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 px-6 py-4 font-bold text-zinc-100 shadow-xl shadow-black/40 transition duration-300 hover:border-zinc-400/50 hover:from-zinc-600 hover:via-zinc-700 hover:to-zinc-900 hover:shadow-2xl hover:shadow-black/50"
+>
+  <ExternalLink className="h-5 w-5" />
+  Open Docs.
+</a>
           <a
   href="https://github.com/nguyennhando?tab=repositories"
   target="_blank"
