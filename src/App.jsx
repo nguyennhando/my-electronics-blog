@@ -155,7 +155,7 @@ function isIdeaPost(post) {
 
 function getProjectStatusLabel(status) {
   const normalized = normalizeProjectStatus(status);
-  if (normalized === "idea") return "Idee · Offline";
+  if (normalized === "idea") return "Idee";
   if (normalized === "in_progress") return "In Arbeit";
   return "Umgesetzt";
 }
@@ -1538,7 +1538,7 @@ function Home() {
               const Icon = getIcon(post.category);
               const idea = isIdeaPost(post);
               return (
-                <motion.div whileHover={idea ? undefined : { y: -5 }} key={post.id} className={`group flex h-full ${idea ? "opacity-75 grayscale" : ""}`}>
+                <motion.div whileHover={idea ? undefined : { y: -5 }} key={post.id} className="group flex h-full">
                   <GradientBorder
                     gradient={idea ? "from-zinc-600 via-zinc-500 to-zinc-600" : "from-cyan-400 via-cyan-500 to-cyan-400"}
                     rounded="rounded-[1.4rem] sm:rounded-[2rem]"
@@ -1548,7 +1548,9 @@ function Home() {
                     <img
                       src={post.image_url}
                       alt={post.title}
-                      className="h-44 w-full shrink-0 object-cover min-[390px]:h-48 sm:h-56"
+                      className={`h-44 w-full shrink-0 object-cover min-[390px]:h-48 sm:h-56 ${
+  idea ? "grayscale opacity-70" : ""
+}`}
                     />
                     <div className="flex flex-1 flex-col p-4 sm:p-6">
                       <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
@@ -1579,22 +1581,12 @@ function Home() {
                         ))}
                       </div>
                       <div className="mt-auto flex gap-2 pt-6 sm:gap-3">
-                        {idea ? (
-                          <button
-                            type="button"
-                            disabled
-                            className="flex-1 cursor-not-allowed rounded-2xl bg-zinc-700 px-4 py-3 text-center text-sm font-bold text-zinc-300 sm:px-5 sm:text-base"
-                          >
-                            Offline / Idee
-                          </button>
-                        ) : (
-                          <Link
-                            to={`/post/${post.id}`}
-                            className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base"
-                          >
-                            Beitrag lesen
-                          </Link>
-                        )}
+  <Link
+    to={`/post/${post.id}`}
+    className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base"
+  >
+    Beitrag lesen
+  </Link>
                         {isAdmin && (
                           <>
                             <button
