@@ -96,28 +96,28 @@ const features = [
     icon: Cpu,
     title: "Embedded & Elektronik",
     text: "Projekte mit Mikrocontrollern, Sensorik, Firmware und hardwarenaher Entwicklung.",
-    gradient: "from-blue-500 via-purple-500 to-blue-500",
+    gradient: "from-cyan-400 via-cyan-500 to-cyan-400",
     glow: "shadow-blue-500/20",
   },
   {
     icon: Workflow,
     title: "Automatisierung & Steuerung",
     text: "Praktische Projekte aus Automatisierungstechnik, Steuerungssystemen und technischer Logik.",
-    gradient: "from-blue-500 via-purple-500 to-blue-500",
+    gradient: "from-cyan-400 via-cyan-500 to-cyan-400",
     glow: "shadow-blue-500/20",
   },
   {
     icon: ShieldCheck,
     title: "Projektdokumentation",
     text: "Dokumentation von Lernprojekten, technischen Entwicklungen und praktischen Erfahrungen.",
-    gradient: "from-blue-500 via-purple-500 to-blue-500",
+    gradient: "from-cyan-400 via-cyan-500 to-cyan-400",
     glow: "shadow-blue-500/20",
   },
   {
     icon: MonitorSmartphone,
     title: "Selbst entwickelte Plattform",
     text: "Diese Website wurde eigenständig entwickelt, um Projekte, Source Code und technische Inhalte zentral zu verwalten.",
-    gradient: "from-blue-500 via-purple-500 to-blue-500",
+    gradient: "from-cyan-400 via-cyan-500 to-cyan-400",
     glow: "shadow-blue-500/20",
   },
 ];
@@ -157,7 +157,7 @@ function createEmptyPost() {
 /* ── Reusable gradient-border wrapper ── */
 function GradientBorder({
   children,
-  gradient = "from-blue-500 via-purple-500 to-blue-500",
+  gradient = "from-cyan-400 via-cyan-500 to-cyan-400",
   className = "",
   innerClassName = "",
   padding = "p-[1.5px]",
@@ -345,7 +345,7 @@ function HeroSlideshow({ slides, onDiscover }) {
         {/* Card wrapper with gradient border */}
         <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] p-[2px] lg:max-w-none">
           {/* Animated border gradient */}
-          <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 opacity-90" />
+          <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-400 opacity-90" />
 
           <div className="relative overflow-hidden rounded-[1.95rem] bg-[#080d1f]" style={{ height: "720px" }}>
             <AnimatePresence mode="wait">
@@ -538,7 +538,7 @@ function BlogPostPage() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#050816] px-6 text-white">
         <Background />
-        <GradientBorder gradient="from-blue-500 via-purple-500 to-blue-500" rounded="rounded-3xl">
+        <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-3xl">
           <div className="rounded-3xl bg-[#07111f] p-10 text-center backdrop-blur-xl">
             <h1 className="text-3xl font-black">Beitrag nicht gefunden</h1>
             <Link
@@ -585,7 +585,7 @@ function BlogPostPage() {
         )}
 
         <GradientBorder
-          gradient="from-blue-500 via-purple-500 to-blue-500"
+          gradient="from-cyan-400 via-cyan-500 to-cyan-400"
           rounded="rounded-[2rem]"
           innerClassName="overflow-hidden rounded-[2rem] bg-[#07111f] backdrop-blur-xl"
         >
@@ -646,7 +646,7 @@ function AboutWideCard() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5">
       <GradientBorder
-        gradient="from-blue-500 via-purple-500 to-blue-500"
+        gradient="from-cyan-400 via-cyan-500 to-cyan-400"
         rounded="rounded-[2rem]"
         innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl"
       >
@@ -1098,7 +1098,7 @@ function Home() {
           <section className="fixed inset-0 z-[100] overflow-y-auto bg-black/70 px-4 py-6 backdrop-blur-md sm:px-5 sm:py-8">
             <div className="mx-auto max-w-7xl">
               <GradientBorder
-                gradient="from-blue-500 via-purple-500 to-blue-500"
+                gradient="from-cyan-400 via-cyan-500 to-cyan-400"
                 rounded="rounded-[2rem]"
                 innerClassName="rounded-[1.95rem] bg-[#07111f] p-5 sm:p-6 shadow-2xl shadow-cyan-500/20 backdrop-blur-xl"
               >
@@ -1324,7 +1324,7 @@ function Home() {
 
 {/* ── WARNING CARD ── */}
         <section className="mx-auto max-w-7xl px-4 py-8 sm:px-5">
-  <div className="rounded-[2rem] p-[1.5px] bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500">
+  <div className="rounded-[2rem] p-[1.5px] bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-400">
   <div className="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl">
     <div className="grid lg:grid-cols-[0.4fr_0.6fr]">
       
@@ -1355,11 +1355,11 @@ function Home() {
             <span className="font-bold text-yellow-300">🚨 Hinweis:</span>{" "}
             Projekte mit der Kennzeichnung{" "}
             <span className="font-semibold text-cyan-300">
-              „Konzept“
+              „Konzept"
             </span>{" "}
             oder{" "}
             <span className="font-semibold text-cyan-300">
-              „Konzeptprojekt“
+              „Konzeptprojekt"
             </span>{" "}
             befinden sich derzeit noch in der Ideen- bzw. Konzeptphase und
             wurden bisher noch nicht praktisch umgesetzt.
@@ -1373,7 +1373,7 @@ function Home() {
           <p>
             Alle anderen Projekte können über{" "}
             <span className="font-semibold text-cyan-300">
-              „Beitrag lesen“
+              „Beitrag lesen"
             </span>{" "}
             geöffnet werden.
           </p>
@@ -1381,7 +1381,7 @@ function Home() {
           <p>
             Am Ende der jeweiligen Projektseite befindet sich die Schaltfläche{" "}
             <span className="font-semibold text-cyan-300">
-              „Zum Projekt“
+              „Zum Projekt"
             </span>
             . Dort stehen projektbezogene Dateien wie PDF-Dokumentationen,
             TIA-Portal-Projekte, AutoCAD-Dateien sowie Source Code und weitere
@@ -1436,7 +1436,7 @@ function Home() {
               return (
                 <motion.div whileHover={{ y: -5 }} key={post.id} className="group flex h-full">
                   <GradientBorder
-                    gradient="from-blue-500 via-purple-500 to-blue-500"
+                    gradient="from-cyan-400 via-cyan-500 to-cyan-400"
                     rounded="rounded-[1.4rem] sm:rounded-[2rem]"
                     className="flex flex-1"
                     innerClassName="flex flex-1 flex-col overflow-hidden rounded-[1.35rem] sm:rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl min-h-[560px]"
@@ -1513,7 +1513,7 @@ function Home() {
           </div>
           <div className="grid gap-6 lg:grid-cols-3">
             <GradientBorder
-              gradient="from-blue-500 via-purple-500 to-blue-500"
+              gradient="from-cyan-400 via-cyan-500 to-cyan-400"
               rounded="rounded-[2rem]"
               className="group lg:col-span-2"
               innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]"
@@ -1526,7 +1526,7 @@ function Home() {
             </GradientBorder>
             <div className="grid gap-6">
               <GradientBorder
-                gradient="from-blue-500 via-purple-500 to-blue-500"
+                gradient="from-cyan-400 via-cyan-500 to-cyan-400"
                 rounded="rounded-[2rem]"
                 className="group"
                 innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]"
@@ -1538,7 +1538,7 @@ function Home() {
                 />
               </GradientBorder>
               <GradientBorder
-                gradient="from-blue-500 via-purple-500 to-blue-500"
+                gradient="from-cyan-400 via-cyan-500 to-cyan-400"
                 rounded="rounded-[2rem]"
                 className="group"
                 innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]"
@@ -1568,7 +1568,7 @@ function Home() {
                   individuelle Entwicklungen.
                 </p>
               </div>
-              <div className="rounded-[1.25rem] sm:rounded-[2rem] p-[1.5px] bg-gradient-to-br from-cyan-400/60 via-blue-400/40 to-purple-500/60">
+              <div className="rounded-[1.25rem] sm:rounded-[2rem] p-[1.5px] bg-gradient-to-br from-cyan-400/60 via-cyan-500/40 to-cyan-400/60">
                 <div className="rounded-[1.2rem] sm:rounded-[1.95rem] bg-[#050816] p-3 sm:p-8 text-white">
                   <div className="grid h-full gap-5">
                     {[
