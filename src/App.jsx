@@ -229,6 +229,110 @@ function Background() {
   );
 }
 
+
+function SiteHeader({ onAdminClick }) {
+  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  function scrollToSection(id) {
+    setMenuOpen(false);
+    navigate(`/${id}`);
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 150);
+  }
+
+  function goHome() {
+    setMenuOpen(false);
+    navigate("/");
+    setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 80);
+  }
+
+  function openAdmin() {
+    setMenuOpen(false);
+    onAdminClick?.();
+  }
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-5 sm:py-4">
+        <button type="button" onClick={goHome} className="flex items-center gap-3 text-left">
+          <div className="flex h-12 w-12 overflow-hidden rounded-2xl sm:h-14 sm:w-14">
+            <img
+              src="/my-electronics-blog/images/logo.png"
+              alt="Logo"
+              className="h-full w-full scale-110 object-contain brightness-110 contrast-110"
+            />
+          </div>
+          <div>
+            <h1 className="text-base font-black text-white sm:text-xl">Nguyen Nhan Do</h1>
+            <p className="max-w-[190px] text-[10px] leading-tight text-zinc-400 sm:max-w-none sm:text-xs">
+              Technik • Entwicklung • Lernen
+            </p>
+          </div>
+        </button>
+
+        <div className="hidden items-center gap-8 md:flex">
+          {["blog", "projekte", "kontakt"].map((id) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => scrollToSection(id)}
+              className="text-sm text-zinc-300 transition hover:text-cyan-300 capitalize"
+            >
+              {id === "projekte" ? "Galerie" : id.charAt(0).toUpperCase() + id.slice(1)}
+            </button>
+          ))}
+          <button
+            type="button"
+            onClick={openAdmin}
+            className="rounded-full border border-cyan-400/30 bg-cyan-400/5 px-5 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400/10 hover:border-cyan-400/60"
+          >
+            Admin
+          </button>
+        </div>
+
+        <button
+          type="button"
+          className="rounded-xl border border-white/10 p-2 md:hidden"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label="Menü öffnen"
+        >
+          {menuOpen ? <X /> : <Menu />}
+        </button>
+      </nav>
+
+      {menuOpen && (
+        <div className="border-t border-white/10 px-5 py-4 md:hidden">
+          <div className="grid gap-2">
+            {[
+              ["blog", "Blog"],
+              ["projekte", "Projekte"],
+              ["kontakt", "Kontakt"],
+            ].map(([id, label]) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => scrollToSection(id)}
+                className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
+              >
+                {label}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={openAdmin}
+              className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
+            >
+              Admin
+            </button>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
+
 /* ══════════════════════════════════════════════
    HERO SLIDESHOW — Split Layout with Stagger
 ══════════════════════════════════════════════ */
@@ -561,7 +665,7 @@ function BlogPostPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#050816] px-4 py-20 text-center text-zinc-300">
+      <div className="min-h-screen bg-[#050816] px-4 pb-20 pt-[140px] text-center text-zinc-300">
         <Background />
         Beitrag wird geladen...
       </div>
@@ -588,7 +692,7 @@ function BlogPostPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050816] px-4 py-10 text-white sm:px-6 sm:py-20">
+    <div className="min-h-screen bg-[#050816] px-4 pb-10 pt-[120px] text-white sm:px-6 sm:pb-20 sm:pt-[140px]">
       <Background />
       <div className="mx-auto max-w-5xl">
         {lightbox && (
@@ -755,17 +859,16 @@ function AboutWideCard() {
 /* ══════════════════════════════════════════════
    HOME PAGE
 ══════════════════════════════════════════════ */
-function Home() {
+function Home({ adminVisible, setAdminVisible }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [adminVisible, setAdminVisible] = useState(false);
   const [session, setSession] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [posts, setPosts] = useState(demoPosts);
   const [selectedPost, setSelectedPost] = useState(demoPosts[0]);
+  const [blogImageLightbox, setBlogImageLightbox] = useState(null);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Alle");
   const [editingPost, setEditingPost] = useState(createEmptyPost());
@@ -797,10 +900,6 @@ function Home() {
     }, 120);
   }
 
-  function closeMobileAndScroll(id) {
-    setMenuOpen(false);
-    setTimeout(() => scrollToSection(id), 50);
-  }
 
   useEffect(() => {
     if (!supabase) return;
@@ -1052,90 +1151,6 @@ function Home() {
     <div className="min-h-screen overflow-x-hidden bg-[#050816] text-white">
       <Background />
 
-      {/* ── Header ── */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-5 sm:py-4">
-          <Link
-  to="/"
-  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-  className="flex items-center gap-3"
->
-<div className="flex h-12 w-12 overflow-hidden rounded-2xl sm:h-14 sm:w-14">
-  <img
-    src="/my-electronics-blog/images/logo.png"
-    alt="Logo"
-    className="h-full w-full scale-110 object-contain brightness-110 contrast-110"
-  />
-</div>
-            <div>
-              <h1 className="text-base font-black text-white sm:text-xl">Nguyen Nhan Do</h1>
-              <p className="max-w-[190px] text-[10px] leading-tight text-zinc-400 sm:max-w-none sm:text-xs">
-                Technik • Entwicklung • Lernen
-              </p>
-            </div>
-          </Link>
-
-          <div className="hidden items-center gap-8 md:flex">
-            {["blog", "projekte", "kontakt"].map((id) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => scrollToSection(id)}
-                className="text-sm text-zinc-300 transition hover:text-cyan-300 capitalize"
-              >
-                {id === "projekte" ? "Galerie" : id.charAt(0).toUpperCase() + id.slice(1)}
-              </button>
-            ))}
-            <button
-              type="button"
-              onClick={() => setAdminVisible(true)}
-              className="rounded-full border border-cyan-400/30 bg-cyan-400/5 px-5 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400/10 hover:border-cyan-400/60"
-            >
-              Admin
-            </button>
-          </div>
-
-          <button
-            type="button"
-            className="rounded-xl border border-white/10 p-2 md:hidden"
-            onClick={() => setMenuOpen((v) => !v)}
-            aria-label="Menü öffnen"
-          >
-            {menuOpen ? <X /> : <Menu />}
-          </button>
-        </nav>
-
-        {menuOpen && (
-          <div className="border-t border-white/10 px-5 py-4 md:hidden">
-            <div className="grid gap-2">
-              {[
-                ["blog", "Blog"],
-                ["projekte", "Projekte"],
-                ["kontakt", "Kontakt"],
-              ].map(([id, label]) => (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => closeMobileAndScroll(id)}
-                  className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
-                >
-                  {label}
-                </button>
-              ))}
-              <button
-                type="button"
-                onClick={() => {
-                  setMenuOpen(false);
-                  setAdminVisible(true);
-                }}
-                className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
-              >
-                Admin
-              </button>
-            </div>
-          </div>
-        )}
-      </header>
 
       <main className="pt-[90px]">
         {/* ── Hero Slideshow (Split Layout) ── */}
@@ -1497,7 +1512,37 @@ function Home() {
 </div>
 </section>
 
-        {/* ── Blog Section ── */}
+        
+        {blogImageLightbox && (
+          <div
+            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 px-4 backdrop-blur-md"
+            onClick={() => setBlogImageLightbox(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.88 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.25 }}
+              className="relative max-h-[90vh] w-full max-w-5xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={blogImageLightbox.image_url}
+                alt={blogImageLightbox.title}
+                className="max-h-[85vh] w-full rounded-2xl object-contain shadow-2xl"
+              />
+              <button
+                type="button"
+                onClick={() => setBlogImageLightbox(null)}
+                className="absolute -right-4 -top-4 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400 text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-300"
+                aria-label="Bild schließen"
+              >
+                <X className="h-5 w-5 stroke-[3]" />
+              </button>
+            </motion.div>
+          </div>
+        )}
+
+{/* ── Blog Section ── */}
         <section id="blog" className="mx-auto max-w-7xl px-4 py-10 sm:px-5 sm:py-16">
           <div className="mb-7 flex flex-col justify-between gap-5 sm:mb-10 lg:flex-row lg:items-end">
             <div>
@@ -1548,7 +1593,8 @@ function Home() {
                     <img
                       src={post.image_url}
                       alt={post.title}
-                      className={`h-44 w-full shrink-0 object-cover min-[390px]:h-48 sm:h-56 ${
+                      onClick={() => setBlogImageLightbox(post)}
+                      className={`h-44 w-full shrink-0 cursor-zoom-in object-cover transition duration-300 hover:brightness-110 min-[390px]:h-48 sm:h-56 ${
   idea ? "grayscale opacity-70" : ""
 }`}
                     />
@@ -1747,13 +1793,24 @@ function Home() {
 }
 
 export default function App() {
+  const navigate = useNavigate();
+  const [adminVisible, setAdminVisible] = useState(false);
+
+  function openAdminPanel() {
+    navigate("/");
+    setAdminVisible(true);
+  }
+
+  const homeElement = <Home adminVisible={adminVisible} setAdminVisible={setAdminVisible} />;
+
   return (
     <>
+      <SiteHeader onAdminClick={openAdminPanel} />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/blog" element={<Home />} />
-        <Route path="/projekte" element={<Home />} />
-        <Route path="/kontakt" element={<Home />} />
+        <Route path="/" element={homeElement} />
+        <Route path="/blog" element={homeElement} />
+        <Route path="/projekte" element={homeElement} />
+        <Route path="/kontakt" element={homeElement} />
         <Route path="/post/:id" element={<BlogPostPage />} />
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/datenschutz" element={<Datenschutz />} />
