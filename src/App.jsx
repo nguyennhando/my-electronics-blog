@@ -1000,6 +1000,10 @@ function Home({ adminVisible, setAdminVisible }) {
   async function uploadImage(e) {
     const file = e.target.files[0];
     if (!file || !supabase) return;
+    if (!isAdmin) {
+  setMessage("Keine Berechtigung. Nur Admins dürfen Bilder hochladen.");
+  return;
+}
     setMessage("Bild wird hochgeladen...");
     const fileExt = file.name.split(".").pop();
     const fileName = `${Date.now()}.${fileExt}`;
