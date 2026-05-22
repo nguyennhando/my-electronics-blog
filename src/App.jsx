@@ -132,6 +132,10 @@ function getIcon(category) {
   if (category === "IoT") return RadioTower;
   if (category === "Robotik") return Bot;
   if (category === "Messtechnik") return Gauge;
+  if (category === "Über mich") return Globe;
+  if (category === "Karriere & Weiterbildung") return ShieldCheck;
+  if (category === "WinCC & HMI") return MonitorSmartphone;
+  if (category === "Technische Erfahrungen") return Wrench;
   return Cpu;
 }
 
@@ -1347,6 +1351,14 @@ function Home({ adminVisible, setAdminVisible }) {
                         <option>Softwareentwicklung</option>
                         <option>Desktop-Softwareentwicklung</option>
                         <option>Technische Softwareentwicklung</option>
+                        <option>WinCC & HMI</option>
+                        <option>SCADA-Systeme</option>
+                        <option>Über mich</option>
+                        <option>Persönliche Entwicklung</option>
+                        <option>Beruflicher Werdegang</option>
+                        <option>Leben in Deutschland</option>
+                        <option>Technische Erfahrungen</option>
+                        <option>Karriere & Weiterbildung</option>
                       </select>
 
                       <select
