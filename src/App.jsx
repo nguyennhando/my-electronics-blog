@@ -278,20 +278,26 @@ function HeroSlideshow({ slides, onDiscover }) {
     <section className="relative mx-auto grid max-w-7xl items-center gap-8 px-4 py-10 sm:px-5 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-24">
       {/* ── LEFT: Staggered text ── */}
       <div className="relative z-10">
-        {/* Static badge */}
-        <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-2 text-xs text-cyan-300 sm:px-4 sm:text-sm">
-          <ShieldCheck className="h-4 w-4" /> Geschützter Adminbereich mit Supabase Auth
-        </div>
-
+      
+        <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-4 py-2 backdrop-blur-sm">
+  <CircuitBoard className="h-4 w-4 text-cyan-400" />
+  <span className="text-sm font-medium text-cyan-300">
+    Elektronik · Embedded · Automation
+  </span>
+</div>
+      
         {/* Static main headline */}
         <h2 className="max-w-4xl text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-        Technische Projekte dokumentieren und weiterentwickeln.
+        Technik. Dokumentation. Entwicklung.
         </h2>
 
         {/* Static description */}
         <p className="mt-5 max-w-2xl text-[15px] leading-7 text-zinc-300 sm:mt-8 sm:text-lg sm:leading-9">
-          Eine eigenständig von mir entwickelte Plattform zur Dokumentation von Elektronik-, Embedded- und Automatisierungsprojekten.
-          Die Website basiert auf React, Vite, Tailwind CSS und Supabase und ermöglicht die zentrale Verwaltung technischer Dokumentationen, Source Codes und Entwicklungsprozesse.
+          Diese Website habe ich selbst entwickelt, um technische Projekte,
+          Lernfortschritte und praktische Erfahrungen im Bereich Elektronik,
+          Embedded Systems und Automatisierung zu dokumentieren.
+          Sowohl die Projekte als auch die Entwicklung dieser Plattform selbst
+          sind Teil meines kontinuierlichen Lern- und Entwicklungsprozesses.
         </p>
 
         {/* CTA buttons */}
@@ -728,8 +734,8 @@ function Home() {
 
   // Build hero slides from posts
   const heroSlides = useMemo(
-    () =>
-      posts.map((p) => ({
+  () =>
+    posts.slice(0, 10).map((p) => ({
         image: p.image_url,
         category: p.category,
         readTime: p.read_time || "5 Min.",
