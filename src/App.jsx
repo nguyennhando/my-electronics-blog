@@ -339,12 +339,12 @@ function HeroSlideshow({ slides, onDiscover }) {
           variants={glowVariants}
           initial="initial"
           animate="animate"
-          className="pointer-events-none absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-cyan-400/20 via-blue-500/20 to-purple-500/20 blur-3xl"
+          className="pointer-events-none absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-cyan-400/10 blur-3xl"
         />
 
         {/* Card wrapper with gradient border */}
-        <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] lg:max-w-none">
-          {/* Animated border gradient */}
+        <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] lg:max-w-none shadow-2xl shadow-cyan-500/10">
+        
           
         <div className="relative overflow-hidden rounded-[1.95rem] bg-[#080d1f]" style={{ height: "720px" }}>
             <AnimatePresence mode="wait">
