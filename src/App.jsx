@@ -40,6 +40,86 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
 
+
+const STORAGE_BUCKET = "blog-images";
+const MAX_IMAGE_SIZE_BYTES = 2 * 1024 * 1024; // 2MB
+const MAX_POST_GALLERY_IMAGES = 6;
+const MAX_PROJECT_GALLERY_IMAGES = 12;
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
+function normalizeImageList(value) {
+  if (!value) return [];
+  if (Array.isArray(value)) return value.filter(Boolean);
+  if (typeof value === "string") {
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+    } catch {
+      return value
+        .split("\n")
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
+  }
+  return [];
+}
+
+function uniqueImageUrls(urls) {
+  return [...new Set((urls || []).filter(Boolean))];
+}
+
+function validateImageFile(file) {
+  if (!file) return "Keine Datei ausgewählt.";
+  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+    return "Nur JPG, PNG oder WEBP erlaubt.";
+  }
+  if (file.size > MAX_IMAGE_SIZE_BYTES) {
+    return "Bild zu groß. Maximal 2MB erlaubt.";
+  }
+  return null;
+}
+
+function getStoragePathFromPublicUrl(url) {
+  if (!url || !supabaseUrl || !url.startsWith(supabaseUrl)) return null;
+  const marker = `/storage/v1/object/public/${STORAGE_BUCKET}/`;
+  const markerIndex = url.indexOf(marker);
+  if (markerIndex < 0) return null;
+  const rawPath = url.slice(markerIndex + marker.length).split("?")[0];
+  try {
+    return decodeURIComponent(rawPath);
+  } catch {
+    return rawPath;
+  }
+}
+
+async function removeStorageImages(urls) {
+  if (!supabase) return;
+  const paths = uniqueImageUrls(urls)
+    .map(getStoragePathFromPublicUrl)
+    .filter(Boolean);
+  if (!paths.length) return;
+  await supabase.storage.from(STORAGE_BUCKET).remove(paths);
+}
+
+async function uploadValidatedImage(file, folder = "posts") {
+  const validationError = validateImageFile(file);
+  if (validationError) throw new Error(validationError);
+
+  const fileExt = file.name.split(".").pop()?.toLowerCase() || "webp";
+  const safeExt = ["jpg", "jpeg", "png", "webp"].includes(fileExt) ? fileExt : "webp";
+  const fileName = `${folder}/${Date.now()}-${crypto.randomUUID()}.${safeExt}`;
+
+  const { error } = await supabase.storage.from(STORAGE_BUCKET).upload(fileName, file, {
+    cacheControl: "31536000",
+    contentType: file.type,
+    upsert: false,
+  });
+  if (error) throw error;
+
+  const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(fileName);
+  return data.publicUrl;
+}
+
 const demoPosts = [
   {
     id: "demo-1",
@@ -47,6 +127,7 @@ const demoPosts = [
     category: "IoT",
     image_url:
       "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=1200&q=80",
+    image_gallery: [],
     excerpt:
       "Entwicklung einer modularen Smart-Home-Plattform zur Steuerung von Licht, Sensoren, Energieverbrauch und Sicherheitsfunktionen.",
     content:
@@ -65,6 +146,7 @@ const demoPosts = [
     category: "Messtechnik",
     image_url:
       "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=80",
+    image_gallery: [],
     excerpt:
       "Messsystem zur Analyse von Spannung, Strom, Leistung und Netzqualität in industriellen Verteilungen.",
     content:
@@ -83,6 +165,7 @@ const demoPosts = [
     category: "Robotik",
     image_url:
       "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80",
+    image_gallery: [],
     excerpt:
       "Kompakter Lernroboter mit Ultraschallsensor, PWM-Motorregelung und autonomer Navigation.",
     content:
@@ -182,6 +265,7 @@ function createEmptyPost() {
     category: "IoT",
     image_url:
       "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+    image_gallery: [],
     excerpt: "",
     content: "",
     tags: "ESP32, Sensorik",
@@ -637,7 +721,7 @@ function BlogPostPage() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [lightbox, setLightbox] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(null);
 
   useEffect(() => {
     async function loadPost() {
@@ -656,7 +740,7 @@ function BlogPostPage() {
       const { data, error } = await supabase
         .from("posts")
         .select(
-          "id,title,category,image_url,excerpt,content,tags,read_time,published,created_at,updated_at,external_link,project_status,sort_order"
+          "id,title,category,image_url,image_gallery,excerpt,content,tags,read_time,published,created_at,updated_at,external_link,project_status,sort_order"
         )
         .eq("id", id)
         .single();
@@ -695,14 +779,17 @@ function BlogPostPage() {
     );
   }
 
+  const postImages = uniqueImageUrls([post.image_url, ...normalizeImageList(post.image_gallery)]);
+  const activeLightboxImage = lightboxIndex !== null ? postImages[lightboxIndex] : null;
+
   return (
     <div className="min-h-screen bg-[#050816] px-4 pb-10 pt-[120px] text-white sm:px-6 sm:pb-20 sm:pt-[140px]">
       <Background />
       <div className="mx-auto max-w-5xl">
-        {lightbox && (
+        {activeLightboxImage && (
           <div
             className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-md px-4"
-            onClick={() => setLightbox(false)}
+            onClick={() => setLightboxIndex(null)}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.88 }}
@@ -712,16 +799,34 @@ function BlogPostPage() {
               onClick={(e) => e.stopPropagation()}
             >
               <img
-                src={post.image_url}
+                src={activeLightboxImage}
                 alt={post.title}
                 className="w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl"
               />
+              {postImages.length > 1 && (
+                <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setLightboxIndex((prev) => (prev - 1 + postImages.length) % postImages.length)}
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLightboxIndex((prev) => (prev + 1) % postImages.length)}
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
+                </div>
+              )}
               <button
-  onClick={() => setLightbox(false)}
-  className="absolute -top-4 -right-4 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400 text-black shadow-xl shadow-cyan-500/40 hover:bg-cyan-300 transition"
->
-  <X className="h-5 w-5 stroke-[3]" />
-</button>
+                onClick={() => setLightboxIndex(null)}
+                className="absolute -top-4 -right-4 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400 text-black shadow-xl shadow-cyan-500/40 hover:bg-cyan-300 transition"
+              >
+                <X className="h-5 w-5 stroke-[3]" />
+              </button>
             </motion.div>
           </div>
         )}
@@ -734,9 +839,27 @@ function BlogPostPage() {
           <img
             src={post.image_url}
             alt={post.title}
-            onClick={() => setLightbox(true)}
+            onClick={() => setLightboxIndex(0)}
             className="h-72 w-full object-cover sm:h-[420px] cursor-zoom-in transition duration-300 hover:brightness-110"
           />
+          {postImages.length > 1 && (
+            <div className="grid grid-cols-2 gap-3 border-b border-white/10 p-4 sm:grid-cols-4">
+              {postImages.slice(1, MAX_POST_GALLERY_IMAGES + 1).map((url, index) => (
+                <button
+                  key={url}
+                  type="button"
+                  onClick={() => setLightboxIndex(index + 1)}
+                  className="overflow-hidden rounded-2xl border border-white/10"
+                >
+                  <img
+                    src={url}
+                    alt={`${post.title} ${index + 2}`}
+                    className="h-28 w-full cursor-zoom-in object-cover transition duration-300 hover:scale-105 hover:brightness-110"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
           <div className="p-6 sm:p-10">
             <div className="mb-5 flex flex-wrap gap-3 text-sm text-zinc-400">
               <span className="rounded-full bg-cyan-400 px-4 py-2 font-bold text-black">
@@ -873,6 +996,8 @@ function Home({ adminVisible, setAdminVisible }) {
   const [posts, setPosts] = useState(demoPosts);
   const [selectedPost, setSelectedPost] = useState(demoPosts[0]);
   const [blogImageLightbox, setBlogImageLightbox] = useState(null);
+  const [projectGalleryLightbox, setProjectGalleryLightbox] = useState(null);
+  const [projectGalleryImages, setProjectGalleryImages] = useState([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Alle");
   const [editingPost, setEditingPost] = useState(createEmptyPost());
@@ -918,6 +1043,7 @@ function Home({ adminVisible, setAdminVisible }) {
 
   useEffect(() => {
   loadPosts();
+  loadProjectGalleryImages();
 }, [session, isAdmin]);
 
   useEffect(() => {
@@ -1001,24 +1127,164 @@ function Home({ adminVisible, setAdminVisible }) {
     setMessage("Sie wurden abgemeldet.");
   }
 
-  async function uploadImage(e) {
-    const file = e.target.files[0];
-    if (!file || !supabase) return;
-    if (!isAdmin) {
-  setMessage("Keine Berechtigung. Nur Admins dürfen Bilder hochladen.");
-  return;
-}
-    setMessage("Bild wird hochgeladen...");
-    const fileExt = file.name.split(".").pop();
-    const fileName = `${Date.now()}.${fileExt}`;
-    const { error } = await supabase.storage.from("blog-images").upload(fileName, file);
-    if (error) {
-      setMessage("Bild Upload fehlgeschlagen.");
+  async function loadProjectGalleryImages() {
+    const fallbackImages = [
+      "/my-electronics-blog/images/finance-main.jpg",
+      "/my-electronics-blog/images/finance-chart.jpg",
+      "/my-electronics-blog/images/finance-dashboard.jpg",
+    ];
+
+    if (!supabase) {
+      setProjectGalleryImages(fallbackImages);
       return;
     }
-    const { data } = supabase.storage.from("blog-images").getPublicUrl(fileName);
-    setEditingPost((prev) => ({ ...prev, image_url: data.publicUrl }));
-    setMessage("Bild erfolgreich hochgeladen.");
+
+    const { data, error } = await supabase
+      .from("project_gallery_images")
+      .select("id,image_url,alt,sort_order,created_at")
+      .order("sort_order", { ascending: true, nullsFirst: false })
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      setProjectGalleryImages(fallbackImages);
+      return;
+    }
+
+    // Luôn giữ 3 ảnh gốc hiển thị như thiết kế ban đầu.
+    // Ảnh upload thêm từ Admin sẽ nằm sau và xem được bằng nút next/prev trong lightbox.
+    setProjectGalleryImages([...fallbackImages, ...(data || [])]);
+  }
+
+  async function uploadProjectGalleryImages(e) {
+    const files = Array.from(e.target.files || []);
+    e.target.value = "";
+    if (!files.length || !supabase) return;
+    if (!isAdmin) {
+      setMessage("Keine Berechtigung. Nur Admins dürfen Galerie-Bilder hochladen.");
+      return;
+    }
+    const customGalleryCount = projectGalleryImages.filter((image) => image && typeof image === "object" && image.id).length;
+    if (customGalleryCount + files.length > MAX_PROJECT_GALLERY_IMAGES) {
+      setMessage(`Zu viele Galerie-Bilder. Maximal ${MAX_PROJECT_GALLERY_IMAGES} hochgeladene Bilder erlaubt.`);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setMessage("Galerie-Bilder werden hochgeladen...");
+      const uploadedUrls = [];
+      for (const file of files) {
+        uploadedUrls.push(await uploadValidatedImage(file, "project-gallery"));
+      }
+      const rows = uploadedUrls.map((image_url, index) => ({
+        image_url,
+        alt: "Projektbild",
+        sort_order: customGalleryCount + index + 1,
+      }));
+      const { error } = await supabase.from("project_gallery_images").insert(rows);
+      if (error) throw error;
+      setMessage("Galerie-Bilder wurden hochgeladen.");
+      await loadProjectGalleryImages();
+    } catch (error) {
+      setMessage(error.message || "Galerie Upload fehlgeschlagen.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function deleteProjectGalleryImage(image) {
+    if (!supabase || !isAdmin || !image?.id) return;
+    const confirmed = window.confirm("Dieses Galerie-Bild wirklich löschen?");
+    if (!confirmed) return;
+    setLoading(true);
+    const { error } = await supabase.from("project_gallery_images").delete().eq("id", image.id);
+    if (!error) await removeStorageImages([image.image_url]);
+    setLoading(false);
+    if (error) {
+      setMessage("Galerie-Bild konnte nicht gelöscht werden.");
+      return;
+    }
+    setMessage("Galerie-Bild wurde gelöscht und Storage bereinigt.");
+    await loadProjectGalleryImages();
+  }
+
+  async function replaceProjectGalleryImage(e, image) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file || !supabase || !isAdmin || !image?.id) return;
+    try {
+      setLoading(true);
+      const newUrl = await uploadValidatedImage(file, "project-gallery");
+      const { error } = await supabase
+        .from("project_gallery_images")
+        .update({ image_url: newUrl })
+        .eq("id", image.id);
+      if (error) throw error;
+      await removeStorageImages([image.image_url]);
+      setMessage("Galerie-Bild wurde ersetzt und altes Bild gelöscht.");
+      await loadProjectGalleryImages();
+    } catch (error) {
+      setMessage(error.message || "Galerie-Bild konnte nicht ersetzt werden.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function uploadImage(e) {
+    const file = e.target.files[0];
+    e.target.value = "";
+    if (!file || !supabase) return;
+    if (!isAdmin) {
+      setMessage("Keine Berechtigung. Nur Admins dürfen Bilder hochladen.");
+      return;
+    }
+
+    try {
+      setMessage("Bild wird hochgeladen...");
+      const publicUrl = await uploadValidatedImage(file, "posts");
+      setEditingPost((prev) => ({ ...prev, image_url: publicUrl }));
+      setMessage("Bild erfolgreich hochgeladen.");
+    } catch (error) {
+      setMessage(error.message || "Bild Upload fehlgeschlagen.");
+    }
+  }
+
+  async function uploadPostGalleryImages(e) {
+    const files = Array.from(e.target.files || []);
+    e.target.value = "";
+    if (!files.length || !supabase) return;
+    if (!isAdmin) {
+      setMessage("Keine Berechtigung. Nur Admins dürfen Bilder hochladen.");
+      return;
+    }
+    const currentImages = normalizeImageList(editingPost.image_gallery);
+    if (currentImages.length + files.length > MAX_POST_GALLERY_IMAGES) {
+      setMessage(`Zu viele Bilder im Beitrag. Maximal ${MAX_POST_GALLERY_IMAGES} Zusatzbilder erlaubt.`);
+      return;
+    }
+
+    try {
+      setMessage("Zusatzbilder werden hochgeladen...");
+      const uploadedUrls = [];
+      for (const file of files) {
+        uploadedUrls.push(await uploadValidatedImage(file, "posts/gallery"));
+      }
+      setEditingPost((prev) => ({
+        ...prev,
+        image_gallery: uniqueImageUrls([...normalizeImageList(prev.image_gallery), ...uploadedUrls]),
+      }));
+      setMessage("Zusatzbilder wurden hochgeladen.");
+    } catch (error) {
+      setMessage(error.message || "Zusatzbilder Upload fehlgeschlagen.");
+    }
+  }
+
+  function removePostGalleryImage(url) {
+    setEditingPost((prev) => ({
+      ...prev,
+      image_gallery: normalizeImageList(prev.image_gallery).filter((item) => item !== url),
+    }));
+    setMessage("Bild aus dem Beitrag entfernt. Beim Speichern wird Storage bereinigt.");
   }
 
   async function savePost(e) {
@@ -1031,6 +1297,7 @@ function Home({ adminVisible, setAdminVisible }) {
       title: editingPost.title.trim(),
       category: editingPost.category,
       image_url: editingPost.image_url.trim(),
+      image_gallery: normalizeImageList(editingPost.image_gallery).slice(0, MAX_POST_GALLERY_IMAGES),
       excerpt: editingPost.excerpt.trim(),
       content: editingPost.content.trim(),
       tags:
@@ -1055,12 +1322,21 @@ function Home({ adminVisible, setAdminVisible }) {
       ? supabase.from("posts").update(payload).eq("id", editingPost.id).select().single()
       : supabase.from("posts").insert(payload).select().single();
     const { data, error } = await request;
+
+    if (!error && editingMode) {
+      const originalPost = posts.find((post) => String(post.id) === String(editingPost.id));
+      const oldUrls = uniqueImageUrls([originalPost?.image_url, ...normalizeImageList(originalPost?.image_gallery)]);
+      const newUrls = uniqueImageUrls([payload.image_url, ...payload.image_gallery]);
+      const unusedUrls = oldUrls.filter((url) => !newUrls.includes(url));
+      await removeStorageImages(unusedUrls);
+    }
+
     setLoading(false);
     if (error) {
       setMessage("Speichern fehlgeschlagen. Prüfen Sie Adminrechte und RLS-Policies.");
       return;
     }
-    setMessage("Beitrag wurde sicher gespeichert.");
+    setMessage("Beitrag wurde sicher gespeichert und Storage bereinigt.");
     setEditingPost(createEmptyPost());
     setEditingMode(false);
     await loadPosts();
@@ -1074,6 +1350,7 @@ function Home({ adminVisible, setAdminVisible }) {
       ...post,
       tags: Array.isArray(post.tags) ? post.tags.join(", ") : "",
       external_link: post.external_link || "",
+      image_gallery: normalizeImageList(post.image_gallery),
       project_status: normalizeProjectStatus(post.project_status),
       sort_order: Number.isFinite(Number(post.sort_order)) ? post.sort_order : 100,
     });
@@ -1087,13 +1364,21 @@ function Home({ adminVisible, setAdminVisible }) {
     const confirmed = window.confirm("Diesen Beitrag wirklich löschen?");
     if (!confirmed) return;
     setLoading(true);
+
+    const postToDelete = posts.find((post) => String(post.id) === String(id));
+    const urlsToDelete = uniqueImageUrls([
+      postToDelete?.image_url,
+      ...normalizeImageList(postToDelete?.image_gallery),
+    ]);
+
     const { error } = await supabase.from("posts").delete().eq("id", id);
+    if (!error) await removeStorageImages(urlsToDelete);
     setLoading(false);
     if (error) {
       setMessage("Löschen fehlgeschlagen. Prüfen Sie Adminrechte und RLS-Policies.");
       return;
     }
-    setMessage("Beitrag wurde gelöscht.");
+    setMessage("Beitrag wurde gelöscht und Storage bereinigt.");
     await loadPosts();
   }
 
@@ -1387,7 +1672,7 @@ function Home({ adminVisible, setAdminVisible }) {
                         <label className="mb-2 block text-sm text-zinc-400">Bild hochladen</label>
                         <input
                           type="file"
-                          accept="image/*"
+                          accept="image/jpeg,image/png,image/webp"
                           onChange={uploadImage}
                           className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white file:mr-4 file:rounded-xl file:border-0 file:bg-cyan-400 file:px-4 file:py-2 file:font-bold file:text-black hover:file:bg-cyan-300"
                         />
@@ -1397,6 +1682,33 @@ function Home({ adminVisible, setAdminVisible }) {
                             alt="Preview"
                             className="mt-4 h-48 w-full rounded-2xl object-cover border border-white/10"
                           />
+                        )}
+                      </div>
+
+                      <div className="lg:col-span-2">
+                        <label className="mb-2 block text-sm text-zinc-400">Zusatzbilder zum Beitrag</label>
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp"
+                          multiple
+                          onChange={uploadPostGalleryImages}
+                          className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white file:mr-4 file:rounded-xl file:border-0 file:bg-cyan-400 file:px-4 file:py-2 file:font-bold file:text-black hover:file:bg-cyan-300"
+                        />
+                        {!!normalizeImageList(editingPost.image_gallery).length && (
+                          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                            {normalizeImageList(editingPost.image_gallery).map((url) => (
+                              <div key={url} className="relative overflow-hidden rounded-2xl border border-white/10">
+                                <img src={url} alt="Zusatzbild" className="h-32 w-full object-cover" />
+                                <button
+                                  type="button"
+                                  onClick={() => removePostGalleryImage(url)}
+                                  className="absolute right-2 top-2 rounded-full bg-red-500/90 p-2 text-white hover:bg-red-500"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
                         )}
                       </div>
 
@@ -1694,53 +2006,175 @@ function Home({ adminVisible, setAdminVisible }) {
 
         {/* ── Gallery ── */}
         <section id="projekte" className="mx-auto max-w-7xl px-4 py-16 sm:px-5 sm:py-24">
-          <div className="mb-10">
-            <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">Galerie</p>
-            <h2 className="mt-3 text-4xl font-black sm:text-5xl">Projektbilder</h2>
-          </div>
-          <div className="grid gap-6 lg:grid-cols-3">
-            <GradientBorder
-              gradient="from-cyan-400 via-cyan-500 to-cyan-400"
-              rounded="rounded-[2rem]"
-              className="group lg:col-span-2"
-              innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]"
-            >
-              <img
-                src="/my-electronics-blog/images/finance-main.jpg"
-                alt={selectedPost.title}
-                className="h-[520px] w-full object-cover transition duration-700 group-hover:scale-105"
-              />
-            </GradientBorder>
-            <div className="grid gap-6">
-              <GradientBorder
-                gradient="from-cyan-400 via-cyan-500 to-cyan-400"
-                rounded="rounded-[2rem]"
-                className="group"
-                innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]"
-              >
-                <img
-                  src="/my-electronics-blog/images/finance-chart.jpg"
-                  alt="Diagramm"
-                  className="h-[247px] w-full object-cover transition duration-700 group-hover:scale-110"
-                />
-              </GradientBorder>
-              <GradientBorder
-                gradient="from-cyan-400 via-cyan-500 to-cyan-400"
-                rounded="rounded-[2rem]"
-                className="group"
-                innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]"
-              >
-                <img
-                  src="/my-electronics-blog/images/finance-dashboard.jpg"
-                  alt="Dashboard"
-                  className="h-[247px] w-full object-cover transition duration-700 group-hover:scale-110"
-                />
-              </GradientBorder>
+          <div className="mb-10 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">Galerie</p>
+              <h2 className="mt-3 text-4xl font-black sm:text-5xl">Projektbilder</h2>
             </div>
+            {isAdmin && (
+              <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-5 py-3 font-black text-black transition hover:bg-cyan-300">
+                <Plus className="h-5 w-5" /> Galerie-Bilder hinzufügen
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  multiple
+                  onChange={uploadProjectGalleryImages}
+                  className="hidden"
+                />
+              </label>
+            )}
           </div>
+
+          {projectGalleryLightbox !== null && projectGalleryImages[projectGalleryLightbox] && (
+            <div
+              className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 px-4 backdrop-blur-md"
+              onClick={() => setProjectGalleryLightbox(null)}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.88 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.25 }}
+                className="relative max-h-[90vh] w-full max-w-5xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={projectGalleryImages[projectGalleryLightbox].image_url || projectGalleryImages[projectGalleryLightbox]}
+                  alt={projectGalleryImages[projectGalleryLightbox].alt || "Projektbild"}
+                  className="max-h-[85vh] w-full rounded-2xl object-contain shadow-2xl"
+                />
+                {projectGalleryImages.length > 1 && (
+                  <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setProjectGalleryLightbox((prev) => (prev - 1 + projectGalleryImages.length) % projectGalleryImages.length)}
+                      className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"
+                    >
+                      <ChevronLeft className="h-5 w-5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setProjectGalleryLightbox((prev) => (prev + 1) % projectGalleryImages.length)}
+                      className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"
+                    >
+                      <ChevronRight className="h-5 w-5" />
+                    </button>
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setProjectGalleryLightbox(null)}
+                  className="absolute -right-4 -top-4 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400 text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-300"
+                  aria-label="Bild schließen"
+                >
+                  <X className="h-5 w-5 stroke-[3]" />
+                </button>
+              </motion.div>
+            </div>
+          )}
+
+          {(() => {
+            // Chỉ 3 ảnh đầu hiển thị ngoài trang để giữ layout cũ.
+            // Toàn bộ ảnh còn lại vẫn xem được khi bấm zoom và dùng next/prev.
+            const visibleGalleryItems = projectGalleryImages.slice(0, 3);
+            const uploadedGalleryItems = projectGalleryImages.filter(
+              (image) => image && typeof image === "object" && image.id
+            );
+
+            const renderGalleryCard = (image, index, size = "small") => {
+              const imageUrl = image.image_url || image;
+              const imageAlt = image.alt || (index === 0 ? selectedPost.title : "Projektbild");
+              const heightClass = size === "large" ? "h-[520px]" : "h-[247px]";
+
+              return (
+                <GradientBorder
+                  key={image.id || imageUrl}
+                  gradient="from-cyan-400 via-cyan-500 to-cyan-400"
+                  rounded="rounded-[2rem]"
+                  className="group"
+                  innerClassName="relative overflow-hidden rounded-[1.95rem] bg-[#07111f]"
+                >
+                  <img
+                    src={imageUrl}
+                    alt={imageAlt}
+                    onClick={() => setProjectGalleryLightbox(index)}
+                    className={`${heightClass} w-full cursor-zoom-in object-cover object-center transition duration-700 group-hover:scale-105 group-hover:brightness-110`}
+                  />
+                </GradientBorder>
+              );
+            };
+
+            return (
+              <>
+                <div className="grid gap-6 lg:grid-cols-3">
+                  <div className="lg:col-span-2">
+                    {visibleGalleryItems[0] && renderGalleryCard(visibleGalleryItems[0], 0, "large")}
+                  </div>
+
+                  <div className="grid gap-6">
+                    {visibleGalleryItems.slice(1, 3).map((image, index) =>
+                      renderGalleryCard(image, index + 1, "small")
+                    )}
+                  </div>
+                </div>
+
+                {isAdmin && uploadedGalleryItems.length > 0 && (
+                  <div className="mt-8 rounded-[2rem] border border-white/10 bg-[#07111f]/80 p-4 sm:p-5">
+                    <div className="mb-4 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+                      <div>
+                        <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">
+                          Galerie-Verwaltung
+                        </p>
+                        <p className="text-sm text-zinc-400">
+                          Hier kannst du hochgeladene Galerie-Bilder ersetzen oder löschen. Die 3 sichtbaren Galerie-Bilder bleiben im Layout unverändert.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                      {uploadedGalleryItems.map((image) => {
+                        const imageIndex = projectGalleryImages.findIndex(
+                          (item) => item && typeof item === "object" && item.id === image.id
+                        );
+
+                        return (
+                          <div key={image.id} className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20">
+                            <img
+                              src={image.image_url}
+                              alt={image.alt || "Projektbild"}
+                              onClick={() => setProjectGalleryLightbox(imageIndex)}
+                              className="h-36 w-full cursor-zoom-in object-cover transition duration-300 hover:brightness-110"
+                            />
+                            <div className="absolute right-2 top-2 flex gap-2">
+                              <label className="cursor-pointer rounded-full bg-cyan-400 p-2 text-black shadow-lg hover:bg-cyan-300">
+                                <Edit3 className="h-4 w-4" />
+                                <input
+                                  type="file"
+                                  accept="image/jpeg,image/png,image/webp"
+                                  onChange={(e) => replaceProjectGalleryImage(e, image)}
+                                  className="hidden"
+                                />
+                              </label>
+                              <button
+                                type="button"
+                                onClick={() => deleteProjectGalleryImage(image)}
+                                className="rounded-full bg-red-500 p-2 text-white shadow-lg hover:bg-red-400"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </>
+            );
+          })()}
         </section>
 
-        {/* ── Contact ── */}
+        
+{/* ── Contact ── */}
         <section id="kontakt" className="mx-auto max-w-7xl px-4 pb-12 sm:px-5 sm:pb-24">
           <div className="rounded-[1.5rem] bg-cyan-400 p-4 text-black shadow-2xl shadow-cyan-500/30 sm:rounded-[2.5rem] sm:p-8 lg:p-12">
             <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
