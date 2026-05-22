@@ -343,11 +343,10 @@ function HeroSlideshow({ slides, onDiscover }) {
         />
 
         {/* Card wrapper with gradient border */}
-        <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] p-[2px] lg:max-w-none">
+        <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] lg:max-w-none">
           {/* Animated border gradient */}
-          <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-400 opacity-90" />
-
-          <div className="relative overflow-hidden rounded-[1.95rem] bg-[#080d1f]" style={{ height: "720px" }}>
+          
+        <div className="relative overflow-hidden rounded-[1.95rem] bg-[#080d1f]" style={{ height: "720px" }}>
             <AnimatePresence mode="wait">
               <motion.div
   key={current}
