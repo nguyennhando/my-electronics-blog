@@ -56,6 +56,8 @@ const demoPosts = [
     created_at: "2026-05-14T12:00:00Z",
     read_time: "8 Min.",
     external_link: "https://github.com/nguyennhando",
+    project_status: "done",
+    sort_order: 10,
   },
   {
     id: "demo-2",
@@ -72,6 +74,8 @@ const demoPosts = [
     created_at: "2026-05-08T12:00:00Z",
     read_time: "6 Min.",
     external_link: "",
+    project_status: "in_progress",
+    sort_order: 20,
   },
   {
     id: "demo-3",
@@ -88,6 +92,8 @@ const demoPosts = [
     created_at: "2026-04-29T12:00:00Z",
     read_time: "5 Min.",
     external_link: "",
+    project_status: "idea",
+    sort_order: 30,
   },
 ];
 
@@ -138,6 +144,33 @@ function formatDate(date) {
   }).format(new Date(date));
 }
 
+function normalizeProjectStatus(status) {
+  if (["idea", "in_progress", "done"].includes(status)) return status;
+  return "done";
+}
+
+function isIdeaPost(post) {
+  return normalizeProjectStatus(post?.project_status) === "idea";
+}
+
+function getProjectStatusLabel(status) {
+  const normalized = normalizeProjectStatus(status);
+  if (normalized === "idea") return "Idee · Offline";
+  if (normalized === "in_progress") return "In Arbeit";
+  return "Umgesetzt";
+}
+
+function getProjectStatusClasses(status) {
+  const normalized = normalizeProjectStatus(status);
+  if (normalized === "idea") {
+    return "border-zinc-500/30 bg-zinc-500/15 text-zinc-300";
+  }
+  if (normalized === "in_progress") {
+    return "border-yellow-400/30 bg-yellow-400/10 text-yellow-300";
+  }
+  return "border-emerald-400/30 bg-emerald-400/10 text-emerald-300";
+}
+
 function createEmptyPost() {
   return {
     id: null,
@@ -151,6 +184,8 @@ function createEmptyPost() {
     read_time: "5 Min.",
     published: true,
     external_link: "",
+    project_status: "done",
+    sort_order: 100,
   };
 }
 
@@ -513,7 +548,7 @@ function BlogPostPage() {
       const { data, error } = await supabase
         .from("posts")
         .select(
-          "id,title,category,image_url,excerpt,content,tags,read_time,published,created_at,updated_at,external_link"
+          "id,title,category,image_url,excerpt,content,tags,read_time,published,created_at,updated_at,external_link,project_status,sort_order"
         )
         .eq("id", id)
         .single();
@@ -816,6 +851,7 @@ function Home() {
   let query = supabase
     .from("posts")
     .select("*")
+    .order("sort_order", { ascending: true, nullsFirst: false })
     .order("created_at", { ascending: false });
 
   // Chỉ user thường mới filter published
@@ -900,6 +936,8 @@ function Home() {
       read_time: editingPost.read_time || "5 Min.",
       published: Boolean(editingPost.published),
       external_link: editingPost.external_link?.trim() || null,
+      project_status: normalizeProjectStatus(editingPost.project_status),
+      sort_order: Number.isFinite(Number(editingPost.sort_order)) ? Number(editingPost.sort_order) : 100,
     };
     if (!payload.title || !payload.excerpt || !payload.content) {
       setMessage("Titel, Kurzbeschreibung und Inhalt sind Pflichtfelder.");
@@ -929,6 +967,8 @@ function Home() {
       ...post,
       tags: Array.isArray(post.tags) ? post.tags.join(", ") : "",
       external_link: post.external_link || "",
+      project_status: normalizeProjectStatus(post.project_status),
+      sort_order: Number.isFinite(Number(post.sort_order)) ? post.sort_order : 100,
     });
   }
 
@@ -947,6 +987,48 @@ function Home() {
       return;
     }
     setMessage("Beitrag wurde gelöscht.");
+    await loadPosts();
+  }
+
+  async function movePostOrder(postId, direction) {
+    if (!supabase || !isAdmin) {
+      setMessage("Keine Berechtigung. Nur Admins dürfen die Reihenfolge ändern.");
+      return;
+    }
+
+    const ordered = [...posts].sort((a, b) => {
+      const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
+      const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
+      if (orderA !== orderB) return orderA - orderB;
+      return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+    });
+
+    const currentIndex = ordered.findIndex((post) => String(post.id) === String(postId));
+    const targetIndex = currentIndex + direction;
+    if (currentIndex < 0 || targetIndex < 0 || targetIndex >= ordered.length) return;
+
+    const currentPost = ordered[currentIndex];
+    const targetPost = ordered[targetIndex];
+    const currentOrder = Number.isFinite(Number(currentPost.sort_order)) ? Number(currentPost.sort_order) : (currentIndex + 1) * 10;
+    const targetOrder = Number.isFinite(Number(targetPost.sort_order)) ? Number(targetPost.sort_order) : (targetIndex + 1) * 10;
+
+    setLoading(true);
+    const { error: firstError } = await supabase
+      .from("posts")
+      .update({ sort_order: targetOrder })
+      .eq("id", currentPost.id);
+    const { error: secondError } = await supabase
+      .from("posts")
+      .update({ sort_order: currentOrder })
+      .eq("id", targetPost.id);
+    setLoading(false);
+
+    if (firstError || secondError) {
+      setMessage("Reihenfolge konnte nicht gespeichert werden. Prüfen Sie Adminrechte und RLS-Policies.");
+      return;
+    }
+
+    setMessage("Reihenfolge wurde gespeichert.");
     await loadPosts();
   }
 
@@ -1248,6 +1330,28 @@ function Home() {
                         <option>Technische Softwareentwicklung</option>
                       </select>
 
+                      <select
+                        value={editingPost.project_status || "done"}
+                        onChange={(e) =>
+                          setEditingPost({ ...editingPost, project_status: e.target.value })
+                        }
+                        className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4"
+                      >
+                        <option value="idea">Idee / Offline</option>
+                        <option value="in_progress">In Arbeit</option>
+                        <option value="done">Umgesetzt</option>
+                      </select>
+
+                      <input
+                        type="number"
+                        value={editingPost.sort_order ?? 100}
+                        onChange={(e) =>
+                          setEditingPost({ ...editingPost, sort_order: e.target.value })
+                        }
+                        placeholder="Reihenfolge: kleine Zahl = weiter vorne"
+                        className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4"
+                      />
+
                       <div className="lg:col-span-2">
                         <label className="mb-2 block text-sm text-zinc-400">Bild hochladen</label>
                         <input
@@ -1432,10 +1536,11 @@ function Home() {
           <div className="grid auto-rows-fr gap-4 min-[620px]:grid-cols-2 xl:grid-cols-3 xl:gap-6">
             {filteredPosts.map((post) => {
               const Icon = getIcon(post.category);
+              const idea = isIdeaPost(post);
               return (
-                <motion.div whileHover={{ y: -5 }} key={post.id} className="group flex h-full">
+                <motion.div whileHover={idea ? undefined : { y: -5 }} key={post.id} className={`group flex h-full ${idea ? "opacity-75 grayscale" : ""}`}>
                   <GradientBorder
-                    gradient="from-cyan-400 via-cyan-500 to-cyan-400"
+                    gradient={idea ? "from-zinc-600 via-zinc-500 to-zinc-600" : "from-cyan-400 via-cyan-500 to-cyan-400"}
                     rounded="rounded-[1.4rem] sm:rounded-[2rem]"
                     className="flex flex-1"
                     innerClassName="flex flex-1 flex-col overflow-hidden rounded-[1.35rem] sm:rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl min-h-[560px]"
@@ -1449,6 +1554,9 @@ function Home() {
                       <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
                         <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">
                           <Icon className="h-3.5 w-3.5" /> {post.category}
+                        </span>
+                        <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getProjectStatusClasses(post.project_status)}`}>
+                          {getProjectStatusLabel(post.project_status)}
                         </span>
                         <span className="inline-flex items-center gap-1">
                           <CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at)}
@@ -1471,14 +1579,40 @@ function Home() {
                         ))}
                       </div>
                       <div className="mt-auto flex gap-2 pt-6 sm:gap-3">
-                        <Link
-                          to={`/post/${post.id}`}
-                          className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base"
-                        >
-                          Beitrag lesen
-                        </Link>
+                        {idea ? (
+                          <button
+                            type="button"
+                            disabled
+                            className="flex-1 cursor-not-allowed rounded-2xl bg-zinc-700 px-4 py-3 text-center text-sm font-bold text-zinc-300 sm:px-5 sm:text-base"
+                          >
+                            Offline / Idee
+                          </button>
+                        ) : (
+                          <Link
+                            to={`/post/${post.id}`}
+                            className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base"
+                          >
+                            Beitrag lesen
+                          </Link>
+                        )}
                         {isAdmin && (
                           <>
+                            <button
+                              type="button"
+                              onClick={() => movePostOrder(post.id, -1)}
+                              className="rounded-2xl border border-white/10 px-3 py-2 text-sm font-black transition hover:bg-white/10"
+                              title="Weiter nach vorne"
+                            >
+                              ↑
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => movePostOrder(post.id, 1)}
+                              className="rounded-2xl border border-white/10 px-3 py-2 text-sm font-black transition hover:bg-white/10"
+                              title="Weiter nach hinten"
+                            >
+                              ↓
+                            </button>
                             <button
                               type="button"
                               onClick={() => editPost(post)}
