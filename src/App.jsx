@@ -347,7 +347,7 @@ function HeroSlideshow({ slides, onDiscover }) {
           {/* Animated border gradient */}
           <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 opacity-90" />
 
-          <div className="relative overflow-hidden rounded-[1.95rem] bg-[#080d1f]" style={{ height: "520px" }}>
+          <div className="relative overflow-hidden rounded-[1.95rem] bg-[#080d1f]" style={{ height: "720px" }}>
             <AnimatePresence mode="wait">
               <motion.div
   key={current}
@@ -362,7 +362,7 @@ function HeroSlideshow({ slides, onDiscover }) {
   className="flex flex-col h-full cursor-pointer"
 >
                 {/* Image */}
-                <div className="relative h-[280px] shrink-0 overflow-hidden">
+                <div className="relative h-[360px] lg:h-[420px] shrink-0 overflow-hidden">
                   <motion.img
                     src={slide.image}
                     alt={slide.title}
