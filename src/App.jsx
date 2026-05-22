@@ -969,13 +969,17 @@ function Home() {
   onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
   className="flex items-center gap-3"
 >
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-cyan-400 text-black shadow-lg shadow-cyan-500/30 sm:h-12 sm:w-12">
-              <CircuitBoard className="h-6 w-6" />
-            </div>
+<div className="flex h-12 w-12 overflow-hidden rounded-2xl sm:h-14 sm:w-14">
+  <img
+    src="/my-electronics-blog/images/logo.png"
+    alt="Logo"
+    className="h-full w-full scale-110 object-contain brightness-110 contrast-110"
+  />
+</div>
             <div>
-              <h1 className="text-base font-black text-white sm:text-xl">ElektronikLab</h1>
+              <h1 className="text-base font-black text-white sm:text-xl">Nguyen Nhan Do</h1>
               <p className="max-w-[190px] text-[10px] leading-tight text-zinc-400 sm:max-w-none sm:text-xs">
-                Sichere Elektronik- und Automatisierungsprojekte
+                Technik • Entwicklung • Lernen
               </p>
             </div>
           </Link>
