@@ -243,6 +243,7 @@ const glowVariants = {
 };
 
 function HeroSlideshow({ slides, onDiscover }) {
+  const navigate = useNavigate();
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const timerRef = useRef(null);
@@ -349,13 +350,17 @@ function HeroSlideshow({ slides, onDiscover }) {
           <div className="relative overflow-hidden rounded-[1.95rem] bg-[#080d1f]" style={{ height: "520px" }}>
             <AnimatePresence mode="wait">
               <motion.div
-                key={current}
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                className="flex flex-col h-full"
-              >
+  key={current}
+  variants={cardVariants}
+  initial="hidden"
+  animate="visible"
+  exit="exit"
+  whileHover={{ scale: 1.015 }}
+  onClick={() => navigate(`/post/${slide.id}`)}
+  onMouseEnter={() => clearInterval(timerRef.current)}
+  onMouseLeave={startTimer}
+  className="flex flex-col h-full cursor-pointer"
+>
                 {/* Image */}
                 <div className="relative h-[280px] shrink-0 overflow-hidden">
                   <motion.img
@@ -417,6 +422,12 @@ function HeroSlideshow({ slides, onDiscover }) {
                         </span>
                       ))}
                     </motion.div>
+                    <motion.div
+  variants={textItemVariants}
+  className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-cyan-300"
+>
+  Projekt öffnen <ArrowRight className="h-4 w-4" />
+</motion.div>
                   </motion.div>
                 </AnimatePresence>
               </motion.div>
@@ -734,7 +745,8 @@ function Home() {
   const heroSlides = useMemo(
   () =>
     posts.slice(0, 10).map((p) => ({
-        image: p.image_url,
+  id: p.id,
+  image: p.image_url,
         category: p.category,
         readTime: p.read_time || "5 Min.",
         title: p.title,
