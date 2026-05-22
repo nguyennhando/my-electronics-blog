@@ -770,8 +770,8 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    loadPosts();
-  }, [session]);
+  loadPosts();
+}, [session, isAdmin]);
 
   useEffect(() => {
     checkAdmin();
@@ -800,26 +800,29 @@ function Home() {
   }
 
   async function loadPosts() {
-    if (!supabase) return;
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("posts")
-      .select(
-        "id,title,category,image_url,excerpt,content,tags,read_time,published,created_at,updated_at,external_link"
-      )
-      .order("created_at", { ascending: false });
-    setLoading(false);
-    if (error) {
-      setMessage(
-        "Beiträge konnten nicht geladen werden. Prüfen Sie Supabase und RLS-Policies."
-      );
-      return;
-    }
-    if (data?.length) {
-      setPosts(data);
-      setSelectedPost(data[0]);
-    }
+  if (!supabase) return;
+
+  setLoading(true);
+
+  let query = supabase
+    .from("posts")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  // Chỉ user thường mới filter published
+  if (!isAdmin) {
+    query = query.eq("published", true);
   }
+
+  const { data, error } = await query;
+
+  setLoading(false);
+
+  if (data?.length) {
+    setPosts(data);
+    setSelectedPost(data[0]);
+  }
+}
 
   async function login(e) {
     e.preventDefault();
