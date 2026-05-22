@@ -282,7 +282,7 @@ function HeroSlideshow({ slides, onDiscover }) {
         <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-4 py-2 backdrop-blur-sm">
   <CircuitBoard className="h-4 w-4 text-cyan-400" />
   <span className="text-sm font-medium text-cyan-300">
-    Elektronik · Embedded · Automation
+    Elektrokonstruktion · Prüf- & Automatisierungstechnik
   </span>
 </div>
       
@@ -293,11 +293,9 @@ function HeroSlideshow({ slides, onDiscover }) {
 
         {/* Static description */}
         <p className="mt-5 max-w-2xl text-[15px] leading-7 text-zinc-300 sm:mt-8 sm:text-lg sm:leading-9">
-          Diese Website habe ich selbst entwickelt, um technische Projekte,
-          Lernfortschritte und praktische Erfahrungen im Bereich Elektronik,
-          Embedded Systems und Automatisierung zu dokumentieren.
-          Sowohl die Projekte als auch die Entwicklung dieser Plattform selbst
-          sind Teil meines kontinuierlichen Lern- und Entwicklungsprozesses.
+        Diese Website habe ich selbst entwickelt, um technische Projekte, Lernfortschritte und praktische Erfahrungen 
+        in den Bereichen Elektrotechnik, Leistungselektronik, Prüftechnik, Elektrokonstruktion, Softwareentwicklung und Automatisierungstechnik zu dokumentieren.
+        Zudem erweitere ich mein Wissen kontinuierlich im Bereich Embedded Systems durch praktische Projekte und eigene Entwicklungen
         </p>
 
         {/* CTA buttons */}
