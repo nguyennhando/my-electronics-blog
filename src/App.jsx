@@ -510,8 +510,8 @@ function HeroSlideshow({ slides, onDiscover }) {
         {/* Static description */}
         <p className="mt-5 max-w-2xl text-[15px] leading-7 text-zinc-300 sm:mt-8 sm:text-lg sm:leading-9">
         Diese Website habe ich selbst entwickelt, um technische Projekte, Lernfortschritte und praktische Erfahrungen 
-        in den Bereichen Elektrotechnik, Leistungselektronik, Prüftechnik, Elektrokonstruktion, Softwareentwicklung und Automatisierungstechnik zu dokumentieren.
-        Zudem erweitere ich mein Wissen kontinuierlich im Bereich Embedded Systems durch praktische Projekte und eigene Entwicklungen
+        im Bereich Elektronik, Embedded Systems, Messtechnik und technischer Softwareentwicklung zu dokumentieren.
+        Zudem erweitere ich mein Wissen kontinuierlich durch praktische Projekte, eigene Entwicklungen und technisches Selbststudium.
         </p>
 
         {/* CTA buttons */}
