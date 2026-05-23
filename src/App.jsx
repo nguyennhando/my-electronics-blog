@@ -1397,7 +1397,7 @@ function Home({ adminVisible, setAdminVisible }) {
         />
 
       {/* ── IMPORTANT TRANSPARENCY NOTICE ── */}
-<section className="mx-auto max-w-7xl px-4 py-8 sm:px-5">
+<section className="mx-auto max-w-7xl px-4 py-5 sm:px-5">
   <div className="relative overflow-hidden rounded-[2rem] border border-yellow-400/30 bg-gradient-to-br from-yellow-500/10 via-orange-500/10 to-red-500/10 p-[2px] shadow-2xl shadow-yellow-500/20">
 
     {/* Animated glow */}
@@ -1426,7 +1426,7 @@ function Home({ adminVisible, setAdminVisible }) {
           </div>
 
           {/* TEXT */}
-          <p className="mt-5 text-sm leading-8 text-zinc-300 sm:text-base sm:leading-8">
+          <p className="mt-5 text-sm leading-7 text-zinc-300 sm:text-base sm:leading-7">
             Die auf dieser Website gezeigten Fotos von Laborumgebungen,
             technischen Arbeitsplätzen und elektronischen Geräten dienen
             ausschließlich der Veranschaulichung meiner technischen Interessen
