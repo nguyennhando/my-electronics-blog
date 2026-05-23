@@ -1427,20 +1427,19 @@ function Home({ adminVisible, setAdminVisible }) {
 
           {/* TEXT */}
           <p className="mt-5 text-sm leading-7 text-zinc-300 sm:text-base sm:leading-7">
-            Die auf dieser Website gezeigten Fotos von Laborumgebungen,
-            technischen Arbeitsplätzen und elektronischen Geräten dienen
-            ausschließlich der Veranschaulichung meiner technischen Interessen
-            und praktischen Erfahrungen.
+            Die auf dieser Website gezeigten Fotos von Laborumgebungen, 
+            technischen Arbeitsplätzen und elektronischen Geräten dienen ausschließlich 
+            der Veranschaulichung meiner technischen Interessen und praktischen Erfahrungen.
 
             <span className="mt-4 block font-semibold text-yellow-200">
-              Sie zeigen weder meinen tatsächlichen Arbeitsplatz noch interne
-              Bereiche oder reale Arbeitsumgebungen eines Unternehmens.
+              Sie zeigen weder meinen tatsächlichen Arbeitsplatz noch interne Bereiche 
+              oder reale Arbeitsumgebungen eines Unternehmens.
             </span>
 
             <span className="mt-4 block">
-              Die dargestellten Tätigkeiten und Geräte basieren auf praktischen
-              Erfahrungen, stehen jedoch in keinem direkten Zusammenhang mit
-              einem konkreten Arbeitgeber oder dessen Infrastruktur.
+              Die dargestellten Szenen und Geräte dienen ausschließlich illustrativen Zwecken 
+              und stehen nicht in Verbindung mit internen Projekten, 
+              vertraulichen Informationen oder realen Unternehmensumgebungen.
             </span>
           </p>
         </div>
