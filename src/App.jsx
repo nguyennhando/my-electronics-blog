@@ -1396,6 +1396,59 @@ function Home({ adminVisible, setAdminVisible }) {
           onDiscover={() => scrollToSection("blog")}
         />
 
+      {/* ── IMPORTANT TRANSPARENCY NOTICE ── */}
+<section className="mx-auto max-w-7xl px-4 py-8 sm:px-5">
+  <div className="relative overflow-hidden rounded-[2rem] border border-yellow-400/30 bg-gradient-to-br from-yellow-500/10 via-orange-500/10 to-red-500/10 p-[2px] shadow-2xl shadow-yellow-500/20">
+
+    {/* Animated glow */}
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(250,204,21,0.25),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(249,115,22,0.18),transparent_35%)]" />
+
+    <div className="relative rounded-[1.9rem] bg-[#07111f]/95 p-6 sm:p-8 backdrop-blur-xl">
+
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+
+        {/* BIG WARNING ICON */}
+        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-yellow-400/30 bg-yellow-400/10 text-yellow-300 shadow-lg shadow-yellow-500/20">
+          <AlertTriangle className="h-9 w-9 stroke-[2.5]" />
+        </div>
+
+        <div className="flex-1">
+
+          {/* TITLE */}
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3 py-1 text-xs font-black uppercase tracking-widest text-yellow-300">
+              Transparenz
+            </span>
+
+            <h2 className="text-2xl font-black tracking-tight text-white sm:text-3xl">
+              Projektinformationen & Transparenz
+            </h2>
+          </div>
+
+          {/* TEXT */}
+          <p className="mt-5 text-sm leading-8 text-zinc-300 sm:text-base sm:leading-8">
+            Die auf dieser Website gezeigten Fotos von Laborumgebungen,
+            technischen Arbeitsplätzen und elektronischen Geräten dienen
+            ausschließlich der Veranschaulichung meiner technischen Interessen
+            und praktischen Erfahrungen.
+
+            <span className="mt-4 block font-semibold text-yellow-200">
+              Sie zeigen weder meinen tatsächlichen Arbeitsplatz noch interne
+              Bereiche oder reale Arbeitsumgebungen eines Unternehmens.
+            </span>
+
+            <span className="mt-4 block">
+              Die dargestellten Tätigkeiten und Geräte basieren auf praktischen
+              Erfahrungen, stehen jedoch in keinem direkten Zusammenhang mit
+              einem konkreten Arbeitgeber oder dessen Infrastruktur.
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
        <AboutWideCard /> 
 
         {/* ── Feature Cards ── */}
