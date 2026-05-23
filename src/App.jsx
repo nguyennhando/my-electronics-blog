@@ -93,31 +93,19 @@ function getStoragePathFromPublicUrl(url) {
 }
 
 async function removeStorageImages(urls) {
-  if (!supabase) return;
-  const paths = uniqueImageUrls(urls)
-    .map(getStoragePathFromPublicUrl)
-    .filter(Boolean);
-  if (!paths.length) return;
-  await supabase.storage.from(STORAGE_BUCKET).remove(paths);
+  // Bilder liegen jetzt in GitHub Pages / public/images.
+  // Die App löscht nur Datenbankeinträge, keine Dateien aus Storage.
+  return;
 }
 
-async function uploadValidatedImage(file, folder = "posts") {
-  const validationError = validateImageFile(file);
-  if (validationError) throw new Error(validationError);
-
-  const fileExt = file.name.split(".").pop()?.toLowerCase() || "webp";
-  const safeExt = ["jpg", "jpeg", "png", "webp"].includes(fileExt) ? fileExt : "webp";
-  const fileName = `${folder}/${Date.now()}-${crypto.randomUUID()}.${safeExt}`;
-
-  const { error } = await supabase.storage.from(STORAGE_BUCKET).upload(fileName, file, {
-    cacheControl: "31536000",
-    contentType: file.type,
-    upsert: false,
-  });
-  if (error) throw error;
-
-  const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(fileName);
-  return data.publicUrl;
+function normalizeLocalImagePath(value) {
+  const path = String(value || "").trim();
+  if (!path) return "";
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  if (path.startsWith("/my-electronics-blog/")) return path;
+  if (path.startsWith("/images/")) return `/my-electronics-blog${path}`;
+  if (path.startsWith("images/")) return `/my-electronics-blog/${path}`;
+  return `/my-electronics-blog/images/posts/${path.replace(/^\/+/, "")}`;
 }
 
 const demoPosts = [
@@ -1155,38 +1143,38 @@ function Home({ adminVisible, setAdminVisible }) {
     setProjectGalleryImages([...fallbackImages, ...(data || [])]);
   }
 
-  async function uploadProjectGalleryImages(e) {
-    const files = Array.from(e.target.files || []);
-    e.target.value = "";
-    if (!files.length || !supabase) return;
+  async function uploadProjectGalleryImages() {
+    if (!supabase) return;
     if (!isAdmin) {
-      setMessage("Keine Berechtigung. Nur Admins dürfen Galerie-Bilder hochladen.");
+      setMessage("Keine Berechtigung. Nur Admins dürfen Galerie-Bilder speichern.");
       return;
     }
+
+    const input = window.prompt(
+      "Bildpfad einfügen, z.B. /my-electronics-blog/images/posts/projekt.webp oder mehrere Pfade zeilenweise:"
+    );
+    const imagePaths = normalizeImageList(input).map(normalizeLocalImagePath).filter(Boolean);
+    if (!imagePaths.length) return;
+
     const customGalleryCount = projectGalleryImages.filter((image) => image && typeof image === "object" && image.id).length;
-    if (customGalleryCount + files.length > MAX_PROJECT_GALLERY_IMAGES) {
-      setMessage(`Zu viele Galerie-Bilder. Maximal ${MAX_PROJECT_GALLERY_IMAGES} hochgeladene Bilder erlaubt.`);
+    if (customGalleryCount + imagePaths.length > MAX_PROJECT_GALLERY_IMAGES) {
+      setMessage(`Zu viele Galerie-Bilder. Maximal ${MAX_PROJECT_GALLERY_IMAGES} Bilder erlaubt.`);
       return;
     }
 
     try {
       setLoading(true);
-      setMessage("Galerie-Bilder werden hochgeladen...");
-      const uploadedUrls = [];
-      for (const file of files) {
-        uploadedUrls.push(await uploadValidatedImage(file, "project-gallery"));
-      }
-      const rows = uploadedUrls.map((image_url, index) => ({
+      const rows = imagePaths.map((image_url, index) => ({
         image_url,
         alt: "Projektbild",
         sort_order: customGalleryCount + index + 1,
       }));
       const { error } = await supabase.from("project_gallery_images").insert(rows);
       if (error) throw error;
-      setMessage("Galerie-Bilder wurden hochgeladen.");
+      setMessage("Galerie-Bildpfade wurden gespeichert.");
       await loadProjectGalleryImages();
     } catch (error) {
-      setMessage(error.message || "Galerie Upload fehlgeschlagen.");
+      setMessage(error.message || "Galerie konnte nicht gespeichert werden.");
     } finally {
       setLoading(false);
     }
@@ -1198,30 +1186,31 @@ function Home({ adminVisible, setAdminVisible }) {
     if (!confirmed) return;
     setLoading(true);
     const { error } = await supabase.from("project_gallery_images").delete().eq("id", image.id);
-    if (!error) await removeStorageImages([image.image_url]);
     setLoading(false);
     if (error) {
       setMessage("Galerie-Bild konnte nicht gelöscht werden.");
       return;
     }
-    setMessage("Galerie-Bild wurde gelöscht und Storage bereinigt.");
+    setMessage("Galerie-Bild wurde gelöscht.");
     await loadProjectGalleryImages();
   }
 
-  async function replaceProjectGalleryImage(e, image) {
-    const file = e.target.files?.[0];
-    e.target.value = "";
-    if (!file || !supabase || !isAdmin || !image?.id) return;
+  async function replaceProjectGalleryImage(image) {
+    if (!supabase || !isAdmin || !image?.id) return;
+    const input = window.prompt(
+      "Neuen Bildpfad einfügen:",
+      image.image_url || "/my-electronics-blog/images/posts/"
+    );
+    const newUrl = normalizeLocalImagePath(input);
+    if (!newUrl) return;
     try {
       setLoading(true);
-      const newUrl = await uploadValidatedImage(file, "project-gallery");
       const { error } = await supabase
         .from("project_gallery_images")
         .update({ image_url: newUrl })
         .eq("id", image.id);
       if (error) throw error;
-      await removeStorageImages([image.image_url]);
-      setMessage("Galerie-Bild wurde ersetzt und altes Bild gelöscht.");
+      setMessage("Galerie-Bildpfad wurde ersetzt.");
       await loadProjectGalleryImages();
     } catch (error) {
       setMessage(error.message || "Galerie-Bild konnte nicht ersetzt werden.");
@@ -1230,53 +1219,22 @@ function Home({ adminVisible, setAdminVisible }) {
     }
   }
 
-  async function uploadImage(e) {
-    const file = e.target.files[0];
-    e.target.value = "";
-    if (!file || !supabase) return;
-    if (!isAdmin) {
-      setMessage("Keine Berechtigung. Nur Admins dürfen Bilder hochladen.");
-      return;
-    }
-
-    try {
-      setMessage("Bild wird hochgeladen...");
-      const publicUrl = await uploadValidatedImage(file, "posts");
-      setEditingPost((prev) => ({ ...prev, image_url: publicUrl }));
-      setMessage("Bild erfolgreich hochgeladen.");
-    } catch (error) {
-      setMessage(error.message || "Bild Upload fehlgeschlagen.");
-    }
+  function uploadImage(value) {
+    const imageUrl = normalizeLocalImagePath(value);
+    setEditingPost((prev) => ({ ...prev, image_url: imageUrl }));
   }
 
-  async function uploadPostGalleryImages(e) {
-    const files = Array.from(e.target.files || []);
-    e.target.value = "";
-    if (!files.length || !supabase) return;
-    if (!isAdmin) {
-      setMessage("Keine Berechtigung. Nur Admins dürfen Bilder hochladen.");
-      return;
-    }
-    const currentImages = normalizeImageList(editingPost.image_gallery);
-    if (currentImages.length + files.length > MAX_POST_GALLERY_IMAGES) {
+  function uploadPostGalleryImages(value) {
+    const imagePaths = normalizeImageList(value).map(normalizeLocalImagePath).filter(Boolean);
+    if (imagePaths.length > MAX_POST_GALLERY_IMAGES) {
       setMessage(`Zu viele Bilder im Beitrag. Maximal ${MAX_POST_GALLERY_IMAGES} Zusatzbilder erlaubt.`);
       return;
     }
 
-    try {
-      setMessage("Zusatzbilder werden hochgeladen...");
-      const uploadedUrls = [];
-      for (const file of files) {
-        uploadedUrls.push(await uploadValidatedImage(file, "posts/gallery"));
-      }
-      setEditingPost((prev) => ({
-        ...prev,
-        image_gallery: uniqueImageUrls([...normalizeImageList(prev.image_gallery), ...uploadedUrls]),
-      }));
-      setMessage("Zusatzbilder wurden hochgeladen.");
-    } catch (error) {
-      setMessage(error.message || "Zusatzbilder Upload fehlgeschlagen.");
-    }
+    setEditingPost((prev) => ({
+      ...prev,
+      image_gallery: uniqueImageUrls(imagePaths),
+    }));
   }
 
   function removePostGalleryImage(url) {
@@ -1284,7 +1242,7 @@ function Home({ adminVisible, setAdminVisible }) {
       ...prev,
       image_gallery: normalizeImageList(prev.image_gallery).filter((item) => item !== url),
     }));
-    setMessage("Bild aus dem Beitrag entfernt. Beim Speichern wird Storage bereinigt.");
+    setMessage("Bild aus dem Beitrag entfernt.");
   }
 
   async function savePost(e) {
@@ -1323,20 +1281,13 @@ function Home({ adminVisible, setAdminVisible }) {
       : supabase.from("posts").insert(payload).select().single();
     const { data, error } = await request;
 
-    if (!error && editingMode) {
-      const originalPost = posts.find((post) => String(post.id) === String(editingPost.id));
-      const oldUrls = uniqueImageUrls([originalPost?.image_url, ...normalizeImageList(originalPost?.image_gallery)]);
-      const newUrls = uniqueImageUrls([payload.image_url, ...payload.image_gallery]);
-      const unusedUrls = oldUrls.filter((url) => !newUrls.includes(url));
-      await removeStorageImages(unusedUrls);
-    }
 
     setLoading(false);
     if (error) {
       setMessage("Speichern fehlgeschlagen. Prüfen Sie Adminrechte und RLS-Policies.");
       return;
     }
-    setMessage("Beitrag wurde sicher gespeichert und Storage bereinigt.");
+    setMessage("Beitrag wurde sicher gespeichert.");
     setEditingPost(createEmptyPost());
     setEditingMode(false);
     await loadPosts();
@@ -1365,20 +1316,13 @@ function Home({ adminVisible, setAdminVisible }) {
     if (!confirmed) return;
     setLoading(true);
 
-    const postToDelete = posts.find((post) => String(post.id) === String(id));
-    const urlsToDelete = uniqueImageUrls([
-      postToDelete?.image_url,
-      ...normalizeImageList(postToDelete?.image_gallery),
-    ]);
-
     const { error } = await supabase.from("posts").delete().eq("id", id);
-    if (!error) await removeStorageImages(urlsToDelete);
     setLoading(false);
     if (error) {
       setMessage("Löschen fehlgeschlagen. Prüfen Sie Adminrechte und RLS-Policies.");
       return;
     }
-    setMessage("Beitrag wurde gelöscht und Storage bereinigt.");
+    setMessage("Beitrag wurde gelöscht.");
     await loadPosts();
   }
 
@@ -1669,12 +1613,13 @@ function Home({ adminVisible, setAdminVisible }) {
                       />
 
                       <div className="lg:col-span-2">
-                        <label className="mb-2 block text-sm text-zinc-400">Bild hochladen</label>
+                        <label className="mb-2 block text-sm text-zinc-400">Bildpfad / Bild-URL</label>
                         <input
-                          type="file"
-                          accept="image/jpeg,image/png,image/webp"
-                          onChange={uploadImage}
-                          className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white file:mr-4 file:rounded-xl file:border-0 file:bg-cyan-400 file:px-4 file:py-2 file:font-bold file:text-black hover:file:bg-cyan-300"
+                          type="text"
+                          value={editingPost.image_url || ""}
+                          onChange={(e) => uploadImage(e.target.value)}
+                          placeholder="/my-electronics-blog/images/posts/esp32-mqtt.webp"
+                          className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white outline-none ring-cyan-400/30 focus:ring-4"
                         />
                         {editingPost.image_url && (
                           <img
@@ -1687,12 +1632,12 @@ function Home({ adminVisible, setAdminVisible }) {
 
                       <div className="lg:col-span-2">
                         <label className="mb-2 block text-sm text-zinc-400">Zusatzbilder zum Beitrag</label>
-                        <input
-                          type="file"
-                          accept="image/jpeg,image/png,image/webp"
-                          multiple
-                          onChange={uploadPostGalleryImages}
-                          className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white file:mr-4 file:rounded-xl file:border-0 file:bg-cyan-400 file:px-4 file:py-2 file:font-bold file:text-black hover:file:bg-cyan-300"
+                        <textarea
+                          value={normalizeImageList(editingPost.image_gallery).join("\n")}
+                          onChange={(e) => uploadPostGalleryImages(e.target.value)}
+                          placeholder={"/my-electronics-blog/images/posts/detail-1.webp\n/my-electronics-blog/images/posts/detail-2.webp"}
+                          rows={4}
+                          className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white outline-none ring-cyan-400/30 focus:ring-4"
                         />
                         {!!normalizeImageList(editingPost.image_gallery).length && (
                           <div className="mt-4 grid gap-3 sm:grid-cols-3">
@@ -2012,16 +1957,13 @@ function Home({ adminVisible, setAdminVisible }) {
               <h2 className="mt-3 text-4xl font-black sm:text-5xl">Projektbilder</h2>
             </div>
             {isAdmin && (
-              <label className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-5 py-3 font-black text-black transition hover:bg-cyan-300">
+              <button
+                type="button"
+                onClick={uploadProjectGalleryImages}
+                className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-5 py-3 font-black text-black transition hover:bg-cyan-300"
+              >
                 <Plus className="h-5 w-5" /> Galerie-Bilder hinzufügen
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  multiple
-                  onChange={uploadProjectGalleryImages}
-                  className="hidden"
-                />
-              </label>
+              </button>
             )}
           </div>
 
@@ -2145,15 +2087,13 @@ function Home({ adminVisible, setAdminVisible }) {
                               className="h-36 w-full cursor-zoom-in object-cover transition duration-300 hover:brightness-110"
                             />
                             <div className="absolute right-2 top-2 flex gap-2">
-                              <label className="cursor-pointer rounded-full bg-cyan-400 p-2 text-black shadow-lg hover:bg-cyan-300">
+                              <button
+                                type="button"
+                                onClick={() => replaceProjectGalleryImage(image)}
+                                className="cursor-pointer rounded-full bg-cyan-400 p-2 text-black shadow-lg hover:bg-cyan-300"
+                              >
                                 <Edit3 className="h-4 w-4" />
-                                <input
-                                  type="file"
-                                  accept="image/jpeg,image/png,image/webp"
-                                  onChange={(e) => replaceProjectGalleryImage(e, image)}
-                                  className="hidden"
-                                />
-                              </label>
+                              </button>
                               <button
                                 type="button"
                                 onClick={() => deleteProjectGalleryImage(image)}
