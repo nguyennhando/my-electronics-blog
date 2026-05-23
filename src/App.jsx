@@ -1397,13 +1397,13 @@ function Home({ adminVisible, setAdminVisible }) {
         />
 
       {/* ── IMPORTANT TRANSPARENCY NOTICE ── */}
-<section className="mx-auto max-w-7xl px-4 py-5 sm:px-5">
+<section className="mx-auto max-w-7xl px-4 pt-5 pb-2 sm:px-5">
   <div className="relative overflow-hidden rounded-[2rem] border border-yellow-400/30 bg-gradient-to-br from-yellow-500/10 via-orange-500/10 to-red-500/10 p-[2px] shadow-2xl shadow-yellow-500/20">
 
     {/* Animated glow */}
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(250,204,21,0.25),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(249,115,22,0.18),transparent_35%)]" />
 
-    <div className="relative rounded-[1.9rem] bg-[#07111f]/95 p-6 sm:p-8 backdrop-blur-xl">
+    <div className="relative rounded-[1.9rem] bg-[#07111f]/95 p-5 sm:p-6 backdrop-blur-xl">
 
       <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
 
@@ -1452,7 +1452,7 @@ function Home({ adminVisible, setAdminVisible }) {
        <AboutWideCard /> 
 
         {/* ── Feature Cards ── */}
-        <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5 sm:py-10">
+        <section className="mx-auto max-w-6xl px-4 py-6 sm:px-5 sm:py-10">
           <div className="grid grid-rows-[1fr] items-stretch gap-3 min-[520px]:grid-cols-2 lg:grid-cols-4 lg:gap-5">
             {features.map((feature) => {
               const Icon = feature.icon;
