@@ -171,29 +171,29 @@ const demoPosts = [
 const features = [
   {
     icon: Cpu,
-    title: "Embedded & Elektronik",
-    text: "Projekte mit Mikrocontrollern, Sensorik, Firmware und hardwarenaher Entwicklung.",
+    title: "Elektronik & Embedded Systems",
+    text: "Eigene Lernprojekte rund um Mikrocontroller, Sensorik und hardwarenahe Entwicklung zur praktischen Erweiterung meines technischen Wissens.",
     gradient: "from-cyan-400 via-cyan-500 to-cyan-400",
     glow: "shadow-blue-500/20",
   },
   {
     icon: Workflow,
     title: "Automatisierung & Steuerung",
-    text: "Praktische Projekte aus Automatisierungstechnik, Steuerungssystemen und technischer Logik.",
+    text: "Praktische Übungen und kleinere Projekte, um industrielle Abläufe, Steuerungstechnik und technische Prozesse besser zu verstehen.",
     gradient: "from-cyan-400 via-cyan-500 to-cyan-400",
     glow: "shadow-blue-500/20",
   },
   {
     icon: ShieldCheck,
-    title: "Projektdokumentation",
-    text: "Dokumentation von Lernprojekten, technischen Entwicklungen und praktischen Erfahrungen.",
+    title: "Technisches Lernen",
+    text: "Dokumentation meines Lernwegs, technischer Erfahrungen und neuer Themen, mit denen ich mich kontinuierlich beschäftige.",
     gradient: "from-cyan-400 via-cyan-500 to-cyan-400",
     glow: "shadow-blue-500/20",
   },
   {
     icon: MonitorSmartphone,
-    title: "Selbst entwickelte Plattform",
-    text: "Diese Website wurde eigenständig entwickelt, um Projekte, Source Code und technische Inhalte zentral zu verwalten.",
+    title: "Eigene Entwicklung",
+    text: "Diese Website dient als persönliche Plattform, um Projekte, Ideen und technische Fortschritte übersichtlich festzuhalten.",
     gradient: "from-cyan-400 via-cyan-500 to-cyan-400",
     glow: "shadow-blue-500/20",
   },
@@ -1451,7 +1451,7 @@ function Home({ adminVisible, setAdminVisible }) {
        <AboutWideCard /> 
 
         {/* ── Feature Cards ── */}
-        <section className="mx-auto max-w-6xl px-4 py-6 sm:px-5 sm:py-10">
+        <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5 sm:py-10">
           <div className="grid grid-rows-[1fr] items-stretch gap-3 min-[520px]:grid-cols-2 lg:grid-cols-4 lg:gap-5">
             {features.map((feature) => {
               const Icon = feature.icon;
@@ -1462,13 +1462,13 @@ function Home({ adminVisible, setAdminVisible }) {
                     rounded="rounded-[1.4rem] sm:rounded-[2rem]"
                     className="flex-1"
                     stretch
-                    innerClassName={`rounded-[1.35rem] sm:rounded-[1.95rem] bg-[#07111f]/95 p-4 sm:p-6 backdrop-blur-xl transition group-hover:bg-[#07111f] shadow-xl ${feature.glow}`}
+                    innerClassName={`rounded-[1.35rem] sm:rounded-[1.95rem] bg-[#07111f]/95 p-4 sm:p-5 backdrop-blur-xl transition group-hover:bg-[#07111f] shadow-xl ${feature.glow}`}
                   >
                     <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-400/15 text-cyan-300 sm:mb-5 sm:h-14 sm:w-14">
                       <Icon className="h-7 w-7" />
                     </div>
                     <h3 className="text-lg font-black sm:text-xl">{feature.title}</h3>
-                    <p className="mt-2 text-sm leading-6 text-zinc-400 sm:mt-3 sm:text-base sm:leading-7">
+                    <p className="mt-2 text-sm leading-5 text-zinc-400 sm:text-[15px] sm:leading-6">
                       {feature.text}
                     </p>
                   </GradientBorder>
