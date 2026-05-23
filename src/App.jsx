@@ -381,18 +381,18 @@ function SiteHeader({ onAdminClick }) {
         </div>
 
         <button
-          type="button"
-          className="rounded-xl border border-white/10 p-2 md:hidden"
-          onClick={() => setMenuOpen((v) => !v)}
-          aria-label="Menü öffnen"
-        >
-          {menuOpen ? <X /> : <Menu />}
-        </button>
+  type="button"
+  className="rounded-xl border border-white/10 p-2 text-white hover:bg-white/10 md:hidden"
+  onClick={() => setMenuOpen((v) => !v)}
+  aria-label="Menü öffnen"
+>
+  {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+</button>
       </nav>
 
       {menuOpen && (
-        <div className="border-t border-white/10 px-5 py-4 md:hidden">
-          <div className="grid gap-2">
+  <div className="border-t border-white/10 bg-[#050816]/95 px-5 py-4 text-white md:hidden">
+    <div className="grid gap-2">
             {[
               ["blog", "Blog"],
               ["projekte", "Projekte"],
@@ -402,7 +402,7 @@ function SiteHeader({ onAdminClick }) {
                 key={id}
                 type="button"
                 onClick={() => scrollToSection(id)}
-                className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
+                className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300"
               >
                 {label}
               </button>
@@ -410,7 +410,7 @@ function SiteHeader({ onAdminClick }) {
             <button
               type="button"
               onClick={openAdmin}
-              className="rounded-xl px-3 py-2 text-left hover:bg-white/10"
+              className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300"
             >
               Admin
             </button>
