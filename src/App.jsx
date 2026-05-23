@@ -1633,12 +1633,24 @@ function Home({ adminVisible, setAdminVisible }) {
                       <div className="lg:col-span-2">
                         <label className="mb-2 block text-sm text-zinc-400">Zusatzbilder zum Beitrag</label>
                         <textarea
-                          value={normalizeImageList(editingPost.image_gallery).join("\n")}
-                          onChange={(e) => uploadPostGalleryImages(e.target.value)}
-                          placeholder={"/my-electronics-blog/images/posts/detail-1.webp\n/my-electronics-blog/images/posts/detail-2.webp"}
-                          rows={4}
-                          className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white outline-none ring-cyan-400/30 focus:ring-4"
-                        />
+  value={
+    Array.isArray(editingPost.image_gallery)
+      ? editingPost.image_gallery.join("\n")
+      : editingPost.image_gallery || ""
+  }
+  onChange={(e) =>
+    setEditingPost((prev) => ({
+      ...prev,
+      image_gallery: e.target.value,
+    }))
+  }
+  onBlur={(e) => uploadPostGalleryImages(e.target.value)}
+  placeholder={
+    "/my-electronics-blog/images/posts/detail-1.webp\n/my-electronics-blog/images/posts/detail-2.webp"
+  }
+  rows={4}
+  className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white outline-none ring-cyan-400/30 focus:ring-4"
+/>
                         {!!normalizeImageList(editingPost.image_gallery).length && (
                           <div className="mt-4 grid gap-3 sm:grid-cols-3">
                             {normalizeImageList(editingPost.image_gallery).map((url) => (
