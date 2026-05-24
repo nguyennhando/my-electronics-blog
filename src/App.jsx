@@ -998,7 +998,7 @@ function Home({ adminVisible, setAdminVisible }) {
   // Build hero slides from posts
   const heroSlides = useMemo(
   () =>
-    posts.slice(0, 10).map((p) => ({
+    posts.slice(0, 3).map((p) => ({
   id: p.id,
   image: p.image_url,
         category: p.category,
