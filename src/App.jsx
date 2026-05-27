@@ -335,7 +335,7 @@ function SiteHeader({ onAdminClick }) {
         <button type="button" onClick={goHome} className="flex items-center gap-3 text-left">
           <div className="flex h-12 w-12 overflow-hidden rounded-2xl sm:h-14 sm:w-14">
             <img
-              src="/my-electronics-blog/images/logo.png"
+              src="/my-electronics-blog/images/logo.webp"
               alt="Logo"
               className="h-full w-full scale-110 object-contain brightness-110 contrast-110"
             />
@@ -906,13 +906,13 @@ function AboutWideCard() {
         <div className="grid items-stretch gap-6 p-4 sm:p-6 lg:grid-cols-2 lg:gap-8">
           <div className="grid min-h-full gap-4 lg:grid-rows-2">
   <img
-    src="/my-electronics-blog/images/about-1.jpg"
+    src="/my-electronics-blog/images/about-1.webp"
     alt="Nguyen Nhan Do Technik"
     className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]"
   />
 
   <img
-    src="/my-electronics-blog/images/about-2.jpg"
+    src="/my-electronics-blog/images/about-2.webp"
     alt="Elektronik und Entwicklung"
     className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]"
   />
@@ -1117,9 +1117,9 @@ function Home({ adminVisible, setAdminVisible }) {
 
   async function loadProjectGalleryImages() {
     const fallbackImages = [
-      "/my-electronics-blog/images/finance-main.jpg",
-      "/my-electronics-blog/images/finance-chart.jpg",
-      "/my-electronics-blog/images/finance-dashboard.jpg",
+      "/my-electronics-blog/images/finance-main.webp",
+      "/my-electronics-blog/images/finance-chart.webp",
+      "/my-electronics-blog/images/finance-dashboard.webp",
     ];
 
     if (!supabase) {
@@ -1786,7 +1786,7 @@ function Home({ adminVisible, setAdminVisible }) {
       {/* LEFT IMAGE */}
       <div className="relative h-48 lg:h-auto">
         <img
-          src="/my-electronics-blog/images/project-warning.jpg"
+          src="/my-electronics-blog/images/project-warning.webp"
           alt="Projekt Hinweis"
           className="h-full w-full object-cover"
         />
