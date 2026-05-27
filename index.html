@@ -6,9 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <script>
-      setTimeout(function () {
+      window.addEventListener("error", function () {
         window.location.href = "https://nguyen-techlab.pages.dev/";
-      }, 8000);
+      });
+
+      setTimeout(function () {
+        const root = document.getElementById("root");
+
+        if (!root || root.innerHTML.trim() === "") {
+          window.location.href = "https://nguyen-techlab.pages.dev/";
+        }
+      }, 4000);
     </script>
 
     <title>my-electronics-blog</title>
