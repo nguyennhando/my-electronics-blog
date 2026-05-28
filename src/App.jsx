@@ -331,12 +331,12 @@ function SiteHeader({ onAdminClick }) {
   new URLSearchParams(window.location.search).get("admin") === "1";
 
   function scrollToSection(id) {
-    setMenuOpen(false);
-    navigate(`/${id}`);
-    setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 150);
-  }
+  setMenuOpen(false);
+  document.getElementById(id)?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
 
   function goHome() {
     setMenuOpen(false);
@@ -600,7 +600,12 @@ function HeroSlideshow({ slides, onDiscover }) {
   animate="visible"
   exit="exit"
   whileHover={{ scale: 1.015 }}
-  onClick={() => navigate(`/post/${slide.id}`)}
+  onClick={() =>
+  document.getElementById("blog")?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  })
+}
   onMouseEnter={() => clearInterval(timerRef.current)}
   onMouseLeave={startTimer}
   className="flex flex-col h-full cursor-pointer"
@@ -1038,12 +1043,12 @@ const PUBLIC_DEPLOY = !isAdminRoute;
     [posts]
   );
 
-  function scrollToSection(id) {
-    navigate(`/${id}`);
-    setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 120);
-  }
+ function scrollToSection(id) {
+  document.getElementById(id)?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
 
 
   useEffect(() => {
@@ -1051,14 +1056,6 @@ const PUBLIC_DEPLOY = !isAdminRoute;
   loadProjectGalleryImages();
 }, []);
 
-  useEffect(() => {
-    const section = location.pathname.replace("/", "");
-    if (["blog", "projekte", "kontakt"].includes(section)) {
-      setTimeout(() => {
-        document.getElementById(section)?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 150);
-    }
-  }, [location.pathname]);
 
 async function loadPosts() {
   const nextPosts = getStoredPosts();
