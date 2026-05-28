@@ -109,9 +109,8 @@ const downloadJson = (filename, data) => {
 // ─────────────────────────────────────────────
 // DEMO DATA
 // ─────────────────────────────────────────────
-{
-  "posts": [
-    {
+const DEMO_POSTS = [
+   {
       "id": "local-post-1779960950659",
       "title": "Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT",
       "category": "Elektrotechnik",
@@ -400,9 +399,24 @@ const downloadJson = (filename, data) => {
       "sort_order": 1,
       "created_at": "2026-05-28T09:40:48.843Z"
     }
-  ],
-  "exported_at": "2026-05-28T09:54:38.405Z"
-}
+];
+
+const FEATURES = [
+  { icon: Cpu, title: "Elektronik & Embedded Systems", text: "Eigene Lernprojekte rund um Mikrocontroller, Sensorik und hardwarenahe Entwicklung zur praktischen Erweiterung meines technischen Wissens." },
+  { icon: Workflow, title: "Automatisierung & Steuerung", text: "Praktische Übungen und kleinere Projekte, um industrielle Abläufe, Steuerungstechnik und technische Prozesse besser zu verstehen." },
+  { icon: ShieldCheck, title: "Technisches Lernen", text: "Dokumentation meines Lernwegs, technischer Erfahrungen und neuer Themen, mit denen ich mich kontinuierlich beschäftige." },
+  { icon: MonitorSmartphone, title: "Eigene Entwicklung", text: "Diese Website dient als persönliche Plattform, um Projekte, Ideen und technische Fortschritte übersichtlich festzuhalten." },
+];
+
+const EMPTY_POST = () => ({
+  id: null, title: "", category: "IoT",
+  image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+  image_gallery: [], excerpt: "", content: "",
+  tags: "ESP32, Sensorik", read_time: "5 Min.",
+  published: true, external_link: "",
+  project_status: "done", sort_order: 100,
+  created_at: new Date().toISOString(),
+});
 
 // ─────────────────────────────────────────────
 // REUSABLE COMPONENTS
