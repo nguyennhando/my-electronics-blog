@@ -110,7 +110,7 @@ const downloadJson = (filename, data) => {
 // DEMO DATA
 // ─────────────────────────────────────────────
 const DEMO_POSTS = [
-   {
+  {
       "id": "local-post-1779960950659",
       "title": "Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT",
       "category": "Elektrotechnik",
@@ -386,18 +386,6 @@ const DEMO_POSTS = [
       "external_link": "https://drive.google.com/drive/folders/1WgBLk6R1F-_J_oisAxwNgQyFdcKVzb-m",
       "project_status": "done",
       "sort_order": 50
-    }
-  ],
-  "projectGalleryImages": [
-    "/my-electronics-blog/images/finance-main.webp",
-    "/my-electronics-blog/images/finance-chart.webp",
-    "/my-electronics-blog/images/finance-dashboard.webp",
-    {
-      "id": "local-gallery-1779961248843-0",
-      "image_url": "/my-electronics-blog/images/posts/galerie-1.webp",
-      "alt": "Projektbild",
-      "sort_order": 1,
-      "created_at": "2026-05-28T09:40:48.843Z"
     }
 ];
 
