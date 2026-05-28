@@ -109,73 +109,300 @@ const downloadJson = (filename, data) => {
 // ─────────────────────────────────────────────
 // DEMO DATA
 // ─────────────────────────────────────────────
-const DEMO_POSTS = [
-  {
-    id: "demo-1",
-    title: "Intelligente Smart-Home-Steuerung mit ESP32 und MQTT",
-    category: "IoT",
-    image_url: "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=1200&q=80",
-    image_gallery: [],
-    excerpt: "Entwicklung einer modularen Smart-Home-Plattform zur Steuerung von Licht, Sensoren, Energieverbrauch und Sicherheitsfunktionen.",
-    content: "Dieses Projekt basiert auf einem ESP32-Mikrocontroller und verwendet MQTT für die Kommunikation zwischen Sensoren, Relais und Dashboard. Die Plattform kann Temperatur, Luftfeuchtigkeit, Bewegungen und Energieverbrauch überwachen. Zusätzlich wurde eine mobile Weboberfläche integriert, um Lampen, Steckdosen und Lüfter in Echtzeit zu steuern. Besonderer Fokus lag auf Stabilität, geringer Latenz und einfacher Erweiterbarkeit.",
-    tags: ["ESP32", "MQTT", "Smart Home", "Sensorik"],
-    published: true,
-    created_at: "2026-05-14T12:00:00Z",
-    read_time: "8 Min.",
-    external_link: "https://github.com/nguyennhando",
-    project_status: "done",
-    sort_order: 10,
-  },
-  {
-    id: "demo-2",
-    title: "Automatisiertes Energie-Monitoring für Schaltschrankanlagen",
-    category: "Messtechnik",
-    image_url: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=80",
-    image_gallery: [],
-    excerpt: "Messsystem zur Analyse von Spannung, Strom, Leistung und Netzqualität in industriellen Verteilungen.",
-    content: "Das System nutzt Stromsensoren, Spannungsmessung und digitale Signalverarbeitung zur kontinuierlichen Analyse elektrischer Verbraucher. Die Daten werden über RS485 übertragen und in einem Dashboard visualisiert. Zusätzlich können Grenzwerte definiert werden, um Warnmeldungen oder automatische Abschaltungen auszulösen.",
-    tags: ["Monitoring", "RS485", "Leistung", "Elektronik"],
-    published: true,
-    created_at: "2026-05-08T12:00:00Z",
-    read_time: "6 Min.",
-    external_link: "",
-    project_status: "in_progress",
-    sort_order: 20,
-  },
-  {
-    id: "demo-3",
-    title: "Mini-Roboter mit Hinderniserkennung und Motorsteuerung",
-    category: "Robotik",
-    image_url: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80",
-    image_gallery: [],
-    excerpt: "Kompakter Lernroboter mit Ultraschallsensor, PWM-Motorregelung und autonomer Navigation.",
-    content: "Der Roboter erkennt Hindernisse mit einem Ultraschallsensor und passt die Fahrtrichtung automatisch an. Die Motoren werden über PWM geregelt und ein Mikrocontroller übernimmt die Entscheidungslogik. Das Projekt eignet sich hervorragend zum Lernen von Embedded-Programmierung, Sensorik und Robotik.",
-    tags: ["Robotik", "PWM", "Arduino", "Motorsteuerung"],
-    published: true,
-    created_at: "2026-04-29T12:00:00Z",
-    read_time: "5 Min.",
-    external_link: "",
-    project_status: "idea",
-    sort_order: 30,
-  },
-];
-
-const FEATURES = [
-  { icon: Cpu, title: "Elektronik & Embedded Systems", text: "Eigene Lernprojekte rund um Mikrocontroller, Sensorik und hardwarenahe Entwicklung zur praktischen Erweiterung meines technischen Wissens." },
-  { icon: Workflow, title: "Automatisierung & Steuerung", text: "Praktische Übungen und kleinere Projekte, um industrielle Abläufe, Steuerungstechnik und technische Prozesse besser zu verstehen." },
-  { icon: ShieldCheck, title: "Technisches Lernen", text: "Dokumentation meines Lernwegs, technischer Erfahrungen und neuer Themen, mit denen ich mich kontinuierlich beschäftige." },
-  { icon: MonitorSmartphone, title: "Eigene Entwicklung", text: "Diese Website dient als persönliche Plattform, um Projekte, Ideen und technische Fortschritte übersichtlich festzuhalten." },
-];
-
-const EMPTY_POST = () => ({
-  id: null, title: "", category: "IoT",
-  image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
-  image_gallery: [], excerpt: "", content: "",
-  tags: "ESP32, Sensorik", read_time: "5 Min.",
-  published: true, external_link: "",
-  project_status: "done", sort_order: 100,
-  created_at: new Date().toISOString(),
-});
+{
+  "posts": [
+    {
+      "id": "local-post-1779960950659",
+      "title": "Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT",
+      "category": "Elektrotechnik",
+      "image_url": "/my-electronics-blog/images/posts/Schaltnetzteil-main.webp",
+      "image_gallery": [],
+      "excerpt": "Geplantes Lernprojekt zur Überwachung von Spannungs-, Strom- und Temperaturwerten eines DC-Schaltnetzteils mit ESP32 und MQTT-Kommunikation.",
+      "content": "Geplantes Lernprojekt zur Überwachung von Spannungs-, Strom- und Temperaturwerten eines DC-Schaltnetzteils mit ESP32 und MQTT-Kommunikation.\n\nDieses Projekt befindet sich aktuell in der Konzept- und Lernphase.\n\nGeplant ist die Entwicklung eines einfachen Überwachungssystems für DC-Schaltnetzteile auf Basis eines ESP32-Mikrocontrollers.\n\nZiel des Projekts ist die Erfassung und Visualisierung von Spannungs-, Strom- und Temperaturwerten über WLAN und MQTT.\n\nVorgesehene Hardware:\n- ESP32 Dev Board\n- Stromsensor (ACS712 oder INA219)\n- Temperatursensor\n- OLED Display\n- WLAN- und MQTT-Kommunikation\n\nGeplante Funktionen:\n- Spannungs- und Stromüberwachung\n- Temperaturüberwachung\n- MQTT-Datenübertragung\n- Dashboard-Visualisierung\n- Einfache Status- und Fehleranzeige\n\nDas Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, Sensorik und industrieller Energieüberwachung.\n\nAktueller Status:\nKonzeptprojekt / in Planung",
+      "tags": [
+        "MQTT",
+        "Schaltnetzteil"
+      ],
+      "read_time": "5 Min.",
+      "published": true,
+      "created_at": "2026-05-28T09:35:50.659Z",
+      "external_link": null,
+      "project_status": "idea",
+      "sort_order": 100
+    },
+    {
+      "id": "local-post-1779960913660",
+      "title": "Konzeptprojekt: ESP32-basierte MQTT-Sensorüberwachung für Smart-Home-Anwendungen",
+      "category": "IoT",
+      "image_url": "/my-electronics-blog/images/posts/SmartHome-main.webp",
+      "image_gallery": [],
+      "excerpt": "Geplantes Lernprojekt zur Entwicklung einer einfachen IoT-Plattform auf Basis eines ESP32-Mikrocontrollers. Ziel des Projekts ist die Erfassung und Visualisierung verschiedener Sensordaten über WLAN und MQTT.",
+      "content": "Geplantes Lernprojekt zur Entwicklung einer einfachen IoT-Plattform auf Basis eines ESP32-Mikrocontrollers. Ziel des Projekts ist die Erfassung und Visualisierung verschiedener Sensordaten über WLAN und MQTT.\n\nDieses Projekt befindet sich aktuell in der Konzept- und Lernphase.\n\nGeplant ist die Entwicklung einer einfachen IoT-Sensorplattform auf Basis eines ESP32-Mikrocontrollers zur Erfassung und Visualisierung verschiedener Sensordaten.\n\nVorgesehene Hardware:\n- ESP32 Dev Board\n- DHT22 Temperatur- und Feuchtigkeitssensor\n- Relaismodul für einfache Schaltfunktionen\n- MQTT Broker (z.B. Mosquitto)\n- Dashboard zur Datenvisualisierung\n\nGeplante Funktionen:\n- WLAN-Kommunikation\n- MQTT Publish/Subscribe\n- Sensorüberwachung\n- Dashboard-Visualisierung\n- Erweiterung um zusätzliche Sensoren und Aktoren\n\nDas Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, MQTT-Kommunikation und IoT-Anwendungen.\n\nAktueller Status:\nKonzeptprojekt / in Planung",
+      "tags": [
+        "ESP32",
+        "MQTT"
+      ],
+      "read_time": "5 Min.",
+      "published": true,
+      "created_at": "2026-05-28T09:35:13.660Z",
+      "external_link": null,
+      "project_status": "in_progress",
+      "sort_order": 100
+    },
+    {
+      "id": "local-post-1779960876705",
+      "title": "Konzeptprojekt: Energieüberwachung mit ESP8266 und Stromsensor",
+      "category": "Embedded Systems",
+      "image_url": "/my-electronics-blog/images/posts/Energieüberwachung-main.webp",
+      "image_gallery": [],
+      "excerpt": "Geplantes Lernprojekt zur einfachen Erfassung und Visualisierung von Stromverbrauchsdaten mit ESP8266 und Stromsensor über WLAN.",
+      "content": "Geplantes Lernprojekt zur einfachen Erfassung und Visualisierung von Stromverbrauchsdaten mit ESP8266 und Stromsensor über WLAN.\n\nDieses Projekt befindet sich aktuell in der Konzept- und Lernphase.\n\nGeplant ist die Entwicklung eines einfachen Systems zur Überwachung von Stromverbrauchsdaten mit ESP8266 und ACS712-Stromsensor.\n\nVorgesehene Hardware:\n- ESP8266 Mikrocontroller\n- ACS712 Stromsensor\n- OLED Display\n- WLAN-Kommunikation\n\nGeplante Funktionen:\n- Anzeige einfacher Messwerte\n- WLAN-Datenübertragung\n- Dashboard-Visualisierung\n- Grundlagen der Energieverbrauchsanalyse\n\nDas Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, Sensorik und IoT-Kommunikation.\n\nAktueller Status:\nKonzeptprojekt / in Planung",
+      "tags": [
+        "ESP8266",
+        "Energieüberwachung",
+        "Sensorik",
+        "Embedded Systems",
+        "IoT"
+      ],
+      "read_time": "5 Min.",
+      "published": true,
+      "created_at": "2026-05-28T09:34:36.705Z",
+      "external_link": null,
+      "project_status": "in_progress",
+      "sort_order": 100
+    },
+    {
+      "id": "local-post-1779960818567",
+      "title": "Konzept eines PWM-geregelten DC-Netzteils mit Mess- und Schutzfunktionen",
+      "category": "Elektrotechnik",
+      "image_url": "/my-electronics-blog/images/posts/DC-Netzteil-main.webp",
+      "image_gallery": [],
+      "excerpt": "Lern- und Konzeptprojekt zur Entwicklung eines mikrocontrollerbasierten DC-Netzteils mit PWM-Regelung, Strombegrenzung und grundlegenden Schutzfunktionen.",
+      "content": "Lern- und Konzeptprojekt zur Entwicklung eines mikrocontrollerbasierten DC-Netzteils mit PWM-Regelung, Strombegrenzung und grundlegenden Schutzfunktionen\n\nDieses Projekt ist aktuell als Lern- und Konzeptprojekt geplant. Ziel ist nicht nur der Aufbau eines einfachen DC-Netzteils, sondern vor allem das praktische Verständnis von PWM-Regelung, Leistungselektronik und elektronischen Schutzschaltungen.\n\nGeplant ist eine mikrocontrollerbasierte Lösung zur Regelung von Ausgangsspannung und Strom über PWM-Signale und MOSFET-Ansteuerung. Zusätzlich sollen grundlegende Mess- und Schutzfunktionen integriert werden, um das Verhalten des Systems unter unterschiedlichen Lastbedingungen besser analysieren zu können.\n\nGeplante Funktionen:\n\nEinstellbare Ausgangsspannung\nStrombegrenzung\nPWM-basierte Regelung\nSpannungs- und Strommessung\nTemperaturüberwachung\nKurzschluss- und Überstromschutz\nAnzeige wichtiger Messwerte über Display\n\nMich interessiert bei diesem Projekt besonders, wie sich PWM-Frequenz, Laständerungen und Schaltverhalten auf Stabilität, Wirkungsgrad und Wärmeentwicklung auswirken.\n\nDas Projekt befindet sich derzeit noch in der Konzept- und Lernphase. Zunächst sollen einzelne Funktionsblöcke wie PWM-Ansteuerung, Strommessung und Schutzschaltungen separat getestet werden, bevor später ein vollständiger Prototyp aufgebaut wird.\n\nMit diesem Projekt möchte ich mein Wissen in Embedded-Systemen, Leistungselektronik und praktischer Messtechnik weiter vertiefen.",
+      "tags": [
+        "PWM",
+        "Netzteil",
+        "STM32"
+      ],
+      "read_time": "5 Min.",
+      "published": true,
+      "created_at": "2026-05-28T09:33:38.567Z",
+      "external_link": null,
+      "project_status": "idea",
+      "sort_order": 100
+    },
+    {
+      "id": "local-post-1779960691288",
+      "title": "Konzeptprojekt: ESP32-basiertes 4–20mA IoT-Gateway mit MQTT und RS485",
+      "category": "IoT",
+      "image_url": "/my-electronics-blog/images/posts/ESP32-main.webp",
+      "image_gallery": [],
+      "excerpt": "Geplantes Lern- und Entwicklungsprojekt zur Erfassung von 4–20mA-Sensorsignalen mit ESP32, ADS1115 und MQTT-Kommunikation. Ziel des Projekts ist die Entwicklung eines einfachen industriellen IoT-Prototyps zur Sensorüberwachung und Datenvisualisierung über Home Assistant.",
+      "content": "Geplantes Lern- und Entwicklungsprojekt zur Erfassung von 4–20mA-Sensorsignalen mit ESP32, ADS1115 und MQTT-Kommunikation. Ziel des Projekts ist die Entwicklung eines einfachen industriellen IoT-Prototyps zur Sensorüberwachung und Datenvisualisierung über Home Assistant.\n\nDieses Projekt befindet sich aktuell in der Konzept- und Planungsphase.\n\nZiel ist die Entwicklung eines einfachen IoT-Gateways zur Verarbeitung industrieller 4–20mA-Sensorsignale mit ESP32.\n\nGeplante Funktionen:\n• Erfassung von 4–20mA-Sensorsignalen über ADS1115\n• MQTT-Kommunikation für IoT-Anwendungen\n• RS485 / Modbus-RTU-Unterstützung\n• Visualisierung der Sensordaten über Home Assistant\n• Spannungsversorgung für industrielle 12–24VDC-Umgebungen\n\nFür die erste Entwicklungsphase ist ein schneller Prototyp mit ESP32-DevKit, ADS1115-Modul und MQTT-Anbindung vorgesehen. Nach erfolgreichem Funktionstest ist die Entwicklung einer eigenen PCB-Version mit KiCad geplant.\n\nGeplante Technologien:\n• ESP32-S3\n• ADS1115\n• MQTT\n• RS485 / Modbus RTU\n• Home Assistant\n• KiCad\n\nAktueller Status:\nKonzeptphase / Lernprojekt",
+      "tags": [
+        "ESP32",
+        "MQTT"
+      ],
+      "read_time": "5 Min.",
+      "published": true,
+      "created_at": "2026-05-28T09:31:31.288Z",
+      "external_link": null,
+      "project_status": "idea",
+      "sort_order": 90
+    },
+    {
+      "id": "local-post-1779960647159",
+      "title": "Technischer Portfolio-Blog mit React, Supabase und Adminbereich",
+      "category": "Softwareentwicklung",
+      "image_url": "/my-electronics-blog/images/posts/Portfolio-Blog-main.webp",
+      "image_gallery": [],
+      "excerpt": "Entwicklung einer modernen Portfolio- und Blog-Webanwendung zur Präsentation technischer Projekte, Dokumentationen und persönlicher Entwicklung. Die Website wurde mit React, Tailwind CSS, Framer Motion und Supabase umgesetzt und verfügt über einen geschützten Adminbereich zur Verwaltung von Beiträgen.",
+      "content": "Entwicklung einer modernen Portfolio- und Blog-Webanwendung zur Präsentation technischer Projekte, Dokumentationen und persönlicher Entwicklung. Die Website wurde mit React, Tailwind CSS, Framer Motion und Supabase umgesetzt und verfügt über einen geschützten Adminbereich zur Verwaltung von Beiträgen.\n\nDieses Projekt ist eine selbst entwickelte Portfolio- und Blog-Webanwendung, mit der ich technische Projekte, Dokumentationen und persönliche Lernerfahrungen zentral präsentieren und verwalten kann.\n\nDie Website wurde mit React entwickelt und nutzt eine moderne Komponentenstruktur. Für das Design kommt Tailwind CSS zum Einsatz. Dadurch konnte eine responsive, dunkle Benutzeroberfläche mit technischen Farbakzenten, Kartenlayouts, Animationen und einer klaren Struktur umgesetzt werden.\n\nEin wichtiger Bestandteil des Projekts ist der integrierte Adminbereich. Nach erfolgreichem Login können Beiträge erstellt, bearbeitet, gelöscht und sortiert werden. Zusätzlich können Kategorien, Tags, Projektstatus, Bilder, Kurzbeschreibungen, vollständige Inhalte und externe Links gepflegt werden.\n\nFür die Datenverwaltung wird Supabase verwendet. Die Beiträge werden in einer Datenbank gespeichert, Bilder können über Supabase Storage hochgeladen werden und der Zugriff auf den Adminbereich wird über Supabase Authentication abgesichert. Änderungen an Beiträgen sind zusätzlich durch Row Level Security geschützt.\n\nDie Anwendung enthält unter anderem folgende Funktionen:\n\n- Startseite mit animiertem Hero-Slider\n- Projekt- und Blogübersicht\n- Suchfunktion nach Technologien und Inhalten\n- Kategoriefilter\n- Detailseite für einzelne Beiträge\n- Geschützter Adminbereich\n- Login- und Logout-Funktion\n- Beitrag erstellen, bearbeiten und löschen\n- Bild-Upload über Supabase Storage\n- Sortierung der Beiträge\n- Projektstatus wie Idee, In Arbeit oder Umgesetzt\n- Responsive Design für Desktop, Tablet und Smartphone\n- Animationen mit Framer Motion\n- Rechtliche Seiten wie Impressum und Datenschutz\n\nBesonderer Fokus lag auf einer professionellen technischen Darstellung. Die Website soll nicht nur Projekte zeigen, sondern auch den eigenen Entwicklungsprozess dokumentieren. Deshalb wurde das Projekt so aufgebaut, dass neue technische Inhalte einfach ergänzt und langfristig gepflegt werden können.\n\nTechnisch verbindet das Projekt Frontend-Entwicklung, Datenbankanbindung, Authentifizierung, Dateispeicherung und Benutzeroberfläche in einer vollständigen Webanwendung.\n\nVerwendete Technologien:\n\n- React\n- React Router\n- Tailwind CSS\n- Framer Motion\n- Supabase Auth\n- Supabase Database\n- Supabase Storage\n- Lucide React Icons\n- Vite\n- JavaScript\n\nDurch dieses Projekt konnte ich praktische Erfahrungen in moderner Webentwicklung, Datenbankintegration, Benutzerverwaltung, UI-Design und Deployment sammeln. Gleichzeitig dient die Website als zentrale Plattform, um meine technischen Projekte aus Elektrotechnik, Embedded Systems, Automatisierungstechnik und Softwareentwicklung professionell zu präsentieren.\n\nDer vollständige Open-Source-Quellcode dieses Projekts ist öffentlich verfügbar. \nÜber die Schaltfläche „Zum Projekt“ gelangen Sie direkt zum GitHub-Repository, in dem der gesamte Source Code, die Projektstruktur sowie weitere technische Projektdateien bereitgestellt werden.\n\nAktualisierung des Systems (23.05.2026) :\n\nZur Optimierung der Bandbreitennutzung wurde das Bildmanagement der Website angepasst. Die Bilddateien werden nun direkt über GitHub Pages bereitgestellt, während Supabase weiterhin für Datenbank, Authentifizierung und die Verwaltung der Inhalte verwendet wird. Dadurch konnte die Nutzung des Supabase Storage reduziert werden, ohne die bestehende Systemarchitektur zu verändern.",
+      "tags": [
+        "React",
+        "Supabase",
+        "Tailwind"
+      ],
+      "read_time": "5 Min.",
+      "published": true,
+      "created_at": "2026-05-28T09:30:47.159Z",
+      "external_link": "https://github.com/nguyennhando/my-electronics-blog",
+      "project_status": "done",
+      "sort_order": 80
+    },
+    {
+      "id": "local-post-1779960596593",
+      "title": "3D-Flaschenzug in AutoCAD",
+      "category": "Maschinenbau",
+      "image_url": "/my-electronics-blog/images/posts/Flaschenzug-main.webp",
+      "image_gallery": [
+        "/my-electronics-blog/images/posts/Flaschenzug-1.webp",
+        "/my-electronics-blog/images/posts/Flaschenzug-2.webp",
+        "/my-electronics-blog/images/posts/Flaschenzug-3.webp"
+      ],
+      "excerpt": "In diesem Projekt wurde ein mechanischer Flaschenzug vollständig als 3D-Modell in AutoCAD konstruiert. Der Fokus lag auf der präzisen Modellierung der einzelnen Bauteile sowie der realistischen mechanischen Darstellung des Systems.",
+      "content": "Dieses Projekt umfasst die Konstruktion eines Flaschenzugs als 3D-Modell in AutoCAD. Alle mechanischen Komponenten wurden einzeln modelliert und anschließend zu einer vollständigen Baugruppe zusammengefügt.\n\nDas Modell beinhaltet unter anderem:\n\nHaken\nUmlenkrollen\nSeitenplatten\nVerbindungsbolzen\nHebel- und Führungselemente\n\nZiel des Projekts war die Verbesserung der Kenntnisse im Bereich 3D-CAD-Konstruktion sowie das Verständnis mechanischer Bewegungsabläufe und Bauteilverbindungen.\n\nBesondere Schwerpunkte:\n\nPräzise 3D-Modellierung in AutoCAD\nZusammenbau mechanischer Komponenten\nTechnische Darstellung eines Flaschenzugs\nVisualisierung der Mechanik in verschiedenen Ansichten\nRealistische Konstruktion der Bauteile\n\nDas fertige Modell kann für technische Präsentationen, Lernzwecke oder als Grundlage für weitere mechanische Entwicklungen verwendet werden.",
+      "tags": [
+        "AutoCAD",
+        "3D",
+        "Konstruktion"
+      ],
+      "read_time": "5 Min.",
+      "published": true,
+      "created_at": "2026-05-28T09:29:56.593Z",
+      "external_link": "https://drive.google.com/drive/folders/1fN_hc6jaddMzTqEt0iIS4YxpiPdT8JFR?usp=drive_link",
+      "project_status": "done",
+      "sort_order": 70
+    },
+    {
+      "id": "local-post-1779960469574",
+      "title": "WinCC Fischertechnikmodell – Automatik- und Handbetrieb mit HMI",
+      "category": "SPS-Programmierung",
+      "image_url": "/my-electronics-blog/images/posts/FischerTechnik-main.webp",
+      "image_gallery": [
+        "/my-electronics-blog/images/posts/FischerTechnik-1.webp"
+      ],
+      "excerpt": "Programmierung eines Fischertechnik-Pressenmodells mit Siemens CPU1512C, ET200SP und TP700 Comfort Panel. Implementiert werden Automatikbetrieb, Handbetrieb, Benutzerverwaltung, Rezepturverwaltung, Alarmmeldungen sowie eine vollständige HMI-Bedienoberfläche.",
+      "content": "Entwicklung einer SPS- und HMI-Steuerung für das Fischertechnik-Pressenmodell mit Siemens CPU1512C, ET200SP und TP700 Comfort Panel.\n\nProgrammierung eines Fischertechnik-Pressenmodells mit Siemens CPU1512C, ET200SP und TP700 Comfort Panel. Implementiert werden Automatikbetrieb, Handbetrieb, Benutzerverwaltung, Rezepturverwaltung, Alarmmeldungen sowie eine vollständige HMI-Bedienoberfläche.\n\nImplementiert werden:\n\nAutomatikbetrieb\nHandbetrieb / Einrichtbetrieb\nBenutzerverwaltung\nAlarm- und Meldesystem\nRezeptverwaltung\nHMI-Visualisierung über WinCC\n\nDie Kommunikation erfolgt über Profinet.\nDas System befindet sich aktuell noch in der Fertigstellung und Optimierung. ⚙️",
+      "tags": [
+        "WinCC",
+        "SPS",
+        "HMI"
+      ],
+      "read_time": "5 Min.",
+      "published": true,
+      "created_at": "2026-05-28T09:27:49.574Z",
+      "external_link": "https://drive.google.com/drive/folders/1XwbZqMA_neR7FqreJCQsHW4ddtIEpOKi?usp=drive_link",
+      "project_status": "done",
+      "sort_order": 60
+    },
+    {
+      "id": "local-post-1779960317991",
+      "title": "Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens WinCC",
+      "category": "SPS-Programmierung",
+      "image_url": "/my-electronics-blog/images/posts/Mischbehälter-main.webp",
+      "image_gallery": [
+        "/my-electronics-blog/images/posts/Mischbehälter-1.webp",
+        "/my-electronics-blog/images/posts/Mischbehälter-2.webp",
+        "/my-electronics-blog/images/posts/Mischbehälter-3.webp"
+      ],
+      "excerpt": "Dieses Projekt beschreibt die Entwicklung eines industriellen HMI-Systems zur Überwachung und Steuerung eines Mischbehälters mit Siemens SIMATIC WinCC Runtime Advanced.\nDie Anwendung ermöglicht die Visualisierung von Sensoren, Ventilen, Motoren und Temperaturwerten in Echtzeit sowie die Bedienung im Automatik- und Handbetrieb. Ziel des Projekts ist eine benutzerfreundliche, sichere und effiziente Prozesssteuerung für industrielle Mischprozesse.",
+      "content": "Dieses Projekt umfasst die Entwicklung eines modernen HMI-Visualisierungssystems zur Überwachung und Steuerung eines industriellen Mischbehälters mit Siemens SIMATIC WinCC Runtime Advanced und einer Siemens SPS S7-1200/1500.\n\nDie Anwendung ermöglicht die Visualisierung von Sensoren, Ventilen, Motoren und Temperaturwerten in Echtzeit sowie die Bedienung im Automatik- und Handbetrieb. Ziel des Projekts ist eine benutzerfreundliche, sichere und effiziente Prozesssteuerung für industrielle Mischprozesse.\n\nDas System wurde entwickelt, um industrielle Mischprozesse effizient, sicher und benutzerfreundlich zu steuern. Über die HMI-Oberfläche können verschiedene Prozessparameter in Echtzeit überwacht und bedient werden. Dazu gehören unter anderem Motoren, Ventile, Sensoren, Temperaturanzeigen sowie automatische und manuelle Betriebsarten.\n\nDie Visualisierung ermöglicht dem Bediener eine klare Darstellung des gesamten Mischprozesses. Der aktuelle Anlagenstatus wird grafisch dargestellt, wodurch Materialfluss, Motoraktivitäten und Ventilstellungen jederzeit nachvollziehbar sind. Zusätzlich wurden Sicherheitsfunktionen wie Not-Halt, Statusmeldungen und Alarmanzeigen integriert, um einen sicheren Anlagenbetrieb zu gewährleisten.\n\nIm Automatikbetrieb erfolgt die Prozesssteuerung schrittweise über definierte Ablaufsequenzen. Dabei werden Sensorwerte verarbeitet und Aktoren automatisch angesteuert. Im Handbetrieb können einzelne Komponenten manuell getestet und gesteuert werden, was insbesondere bei Wartung und Inbetriebnahme wichtig ist.\n\nDas Projekt beinhaltet außerdem:\n\n* Echtzeit-Kommunikation zwischen SPS und HMI\n* Prozessvisualisierung und Anlagenüberwachung\n* Temperaturüberwachung und Statusanzeigen\n* Steuerung von Ventilen und Motoren\n* Automatik- und Handbetrieb\n* Fehler- und Alarmmanagement\n* Benutzerfreundliche Bedienoberfläche\n\nZiel des Projekts ist die Entwicklung einer zuverlässigen und effizienten Lösung für industrielle Automatisierungsprozesse. Durch die Kombination aus Siemens SPS-Technologie und WinCC Runtime Advanced entsteht ein leistungsfähiges HMI-System zur Optimierung von Produktionsabläufen und zur Erhöhung der Betriebssicherheit.\n\nKlicken Sie auf die Schaltfläche „Zum Projekt“, um die vollständige Projektdokumentation und weitere Details zum HMI-System anzuzeigen.",
+      "tags": [
+        "SPS"
+      ],
+      "read_time": "5 Min.",
+      "published": true,
+      "created_at": "2026-05-28T09:25:17.991Z",
+      "external_link": "https://drive.google.com/drive/folders/1Vrz5hK6aTVExshjDZIi92ecTgQaFo_kq",
+      "project_status": "done",
+      "sort_order": 40
+    },
+    {
+      "id": "local-post-1779957810945",
+      "title": "Finanzverwaltung mit Datenanalyse",
+      "category": "Softwareentwicklung",
+      "image_url": "/my-electronics-blog/images/posts/finanzmanager-main.webp",
+      "image_gallery": [
+        "/my-electronics-blog/images/posts/finanzmanager-1.webp",
+        "/my-electronics-blog/images/posts/finanzmanager-2.webp",
+        "/my-electronics-blog/images/posts/finanzmanager-3.webp"
+      ],
+      "excerpt": "Die Software ermöglicht die Verwaltung persönlicher Einnahmen und Ausgaben, unterstützt CSV-Import und -Export sowie Echtzeit-Datenanalysen über eine moderne grafische Benutzeroberfläche.\nÜber den Button „Zum Projekt“ am Ende der Seite erhalten Sie Zugriff auf den vollständigen Quellcode des Projekts „Finanzmanager“.",
+      "content": "🧭 GeldPilot - Persönliche Finanzverwaltung\n\nEntwicklung einer modernen Desktop-Anwendung zur Finanzverwaltung mit C++, Qt 6 und SQLite.\nDie Software ermöglicht die Verwaltung persönlicher Einnahmen und Ausgaben, unterstützt CSV-Import und -Export sowie Echtzeit-Datenanalysen über eine moderne grafische Benutzeroberfläche.\nÜber den Button „Zum Projekt“ am Ende der Seite erhalten Sie Zugriff auf den vollständigen Quellcode des Projekts „Finanzmanager“.\n\nEine professionelle Desktop-Anwendung zur Verwaltung Ihrer persönlichen Finanzen, entwickelt mit Qt 6.9 und C++.\n📋 Inhaltsverzeichnis\n    • Überblick\n    • Features\n    • Systemanforderungen\n    • Installation\n    • Erste Schritte\n    • Benutzerhandbuch\n    • Technische Details\n    • Entwicklung\n    • Support\n🎯 Überblick\nGeldPilot ist eine benutzerfreundliche Anwendung zur Verwaltung Ihrer Einnahmen und Ausgaben. Mit einer intuitiven Oberfläche können Sie Transaktionen verwalten, Kategorien organisieren und umfassende Finanzberichte erstellen.\n✨ Hauptmerkmale\n    • Transaktionsverwaltung: Hinzufügen, Bearbeiten und Löschen von Einnahmen und Ausgaben\n    • Kategorisierung: Vordefinierte und benutzerdefinierte Kategorien\n    • Zeitraumfilter: Flexible Filterung nach Datum und Kategorie\n    • Finanzübersicht: Automatische Berechnung von Einnahmen, Ausgaben und Bilanz\n    • Visualisierung: Interaktive Balkendiagramme zur Darstellung Ihrer Finanzen\n    • Import/Export: CSV-Import und -Export für Datenaustausch\n    • Druckfunktion: Professionelle Berichte mit Firmenlogo\n🔧 Systemanforderungen\nMindestanforderungen\n    • Betriebssystem: Windows 10/11, macOS 10.15+, Linux (Ubuntu 20.04+)\n    • RAM: 4 GB\n    • Festplattenspeicher: 100 MB\n    • Bildschirmauflösung: 1024x768\nEmpfohlene Anforderungen\n    • RAM: 8 GB oder mehr\n    • Bildschirmauflösung: 1920x1080 oder höher\n🚀 Installation\nVorkompilierte Version (Windows)\n    1. Laden Sie die neueste Version von der Releases-Seite herunter\n    2. Entpacken Sie das Archiv in einen Ordner Ihrer Wahl\n    3. Starten Sie GeldPilot.exe\nAus Quellcode kompilieren\nVoraussetzungen\n    • Qt 6.9 oder neuer\n    • CMake 3.16 oder neuer\n    • C++17-kompatible Compiler:\n        ◦ Windows: MinGW-w64 oder MSVC 2019+\n        ◦ macOS: Xcode 12+\n        ◦ Linux: GCC 9+ oder Clang 10+\nKompilierungsschritte\n# Repository klonen\ngit clone https://github.com/username/geldpilot.git\ncd geldpilot\n\n# Build-Verzeichnis erstellen\nmkdir build && cd build\n\n# CMake konfigurieren\ncmake .. -DCMAKE_BUILD_TYPE=Release\n\n# Kompilieren\ncmake --build . --config Release\n\n# Ausführen (Windows)\n./Release/GeldPilot.exe\n\n# Ausführen (Linux/macOS)\n./GeldPilot\n🏁 Erste Schritte\n1. Erste Transaktion hinzufügen\n    1. Starten Sie GeldPilot\n    2. Geben Sie Datum, Betrag und Beschreibung ein\n    3. Wählen Sie eine Kategorie (z.B. \"Gehalt\" für Einnahmen)\n    4. Wählen Sie den Typ (\"Einnahme\" oder \"Ausgabe\")\n    5. Klicken Sie auf \"Neue Transaktion\"\n2. Daten filtern\n    • Verwenden Sie die Dropdown-Menüs für Kategorien\n    • Setzen Sie Start- und Enddatum für Zeitraumfilter\n    • Klicken Sie \"Filter\" um die Ansicht zu aktualisieren\n3. Berichte erstellen\n    • Klicken Sie auf \"Diagramm\" für eine visuelle Darstellung\n    • Nutzen Sie \"Drucken\" für professionelle Berichte\n    • Exportieren Sie Daten als CSV für weitere Analyse\n📖 Benutzerhandbuch\nTransaktionsverwaltung\nNeue Transaktion hinzufügen\n    1. Füllen Sie alle Pflichtfelder aus:\n        ◦ Datum: Transaktionsdatum\n        ◦ Betrag: Geldbetrag (immer positiv eingeben)\n        ◦ Beschreibung: Kurze Beschreibung der Transaktion\n        ◦ Kategorie: Zuordnung zu einer Kategorie\n        ◦ Typ: \"Einnahme\" oder \"Ausgabe\"\nTransaktion bearbeiten\n    1. Wählen Sie eine Zeile in der Tabelle aus\n    2. Die Daten erscheinen automatisch in den Eingabefeldern\n    3. Nehmen Sie Ihre Änderungen vor\n    4. Klicken Sie \"Speichern\"\nTransaktionen löschen\n    • Einzelne Transaktion: Zeile auswählen → \"Löschen\"\n    • Mehrere Transaktionen: Mehrere Zeilen auswählen (Strg+Klick) → \"Löschen\"\nKategorien\nVordefinierte Kategorien:\n    • Freizeit\n    • Gehalt\n    • Gesundheit\n    • Lebensmittel\n    • Miete\n    • Sonstiges\n    • Transport\n    • Versicherungen\n    • Investition\n    • Kommunikation\n    • Wohnen\nFilterung und Suche\nNach Kategorie filtern\n    • Wählen Sie \"Alle Kategorien\" für ungefilterte Ansicht\n    • Wählen Sie eine spezifische Kategorie für gefilterte Ansicht\nNach Zeitraum filtern\n    • Setzen Sie Startdatum und Enddatum\n    • Klicken Sie \"Filter\" zum Anwenden\nImport/Export\nCSV-Import\n    1. Bereiten Sie eine CSV-Datei vor mit Spalten:\n        ◦ ID, Datum, Betrag, Beschreibung, Kategorie, Typ\n    2. Klicken Sie \"Import\"\n    3. Wählen Sie Ihre CSV-Datei aus\nCSV-Export\n    1. Klicken Sie \"Export\"\n    2. Wählen Sie Speicherort und Dateiname\n    3. Die aktuelle Tabellenansicht wird exportiert\nDiagramme und Berichte\nFinanzdiagramm anzeigen\n    • Klicken Sie \"Diagramm\" für Balkendiagramm\n    • Zeigt Kategorien, Gesamteinnahmen, -ausgaben und Bilanz\n    • Interaktive Darstellung mit Farbkodierung\nDrucken\n    • Öffnen Sie das Diagramm\n    • Klicken Sie \"Drucken\"\n    • Wählen Sie Drucker und Einstellungen\n    • Professioneller Ausdruck mit Logo\n🛠 Technische Details\nArchitektur\n    • GUI Framework: Qt 6.9\n    • Datenbank: SQLite (lokale Datei)\n    • Diagramme: Qt Charts\n    • Bauansystem: CMake\n    • Compiler: MinGW-w64 (Windows)\nDatenbankschema\nTabelle: transaktionen\nCREATE TABLE transaktionen (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    datum DATE NOT NULL,\n    betrag REAL NOT NULL,\n    beschreibung TEXT,\n    kategorie TEXT NOT NULL,\n    typ TEXT NOT NULL CHECK (typ IN ('Einnahme', 'Ausgabe'))\n);\nTabelle: kategorien\nCREATE TABLE kategorien (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    name TEXT UNIQUE NOT NULL\n);\nProjektstruktur\ngeldpilot/\n├── src/\n│   ├── main.cpp                 # Einstiegspunkt\n│   ├── mainwindow.cpp/h         # Hauptfenster\n│   ├── chartwindow.cpp/h        # Diagrammfenster\n│   ├── datenbankmanager.cpp/h   # Datenbanklogik\n│   └── centerdelegate.h         # UI-Styling\n├── ui/\n│   ├── mainwindow.ui            # Hauptfenster UI\n│   └── chartwindow.ui           # Diagramm UI\n├── resources/\n│   └── icons/                   # Anwendungssymbole\n├── CMakeLists.txt               # Build-Konfiguration\n└── README.md                    # Diese Datei\n👨‍💻 Entwicklung\nCode-Stil\n    • C++17 Standard\n    • Qt-Konventionen\n    • Deskriptive deutsche Variablennamen\n    • Umfangreiche Kommentierung\nBeitrag zum Projekt\n    1. Fork das Repository\n    2. Erstellen Sie einen Feature-Branch\n    3. Machen Sie Ihre Änderungen\n    4. Testen Sie gründlich\n    5. Erstellen Sie einen Pull Request\nBekannte Probleme\n    • ✅ Mehrfachauswahl für Löschen implementiert\n    • ✅ Datenbankindizierung für Performance\n    • ⚠️ Backup-Funktionalität geplant\n📞 Support\nHilfe benötigt?\n    • Dokumentation: Lesen Sie dieses README vollständig\n    • Issues: Melden Sie Bugs auf GitHub\n    • E-Mail: support@geldpilot.de\nHäufige Probleme\nQ: Datenbank kann nicht geöffnet werden A: Stellen Sie sicher, dass die Anwendung Schreibrechte im Installationsordner hat.\nQ: Diagramm wird nicht angezeigt A: Überprüfen Sie, ob Qt Charts installiert ist.\nQ: Import schlägt fehl A: Überprüfen Sie das CSV-Format (Semikolon-getrennt).\n\n📄 Lizenz\n© 2025 Nguyen Nhan Do. Alle Rechte vorbehalten.\nVersion: 1.0.0\nEntwickler: Nguyen Nhan Do\nBuild: Qt 6.9, MinGW-w64, CMake\n\nBehalten Sie mit GeldPilot den Überblick über Ihre Finanzen und steuern Sie gezielt Ihre finanzielle Zukunft! 🧭💰",
+      "tags": [
+        "C++",
+        "Qt 6.9"
+      ],
+      "read_time": "5 Min.",
+      "published": true,
+      "created_at": "2026-05-28T08:43:30.945Z",
+      "external_link": "https://github.com/nguyennhando/finanzmanager",
+      "project_status": "done",
+      "sort_order": 30
+    },
+    {
+      "id": "demo-1",
+      "title": "Elektronik • Test • Reparatur",
+      "category": "Über mich",
+      "image_url": "/my-electronics-blog/images/posts/Nguyen-main.webp",
+      "image_gallery": [],
+      "excerpt": "Elektroingenieur mit großem Interesse an Elektrokonstruktion und Softwareentwicklung. Lernbereit, feinmotorisch und motiviert, meine praktischen Erfahrungen kontinuierlich zu erweitern.",
+      "content": "Meine Schwerpunkte liegen in:\n- Softwareentwicklung\n- Automatisierungstechnik\n- SPS-Programmierung (Siemens S7 / TIA Portal)\n- Fehlersuche und Reparatur elektronischer Baugruppen\n\nZusätzlich erweitere ich meine Kenntnisse in:\n- WinCC\n- C++ / Qt\n- EPLAN\n- AutoCAD 2D/3D\n\nIch arbeite sorgfältig, feinmotorisch und bin sehr lernbereit. Obwohl ich noch nicht über sehr viel Berufserfahrung verfüge, eigne ich mir neue Technologien und technische Themen schnell an und entwickle mich kontinuierlich weiter.\n\nBesonders interessiere ich mich für Prüffeldtechnik, Prototypenentwicklung, hardwarenahe Programmierung sowie die Analyse und Fehlerdiagnose elektronischer Systeme.",
+      "tags": [
+        "ESP32",
+        "MQTT",
+        "Smart Home",
+        "Sensorik"
+      ],
+      "read_time": "8 Min.",
+      "published": true,
+      "created_at": "2026-05-14T12:00:00Z",
+      "external_link": null,
+      "project_status": "done",
+      "sort_order": 10
+    },
+    {
+      "id": "demo-2",
+      "title": "AutoCAD 2D – Kleine Dampfmaschine",
+      "category": "Maschinenbau",
+      "image_url": "/my-electronics-blog/images/posts/Dampfmaschine-main.webp",
+      "image_gallery": [
+        "/my-electronics-blog/images/posts/Dampfmaschine-1.webp",
+        "/my-electronics-blog/images/posts/Dampfmaschine-2.webp",
+        "/my-electronics-blog/images/posts/Dampfmaschine-3.webp",
+        "/my-electronics-blog/images/posts/Dampfmaschine-5.webp"
+      ],
+      "excerpt": "Entwicklung technischer 2D- und 3D-CAD-Modelle im Maschinenbau mit AutoCAD 2026, einschließlich einer Dampfmaschine.",
+      "content": "Dieses Projekt zeigt die vollständige 2D-Konstruktion einer kleinen Dampfmaschine im Bereich Maschinenbau mit AutoCAD 2026.\n\nEnthalten sind:\n\n* Grundplatte\n* Fuß und Spiegel\n* Lagerbock\n* Kolbenstangenkopf\n* Kurbelscheibe und Kurbelwelle\n* Zylinder und Kolben\n* Schwungrad\n* Pendelachse\n* Reling und Mittelsteg\n* Normteile und Stückliste\n\nDie technischen Zeichnungen enthalten:\n\n* Maßangaben\n* Schnittdarstellungen\n* Materialangaben\n* Einzelteilzeichnungen\n* Zusammenbauzeichnung\n\nVerwendete Materialien:\n\n* Messing\n* Stahllegierung\n* Kupfer\n* Glas\n\nEin weiteres Projekt ist die Entwicklung eines mechanischen Flaschenzugs mit Doppelrolle und Sicherheitsverschluss-Haken.\nDie Konstruktion wurde als 3D-CAD-Modell entwickelt und dient zum Heben schwerer Lasten mit reduzierter Zugkraft.\n\nÜber den Button „Zum Projekt“ erhalten Sie Zugriff auf sämtliche Projektdateien, einschließlich der AutoCAD-Dateien im .dwg-Format.\n\nKurszeitraum:\n19.01.2026 – 13.02.2026\n\nVerwendete Software:\nAutoCAD 2026\n\nProjekt von:\nNGUYEN NHAN DO",
+      "tags": [
+        "Autocad 2D"
+      ],
+      "read_time": "6 Min.",
+      "published": true,
+      "created_at": "2026-05-08T12:00:00Z",
+      "external_link": "https://drive.google.com/drive/folders/1GDWUKT5mLYHnSlSns5oKxpMZrkY9WENy",
+      "project_status": "done",
+      "sort_order": 20
+    },
+    {
+      "id": "demo-3",
+      "title": "PLC-Programmierung einer industriellen Tauchanlage",
+      "category": "SPS-Programmierung",
+      "image_url": "/my-electronics-blog/images/posts/Tauchanlage-main.webp",
+      "image_gallery": [
+        "/my-electronics-blog/images/posts/Tauchanlage-1.webp",
+        "/my-electronics-blog/images/posts/Tauchanlage-2.webp"
+      ],
+      "excerpt": "Automatisierte Tauchanlage mit SPS-Steuerung. Automatischer Transport und Tauchprozess mit Siemens S7-300. Hand- und Automatikbetrieb im TIA Portal realisiert.",
+      "content": "Automatisierte Tauchanlage mit Siemens S7-300\n\nDieses Projekt umfasst die Entwicklung und Programmierung einer automatisierten Tauchanlage zur Steuerung eines industriellen Transport- und Tauchprozesses.\nDie Anlage ermöglicht das automatische Verfahren, Heben und Senken eines Werkstückkorbs zwischen zwei Tauchbädern unter Berücksichtigung definierter Sicherheits- und Bewegungsbedingungen.\n\nDie Steuerung wurde mit einer Siemens S7-300 CPU im TIA Portal realisiert.\nDas Projekt beinhaltet sowohl einen Handbetrieb zur manuellen Steuerung der Achsen als auch einen vollautomatischen Ablauf mit sequenzieller Prozesssteuerung.\n\nIm Automatikbetrieb fährt der Korb selbstständig zu den einzelnen Tauchstationen, führt definierte Tauch- und Abtropfzeiten aus und kehrt anschließend in die Ausgangsposition zurück.\nZusätzlich wurden Endlagensensoren, Sicherheitsabfragen, Statusanzeigen, Motorsteuerungen sowie eine Werkstückzählung mit Zeitstempel-Historie implementiert.\n\nDie Softwarestruktur besteht aus mehreren Funktionsbausteinen für Betriebsarten, Ausgangssteuerung, Ablaufsteuerung, Teilehistorie und Diagnosefunktionen.\nZur Verbesserung der Übersichtlichkeit wurden symbolische Variablen, Datenbausteine sowie strukturierte Datentypen verwendet.\n\nDas Projekt demonstriert praxisnah die Umsetzung industrieller Automatisierungstechnik mit SPS, Sensorik, Aktorik und Ablaufsteuerung im Siemens TIA Portal.\n\n**Zum Projekte klicken, um die vollständige Dokumentation und Projektdateien im Detail anzusehen.**",
+      "tags": [
+        "SPS",
+        "S7300",
+        "TiaPortal"
+      ],
+      "read_time": "5 Min.",
+      "published": true,
+      "created_at": "2026-04-29T12:00:00Z",
+      "external_link": "https://drive.google.com/drive/folders/1WgBLk6R1F-_J_oisAxwNgQyFdcKVzb-m",
+      "project_status": "done",
+      "sort_order": 50
+    }
+  ],
+  "projectGalleryImages": [
+    "/my-electronics-blog/images/finance-main.webp",
+    "/my-electronics-blog/images/finance-chart.webp",
+    "/my-electronics-blog/images/finance-dashboard.webp",
+    {
+      "id": "local-gallery-1779961248843-0",
+      "image_url": "/my-electronics-blog/images/posts/galerie-1.webp",
+      "alt": "Projektbild",
+      "sort_order": 1,
+      "created_at": "2026-05-28T09:40:48.843Z"
+    }
+  ],
+  "exported_at": "2026-05-28T09:54:38.405Z"
+}
 
 // ─────────────────────────────────────────────
 // REUSABLE COMPONENTS
