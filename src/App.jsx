@@ -1,117 +1,65 @@
-import React, { useEffect, useMemo, useState, useRef } from "react";
+import React, { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import CookieBanner from "./components/CookieBanner";
+
 import {
-  CircuitBoard,
-  Cpu,
-  RadioTower,
-  Bot,
-  Globe,
-  Gauge,
-  Search,
-  Menu,
-  X,
-  CalendarDays,
-  ArrowRight,
-  Save,
-  Trash2,
-  Edit3,
-  Plus,
-  LogOut,
-  ShieldCheck,
-  Wrench,
-  Mail,
-  Phone,
-  MonitorSmartphone,
-  Workflow,
-  AlertTriangle,
-  ExternalLink,
-  ChevronLeft,
-  ChevronRight,
-  Code2,
-  
+  CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X,
+  CalendarDays, ArrowRight, Save, Trash2, Edit3, Plus, ShieldCheck,
+  Wrench, Mail, MonitorSmartphone, Workflow, AlertTriangle, ExternalLink,
+  ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock,
 } from "lucide-react";
 
+// ─────────────────────────────────────────────
+// CONSTANTS
+// ─────────────────────────────────────────────
 const MAX_POST_GALLERY_IMAGES = 6;
 const MAX_PROJECT_GALLERY_IMAGES = 12;
-const STATIC_POSTS_STORAGE_KEY = "my-electronics-blog.posts.v1";
-const STATIC_GALLERY_STORAGE_KEY = "my-electronics-blog.projectGallery.v1";
+const POSTS_KEY = "my-electronics-blog.posts.v1";
+const GALLERY_KEY = "my-electronics-blog.projectGallery.v1";
+const SLIDE_INTERVAL = 5000;
 
-const DEFAULT_PROJECT_GALLERY_IMAGES = [
+const DEFAULT_GALLERY = [
   "/my-electronics-blog/images/finance-main.webp",
   "/my-electronics-blog/images/finance-chart.webp",
   "/my-electronics-blog/images/finance-dashboard.webp",
 ];
 
-function readJsonStorage(key, fallbackValue) {
-  if (typeof window === "undefined") return fallbackValue;
+// ─────────────────────────────────────────────
+// STORAGE HELPERS
+// ─────────────────────────────────────────────
+const readStorage = (key, fallback) => {
   try {
-    const raw = window.localStorage.getItem(key);
-    if (!raw) return fallbackValue;
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
     return JSON.parse(raw);
-  } catch {
-    return fallbackValue;
-  }
-}
+  } catch { return fallback; }
+};
 
-function writeJsonStorage(key, value) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(key, JSON.stringify(value, null, 2));
-}
+const writeStorage = (key, value) => {
+  try { localStorage.setItem(key, JSON.stringify(value, null, 2)); } catch {}
+};
 
-function removeJsonStorage(key) {
-  if (typeof window === "undefined") return;
-  window.localStorage.removeItem(key);
-}
+const removeStorage = (key) => {
+  try { localStorage.removeItem(key); } catch {}
+};
 
-function getStoredPosts() {
-  const storedPosts = readJsonStorage(STATIC_POSTS_STORAGE_KEY, null);
-  return Array.isArray(storedPosts) && storedPosts.length ? storedPosts : demoPosts;
-}
-
-function getStoredProjectGalleryImages() {
-  const storedImages = readJsonStorage(STATIC_GALLERY_STORAGE_KEY, null);
-  return Array.isArray(storedImages) && storedImages.length
-    ? storedImages
-    : DEFAULT_PROJECT_GALLERY_IMAGES;
-}
-
-function downloadJsonFile(filename, data) {
-  if (typeof document === "undefined") return;
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
-}
-
-function normalizeImageList(value) {
+// ─────────────────────────────────────────────
+// DATA HELPERS
+// ─────────────────────────────────────────────
+const normalizeImageList = (value) => {
   if (!value) return [];
   if (Array.isArray(value)) return value.filter(Boolean);
   if (typeof value === "string") {
     try {
-      const parsed = JSON.parse(value);
-      return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+      const p = JSON.parse(value);
+      return Array.isArray(p) ? p.filter(Boolean) : [];
     } catch {
-      return value
-        .split("\n")
-        .map((item) => item.trim())
-        .filter(Boolean);
+      return value.split("\n").map(s => s.trim()).filter(Boolean);
     }
   }
   return [];
-}
+};
 
-function uniqueImageUrls(urls) {
-  return [...new Set((urls || []).filter(Boolean))];
-}
-
-
-function normalizeLocalImagePath(value) {
+const normalizeImagePath = (value) => {
   const path = String(value || "").trim();
   if (!path) return "";
   if (path.startsWith("http://") || path.startsWith("https://")) return path;
@@ -119,20 +67,57 @@ function normalizeLocalImagePath(value) {
   if (path.startsWith("/images/")) return `/my-electronics-blog${path}`;
   if (path.startsWith("images/")) return `/my-electronics-blog/${path}`;
   return `/my-electronics-blog/images/posts/${path.replace(/^\/+/, "")}`;
-}
+};
 
-const demoPosts = [
+const uniqueUrls = (urls) => [...new Set((urls || []).filter(Boolean))];
+
+const normalizeStatus = (s) => ["idea", "in_progress", "done"].includes(s) ? s : "done";
+
+const getStatusLabel = (s) => ({ idea: "Idee", in_progress: "In Arbeit", done: "Umgesetzt" }[normalizeStatus(s)]);
+
+const getStatusClasses = (s) => ({
+  idea: "border-zinc-500/30 bg-zinc-500/15 text-zinc-300",
+  in_progress: "border-yellow-400/30 bg-yellow-400/10 text-yellow-300",
+  done: "border-emerald-400/30 bg-emerald-400/10 text-emerald-300",
+}[normalizeStatus(s)]);
+
+const isIdea = (post) => normalizeStatus(post?.project_status) === "idea";
+
+const formatDate = (date) => {
+  if (!date) return "Kein Datum";
+  return new Intl.DateTimeFormat("de-DE", { day: "2-digit", month: "long", year: "numeric" }).format(new Date(date));
+};
+
+const getCategoryIcon = (cat) => {
+  const map = {
+    IoT: RadioTower, Robotik: Bot, Messtechnik: Gauge,
+    "Über mich": Globe, "Karriere & Weiterbildung": ShieldCheck,
+    "WinCC & HMI": MonitorSmartphone, "Technische Erfahrungen": Wrench,
+  };
+  return map[cat] || Cpu;
+};
+
+const downloadJson = (filename, data) => {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  a.remove(); URL.revokeObjectURL(url);
+};
+
+// ─────────────────────────────────────────────
+// DEMO DATA
+// ─────────────────────────────────────────────
+const DEMO_POSTS = [
   {
     id: "demo-1",
     title: "Intelligente Smart-Home-Steuerung mit ESP32 und MQTT",
     category: "IoT",
-    image_url:
-      "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=1200&q=80",
+    image_url: "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=1200&q=80",
     image_gallery: [],
-    excerpt:
-      "Entwicklung einer modularen Smart-Home-Plattform zur Steuerung von Licht, Sensoren, Energieverbrauch und Sicherheitsfunktionen.",
-    content:
-      "Dieses Projekt basiert auf einem ESP32-Mikrocontroller und verwendet MQTT für die Kommunikation zwischen Sensoren, Relais und Dashboard. Die Plattform kann Temperatur, Luftfeuchtigkeit, Bewegungen und Energieverbrauch überwachen. Zusätzlich wurde eine mobile Weboberfläche integriert, um Lampen, Steckdosen und Lüfter in Echtzeit zu steuern. Besonderer Fokus lag auf Stabilität, geringer Latenz und einfacher Erweiterbarkeit.",
+    excerpt: "Entwicklung einer modularen Smart-Home-Plattform zur Steuerung von Licht, Sensoren, Energieverbrauch und Sicherheitsfunktionen.",
+    content: "Dieses Projekt basiert auf einem ESP32-Mikrocontroller und verwendet MQTT für die Kommunikation zwischen Sensoren, Relais und Dashboard. Die Plattform kann Temperatur, Luftfeuchtigkeit, Bewegungen und Energieverbrauch überwachen. Zusätzlich wurde eine mobile Weboberfläche integriert, um Lampen, Steckdosen und Lüfter in Echtzeit zu steuern. Besonderer Fokus lag auf Stabilität, geringer Latenz und einfacher Erweiterbarkeit.",
     tags: ["ESP32", "MQTT", "Smart Home", "Sensorik"],
     published: true,
     created_at: "2026-05-14T12:00:00Z",
@@ -145,13 +130,10 @@ const demoPosts = [
     id: "demo-2",
     title: "Automatisiertes Energie-Monitoring für Schaltschrankanlagen",
     category: "Messtechnik",
-    image_url:
-      "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=80",
+    image_url: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=80",
     image_gallery: [],
-    excerpt:
-      "Messsystem zur Analyse von Spannung, Strom, Leistung und Netzqualität in industriellen Verteilungen.",
-    content:
-      "Das System nutzt Stromsensoren, Spannungsmessung und digitale Signalverarbeitung zur kontinuierlichen Analyse elektrischer Verbraucher. Die Daten werden über RS485 übertragen und in einem Dashboard visualisiert. Zusätzlich können Grenzwerte definiert werden, um Warnmeldungen oder automatische Abschaltungen auszulösen.",
+    excerpt: "Messsystem zur Analyse von Spannung, Strom, Leistung und Netzqualität in industriellen Verteilungen.",
+    content: "Das System nutzt Stromsensoren, Spannungsmessung und digitale Signalverarbeitung zur kontinuierlichen Analyse elektrischer Verbraucher. Die Daten werden über RS485 übertragen und in einem Dashboard visualisiert. Zusätzlich können Grenzwerte definiert werden, um Warnmeldungen oder automatische Abschaltungen auszulösen.",
     tags: ["Monitoring", "RS485", "Leistung", "Elektronik"],
     published: true,
     created_at: "2026-05-08T12:00:00Z",
@@ -164,13 +146,10 @@ const demoPosts = [
     id: "demo-3",
     title: "Mini-Roboter mit Hinderniserkennung und Motorsteuerung",
     category: "Robotik",
-    image_url:
-      "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80",
+    image_url: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80",
     image_gallery: [],
-    excerpt:
-      "Kompakter Lernroboter mit Ultraschallsensor, PWM-Motorregelung und autonomer Navigation.",
-    content:
-      "Der Roboter erkennt Hindernisse mit einem Ultraschallsensor und passt die Fahrtrichtung automatisch an. Die Motoren werden über PWM geregelt und ein Mikrocontroller übernimmt die Entscheidungslogik. Das Projekt eignet sich hervorragend zum Lernen von Embedded-Programmierung, Sensorik und Robotik.",
+    excerpt: "Kompakter Lernroboter mit Ultraschallsensor, PWM-Motorregelung und autonomer Navigation.",
+    content: "Der Roboter erkennt Hindernisse mit einem Ultraschallsensor und passt die Fahrtrichtung automatisch an. Die Motoren werden über PWM geregelt und ein Mikrocontroller übernimmt die Entscheidungslogik. Das Projekt eignet sich hervorragend zum Lernen von Embedded-Programmierung, Sensorik und Robotik.",
     tags: ["Robotik", "PWM", "Arduino", "Motorsteuerung"],
     published: true,
     created_at: "2026-04-29T12:00:00Z",
@@ -181,119 +160,31 @@ const demoPosts = [
   },
 ];
 
-const features = [
-  {
-    icon: Cpu,
-    title: "Elektronik & Embedded Systems",
-    text: "Eigene Lernprojekte rund um Mikrocontroller, Sensorik und hardwarenahe Entwicklung zur praktischen Erweiterung meines technischen Wissens.",
-    gradient: "from-cyan-400 via-cyan-500 to-cyan-400",
-    glow: "shadow-blue-500/20",
-  },
-  {
-    icon: Workflow,
-    title: "Automatisierung & Steuerung",
-    text: "Praktische Übungen und kleinere Projekte, um industrielle Abläufe, Steuerungstechnik und technische Prozesse besser zu verstehen.",
-    gradient: "from-cyan-400 via-cyan-500 to-cyan-400",
-    glow: "shadow-blue-500/20",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Technisches Lernen",
-    text: "Dokumentation meines Lernwegs, technischer Erfahrungen und neuer Themen, mit denen ich mich kontinuierlich beschäftige.",
-    gradient: "from-cyan-400 via-cyan-500 to-cyan-400",
-    glow: "shadow-blue-500/20",
-  },
-  {
-    icon: MonitorSmartphone,
-    title: "Eigene Entwicklung",
-    text: "Diese Website dient als persönliche Plattform, um Projekte, Ideen und technische Fortschritte übersichtlich festzuhalten.",
-    gradient: "from-cyan-400 via-cyan-500 to-cyan-400",
-    glow: "shadow-blue-500/20",
-  },
+const FEATURES = [
+  { icon: Cpu, title: "Elektronik & Embedded Systems", text: "Eigene Lernprojekte rund um Mikrocontroller, Sensorik und hardwarenahe Entwicklung zur praktischen Erweiterung meines technischen Wissens." },
+  { icon: Workflow, title: "Automatisierung & Steuerung", text: "Praktische Übungen und kleinere Projekte, um industrielle Abläufe, Steuerungstechnik und technische Prozesse besser zu verstehen." },
+  { icon: ShieldCheck, title: "Technisches Lernen", text: "Dokumentation meines Lernwegs, technischer Erfahrungen und neuer Themen, mit denen ich mich kontinuierlich beschäftige." },
+  { icon: MonitorSmartphone, title: "Eigene Entwicklung", text: "Diese Website dient als persönliche Plattform, um Projekte, Ideen und technische Fortschritte übersichtlich festzuhalten." },
 ];
 
-function getIcon(category) {
-  if (category === "IoT") return RadioTower;
-  if (category === "Robotik") return Bot;
-  if (category === "Messtechnik") return Gauge;
-  if (category === "Über mich") return Globe;
-  if (category === "Karriere & Weiterbildung") return ShieldCheck;
-  if (category === "WinCC & HMI") return MonitorSmartphone;
-  if (category === "Technische Erfahrungen") return Wrench;
-  return Cpu;
-}
+const EMPTY_POST = () => ({
+  id: null, title: "", category: "IoT",
+  image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+  image_gallery: [], excerpt: "", content: "",
+  tags: "ESP32, Sensorik", read_time: "5 Min.",
+  published: true, external_link: "",
+  project_status: "done", sort_order: 100,
+  created_at: new Date().toISOString(),
+});
 
-function formatDate(date) {
-  if (!date) return "Kein Datum";
-  return new Intl.DateTimeFormat("de-DE", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(date));
-}
-
-function normalizeProjectStatus(status) {
-  if (["idea", "in_progress", "done"].includes(status)) return status;
-  return "done";
-}
-
-function isIdeaPost(post) {
-  return normalizeProjectStatus(post?.project_status) === "idea";
-}
-
-function getProjectStatusLabel(status) {
-  const normalized = normalizeProjectStatus(status);
-  if (normalized === "idea") return "Idee";
-  if (normalized === "in_progress") return "In Arbeit";
-  return "Umgesetzt";
-}
-
-function getProjectStatusClasses(status) {
-  const normalized = normalizeProjectStatus(status);
-  if (normalized === "idea") {
-    return "border-zinc-500/30 bg-zinc-500/15 text-zinc-300";
-  }
-  if (normalized === "in_progress") {
-    return "border-yellow-400/30 bg-yellow-400/10 text-yellow-300";
-  }
-  return "border-emerald-400/30 bg-emerald-400/10 text-emerald-300";
-}
-
-function createEmptyPost() {
-  return {
-    id: null,
-    title: "",
-    category: "IoT",
-    image_url:
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
-    image_gallery: [],
-    excerpt: "",
-    content: "",
-    tags: "ESP32, Sensorik",
-    read_time: "5 Min.",
-    published: true,
-    external_link: "",
-    project_status: "done",
-    sort_order: 100,
-  };
-}
-
-/* ── Reusable gradient-border wrapper ── */
-function GradientBorder({
-  children,
-  gradient = "from-cyan-400 via-cyan-500 to-cyan-400",
-  className = "",
-  innerClassName = "",
-  padding = "p-[1.5px]",
-  rounded = "rounded-[2rem]",
-  stretch = false,
-}) {
-  const outerFlex = stretch ? "flex flex-col" : "";
-  const innerFlex = stretch ? "flex-1" : "";
+// ─────────────────────────────────────────────
+// REUSABLE COMPONENTS
+// ─────────────────────────────────────────────
+function GradientBorder({ children, gradient = "from-cyan-400 via-cyan-500 to-cyan-400", className = "", innerClassName = "", padding = "p-[1.5px]", rounded = "rounded-[2rem]", stretch = false }) {
   return (
-    <div className={`relative ${rounded} ${padding} ${outerFlex} ${className}`}>
+    <div className={`relative ${rounded} ${padding} ${stretch ? "flex flex-col" : ""} ${className}`}>
       <div className={`absolute inset-0 ${rounded} bg-gradient-to-r ${gradient} opacity-70`} />
-      <div className={`relative ${rounded} ${innerFlex} ${innerClassName}`}>{children}</div>
+      <div className={`relative ${rounded} ${stretch ? "flex-1" : ""} ${innerClassName}`}>{children}</div>
     </div>
   );
 }
@@ -303,14 +194,7 @@ function Background() {
     <div className="fixed inset-0 -z-10 overflow-hidden bg-[#07111f]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.45),transparent_30%),radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.42),transparent_32%),radial-gradient(circle_at_20%_80%,rgba(168,85,247,0.38),transparent_34%),radial-gradient(circle_at_80%_80%,rgba(236,72,153,0.34),transparent_32%)]" />
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-900/30 to-fuchsia-600/20" />
-      <div
-        className="absolute inset-0 opacity-[0.16]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,.16) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.16) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
+      <div className="absolute inset-0 opacity-[0.16]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.16) 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
       <div className="absolute left-[-120px] top-[-120px] h-[520px] w-[520px] rounded-full bg-cyan-400/35 blur-3xl" />
       <div className="absolute right-[-160px] top-[15%] h-[560px] w-[560px] rounded-full bg-blue-500/35 blur-3xl" />
       <div className="absolute bottom-[-180px] left-[20%] h-[520px] w-[520px] rounded-full bg-fuchsia-500/30 blur-3xl" />
@@ -318,122 +202,104 @@ function Background() {
   );
 }
 
+// ─────────────────────────────────────────────
+// LIGHTBOX
+// ─────────────────────────────────────────────
+function Lightbox({ images, index, onClose }) {
+  const [current, setCurrent] = useState(index);
+  useEffect(() => {
+    const handler = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
 
-function SiteHeader({ onAdminClick, adminUnlocked }) {
+  const imageUrl = typeof images[current] === "object" ? images[current].image_url : images[current];
 
+  return (
+    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 px-4 backdrop-blur-md" onClick={onClose}>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.88 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.25 }}
+        className="relative max-h-[90vh] w-full max-w-5xl"
+        onClick={e => e.stopPropagation()}
+      >
+        <img src={imageUrl} alt="Bild" className="max-h-[85vh] w-full rounded-2xl object-contain shadow-2xl" />
+        {images.length > 1 && (
+          <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-3">
+            <button onClick={() => setCurrent(p => (p - 1 + images.length) % images.length)} className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"><ChevronLeft className="h-5 w-5" /></button>
+            <span className="flex items-center text-white/60 text-sm">{current + 1} / {images.length}</span>
+            <button onClick={() => setCurrent(p => (p + 1) % images.length)} className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"><ChevronRight className="h-5 w-5" /></button>
+          </div>
+        )}
+        <button onClick={onClose} className="absolute -right-4 -top-4 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400 text-black shadow-xl transition hover:bg-cyan-300">
+          <X className="h-5 w-5 stroke-[3]" />
+        </button>
+      </motion.div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// HEADER
+// ─────────────────────────────────────────────
+function SiteHeader({ onAdminClick, adminUnlocked, onNavigate, currentPage }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const isAdminRoute = new URLSearchParams(window.location.search).get("admin") === "1";
 
-  const showAdminEntry =
-  typeof window !== "undefined" &&
-  new URLSearchParams(window.location.search).get("admin") === "1";
-
-  function scrollToSection(id) {
-  setMenuOpen(false);
-  document.getElementById(id)?.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
-}
-
-  function goHome() {
-  setMenuOpen(false);
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-  function openAdmin() {
-  if (adminUnlocked) {
+  const scrollTo = (id) => {
     setMenuOpen(false);
-    onAdminClick?.();
-    return;
-  }
+    if (currentPage !== "home") { onNavigate("home"); setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 100); }
+    else document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
 
-  const password = window.prompt("Admin Passwort");
+  const goHome = () => { setMenuOpen(false); onNavigate("home"); window.scrollTo({ top: 0, behavior: "smooth" }); };
 
-  if (password === "Nhan1986.,") {
-    setMenuOpen(false);
-    onAdminClick?.();
-  } else {
-    window.alert("Falsches Passwort");
-  }
-}
+  const openAdmin = () => {
+    if (adminUnlocked) { setMenuOpen(false); onAdminClick(); return; }
+    const pw = window.prompt("Admin Passwort");
+    if (pw === "Nhan1986.,") { setMenuOpen(false); onAdminClick(); }
+    else window.alert("Falsches Passwort");
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-5 sm:py-4">
         <button type="button" onClick={goHome} className="flex items-center gap-3 text-left">
           <div className="flex h-12 w-12 overflow-hidden rounded-2xl sm:h-14 sm:w-14">
-            <img
-              src="/my-electronics-blog/images/logo.webp"
-              alt="Logo"
-              className="h-full w-full scale-110 object-contain brightness-110 contrast-110"
-            />
+            <img src="/my-electronics-blog/images/logo.webp" alt="Logo" className="h-full w-full scale-110 object-contain brightness-110 contrast-110" />
           </div>
           <div>
             <h1 className="text-base font-black text-white sm:text-xl">Nguyen Nhan Do</h1>
-            <p className="max-w-[190px] text-[10px] leading-tight text-zinc-400 sm:max-w-none sm:text-xs">
-              Technik • Entwicklung • Lernen
-            </p>
+            <p className="text-[10px] leading-tight text-zinc-400 sm:text-xs">Technik • Entwicklung • Lernen</p>
           </div>
         </button>
 
         <div className="hidden items-center gap-8 md:flex">
-          {["blog", "projekte", "kontakt"].map((id) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => scrollToSection(id)}
-              className="text-sm text-zinc-300 transition hover:text-cyan-300 capitalize"
-            >
-              {id === "projekte" ? "Galerie" : id.charAt(0).toUpperCase() + id.slice(1)}
-            </button>
+          {[["blog", "Blog"], ["projekte", "Galerie"], ["kontakt", "Kontakt"]].map(([id, label]) => (
+            <button key={id} type="button" onClick={() => scrollTo(id)} className="text-sm text-zinc-300 transition hover:text-cyan-300">{label}</button>
           ))}
-          {showAdminEntry && (
-  <button
-    type="button"
-    onClick={openAdmin}
-    className="rounded-full border border-cyan-400/30 bg-cyan-400/5 px-5 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400/10 hover:border-cyan-400/60"
-  >
-    Admin
-  </button>
-)}
+          {isAdminRoute && (
+            <button type="button" onClick={openAdmin} className="rounded-full border border-cyan-400/30 bg-cyan-400/5 px-5 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400/10 hover:border-cyan-400/60">
+              Admin
+            </button>
+          )}
         </div>
 
-        <button
-  type="button"
-  className="rounded-xl border border-white/10 p-2 text-white hover:bg-white/10 md:hidden"
-  onClick={() => setMenuOpen((v) => !v)}
-  aria-label="Menü öffnen"
->
-  {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-</button>
+        <button type="button" className="rounded-xl border border-white/10 p-2 text-white hover:bg-white/10 md:hidden" onClick={() => setMenuOpen(v => !v)}>
+          {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
       </nav>
 
       {menuOpen && (
-  <div className="border-t border-white/10 bg-[#050816]/95 px-5 py-4 text-white md:hidden">
-    <div className="grid gap-2">
-            {[
-              ["blog", "Blog"],
-              ["projekte", "Projekte"],
-              ["kontakt", "Kontakt"],
-            ].map(([id, label]) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => scrollToSection(id)}
-                className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300"
-              >
-                {label}
-              </button>
+        <div className="border-t border-white/10 bg-[#050816]/95 px-5 py-4 text-white md:hidden">
+          <div className="grid gap-2">
+            {[["blog", "Blog"], ["projekte", "Projekte"], ["kontakt", "Kontakt"]].map(([id, label]) => (
+              <button key={id} type="button" onClick={() => scrollTo(id)} className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300">{label}</button>
             ))}
-           {showAdminEntry && (
-  <button
-    type="button"
-    onClick={openAdmin}
-    className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300"
-  >
-    Admin
-  </button>
-)}
+            {isAdminRoute && (
+              <button type="button" onClick={openAdmin} className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300">Admin</button>
+            )}
           </div>
         </div>
       )}
@@ -441,583 +307,237 @@ function SiteHeader({ onAdminClick, adminUnlocked }) {
   );
 }
 
-/* ══════════════════════════════════════════════
-   HERO SLIDESHOW — Split Layout with Stagger
-══════════════════════════════════════════════ */
-
-const SLIDE_INTERVAL = 5000;
-
-// Framer Motion variants
+// ─────────────────────────────────────────────
+// HERO SLIDESHOW
+// ─────────────────────────────────────────────
 const textContainerVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.08, delayChildren: 0.05 },
-  },
-  exit: {
-    transition: { staggerChildren: 0.04, staggerDirection: -1 },
-  },
+  hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } }, exit: { transition: { staggerChildren: 0.04, staggerDirection: -1 } },
 };
-
 const textItemVariants = {
-  hidden: { opacity: 0, y: 22 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
-  exit: { opacity: 0, y: -14, transition: { duration: 0.25, ease: "easeIn" } },
+  hidden: { opacity: 0, y: 22 }, visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } }, exit: { opacity: 0, y: -14, transition: { duration: 0.25, ease: "easeIn" } },
 };
-
 const cardVariants = {
-  hidden: { opacity: 0, x: 48, scale: 0.96 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    scale: 1,
-    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.15 },
-  },
-  exit: {
-    opacity: 0,
-    x: -32,
-    scale: 0.97,
-    transition: { duration: 0.28, ease: "easeIn" },
-  },
+  hidden: { opacity: 0, x: 48, scale: 0.96 }, visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.15 } }, exit: { opacity: 0, x: -32, scale: 0.97, transition: { duration: 0.28, ease: "easeIn" } },
 };
 
-const glowVariants = {
-  initial: { scale: 1, opacity: 0.6 },
-  animate: {
-    scale: [1, 1.12, 1],
-    opacity: [0.6, 0.85, 0.6],
-    transition: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-  },
-};
-
-function HeroSlideshow({ slides, onDiscover }) {
+function HeroSlideshow({ slides, onDiscover, onOpenPost }) {
   const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(1);
   const timerRef = useRef(null);
 
-  const startTimer = () => {
+  const startTimer = useCallback(() => {
     clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => {
-      setDirection(1);
-      setCurrent((prev) => (prev + 1) % slides.length);
-    }, SLIDE_INTERVAL);
-  };
-
-  useEffect(() => {
-    startTimer();
-    return () => clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => setCurrent(p => (p + 1) % slides.length), SLIDE_INTERVAL);
   }, [slides.length]);
 
-  function goTo(idx) {
-    setDirection(idx > current ? 1 : -1);
-    setCurrent(idx);
-    startTimer();
-  }
-  function prev() {
-    goTo((current - 1 + slides.length) % slides.length);
-  }
-  function next() {
-    goTo((current + 1) % slides.length);
-  }
+  useEffect(() => { startTimer(); return () => clearInterval(timerRef.current); }, [startTimer]);
 
+  const goTo = (idx) => { setCurrent(idx); startTimer(); };
+
+  if (!slides.length) return null;
   const slide = slides[current];
 
   return (
     <section className="relative mx-auto grid max-w-7xl items-center gap-8 px-4 py-10 sm:px-5 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-24">
-      {/* ── LEFT: Staggered text ── */}
       <div className="relative z-10">
-      
         <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-4 py-2 backdrop-blur-sm">
-  <CircuitBoard className="h-4 w-4 text-cyan-400" />
-  <span className="text-sm font-medium text-cyan-300">
-    Elektrokonstruktion · Prüftechnik · Software
-  </span>
-</div>
-      
-        {/* Static main headline */}
-        <h2 className="max-w-4xl text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-        Technik. Dokumentation. Entwicklung.
-        </h2>
-
-        {/* Static description */}
+          <CircuitBoard className="h-4 w-4 text-cyan-400" />
+          <span className="text-sm font-medium text-cyan-300">Elektrokonstruktion · Prüftechnik · Software</span>
+        </div>
+        <h2 className="max-w-4xl text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">Technik. Dokumentation. Entwicklung.</h2>
         <p className="mt-5 max-w-2xl text-[15px] leading-7 text-zinc-300 sm:mt-8 sm:text-lg sm:leading-9">
-        Diese Website habe ich selbst entwickelt, um technische Projekte, Lernfortschritte und praktische Erfahrungen 
-        im Bereich Elektronik, Embedded Systems, Messtechnik und technischer Softwareentwicklung zu dokumentieren.
-        Zudem erweitere ich mein Wissen kontinuierlich durch praktische Projekte, eigene Entwicklungen und technisches Selbststudium.
+          Diese Website habe ich selbst entwickelt, um technische Projekte, Lernfortschritte und praktische Erfahrungen im Bereich Elektronik, Embedded Systems, Messtechnik und technischer Softwareentwicklung zu dokumentieren.
         </p>
-
-        {/* CTA buttons */}
         <div className="mt-7 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
-          <button
-            type="button"
-            onClick={onDiscover}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-cyan-400 px-5 py-3.5 text-sm font-bold text-black shadow-xl shadow-cyan-500/30 transition hover:bg-cyan-300 sm:w-auto sm:px-7 sm:py-4 sm:text-base"
-          >
+          <button type="button" onClick={onDiscover} className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-cyan-400 px-5 py-3.5 text-sm font-bold text-black shadow-xl shadow-cyan-500/30 transition hover:bg-cyan-300 sm:w-auto sm:px-7 sm:py-4 sm:text-base">
             Projekte entdecken <ArrowRight className="h-5 w-5" />
           </button>
         </div>
-
         <div className="mt-8 flex flex-wrap gap-4">
-          <a
-  href="https://drive.google.com/drive/folders/1y6MZUhoZJCIou-SL9BHbkA-CjpXxKGz5?usp=sharing"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="inline-flex items-center gap-3 rounded-2xl border border-zinc-600/40 bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 px-6 py-4 font-bold text-zinc-100 shadow-xl shadow-black/40 transition duration-300 hover:border-zinc-400/50 hover:from-zinc-600 hover:via-zinc-700 hover:to-zinc-900 hover:shadow-2xl hover:shadow-black/50"
->
-  <ExternalLink className="h-5 w-5" />
-  Open Docs.
-</a>
-          <a
-  href="https://github.com/nguyennhando?tab=repositories"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-6 py-4 font-bold text-black shadow-xl shadow-orange-500/30 transition hover:from-orange-400 hover:to-amber-300"
->
-  <Code2 className="h-5 w-5" />
-  Source Code
-</a>
+          <a href="https://drive.google.com/drive/folders/1y6MZUhoZJCIou-SL9BHbkA-CjpXxKGz5?usp=sharing" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 rounded-2xl border border-zinc-600/40 bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 px-6 py-4 font-bold text-zinc-100 shadow-xl shadow-black/40 transition hover:border-zinc-400/50">
+            <ExternalLink className="h-5 w-5" /> Open Docs.
+          </a>
+          <a href="https://github.com/nguyennhando?tab=repositories" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-6 py-4 font-bold text-black shadow-xl shadow-orange-500/30 transition hover:from-orange-400 hover:to-amber-300">
+            <Code2 className="h-5 w-5" /> Source Code
+          </a>
         </div>
       </div>
 
-      {/* ── RIGHT: Animated slide card ── */}
+      {/* Slide Card */}
       <div className="relative flex flex-col items-center">
-        {/* Ambient glow behind card */}
-        <motion.div
-          variants={glowVariants}
-          initial="initial"
-          animate="animate"
-          className="pointer-events-none absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-cyan-400/10 blur-3xl"
-        />
-
-        {/* Card wrapper with gradient border */}
-        <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] lg:max-w-none shadow-2xl shadow-cyan-500/10">
-        
-          
-        <div className="relative overflow-hidden rounded-[1.95rem] bg-[#080d1f]" style={{ height: "720px" }}>
+        <motion.div animate={{ scale: [1, 1.12, 1], opacity: [0.6, 0.85, 0.6], transition: { duration: 4, repeat: Infinity } }} className="pointer-events-none absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-cyan-400/10 blur-3xl" />
+        <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] shadow-2xl shadow-cyan-500/10 lg:max-w-none">
+          <div className="relative overflow-hidden rounded-[1.95rem] bg-[#080d1f]" style={{ height: "720px" }}>
             <AnimatePresence mode="wait">
-              <motion.div
-  key={current}
-  variants={cardVariants}
-  initial="hidden"
-  animate="visible"
-  exit="exit"
-  whileHover={{ scale: 1.015 }}
-  onClick={() =>
-  document.getElementById("blog")?.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  })
-}
-  onMouseEnter={() => clearInterval(timerRef.current)}
-  onMouseLeave={startTimer}
-  className="flex flex-col h-full cursor-pointer"
->
-                {/* Image */}
+              <motion.div key={current} variants={cardVariants} initial="hidden" animate="visible" exit="exit"
+                whileHover={{ scale: 1.015 }}
+                onClick={() => onOpenPost && slide.id && onOpenPost(slide.id)}
+                onMouseEnter={() => clearInterval(timerRef.current)} onMouseLeave={startTimer}
+                className="flex flex-col h-full cursor-pointer">
                 <div className="relative h-[360px] lg:h-[420px] shrink-0 overflow-hidden">
-                  <motion.img
-                    src={slide.image}
-                    alt={slide.title}
-                    className="h-full w-full object-cover"
-                    initial={{ scale: 1.06 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.7, ease: "easeOut" }}
-                  />
-                  {/* Image overlay gradient */}
+                  <motion.img src={slide.image} alt={slide.title} className="h-full w-full object-cover" initial={{ scale: 1.06 }} animate={{ scale: 1 }} transition={{ duration: 0.7 }} />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#080d1f]/60 via-transparent to-transparent" />
-
-                  {/* Category badge — floats over image */}
-                  <motion.div
-                    variants={textItemVariants}
-                    className="absolute left-4 top-4 flex items-center gap-2"
-                  >
-                    <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black text-black shadow-lg shadow-cyan-500/30">
-                      {slide.category}
-                    </span>
-                    <span className="rounded-full bg-black/40 px-3 py-1.5 text-xs text-zinc-300 backdrop-blur-sm">
-                      {slide.readTime}
-                    </span>
-                  </motion.div>
+                  <div className="absolute left-4 top-4 flex items-center gap-2">
+                    <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black text-black shadow-lg">{slide.category}</span>
+                    <span className="rounded-full bg-black/40 px-3 py-1.5 text-xs text-zinc-300 backdrop-blur-sm">{slide.readTime}</span>
+                  </div>
                 </div>
-
-                {/* Card text body — fixed height, overflow hidden so card never resizes */}
                 <AnimatePresence mode="wait">
-                  <motion.div
-                    key={`text-${current}`}
-                    variants={textContainerVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="flex-1 overflow-hidden p-5 sm:p-6"
-                  >
-                    <motion.h3
-                      variants={textItemVariants}
-                      className="text-xl font-black leading-tight text-white sm:text-2xl lg:text-xl xl:text-2xl"
-                    >
-                      {slide.title}
-                    </motion.h3>
-                    <motion.p
-                      variants={textItemVariants}
-                      className="mt-3 line-clamp-2 text-sm leading-6 text-zinc-400 sm:text-base sm:leading-7"
-                    >
-                      {slide.text}
-                    </motion.p>
-
-                    {/* Tags row */}
+                  <motion.div key={`text-${current}`} variants={textContainerVariants} initial="hidden" animate="visible" exit="exit" className="flex-1 overflow-hidden p-5 sm:p-6">
+                    <motion.h3 variants={textItemVariants} className="text-xl font-black leading-tight text-white sm:text-2xl lg:text-xl xl:text-2xl">{slide.title}</motion.h3>
+                    <motion.p variants={textItemVariants} className="mt-3 line-clamp-2 text-sm leading-6 text-zinc-400 sm:text-base sm:leading-7">{slide.text}</motion.p>
                     <motion.div variants={textItemVariants} className="mt-4 flex flex-wrap gap-2">
-                      {(slide.tags || []).slice(0, 3).map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full border border-cyan-400/20 bg-cyan-400/8 px-3 py-1 text-xs text-cyan-300"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
+                      {(slide.tags || []).slice(0, 3).map(tag => <span key={tag} className="rounded-full border border-cyan-400/20 bg-cyan-400/8 px-3 py-1 text-xs text-cyan-300">#{tag}</span>)}
                     </motion.div>
-                    <motion.div
-  variants={textItemVariants}
-  className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-cyan-300"
->
-  Projekt öffnen <ArrowRight className="h-4 w-4" />
-</motion.div>
+                    <motion.div variants={textItemVariants} className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-cyan-300">Projekt öffnen <ArrowRight className="h-4 w-4" /></motion.div>
                   </motion.div>
                 </AnimatePresence>
               </motion.div>
             </AnimatePresence>
-
-            {/* ── Progress bar strip — outside AnimatePresence, always at bottom ── */}
+            {/* Progress bars */}
             <div className="absolute bottom-0 left-0 right-0 flex gap-[3px] px-5 pb-5">
               {slides.map((_, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => goTo(idx)}
-                  aria-label={`Slide ${idx + 1}`}
-                  className="relative h-[3px] flex-1 overflow-hidden rounded-full bg-white/10"
-                >
-                  {idx === current && (
-                    <motion.span
-                      key={current}
-                      className="absolute inset-y-0 left-0 rounded-full bg-cyan-400"
-                      initial={{ width: "0%" }}
-                      animate={{ width: "100%" }}
-                      transition={{ duration: SLIDE_INTERVAL / 1000, ease: "linear" }}
-                    />
-                  )}
-                  {idx < current && (
-                    <span className="absolute inset-0 rounded-full bg-cyan-400/40" />
-                  )}
+                <button key={idx} type="button" onClick={() => goTo(idx)} className="relative h-[3px] flex-1 overflow-hidden rounded-full bg-white/10">
+                  {idx === current && <motion.span key={current} className="absolute inset-y-0 left-0 rounded-full bg-cyan-400" initial={{ width: "0%" }} animate={{ width: "100%" }} transition={{ duration: SLIDE_INTERVAL / 1000, ease: "linear" }} />}
+                  {idx < current && <span className="absolute inset-0 rounded-full bg-cyan-400/40" />}
                 </button>
               ))}
             </div>
           </div>
         </div>
-
-        {/* ── Prev / Next arrows ── */}
         <div className="mt-4 flex gap-3">
-          <button
-            type="button"
-            onClick={prev}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-400 transition hover:border-cyan-400/40 hover:bg-white/10 hover:text-cyan-300"
-            aria-label="Vorherige Folie"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <span className="flex items-center gap-1 text-xs text-zinc-600">
-            <span className="font-bold text-zinc-400">{current + 1}</span>/{slides.length}
-          </span>
-          <button
-            type="button"
-            onClick={next}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-400 transition hover:border-cyan-400/40 hover:bg-white/10 hover:text-cyan-300"
-            aria-label="Nächste Folie"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
+          <button type="button" onClick={() => goTo((current - 1 + slides.length) % slides.length)} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-400 transition hover:border-cyan-400/40 hover:text-cyan-300"><ChevronLeft className="h-5 w-5" /></button>
+          <span className="flex items-center gap-1 text-xs text-zinc-600"><span className="font-bold text-zinc-400">{current + 1}</span>/{slides.length}</span>
+          <button type="button" onClick={() => goTo((current + 1) % slides.length)} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-400 transition hover:border-cyan-400/40 hover:text-cyan-300"><ChevronRight className="h-5 w-5" /></button>
         </div>
       </div>
     </section>
   );
 }
 
+// ─────────────────────────────────────────────
+// POST DETAIL PAGE (trang riêng)
+// ─────────────────────────────────────────────
+function PostDetailPage({ post, onBack }) {
+  const [lightboxIndex, setLightboxIndex] = useState(null);
+  const allImages = [post.image_url, ...normalizeImageList(post.image_gallery)];
 
+  useEffect(() => { window.scrollTo({ top: 0 }); }, [post.id]);
 
-function AboutWideCard() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5">
-      <GradientBorder
-        gradient="from-cyan-400 via-cyan-500 to-cyan-400"
-        rounded="rounded-[2rem]"
-        innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl"
-      >
-        <div className="grid items-stretch gap-6 p-4 sm:p-6 lg:grid-cols-2 lg:gap-8">
-          <div className="grid min-h-full gap-4 lg:grid-rows-2">
-  <img
-    src="/my-electronics-blog/images/about-1.webp"
-    alt="Nguyen Nhan Do Technik"
-    className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]"
-  />
+    <div className="min-h-screen text-white">
+      <Background />
+      <main className="mx-auto max-w-5xl px-4 pt-[110px] pb-20 sm:px-5">
+        {/* Back Button */}
+        <motion.button initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} type="button" onClick={onBack}
+          className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-bold text-zinc-300 transition hover:bg-white/10 hover:text-cyan-300">
+          <ArrowLeft className="h-4 w-4" /> Zurück zum Blog
+        </motion.button>
 
-  <img
-    src="/my-electronics-blog/images/about-2.webp"
-    alt="Elektronik und Entwicklung"
-    className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]"
-  />
-</div>
-
-          <div className="flex flex-col justify-center">
-            <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">
-              Persönlicher Weg
-            </p>
-
-            <h2 className="mt-3 text-2xl font-black leading-tight sm:text-4xl">
-              Nguyen Nhan Do – Technik lernen. Erfahrung sammeln. Mich weiterentwickeln.
-            </h2>
-
-            <div className="mt-5 text-sm leading-7 text-zinc-300 sm:text-base sm:leading-8">
-              <p>
-                Ich bin 2013 nach Deutschland gekommen – nicht, weil mein Leben in Vietnam schlecht war,
-                sondern weil ich wissen wollte, wie weit ich mich persönlich und beruflich entwickeln kann,
-                wenn ich meine Komfortzone verlasse und in einem völlig neuen Umfeld neu anfange.
-              </p>
-
-              <p className="mt-4">
-                Die ersten Jahre in Deutschland waren für mich vor allem eine Zeit des Ankommens, Lernens
-                und Anpassens. Neben den Sprachkursen habe ich in verschiedenen Bereichen gearbeitet –
-                unter anderem in der Gastronomie, im Management und später auch in der Selbstständigkeit.
-              </p>
-
-              <p className="mt-4">
-                Nach mehreren Jahren unterschiedlicher beruflicher Erfahrungen habe ich mich bewusst
-                entschieden, wieder stärker in die technische Richtung zurückzugehen und mich langfristig im
-                Bereich Elektronik, Messtechnik und Automatisierung weiterzuentwickeln.
-              </p>
-
-              <p className="mt-4">
-                In den letzten Jahren konnte ich praktische Erfahrungen in der Kalibrierung, Fehlersuche,
-                Prüfung und Entwicklung elektronischer Systeme sammeln und gleichzeitig mein technisches
-                Wissen kontinuierlich erweitern.
-              </p>
-
-              <p className="mt-4">
-                Deshalb habe ich zusätzliche Weiterbildungen in SPS-Programmierung, C++/Qt, AutoCAD und
-                EPLAN absolviert, um mein Wissen gezielt auszubauen und neue technische Bereiche besser zu
-                verstehen.
-              </p>
-
-              <p className="mt-4">
-                Dieser Blog ist kein Ort für Motivationstexte oder perfekte Erfolgsgeschichten. Ich möchte
-                hier ehrlich über meinen Weg sprechen – über das Leben und Arbeiten in Deutschland,
-                technische Themen, persönliche Erfahrungen, Herausforderungen und Entwicklung.
-              </p>
-              
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <GradientBorder
+            gradient={isIdea(post) ? "from-zinc-600 via-zinc-500 to-zinc-600" : "from-cyan-400 via-cyan-500 to-cyan-400"}
+            rounded="rounded-[2rem]"
+            innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl"
+          >
+            {/* Hero image */}
+            <div className="relative">
+              <img src={post.image_url} alt={post.title} onClick={() => setLightboxIndex(0)}
+                className={`h-64 w-full cursor-zoom-in object-cover sm:h-80 lg:h-[420px] ${isIdea(post) ? "grayscale opacity-70" : ""}`} />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#07111f]/80 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
+                <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black text-black">{post.category}</span>
+                <span className={`rounded-full border px-3 py-1.5 text-xs font-bold ${getStatusClasses(post.project_status)}`}>{getStatusLabel(post.project_status)}</span>
+              </div>
             </div>
-          </div>
-        </div>
-      </GradientBorder>
-    </section>
+
+            <div className="p-5 sm:p-8 lg:p-10">
+              {/* Meta */}
+              <div className="mb-5 flex flex-wrap gap-3 text-xs text-zinc-400">
+                <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" />{formatDate(post.created_at)}</span>
+                <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{post.read_time || "5 Min."}</span>
+              </div>
+
+              {/* Title */}
+              <h1 className="text-2xl font-black leading-tight text-white sm:text-4xl lg:text-5xl">{post.title}</h1>
+
+              {/* Excerpt */}
+              <p className="mt-5 text-base font-semibold leading-8 text-cyan-100/90 sm:text-lg">{post.excerpt}</p>
+
+              {/* Content */}
+              <div className="mt-6 whitespace-pre-line text-sm leading-8 text-zinc-300 sm:text-base sm:leading-9">{post.content}</div>
+
+              {/* Gallery */}
+              {normalizeImageList(post.image_gallery).length > 0 && (
+                <div className="mt-8">
+                  <p className="mb-4 text-sm font-bold uppercase tracking-widest text-cyan-300">Projektbilder</p>
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                    {normalizeImageList(post.image_gallery).map((url, i) => (
+                      <img key={url} src={url} alt={`Bild ${i + 1}`} onClick={() => setLightboxIndex(i + 1)}
+                        className="h-36 w-full cursor-zoom-in rounded-2xl object-cover transition hover:brightness-110" />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Tags */}
+              {!!(Array.isArray(post.tags) ? post.tags : []).length && (
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {post.tags.map(tag => <span key={tag} className="rounded-full border border-cyan-400/20 bg-cyan-400/8 px-3 py-1 text-xs text-cyan-300">#{tag}</span>)}
+                </div>
+              )}
+
+              {/* Actions */}
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                {post.external_link && !isIdea(post) ? (
+                  <a href={post.external_link} target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-6 py-4 font-black text-black transition hover:bg-cyan-300">
+                    Zum Projekt <ExternalLink className="h-5 w-5" />
+                  </a>
+                ) : (
+                  <span className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-6 py-4 font-bold text-zinc-400">
+                    {isIdea(post) ? "Konzeptprojekt – noch nicht umgesetzt" : "Kein Projektlink hinterlegt"}
+                  </span>
+                )}
+                <button type="button" onClick={onBack}
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-6 py-4 font-bold text-zinc-200 transition hover:bg-white/10">
+                  <ArrowLeft className="h-5 w-5" /> Zurück zum Blog
+                </button>
+              </div>
+            </div>
+          </GradientBorder>
+        </motion.div>
+      </main>
+
+      {lightboxIndex !== null && (
+        <Lightbox images={allImages} index={lightboxIndex} onClose={() => setLightboxIndex(null)} />
+      )}
+    </div>
   );
 }
-/* ══════════════════════════════════════════════
-   HOME PAGE
-══════════════════════════════════════════════ */
-function Home({ adminVisible, setAdminVisible, adminUnlocked }) {
-  const isAdminRoute =
-  typeof window !== "undefined" &&
-  new URLSearchParams(window.location.search).get("admin") === "1";
 
-  const PUBLIC_DEPLOY = !isAdminRoute;
-
-  // Static GitHub Pages mode:
-  // - Public URL: no admin rights, no edit/delete buttons.
-  // - Admin URL (?admin=1): admin rights remain after password unlock, even when panel is closed.
-  const isAdmin = Boolean(isAdminRoute && adminUnlocked);
-  const session = isAdmin ? { user: { email: "Static Local Admin" } } : null;
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [posts, setPosts] = useState(demoPosts);
-  const [selectedPost, setSelectedPost] = useState(demoPosts[0]);
-  const [blogImageLightbox, setBlogImageLightbox] = useState(null);
-  const [projectGalleryLightbox, setProjectGalleryLightbox] = useState(null);
-  const [projectGalleryImages, setProjectGalleryImages] = useState([]);
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("Alle");
-  const [editingPost, setEditingPost] = useState(createEmptyPost());
+// ─────────────────────────────────────────────
+// ADMIN PANEL
+// ─────────────────────────────────────────────
+function AdminPanel({ posts, galleryImages, onClose, onSave, onDelete, onMoveOrder, onSaveGallery, onDeleteGallery, onExport, onImport, onReset, message, setMessage }) {
+  const [editingPost, setEditingPost] = useState(EMPTY_POST());
   const [editingMode, setEditingMode] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
 
-  const hasSupabase = true;
-
-  // Build hero slides from posts
-  const heroSlides = useMemo(
-  () =>
-    [...posts]
-      .sort((a, b) => {
-        const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
-        const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
-
-        if (orderA !== orderB) return orderA - orderB;
-
-        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-      })
-      .slice(0, 3)
-      .map((p) => ({
-  id: p.id,
-  image: p.image_url,
-        category: p.category,
-        readTime: p.read_time || "5 Min.",
-        title: p.title,
-        text: p.excerpt,
-        tags: Array.isArray(p.tags) ? p.tags : [],
-      })),
-    [posts]
-  );
-
- function scrollToSection(id) {
-  document.getElementById(id)?.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
-}
-
-function openPost(post) {
-  setSelectedPost(post);
-
-  window.requestAnimationFrame(() => {
-    document.getElementById("post-detail")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
+  const startEdit = (post) => {
+    setEditingMode(true);
+    setEditingPost({
+      ...post,
+      tags: Array.isArray(post.tags) ? post.tags.join(", ") : "",
+      external_link: post.external_link || "",
+      image_gallery: normalizeImageList(post.image_gallery),
+      project_status: normalizeStatus(post.project_status),
+      sort_order: isFinite(Number(post.sort_order)) ? post.sort_order : 100,
     });
-  });
-}
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-
-  useEffect(() => {
-  loadPosts();
-  loadProjectGalleryImages();
-}, []);
-
-
-async function loadPosts() {
-  const nextPosts = getStoredPosts();
-  setPosts(nextPosts);
-  setSelectedPost(nextPosts[0] || null);
-}
-
-  async function login(e) {
+  const handleSave = (e) => {
     e.preventDefault();
-    setLoginEmail("");
-    setLoginPassword("");
-    setMessage("GitHub Pages läuft statisch. Der Admin speichert jetzt lokal im Browser.");
-  }
-
-  async function logout() {
-    setMessage("GitHub Pages läuft statisch. Es gibt keinen Supabase-Login mehr; lokale Daten bleiben im Browser gespeichert.");
-  }
-
-  async function loadProjectGalleryImages() {
-    setProjectGalleryImages(getStoredProjectGalleryImages());
-  }
-
-  async function uploadProjectGalleryImages() {
-    if (!isAdmin) {
-      setMessage("Keine Berechtigung. Nur Admins dürfen Galerie-Bilder speichern.");
-      return;
-    }
-
-    const input = window.prompt(
-      "Bildpfad einfügen, z.B. /my-electronics-blog/images/posts/projekt.webp oder mehrere Pfade zeilenweise:"
-    );
-    const imagePaths = normalizeImageList(input).map(normalizeLocalImagePath).filter(Boolean);
-    if (!imagePaths.length) return;
-
-    const customGalleryCount = projectGalleryImages.filter((image) => image && typeof image === "object" && image.id).length;
-    if (customGalleryCount + imagePaths.length > MAX_PROJECT_GALLERY_IMAGES) {
-      setMessage(`Zu viele Galerie-Bilder. Maximal ${MAX_PROJECT_GALLERY_IMAGES} Bilder erlaubt.`);
-      return;
-    }
-
-    const rows = imagePaths.map((image_url, index) => ({
-      id: `local-gallery-${Date.now()}-${index}`,
-      image_url,
-      alt: "Projektbild",
-      sort_order: customGalleryCount + index + 1,
-      created_at: new Date().toISOString(),
-    }));
-
-    setProjectGalleryImages((prev) => {
-      const nextImages = [...prev, ...rows];
-      writeJsonStorage(STATIC_GALLERY_STORAGE_KEY, nextImages);
-      return nextImages;
-    });
-    setMessage("Galerie-Bildpfade wurden lokal im Browser gespeichert. Export JSON nutzen, wenn Sie ein Backup wollen.");
-  }
-
-  async function deleteProjectGalleryImage(image) {
-    if (!isAdmin || !image?.id) return;
-    const confirmed = window.confirm("Dieses Galerie-Bild wirklich löschen?");
-    if (!confirmed) return;
-
-    setProjectGalleryImages((prev) => {
-      const nextImages = prev.filter((item) => !(item && typeof item === "object" && item.id === image.id));
-      writeJsonStorage(STATIC_GALLERY_STORAGE_KEY, nextImages);
-      return nextImages;
-    });
-    setMessage("Galerie-Bild wurde lokal im Browser gelöscht.");
-  }
-
-  async function replaceProjectGalleryImage(image) {
-    if (!isAdmin || !image?.id) return;
-    const input = window.prompt(
-      "Neuen Bildpfad einfügen:",
-      image.image_url || "/my-electronics-blog/images/posts/"
-    );
-    const newUrl = normalizeLocalImagePath(input);
-    if (!newUrl) return;
-
-    setProjectGalleryImages((prev) => {
-      const nextImages = prev.map((item) =>
-        item && typeof item === "object" && item.id === image.id
-          ? { ...item, image_url: newUrl }
-          : item
-      );
-      writeJsonStorage(STATIC_GALLERY_STORAGE_KEY, nextImages);
-      return nextImages;
-    });
-    setMessage("Galerie-Bildpfad wurde lokal im Browser ersetzt.");
-  }
-
-  function uploadImage(value) {
-    const imageUrl = normalizeLocalImagePath(value);
-    setEditingPost((prev) => ({ ...prev, image_url: imageUrl }));
-  }
-
-  function uploadPostGalleryImages(value) {
-    const imagePaths = normalizeImageList(value).map(normalizeLocalImagePath).filter(Boolean);
-    if (imagePaths.length > MAX_POST_GALLERY_IMAGES) {
-      setMessage(`Zu viele Bilder im Beitrag. Maximal ${MAX_POST_GALLERY_IMAGES} Zusatzbilder erlaubt.`);
-      return;
-    }
-
-    setEditingPost((prev) => ({
-      ...prev,
-      image_gallery: uniqueImageUrls(imagePaths),
-    }));
-  }
-
-  function removePostGalleryImage(url) {
-    setEditingPost((prev) => ({
-      ...prev,
-      image_gallery: normalizeImageList(prev.image_gallery).filter((item) => item !== url),
-    }));
-    setMessage("Bild aus dem Beitrag entfernt.");
-  }
-
-  async function savePost(e) {
-    e.preventDefault();
-    if (!isAdmin) {
-      setMessage("Keine Berechtigung. Nur Admins dürfen Beiträge speichern.");
-      return;
-    }
     const payload = {
       id: editingMode && editingPost.id ? editingPost.id : `local-post-${Date.now()}`,
       title: editingPost.title.trim(),
@@ -1026,277 +546,244 @@ async function loadPosts() {
       image_gallery: normalizeImageList(editingPost.image_gallery).slice(0, MAX_POST_GALLERY_IMAGES),
       excerpt: editingPost.excerpt.trim(),
       content: editingPost.content.trim(),
-      tags:
-        typeof editingPost.tags === "string"
-          ? editingPost.tags
-              .split(",")
-              .map((tag) => tag.trim())
-              .filter(Boolean)
-          : editingPost.tags,
+      tags: typeof editingPost.tags === "string"
+        ? editingPost.tags.split(",").map(t => t.trim()).filter(Boolean)
+        : editingPost.tags,
       read_time: editingPost.read_time || "5 Min.",
       published: Boolean(editingPost.published),
       created_at: editingPost.created_at || new Date().toISOString(),
       external_link: editingPost.external_link?.trim() || null,
-      project_status: normalizeProjectStatus(editingPost.project_status),
-      sort_order: Number.isFinite(Number(editingPost.sort_order)) ? Number(editingPost.sort_order) : 100,
+      project_status: normalizeStatus(editingPost.project_status),
+      sort_order: isFinite(Number(editingPost.sort_order)) ? Number(editingPost.sort_order) : 100,
     };
     if (!payload.title || !payload.excerpt || !payload.content) {
       setMessage("Titel, Kurzbeschreibung und Inhalt sind Pflichtfelder.");
       return;
     }
-
-    setPosts((prev) => {
-      const nextPosts = editingMode
-        ? prev.map((post) => (String(post.id) === String(payload.id) ? payload : post))
-        : [payload, ...prev];
-      writeJsonStorage(STATIC_POSTS_STORAGE_KEY, nextPosts);
-      return nextPosts;
-    });
-    setSelectedPost(payload);
-    setMessage("Beitrag wurde lokal im Browser gespeichert. Export JSON nutzen, wenn Sie ein Backup wollen.");
-    setEditingPost(createEmptyPost());
+    onSave(payload, editingMode);
+    setEditingPost(EMPTY_POST());
     setEditingMode(false);
-  }
+  };
 
-  function editPost(post) {
-    setEditingMode(true);
-    setAdminVisible(true);
-    setEditingPost({
-      ...post,
-      tags: Array.isArray(post.tags) ? post.tags.join(", ") : "",
-      external_link: post.external_link || "",
-      image_gallery: normalizeImageList(post.image_gallery),
-      project_status: normalizeProjectStatus(post.project_status),
-      sort_order: Number.isFinite(Number(post.sort_order)) ? post.sort_order : 100,
-    });
-  }
+  const handleDelete = (id) => {
+    if (!window.confirm("Diesen Beitrag wirklich löschen?")) return;
+    onDelete(id);
+  };
 
-  async function deletePost(id) {
-    if (!isAdmin) {
-      setMessage("Keine Berechtigung. Nur Admins dürfen Beiträge löschen.");
-      return;
-    }
-    const confirmed = window.confirm("Diesen Beitrag wirklich löschen?");
-    if (!confirmed) return;
+  return (
+    <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/70 px-4 py-6 backdrop-blur-md sm:px-5 sm:py-8">
+      <div className="mx-auto max-w-7xl">
+        <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[2rem]" innerClassName="rounded-[1.95rem] bg-[#07111f] p-5 sm:p-6 shadow-2xl shadow-cyan-500/20 backdrop-blur-xl">
+          <div className="mb-5 flex items-center justify-between gap-3">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-widest text-cyan-300">Lokaler Adminbereich</p>
+              <h2 className="text-xl font-black sm:text-3xl">Beitragsverwaltung</h2>
+            </div>
+            <button type="button" onClick={onClose} className="rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">Schließen</button>
+          </div>
 
-    setPosts((prev) => {
-      const nextPosts = prev.filter((post) => String(post.id) !== String(id));
-      writeJsonStorage(STATIC_POSTS_STORAGE_KEY, nextPosts);
-      setSelectedPost(nextPosts[0] || null);
-      return nextPosts;
-    });
-    setMessage("Beitrag wurde lokal im Browser gelöscht.");
-  }
+          {message && (
+            <div className="mb-5 rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-4 text-sm text-zinc-200 flex justify-between gap-3">
+              <span>{message}</span>
+              <button onClick={() => setMessage("")} className="text-zinc-400 hover:text-white"><X className="h-4 w-4" /></button>
+            </div>
+          )}
 
-function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
-  if (!isAdmin) {
-    setMessage("Keine Berechtigung. Nur Admins dürfen die Reihenfolge ändern.");
-    return;
-  }
+          {/* Top Actions */}
+          <div className="mb-6 flex flex-wrap gap-3">
+            <button onClick={() => { setEditingPost(EMPTY_POST()); setEditingMode(false); }} className="inline-flex items-center gap-2 rounded-2xl border border-white/10 px-5 py-3 font-bold transition hover:bg-white/10"><Plus className="h-5 w-5" /> Neuer Beitrag</button>
+            <button onClick={onExport} className="inline-flex items-center gap-2 rounded-2xl border border-cyan-400/30 px-5 py-3 font-bold text-cyan-300 transition hover:bg-cyan-400/10">Export JSON</button>
+            <button onClick={onImport} className="inline-flex items-center gap-2 rounded-2xl border border-white/10 px-5 py-3 font-bold transition hover:bg-white/10">Import JSON</button>
+            <button onClick={onReset} className="inline-flex items-center gap-2 rounded-2xl border border-red-500/20 px-5 py-3 font-bold text-red-400 transition hover:bg-red-500/10">Zurücksetzen</button>
+          </div>
 
-  const orderedVisible = [...visiblePosts].sort((a, b) => {
-    const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
-    const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
+          {/* ── FORM ── */}
+          <div className="mb-8 rounded-2xl border border-white/10 bg-black/20 p-5">
+            <h3 className="mb-4 font-black text-lg text-cyan-300">{editingMode ? "Beitrag bearbeiten" : "Neuer Beitrag"}</h3>
+            <form onSubmit={handleSave} className="grid gap-4 lg:grid-cols-2">
+              <input value={editingPost.title} onChange={e => setEditingPost(p => ({ ...p, title: e.target.value }))} placeholder="Titel des Beitrags *" className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4" />
 
-    if (orderA !== orderB) return orderA - orderB;
-    return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-  });
+              <select value={editingPost.category} onChange={e => setEditingPost(p => ({ ...p, category: e.target.value }))} className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4">
+                {["IoT","Robotik","Messtechnik","Elektrotechnik","Elektrokonstruktion","Automatisierungstechnik","SPS-Programmierung","Embedded Systems","WinCC & HMI","Softwareentwicklung","Über mich","Karriere & Weiterbildung","Technische Erfahrungen"].map(c => <option key={c}>{c}</option>)}
+              </select>
 
-  const currentIndex = orderedVisible.findIndex(
-    (post) => String(post.id) === String(postId)
+              <select value={editingPost.project_status} onChange={e => setEditingPost(p => ({ ...p, project_status: e.target.value }))} className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4">
+                <option value="idea">Idee / Offline</option>
+                <option value="in_progress">In Arbeit</option>
+                <option value="done">Umgesetzt</option>
+              </select>
+
+              <input type="number" value={editingPost.sort_order ?? 100} onChange={e => setEditingPost(p => ({ ...p, sort_order: e.target.value }))} placeholder="Reihenfolge (kleine Zahl = vorne)" className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4" />
+
+              <div className="lg:col-span-2">
+                <label className="mb-2 block text-sm text-zinc-400">Bild-URL oder Pfad</label>
+                <input type="text" value={editingPost.image_url || ""} onChange={e => setEditingPost(p => ({ ...p, image_url: normalizeImagePath(e.target.value) }))} placeholder="https://... oder /my-electronics-blog/images/posts/..." className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white outline-none ring-cyan-400/30 focus:ring-4" />
+                {editingPost.image_url && <img src={editingPost.image_url} alt="Vorschau" className="mt-4 h-40 w-full rounded-2xl object-cover border border-white/10" onError={e => e.target.style.display = "none"} />}
+              </div>
+
+              <div className="lg:col-span-2">
+                <label className="mb-2 block text-sm text-zinc-400">Zusatzbilder (ein Pfad pro Zeile, max. {MAX_POST_GALLERY_IMAGES})</label>
+                <textarea
+                  value={Array.isArray(editingPost.image_gallery) ? editingPost.image_gallery.join("\n") : editingPost.image_gallery || ""}
+                  onChange={e => setEditingPost(p => ({ ...p, image_gallery: e.target.value.split("\n").map(s => s.trim()).filter(Boolean) }))}
+                  placeholder="/my-electronics-blog/images/posts/detail-1.webp" rows={3}
+                  className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white outline-none ring-cyan-400/30 focus:ring-4"
+                />
+              </div>
+
+              <input value={editingPost.tags} onChange={e => setEditingPost(p => ({ ...p, tags: e.target.value }))} placeholder="Tags: ESP32, MQTT, Sensorik" className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2" />
+              <input value={editingPost.external_link || ""} onChange={e => setEditingPost(p => ({ ...p, external_link: e.target.value }))} placeholder="Externer Link (optional): https://github.com/..." className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2" />
+              <input value={editingPost.read_time || ""} onChange={e => setEditingPost(p => ({ ...p, read_time: e.target.value }))} placeholder="Lesezeit z.B. 5 Min." className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4" />
+              <input type="datetime-local" value={editingPost.created_at ? editingPost.created_at.slice(0,16) : ""} onChange={e => setEditingPost(p => ({ ...p, created_at: new Date(e.target.value).toISOString() }))} className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4" />
+              <textarea value={editingPost.excerpt} onChange={e => setEditingPost(p => ({ ...p, excerpt: e.target.value }))} placeholder="Kurzbeschreibung *" className="min-h-24 rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2" />
+              <textarea value={editingPost.content} onChange={e => setEditingPost(p => ({ ...p, content: e.target.value }))} placeholder="Vollständiger Inhalt *" className="min-h-48 rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2" />
+              <label className="flex items-center gap-3 rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 lg:col-span-2">
+                <input type="checkbox" checked={editingPost.published} onChange={e => setEditingPost(p => ({ ...p, published: e.target.checked }))} />
+                Veröffentlicht
+              </label>
+              <div className="flex gap-3 lg:col-span-2">
+                <button disabled={loading} className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-6 py-4 font-black text-black transition hover:bg-cyan-300 disabled:opacity-60">
+                  <Save className="h-5 w-5" /> {editingMode ? "Änderungen speichern" : "Beitrag erstellen"}
+                </button>
+                {editingMode && (
+                  <button type="button" onClick={() => { setEditingPost(EMPTY_POST()); setEditingMode(false); }} className="rounded-2xl border border-white/10 px-6 py-4 font-bold transition hover:bg-white/10">Abbrechen</button>
+                )}
+              </div>
+            </form>
+          </div>
+
+          {/* ── POST LIST ── */}
+          <div>
+            <h3 className="mb-4 font-black text-lg">Alle Beiträge ({posts.length})</h3>
+            <div className="grid gap-3">
+              {[...posts].sort((a, b) => {
+                const oA = isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
+                const oB = isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
+                return oA !== oB ? oA - oB : new Date(b.created_at || 0) - new Date(a.created_at || 0);
+              }).map((post, idx, arr) => (
+                <div key={post.id} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/20 p-3 sm:p-4">
+                  <img src={post.image_url} alt={post.title} className={`h-16 w-24 shrink-0 rounded-xl object-cover ${isIdea(post) ? "grayscale opacity-60" : ""}`} onError={e => e.target.style.display = "none"} />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-white truncate text-sm sm:text-base">{post.title}</p>
+                    <div className="mt-1 flex flex-wrap gap-2 text-xs">
+                      <span className="rounded-full bg-cyan-400/20 text-cyan-300 px-2 py-0.5">{post.category}</span>
+                      <span className={`rounded-full border px-2 py-0.5 ${getStatusClasses(post.project_status)}`}>{getStatusLabel(post.project_status)}</span>
+                      <span className="text-zinc-500">#{post.sort_order}</span>
+                    </div>
+                  </div>
+                  <div className="flex shrink-0 gap-2">
+                    <button type="button" onClick={() => onMoveOrder(post.id, -1)} disabled={idx === 0} className="rounded-xl border border-white/10 px-2.5 py-2 text-sm font-black transition hover:bg-white/10 disabled:opacity-30" title="Nach vorne">↑</button>
+                    <button type="button" onClick={() => onMoveOrder(post.id, 1)} disabled={idx === arr.length - 1} className="rounded-xl border border-white/10 px-2.5 py-2 text-sm font-black transition hover:bg-white/10 disabled:opacity-30" title="Nach hinten">↓</button>
+                    <button type="button" onClick={() => startEdit(post)} className="rounded-xl border border-white/10 p-2.5 transition hover:bg-white/10"><Edit3 className="h-4 w-4" /></button>
+                    <button type="button" onClick={() => handleDelete(post.id)} className="rounded-xl border border-red-500/20 p-2.5 text-red-400 transition hover:bg-red-500/10"><Trash2 className="h-4 w-4" /></button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </GradientBorder>
+      </div>
+    </div>
   );
-
-  const targetIndex = currentIndex + direction;
-
-  if (currentIndex < 0 || targetIndex < 0 || targetIndex >= orderedVisible.length) {
-    setMessage("Diese Karte kann nicht weiter verschoben werden.");
-    return;
-  }
-
-  const reorderedVisible = [...orderedVisible];
-  const [movedPost] = reorderedVisible.splice(currentIndex, 1);
-  reorderedVisible.splice(targetIndex, 0, movedPost);
-
-  const orderMap = new Map(
-    reorderedVisible.map((post, index) => [String(post.id), (index + 1) * 10])
-  );
-
-  setPosts((prev) => {
-    const nextPosts = prev.map((post) =>
-      orderMap.has(String(post.id))
-        ? { ...post, sort_order: orderMap.get(String(post.id)) }
-        : post
-    );
-
-    writeJsonStorage(STATIC_POSTS_STORAGE_KEY, nextPosts);
-    return nextPosts;
-  });
-
-  setMessage("Reihenfolge wurde lokal im Browser gespeichert.");
 }
-  function exportLocalData() {
-    downloadJsonFile("my-electronics-blog-local-data.json", {
-      posts,
-      projectGalleryImages,
-      exported_at: new Date().toISOString(),
-    });
-    setMessage("Lokales Backup wurde als JSON heruntergeladen.");
-  }
 
-  function importLocalData() {
-    const raw = window.prompt(
-      "JSON-Backup hier einfügen. Erwartetes Format: { posts: [...], projectGalleryImages: [...] }"
-    );
-    if (!raw) return;
-    try {
-      const parsed = JSON.parse(raw);
-      if (!Array.isArray(parsed.posts)) {
-        setMessage("Import fehlgeschlagen: posts muss ein Array sein.");
-        return;
-      }
-      const importedPosts = parsed.posts;
-      const importedGallery = Array.isArray(parsed.projectGalleryImages)
-        ? parsed.projectGalleryImages
-        : projectGalleryImages;
-      writeJsonStorage(STATIC_POSTS_STORAGE_KEY, importedPosts);
-      writeJsonStorage(STATIC_GALLERY_STORAGE_KEY, importedGallery);
-      setPosts(importedPosts);
-      setSelectedPost(importedPosts[0] || null);
-      setProjectGalleryImages(importedGallery);
-      setMessage("JSON wurde importiert und lokal im Browser gespeichert.");
-    } catch {
-      setMessage("Import fehlgeschlagen: ungültiges JSON.");
-    }
-  }
+// ─────────────────────────────────────────────
+// HOME PAGE
+// ─────────────────────────────────────────────
+function HomePage({ posts, galleryImages, isAdmin, onOpenPost, onSavePost, onDeletePost, onMovePost, onSaveGallery, onDeleteGallery, onExport, onImport, onReset, adminVisible, setAdminVisible }) {
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("Alle");
+  const [lightbox, setLightbox] = useState(null); // { images, index }
+  const [galleryLightboxIndex, setGalleryLightboxIndex] = useState(null);
+  const [message, setMessage] = useState("");
 
-  function resetLocalData() {
-    const confirmed = window.confirm(
-      "Lokale Admin-Daten wirklich zurücksetzen? Danach werden wieder die Beiträge aus dem Code angezeigt."
-    );
-    if (!confirmed) return;
-    removeJsonStorage(STATIC_POSTS_STORAGE_KEY);
-    removeJsonStorage(STATIC_GALLERY_STORAGE_KEY);
-    setPosts(demoPosts);
-    setSelectedPost(demoPosts[0] || null);
-    setProjectGalleryImages(DEFAULT_PROJECT_GALLERY_IMAGES);
-    setEditingPost(createEmptyPost());
-    setEditingMode(false);
-    setMessage("Lokale Admin-Daten wurden zurückgesetzt.");
-  }
+  const heroSlides = useMemo(() =>
+    [...posts].sort((a, b) => {
+      const oA = isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
+      const oB = isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
+      return oA !== oB ? oA - oB : new Date(b.created_at || 0) - new Date(a.created_at || 0);
+    }).slice(0, 3).map(p => ({ id: p.id, image: p.image_url, category: p.category, readTime: p.read_time || "5 Min.", title: p.title, text: p.excerpt, tags: Array.isArray(p.tags) ? p.tags : [] })),
+    [posts]
+  );
 
-  const categories = ["Alle", ...new Set(posts.map((post) => post.category))];
+  const categories = useMemo(() => ["Alle", ...new Set(posts.map(p => p.category))], [posts]);
 
   const filteredPosts = useMemo(() => {
-  const q = search.toLowerCase();
-
-  return posts
-    .filter((post) => {
-      const categoryMatch = category === "Alle" || post.category === category;
-      const tags = Array.isArray(post.tags) ? post.tags : [];
-
-      const searchMatch =
-        post.title.toLowerCase().includes(q) ||
-        post.excerpt.toLowerCase().includes(q) ||
-        post.content.toLowerCase().includes(q) ||
-        tags.some((tag) => tag.toLowerCase().includes(q));
-
-      return categoryMatch && searchMatch;
-    })
-    .sort((a, b) => {
-      const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
-      const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
-
-      if (orderA !== orderB) return orderA - orderB;
-      return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+    const q = search.toLowerCase();
+    return posts.filter(p => {
+      const tags = Array.isArray(p.tags) ? p.tags : [];
+      return (category === "Alle" || p.category === category)
+        && (p.title.toLowerCase().includes(q) || p.excerpt.toLowerCase().includes(q) || p.content.toLowerCase().includes(q) || tags.some(t => t.toLowerCase().includes(q)));
+    }).sort((a, b) => {
+      const oA = isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
+      const oB = isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
+      return oA !== oB ? oA - oB : new Date(b.created_at || 0) - new Date(a.created_at || 0);
     });
-}, [posts, search, category]);
+  }, [posts, search, category]);
+
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#050816] text-white">
       <Background />
-
-
       <main className="pt-[90px]">
-        {/* ── Hero Slideshow (Split Layout) ── */}
-        <HeroSlideshow
-          slides={heroSlides}
-          onDiscover={() => scrollToSection("blog")}
-        />
+        {/* Hero */}
+        <HeroSlideshow slides={heroSlides} onDiscover={() => document.getElementById("blog")?.scrollIntoView({ behavior: "smooth" })} onOpenPost={onOpenPost} />
 
-      {/* ── IMPORTANT TRANSPARENCY NOTICE ── */}
-<section className="mx-auto max-w-7xl px-4 pt-5 pb-2 sm:px-5">
-  <div className="relative overflow-hidden rounded-[2rem] border border-yellow-400/30 bg-gradient-to-br from-yellow-500/10 via-orange-500/10 to-red-500/10 p-[2px] shadow-2xl shadow-yellow-500/20">
-
-    {/* Animated glow */}
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(250,204,21,0.25),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(249,115,22,0.18),transparent_35%)]" />
-
-    <div className="relative rounded-[1.9rem] bg-[#07111f]/95 p-5 sm:p-6 backdrop-blur-xl">
-
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-
-        {/* BIG WARNING ICON */}
-        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-yellow-400/30 bg-yellow-400/10 text-yellow-300 shadow-lg shadow-yellow-500/20">
-          <AlertTriangle className="h-9 w-9 stroke-[2.5]" />
-        </div>
-
-        <div className="flex-1">
-
-          {/* TITLE */}
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3 py-1 text-xs font-black uppercase tracking-widest text-yellow-300">
-              Transparenz
-            </span>
-
-            <h2 className="text-2xl font-black tracking-tight text-white sm:text-3xl">
-              Projektinformationen & Transparenz
-            </h2>
+        {/* Transparency Notice */}
+        <section className="mx-auto max-w-7xl px-4 pt-5 pb-2 sm:px-5">
+          <div className="relative overflow-hidden rounded-[2rem] border border-yellow-400/30 bg-gradient-to-br from-yellow-500/10 via-orange-500/10 to-red-500/10 p-[2px]">
+            <div className="relative rounded-[1.9rem] bg-[#07111f]/95 p-5 sm:p-6 backdrop-blur-xl">
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-yellow-400/30 bg-yellow-400/10 text-yellow-300">
+                  <AlertTriangle className="h-9 w-9 stroke-[2.5]" />
+                </div>
+                <div>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3 py-1 text-xs font-black uppercase tracking-widest text-yellow-300">Transparenz</span>
+                    <h2 className="text-2xl font-black text-white sm:text-3xl">Projektinformationen & Transparenz</h2>
+                  </div>
+                  <p className="mt-5 text-sm leading-7 text-zinc-300 sm:text-base">
+                    Die auf dieser Website gezeigten Fotos von Laborumgebungen, technischen Arbeitsplätzen und elektronischen Geräten dienen ausschließlich der Veranschaulichung meiner technischen Interessen und praktischen Erfahrungen.
+                    <span className="mt-4 block font-semibold text-yellow-200">Sie zeigen weder meinen tatsächlichen Arbeitsplatz noch interne Bereiche oder reale Arbeitsumgebungen eines Unternehmens.</span>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
+        </section>
 
-          {/* TEXT */}
-          <p className="mt-5 text-sm leading-7 text-zinc-300 sm:text-base sm:leading-7">
-            Die auf dieser Website gezeigten Fotos von Laborumgebungen, 
-            technischen Arbeitsplätzen und elektronischen Geräten dienen ausschließlich 
-            der Veranschaulichung meiner technischen Interessen und praktischen Erfahrungen.
+        {/* About */}
+        <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5">
+          <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[2rem]" innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl">
+            <div className="grid items-stretch gap-6 p-4 sm:p-6 lg:grid-cols-2 lg:gap-8">
+              <div className="grid min-h-full gap-4 lg:grid-rows-2">
+                <img src="/my-electronics-blog/images/about-1.webp" alt="Nguyen Nhan Do" className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]" />
+                <img src="/my-electronics-blog/images/about-2.webp" alt="Elektronik" className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]" />
+              </div>
+              <div className="flex flex-col justify-center">
+                <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">Persönlicher Weg</p>
+                <h2 className="mt-3 text-2xl font-black leading-tight sm:text-4xl">Nguyen Nhan Do – Technik lernen. Erfahrung sammeln. Mich weiterentwickeln.</h2>
+                <div className="mt-5 space-y-4 text-sm leading-7 text-zinc-300 sm:text-base sm:leading-8">
+                  <p>Ich bin 2013 nach Deutschland gekommen – nicht, weil mein Leben in Vietnam schlecht war, sondern weil ich wissen wollte, wie weit ich mich persönlich und beruflich entwickeln kann, wenn ich meine Komfortzone verlasse.</p>
+                  <p>Nach mehreren Jahren unterschiedlicher beruflicher Erfahrungen habe ich mich bewusst entschieden, wieder stärker in die technische Richtung zurückzugehen und mich langfristig im Bereich Elektronik, Messtechnik und Automatisierung weiterzuentwickeln.</p>
+                  <p>Deshalb habe ich zusätzliche Weiterbildungen in SPS-Programmierung, C++/Qt, AutoCAD und EPLAN absolviert, um mein Wissen gezielt auszubauen und neue technische Bereiche besser zu verstehen.</p>
+                  <p>Dieser Blog ist kein Ort für Motivationstexte oder perfekte Erfolgsgeschichten. Ich möchte hier ehrlich über meinen Weg sprechen – über das Leben und Arbeiten in Deutschland, technische Themen und persönliche Entwicklung.</p>
+                </div>
+              </div>
+            </div>
+          </GradientBorder>
+        </section>
 
-            <span className="mt-4 block font-semibold text-yellow-200">
-              Sie zeigen weder meinen tatsächlichen Arbeitsplatz noch interne Bereiche 
-              oder reale Arbeitsumgebungen eines Unternehmens.
-            </span>
-
-            <span className="mt-4 block">
-              Die dargestellten Szenen und Geräte dienen ausschließlich illustrativen Zwecken 
-              und stehen nicht in Verbindung mit internen Projekten, 
-              vertraulichen Informationen oder realen Unternehmensumgebungen.
-            </span>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-       <AboutWideCard /> 
-
-        {/* ── Feature Cards ── */}
+        {/* Features */}
         <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5 sm:py-10">
-          <div className="grid grid-rows-[1fr] items-stretch gap-3 min-[520px]:grid-cols-2 lg:grid-cols-4 lg:gap-5">
-            {features.map((feature) => {
-              const Icon = feature.icon;
+          <div className="grid gap-3 min-[520px]:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+            {FEATURES.map(f => {
+              const Icon = f.icon;
               return (
-                <motion.div whileHover={{ y: -5 }} key={feature.title} className="group flex flex-col">
-                  <GradientBorder
-                    gradient={feature.gradient}
-                    rounded="rounded-[1.4rem] sm:rounded-[2rem]"
-                    className="flex-1"
-                    stretch
-                    innerClassName={`rounded-[1.35rem] sm:rounded-[1.95rem] bg-[#07111f]/95 p-4 sm:p-5 backdrop-blur-xl transition group-hover:bg-[#07111f] shadow-xl ${feature.glow}`}
-                  >
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-400/15 text-cyan-300 sm:mb-5 sm:h-14 sm:w-14">
-                      <Icon className="h-7 w-7" />
-                    </div>
-                    <h3 className="text-lg font-black sm:text-xl">{feature.title}</h3>
-                    <p className="mt-2 text-sm leading-5 text-zinc-400 sm:text-[15px] sm:leading-6">
-                      {feature.text}
-                    </p>
+                <motion.div whileHover={{ y: -5 }} key={f.title} className="group flex flex-col">
+                  <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[1.4rem] sm:rounded-[2rem]" className="flex-1" stretch innerClassName="rounded-[1.35rem] sm:rounded-[1.95rem] bg-[#07111f]/95 p-4 sm:p-5 backdrop-blur-xl transition group-hover:bg-[#07111f] shadow-xl shadow-blue-500/20">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-400/15 text-cyan-300 sm:h-14 sm:w-14"><Icon className="h-7 w-7" /></div>
+                    <h3 className="text-lg font-black sm:text-xl">{f.title}</h3>
+                    <p className="mt-2 text-sm leading-5 text-zinc-400 sm:text-[15px] sm:leading-6">{f.text}</p>
                   </GradientBorder>
                 </motion.div>
               );
@@ -1304,464 +791,56 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
           </div>
         </section>
 
-        {/* ── Admin Panel ── */}
-        {!PUBLIC_DEPLOY && adminVisible && isAdmin && (
-          <section className="fixed inset-0 z-[100] overflow-y-auto bg-black/70 px-4 py-6 backdrop-blur-md sm:px-5 sm:py-8">
-            <div className="mx-auto max-w-7xl">
-              <GradientBorder
-                gradient="from-cyan-400 via-cyan-500 to-cyan-400"
-                rounded="rounded-[2rem]"
-                innerClassName="rounded-[1.95rem] bg-[#07111f] p-5 sm:p-6 shadow-2xl shadow-cyan-500/20 backdrop-blur-xl"
-              >
-                <div className="mb-5 flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-widest text-cyan-300">
-                      Lokaler Adminbereich
-                    </p>
-                    <h2 className="text-xl font-black sm:text-3xl">Beitragsverwaltung</h2>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAdminVisible(false);
-                    }}
-                    className="rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10"
-                  >
-                    Schließen
-                  </button>
-                </div>
-
-                {!hasSupabase && (
-                  <div className="mb-5 rounded-2xl border border-yellow-400/20 bg-yellow-400/10 p-4 text-sm text-yellow-200">
-                    <div className="flex gap-3">
-                      <AlertTriangle className="h-5 w-5 shrink-0" />
-                      <p>
-                        Supabase ist noch nicht konfiguriert. Erstellen Sie eine{" "}
-                        <b>.env.local</b> Datei mit VITE_SUPABASE_URL und VITE_SUPABASE_ANON_KEY.
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {message && (
-                  <div className="mb-5 rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-4 text-sm text-zinc-200">
-                    {message}
-                  </div>
-                )}
-
-                {!session ? (
-                  <form
-                    onSubmit={login}
-                    className="grid gap-4 lg:grid-cols-[1fr_1fr_auto] lg:items-end"
-                  >
-                    <div>
-                      <label className="mb-2 block text-sm text-zinc-400">Admin E-Mail</label>
-                      <input
-                        type="email"
-                        value={loginEmail}
-                        onChange={(e) => setLoginEmail(e.target.value)}
-                        placeholder="admin@domain.de"
-                        className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4"
-                      />
-                    </div>
-                    <div>
-                      <label className="mb-2 block text-sm text-zinc-400">Passwort</label>
-                      <input
-                        type="password"
-                        value={loginPassword}
-                        onChange={(e) => setLoginPassword(e.target.value)}
-                        placeholder="Sicheres Passwort"
-                        className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4"
-                      />
-                    </div>
-                    <button
-                      disabled={loading}
-                      className="rounded-2xl bg-cyan-400 px-8 py-4 font-black text-black transition hover:bg-cyan-300 disabled:opacity-60"
-                    >
-                      Login
-                    </button>
-                  </form>
-                ) : !isAdmin ? (
-                  <div className="rounded-2xl border border-red-400/20 bg-red-400/10 p-5 text-red-100">
-                    Sie sind angemeldet, aber dieses Konto hat keine Adminrechte. Tragen Sie die
-                    User-ID in der Tabelle profiles als role = admin ein.
-                    <div className="mt-4">
-                      <button
-                        onClick={logout}
-                        className="rounded-2xl bg-white/10 px-5 py-3 font-bold hover:bg-white/15"
-                      >
-                        Abmelden
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <div className="mb-6 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
-                      <div>
-                        <p className="text-sm text-zinc-400">
-                          Modus: {session.user.email}
-                        </p>
-                        <p className="mt-1 font-bold text-cyan-300">
-                          Lokaler Modus aktiv. Änderungen werden im Browser gespeichert.
-                        </p>
-                      </div>
-                      <div className="flex flex-col gap-3 sm:flex-row">
-                        <button
-                          onClick={() => {
-                            setEditingPost(createEmptyPost());
-                            setEditingMode(false);
-                          }}
-                          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-5 py-3 font-bold transition hover:bg-white/10"
-                        >
-                          <Plus className="h-5 w-5" /> Neuer Beitrag
-                        </button>
-                        <button
-                          type="button"
-                          onClick={exportLocalData}
-                          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-cyan-400/30 px-5 py-3 font-bold text-cyan-300 transition hover:bg-cyan-400/10"
-                        >
-                          Export JSON
-                        </button>
-                        <button
-                          type="button"
-                          onClick={importLocalData}
-                          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-5 py-3 font-bold transition hover:bg-white/10"
-                        >
-                          Import JSON
-                        </button>
-                        <button
-                          type="button"
-                          onClick={resetLocalData}
-                          className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#050816] px-5 py-3 font-bold transition hover:bg-black"
-                        >
-                          Zurücksetzen
-                        </button>
-                      </div>
-                    </div>
-
-                    <form onSubmit={savePost} className="grid gap-4 lg:grid-cols-2">
-                      <input
-                        value={editingPost.title}
-                        onChange={(e) => setEditingPost({ ...editingPost, title: e.target.value })}
-                        placeholder="Titel des Beitrags"
-                        className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4"
-                      />
-                      <select
-                        value={editingPost.category}
-                        onChange={(e) =>
-                          setEditingPost({ ...editingPost, category: e.target.value })
-                        }
-                        className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4"
-                      >
-                        <option>Elektrotechnik</option>
-                        <option>Elektrokonstruktion</option>
-                        <option>Automatisierungstechnik</option>
-                        <option>Steuerungstechnik</option>
-                        <option>Antriebstechnik</option>
-                        <option>Schaltschrankbau</option>
-                        <option>Industrieautomation</option>
-                        <option>SPS-Programmierung</option>
-                        <option>CAD-Konstruktion</option>
-                        <option>Maschinenbau</option>
-                        <option>Technische Zeichnung</option>
-                        <option>Mechatronik</option>
-                        <option>Energietechnik</option>
-                        <option>Leistungselektronik</option>
-                        <option>Sensorik</option>
-                        <option>Mikrocontroller</option>
-                        <option>Embedded Systems</option>
-                        <option>IoT</option>
-                        <option>Robotik</option>
-                        <option>Softwareentwicklung</option>
-                        <option>Desktop-Softwareentwicklung</option>
-                        <option>Technische Softwareentwicklung</option>
-                        <option>WinCC & HMI</option>
-                        <option>SCADA-Systeme</option>
-                        <option>Über mich</option>
-                        <option>Persönliche Entwicklung</option>
-                        <option>Beruflicher Werdegang</option>
-                        <option>Leben in Deutschland</option>
-                        <option>Technische Erfahrungen</option>
-                        <option>Karriere & Weiterbildung</option>
-                      </select>
-
-                      <select
-                        value={editingPost.project_status || "done"}
-                        onChange={(e) =>
-                          setEditingPost({ ...editingPost, project_status: e.target.value })
-                        }
-                        className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4"
-                      >
-                        <option value="idea">Idee / Offline</option>
-                        <option value="in_progress">In Arbeit</option>
-                        <option value="done">Umgesetzt</option>
-                      </select>
-
-                      <input
-                        type="number"
-                        value={editingPost.sort_order ?? 100}
-                        onChange={(e) =>
-                          setEditingPost({ ...editingPost, sort_order: e.target.value })
-                        }
-                        placeholder="Reihenfolge: kleine Zahl = weiter vorne"
-                        className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4"
-                      />
-
-                      <div className="lg:col-span-2">
-                        <label className="mb-2 block text-sm text-zinc-400">Bildpfad / Bild-URL</label>
-                        <input
-                          type="text"
-                          value={editingPost.image_url || ""}
-                          onChange={(e) => uploadImage(e.target.value)}
-                          placeholder="/my-electronics-blog/images/posts/esp32-mqtt.webp"
-                          className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white outline-none ring-cyan-400/30 focus:ring-4"
-                        />
-                        {editingPost.image_url && (
-                          <img
-                            src={editingPost.image_url}
-                            alt="Preview"
-                            className="mt-4 h-48 w-full rounded-2xl object-cover border border-white/10"
-                          />
-                        )}
-                      </div>
-
-                      <div className="lg:col-span-2">
-                        <label className="mb-2 block text-sm text-zinc-400">Zusatzbilder zum Beitrag</label>
-                        <textarea
-  value={
-    Array.isArray(editingPost.image_gallery)
-      ? editingPost.image_gallery.join("\n")
-      : editingPost.image_gallery || ""
-  }
-  onChange={(e) =>
-    setEditingPost((prev) => ({
-      ...prev,
-      image_gallery: e.target.value,
-    }))
-  }
-  onBlur={(e) => uploadPostGalleryImages(e.target.value)}
-  placeholder={
-    "/my-electronics-blog/images/posts/detail-1.webp\n/my-electronics-blog/images/posts/detail-2.webp"
-  }
-  rows={4}
-  className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white outline-none ring-cyan-400/30 focus:ring-4"
-/>
-                        {!!normalizeImageList(editingPost.image_gallery).length && (
-                          <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                            {normalizeImageList(editingPost.image_gallery).map((url) => (
-                              <div key={url} className="relative overflow-hidden rounded-2xl border border-white/10">
-                                <img src={url} alt="Zusatzbild" className="h-32 w-full object-cover" />
-                                <button
-                                  type="button"
-                                  onClick={() => removePostGalleryImage(url)}
-                                  className="absolute right-2 top-2 rounded-full bg-red-500/90 p-2 text-white hover:bg-red-500"
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-
-                      <input
-                        value={editingPost.tags}
-                        onChange={(e) => setEditingPost({ ...editingPost, tags: e.target.value })}
-                        placeholder="Tags: ESP32, MQTT, Sensorik"
-                        className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2"
-                      />
-
-                      <input
-                        value={editingPost.external_link || ""}
-                        onChange={(e) =>
-                          setEditingPost({ ...editingPost, external_link: e.target.value })
-                        }
-                        placeholder="Externer Link (optional): https://github.com/..."
-                        className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2"
-                      />
-
-                      <textarea
-                        value={editingPost.excerpt}
-                        onChange={(e) =>
-                          setEditingPost({ ...editingPost, excerpt: e.target.value })
-                        }
-                        placeholder="Kurzbeschreibung"
-                        className="min-h-28 rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2"
-                      />
-                      <textarea
-                        value={editingPost.content}
-                        onChange={(e) =>
-                          setEditingPost({ ...editingPost, content: e.target.value })
-                        }
-                        placeholder="Vollständiger Inhalt des Beitrags"
-                        className="min-h-52 rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2"
-                      />
-                      <label className="flex items-center gap-3 rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 lg:col-span-2">
-                        <input
-                          type="checkbox"
-                          checked={editingPost.published}
-                          onChange={(e) =>
-                            setEditingPost({ ...editingPost, published: e.target.checked })
-                          }
-                        />
-                        Veröffentlicht
-                      </label>
-                      <button
-                        disabled={loading}
-                        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-6 py-4 font-black text-black transition hover:bg-cyan-300 disabled:opacity-60 lg:col-span-2"
-                      >
-                        <Save className="h-5 w-5" /> Beitrag sicher speichern
-                      </button>
-                    </form>
-                  </div>
-                )}
-              </GradientBorder>
-            </div>
-          </section>
-        )}
-
-{/* ── WARNING CARD ── */}
+        {/* Warning card */}
         <section className="mx-auto max-w-7xl px-4 py-8 sm:px-5">
-  <div className="rounded-[2rem] p-[1.5px] bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-400">
-  <div className="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl">
-    <div className="grid lg:grid-cols-[0.4fr_0.6fr]">
-      
-      {/* LEFT IMAGE */}
-      <div className="relative h-48 lg:h-auto">
-        <img
-          src="/my-electronics-blog/images/project-warning.webp"
-          alt="Projekt Hinweis"
-          className="h-full w-full object-cover"
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
-      </div>
-
-      {/* RIGHT CONTENT */}
-      <div className="flex flex-col justify-center p-5 sm:p-6 lg:p-7">
-        <div className="inline-flex w-fit items-center gap-2 rounded-full border border-yellow-400/20 bg-yellow-400/10 px-4 py-2 text-sm font-bold text-yellow-300">
-          <AlertTriangle className="h-4 w-4" />
-          Wichtiger Hinweis
-        </div>
-
-        <h2 className="mt-5 text-2xl font-black leading-tight text-white sm:text-3xl">
-          Wichtiger Hinweis zu meinen Projekten
-        </h2>
-
-        <div className="mt-6 space-y-5 text-sm leading-7 text-zinc-300 sm:text-base sm:leading-8">
-          <p>
-            <span className="font-bold text-yellow-300">🚨 Hinweis:</span>{" "}
-            Projekte mit der Kennzeichnung{" "}
-            <span className="font-semibold text-cyan-300">
-              „Konzept"
-            </span>{" "}
-            oder{" "}
-            <span className="font-semibold text-cyan-300">
-              „Konzeptprojekt"
-            </span>{" "}
-            befinden sich derzeit noch in der Ideen- bzw. Konzeptphase und
-            wurden bisher noch nicht praktisch umgesetzt.
-          </p>
-
-          <p>
-            Eine zukünftige Weiterentwicklung oder Realisierung dieser Projekte
-            ist jedoch geplant.
-          </p>
-
-          <p>
-            Alle anderen Projekte können über{" "}
-            <span className="font-semibold text-cyan-300">
-              „Beitrag lesen"
-            </span>{" "}
-            geöffnet werden.
-          </p>
-
-          <p>
-            Am Ende der jeweiligen Projektseite befindet sich die Schaltfläche{" "}
-            <span className="font-semibold text-cyan-300">
-              „Zum Projekt"
-            </span>
-            . Dort stehen projektbezogene Dateien wie PDF-Dokumentationen,
-            TIA-Portal-Projekte, AutoCAD-Dateien sowie Source Code und weitere
-            technische Projektdateien zur Verfügung.
-          </p>
-        </div>
-      </div>
-        </div>
-  </div>
-</div>
-</section>
-
-        
-        {blogImageLightbox && (
-          <div
-            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 px-4 backdrop-blur-md"
-            onClick={() => setBlogImageLightbox(null)}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.88 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.25 }}
-              className="relative max-h-[90vh] w-full max-w-5xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <img
-                src={blogImageLightbox.image_url}
-                alt={blogImageLightbox.title}
-                className="max-h-[85vh] w-full rounded-2xl object-contain shadow-2xl"
-              />
-              <button
-                type="button"
-                onClick={() => setBlogImageLightbox(null)}
-                className="absolute -right-4 -top-4 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400 text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-300"
-                aria-label="Bild schließen"
-              >
-                <X className="h-5 w-5 stroke-[3]" />
-              </button>
-            </motion.div>
+          <div className="rounded-[2rem] p-[1.5px] bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-400">
+            <div className="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl">
+              <div className="grid lg:grid-cols-[0.4fr_0.6fr]">
+                <div className="relative h-48 lg:h-auto">
+                  <img src="/my-electronics-blog/images/project-warning.webp" alt="Hinweis" className="h-full w-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
+                </div>
+                <div className="flex flex-col justify-center p-5 sm:p-6 lg:p-7">
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border border-yellow-400/20 bg-yellow-400/10 px-4 py-2 text-sm font-bold text-yellow-300">
+                    <AlertTriangle className="h-4 w-4" /> Wichtiger Hinweis
+                  </div>
+                  <h2 className="mt-5 text-2xl font-black text-white sm:text-3xl">Wichtiger Hinweis zu meinen Projekten</h2>
+                  <div className="mt-6 space-y-4 text-sm leading-7 text-zinc-300 sm:text-base">
+                    <p><span className="font-bold text-yellow-300">🚨 Hinweis:</span> Projekte mit der Kennzeichnung <span className="font-semibold text-cyan-300">„Konzept"</span> befinden sich noch in der Ideen- bzw. Konzeptphase und wurden bisher noch nicht praktisch umgesetzt.</p>
+                    <p>Alle anderen Projekte können über <span className="font-semibold text-cyan-300">„Beitrag lesen"</span> geöffnet werden. Am Ende der jeweiligen Projektseite befindet sich die Schaltfläche <span className="font-semibold text-cyan-300">„Zum Projekt"</span> mit projektbezogenen Dateien.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        )}
+        </section>
 
-{/* ── Blog Section ── */}
+        {/* ── Blog Section ── */}
         <section id="blog" className="mx-auto max-w-7xl px-4 py-10 sm:px-5 sm:py-16">
           <div className="mb-7 flex flex-col justify-between gap-5 sm:mb-10 lg:flex-row lg:items-end">
             <div>
-              <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">
-                Technik Blog
-              </p>
-              <h2 className="mt-2 text-[1.75rem] font-black leading-[1.1] tracking-tight min-[390px]:text-[2rem] sm:mt-3 sm:text-4xl lg:text-5xl">
-              Elektronikprojekte & Dokumentationen
-              </h2>
+              <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">Technik Blog</p>
+              <h2 className="mt-2 text-[1.75rem] font-black leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">Elektronikprojekte & Dokumentationen</h2>
             </div>
-
             <div className="flex flex-col gap-3 sm:flex-row">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
-                <input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Nach Technologien suchen..."
-                  className="w-full rounded-2xl border border-white/10 bg-white/[0.05] py-3 pl-11 pr-4 text-sm outline-none ring-cyan-400/30 placeholder:text-zinc-500 focus:ring-4 sm:w-80 sm:text-base"
-                />
+                <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Suchen..." className="w-full rounded-2xl border border-white/10 bg-white/[0.05] py-3 pl-11 pr-4 text-sm outline-none ring-cyan-400/30 placeholder:text-zinc-500 focus:ring-4 sm:w-72" />
               </div>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-3 outline-none ring-cyan-400/30 focus:ring-4"
-              >
-                {categories.map((c) => (
-                  <option key={c}>{c}</option>
-                ))}
+              <select value={category} onChange={e => setCategory(e.target.value)} className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-3 outline-none ring-cyan-400/30 focus:ring-4">
+                {categories.map(c => <option key={c}>{c}</option>)}
               </select>
             </div>
           </div>
 
-          {loading && <p className="mb-5 text-zinc-400">Lade Daten...</p>}
+          {filteredPosts.length === 0 && (
+            <div className="py-20 text-center text-zinc-500">Keine Beiträge gefunden.</div>
+          )}
 
           <div className="grid auto-rows-fr gap-4 min-[620px]:grid-cols-2 xl:grid-cols-3 xl:gap-6">
-            {filteredPosts.map((post) => {
-              const Icon = getIcon(post.category);
-              const idea = isIdeaPost(post);
+            {filteredPosts.map(post => {
+              const Icon = getCategoryIcon(post.category);
+              const idea = isIdea(post);
               return (
                 <motion.div whileHover={idea ? undefined : { y: -5 }} key={post.id} className="group flex h-full">
                   <GradientBorder
@@ -1770,83 +849,31 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                     className="flex flex-1"
                     innerClassName="flex flex-1 flex-col overflow-hidden rounded-[1.35rem] sm:rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl min-h-[560px]"
                   >
-                    <img
-                      src={post.image_url}
-                      alt={post.title}
-                      onClick={() => setBlogImageLightbox(post)}
-                      className={`h-44 w-full shrink-0 cursor-zoom-in object-cover transition duration-300 hover:brightness-110 min-[390px]:h-48 sm:h-56 ${
-  idea ? "grayscale opacity-70" : ""
-}`}
-                    />
+                    <img src={post.image_url} alt={post.title}
+                      onClick={() => setLightbox({ images: [post.image_url, ...normalizeImageList(post.image_gallery)], index: 0 })}
+                      className={`h-44 w-full shrink-0 cursor-zoom-in object-cover transition duration-300 hover:brightness-110 sm:h-56 ${idea ? "grayscale opacity-70" : ""}`} />
                     <div className="flex flex-1 flex-col p-4 sm:p-6">
                       <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
-                        <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">
-                          <Icon className="h-3.5 w-3.5" /> {post.category}
-                        </span>
-                        <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getProjectStatusClasses(post.project_status)}`}>
-                          {getProjectStatusLabel(post.project_status)}
-                        </span>
-                        <span className="inline-flex items-center gap-1">
-                          <CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at)}
-                        </span>
+                        <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black"><Icon className="h-3.5 w-3.5" /> {post.category}</span>
+                        <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getStatusClasses(post.project_status)}`}>{getStatusLabel(post.project_status)}</span>
+                        <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at)}</span>
                       </div>
-                      <h3 className="text-lg font-black leading-tight min-[390px]:text-xl sm:text-2xl">
-                        {post.title}
-                      </h3>
-                      <p className="mt-3 line-clamp-3 text-sm leading-6 text-zinc-400 sm:mt-4 sm:text-base sm:leading-7">
-                        {post.excerpt}
-                      </p>
+                      <h3 className="text-lg font-black leading-tight sm:text-2xl">{post.title}</h3>
+                      <p className="mt-3 line-clamp-3 text-sm leading-6 text-zinc-400 sm:text-base sm:leading-7">{post.excerpt}</p>
                       <div className="mt-5 flex flex-wrap gap-2">
-                        {(post.tags || []).map((tag) => (
-                          <span
-                            key={tag}
-                            className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-400"
-                          >
-                            #{tag}
-                          </span>
-                        ))}
+                        {(post.tags || []).map(tag => <span key={tag} className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-400">#{tag}</span>)}
                       </div>
                       <div className="mt-auto flex gap-2 pt-6 sm:gap-3">
-  <button
-    type="button"
-    onClick={() => openPost(post)}
-    className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base"
-  >
-    Beitrag lesen
-  </button>
+                        <button type="button" onClick={() => onOpenPost(post.id)}
+                          className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base">
+                          Beitrag lesen
+                        </button>
                         {isAdmin && (
                           <>
-                            <button
-  type="button"
-  onClick={() => movePostOrder(post.id, -1, filteredPosts)}
-  className="rounded-2xl border border-white/10 px-3 py-2 text-sm font-black transition hover:bg-white/10"
-  title="Weiter nach vorne"
->
-  ↑
-</button>
-
-<button
-  type="button"
-  onClick={() => movePostOrder(post.id, 1, filteredPosts)}
-  className="rounded-2xl border border-white/10 px-3 py-2 text-sm font-black transition hover:bg-white/10"
-  title="Weiter nach hinten"
->
-  ↓
-</button>
-                            <button
-                              type="button"
-                              onClick={() => editPost(post)}
-                              className="rounded-2xl border border-white/10 p-3 transition hover:bg-white/10"
-                            >
-                              <Edit3 className="h-5 w-5" />
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => deletePost(post.id)}
-                              className="rounded-2xl border border-red-500/20 p-3 text-red-400 transition hover:bg-red-500/10"
-                            >
-                              <Trash2 className="h-5 w-5" />
-                            </button>
+                            <button type="button" onClick={() => onMovePost(post.id, -1)} className="rounded-2xl border border-white/10 px-3 py-2 font-black transition hover:bg-white/10" title="Nach vorne">↑</button>
+                            <button type="button" onClick={() => onMovePost(post.id, 1)} className="rounded-2xl border border-white/10 px-3 py-2 font-black transition hover:bg-white/10" title="Nach hinten">↓</button>
+                            <button type="button" onClick={() => { setAdminVisible(true); }} className="rounded-2xl border border-white/10 p-3 transition hover:bg-white/10" title="Im Admin bearbeiten"><Edit3 className="h-5 w-5" /></button>
+                            <button type="button" onClick={() => { if (window.confirm("Beitrag löschen?")) onDeletePost(post.id); }} className="rounded-2xl border border-red-500/20 p-3 text-red-400 transition hover:bg-red-500/10"><Trash2 className="h-5 w-5" /></button>
                           </>
                         )}
                       </div>
@@ -1858,109 +885,6 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
           </div>
         </section>
 
-        {/* ── Selected Post Detail ── */}
-        {selectedPost && (
-          <section id="post-detail" className="mx-auto max-w-7xl scroll-mt-28 px-4 py-10 sm:px-5 sm:py-16">
-            <GradientBorder
-              gradient={isIdeaPost(selectedPost) ? "from-zinc-600 via-zinc-500 to-zinc-600" : "from-cyan-400 via-cyan-500 to-cyan-400"}
-              rounded="rounded-[2rem]"
-              innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl"
-            >
-              <div className="grid gap-6 p-4 sm:p-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
-                <div>
-                  <img
-                    src={selectedPost.image_url}
-                    alt={selectedPost.title}
-                    onClick={() => setBlogImageLightbox(selectedPost)}
-                    className={`h-72 w-full cursor-zoom-in rounded-[1.5rem] object-cover shadow-2xl shadow-black/30 sm:h-[420px] ${
-                      isIdeaPost(selectedPost) ? "grayscale opacity-75" : ""
-                    }`}
-                  />
-
-                  {!!normalizeImageList(selectedPost.image_gallery).length && (
-                    <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                      {normalizeImageList(selectedPost.image_gallery).map((url) => (
-                        <img
-                          key={url}
-                          src={url}
-                          alt={`${selectedPost.title} Zusatzbild`}
-                          onClick={() => setBlogImageLightbox({ ...selectedPost, image_url: url })}
-                          className="h-28 w-full cursor-zoom-in rounded-2xl object-cover transition hover:brightness-110"
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <article className="flex flex-col justify-center">
-                  <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
-                    <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">
-                      {selectedPost.category}
-                    </span>
-                    <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getProjectStatusClasses(selectedPost.project_status)}`}>
-                      {getProjectStatusLabel(selectedPost.project_status)}
-                    </span>
-                    <span className="inline-flex items-center gap-1">
-                      <CalendarDays className="h-3.5 w-3.5" /> {formatDate(selectedPost.created_at)}
-                    </span>
-                    <span>{selectedPost.read_time || "5 Min."}</span>
-                  </div>
-
-                  <h2 className="text-2xl font-black leading-tight text-white sm:text-4xl lg:text-5xl">
-                    {selectedPost.title}
-                  </h2>
-
-                  <p className="mt-5 text-base font-semibold leading-8 text-cyan-100/90">
-                    {selectedPost.excerpt}
-                  </p>
-
-                  <div className="mt-6 whitespace-pre-line text-sm leading-7 text-zinc-300 sm:text-base sm:leading-8">
-                    {selectedPost.content}
-                  </div>
-
-                  {!!(Array.isArray(selectedPost.tags) ? selectedPost.tags : []).length && (
-                    <div className="mt-6 flex flex-wrap gap-2">
-                      {selectedPost.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full border border-cyan-400/20 bg-cyan-400/8 px-3 py-1 text-xs text-cyan-300"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                    {selectedPost.external_link && !isIdeaPost(selectedPost) ? (
-                      <a
-                        href={selectedPost.external_link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-6 py-4 font-black text-black transition hover:bg-cyan-300"
-                      >
-                        Zum Projekt <ExternalLink className="h-5 w-5" />
-                      </a>
-                    ) : (
-                      <span className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-6 py-4 font-bold text-zinc-400">
-                        {isIdeaPost(selectedPost) ? "Konzeptprojekt – noch nicht umgesetzt" : "Kein Projektlink hinterlegt"}
-                      </span>
-                    )}
-
-                    <button
-                      type="button"
-                      onClick={() => scrollToSection("blog")}
-                      className="inline-flex items-center justify-center rounded-2xl border border-white/10 px-6 py-4 font-bold text-zinc-200 transition hover:bg-white/10"
-                    >
-                      Zurück zum Blog
-                    </button>
-                  </div>
-                </article>
-              </div>
-            </GradientBorder>
-          </section>
-        )}
-
         {/* ── Gallery ── */}
         <section id="projekte" className="mx-auto max-w-7xl px-4 py-16 sm:px-5 sm:py-24">
           <div className="mb-10 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
@@ -1969,199 +893,61 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
               <h2 className="mt-3 text-4xl font-black sm:text-5xl">Projektbilder</h2>
             </div>
             {isAdmin && (
-              <button
-                type="button"
-                onClick={uploadProjectGalleryImages}
-                className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-5 py-3 font-black text-black transition hover:bg-cyan-300"
-              >
+              <button type="button" onClick={() => {
+                const input = window.prompt("Bildpfad einfügen (zeilenweise für mehrere):");
+                if (input) onSaveGallery(input.split("\n").map(s => s.trim()).filter(Boolean));
+              }} className="inline-flex items-center gap-2 rounded-2xl bg-cyan-400 px-5 py-3 font-black text-black transition hover:bg-cyan-300">
                 <Plus className="h-5 w-5" /> Galerie-Bilder hinzufügen
               </button>
             )}
           </div>
 
-          {projectGalleryLightbox !== null && projectGalleryImages[projectGalleryLightbox] && (
-            <div
-              className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 px-4 backdrop-blur-md"
-              onClick={() => setProjectGalleryLightbox(null)}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.88 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.25 }}
-                className="relative max-h-[90vh] w-full max-w-5xl"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <img
-                  src={projectGalleryImages[projectGalleryLightbox].image_url || projectGalleryImages[projectGalleryLightbox]}
-                  alt={projectGalleryImages[projectGalleryLightbox].alt || "Projektbild"}
-                  className="max-h-[85vh] w-full rounded-2xl object-contain shadow-2xl"
-                />
-                {projectGalleryImages.length > 1 && (
-                  <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setProjectGalleryLightbox((prev) => (prev - 1 + projectGalleryImages.length) % projectGalleryImages.length)}
-                      className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"
-                    >
-                      <ChevronLeft className="h-5 w-5" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setProjectGalleryLightbox((prev) => (prev + 1) % projectGalleryImages.length)}
-                      className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"
-                    >
-                      <ChevronRight className="h-5 w-5" />
-                    </button>
-                  </div>
-                )}
-                <button
-                  type="button"
-                  onClick={() => setProjectGalleryLightbox(null)}
-                  className="absolute -right-4 -top-4 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400 text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-300"
-                  aria-label="Bild schließen"
-                >
-                  <X className="h-5 w-5 stroke-[3]" />
-                </button>
-              </motion.div>
-            </div>
-          )}
-
           {(() => {
-            // Chỉ 3 ảnh đầu hiển thị ngoài trang để giữ layout cũ.
-            // Toàn bộ ảnh còn lại vẫn xem được khi bấm zoom và dùng next/prev.
-            const visibleGalleryItems = projectGalleryImages.slice(0, 3);
-            const uploadedGalleryItems = projectGalleryImages.filter(
-              (image) => image && typeof image === "object" && image.id
-            );
-
-            const renderGalleryCard = (image, index, size = "small") => {
-              const imageUrl = image.image_url || image;
-              const imageAlt = image.alt || (index === 0 ? selectedPost.title : "Projektbild");
-              const heightClass = size === "large" ? "h-[520px]" : "h-[247px]";
-
-              return (
-                <GradientBorder
-                  key={image.id || imageUrl}
-                  gradient="from-cyan-400 via-cyan-500 to-cyan-400"
-                  rounded="rounded-[2rem]"
-                  className="group"
-                  innerClassName="relative overflow-hidden rounded-[1.95rem] bg-[#07111f]"
-                >
-                  <img
-                    src={imageUrl}
-                    alt={imageAlt}
-                    onClick={() => setProjectGalleryLightbox(index)}
-                    className={`${heightClass} w-full cursor-zoom-in object-cover object-center transition duration-700 group-hover:scale-105 group-hover:brightness-110`}
-                  />
-                </GradientBorder>
-              );
-            };
-
+            const visible = galleryImages.slice(0, 3);
             return (
-              <>
-                <div className="grid gap-6 lg:grid-cols-3">
-                  <div className="lg:col-span-2">
-                    {visibleGalleryItems[0] && renderGalleryCard(visibleGalleryItems[0], 0, "large")}
-                  </div>
-
-                  <div className="grid gap-6">
-                    {visibleGalleryItems.slice(1, 3).map((image, index) =>
-                      renderGalleryCard(image, index + 1, "small")
-                    )}
-                  </div>
+              <div className="grid gap-6 lg:grid-cols-3">
+                <div className="lg:col-span-2">
+                  {visible[0] && (
+                    <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[2rem]" className="group" innerClassName="relative overflow-hidden rounded-[1.95rem] bg-[#07111f]">
+                      <img src={typeof visible[0] === "object" ? visible[0].image_url : visible[0]} alt="Projektbild"
+                        onClick={() => setGalleryLightboxIndex(0)}
+                        className="h-[520px] w-full cursor-zoom-in object-cover transition duration-700 group-hover:scale-105 group-hover:brightness-110" />
+                    </GradientBorder>
+                  )}
                 </div>
-
-                {isAdmin && uploadedGalleryItems.length > 0 && (
-                  <div className="mt-8 rounded-[2rem] border border-white/10 bg-[#07111f]/80 p-4 sm:p-5">
-                    <div className="mb-4 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
-                      <div>
-                        <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">
-                          Galerie-Verwaltung
-                        </p>
-                        <p className="text-sm text-zinc-400">
-                          Hier kannst du hochgeladene Galerie-Bilder ersetzen oder löschen. Die 3 sichtbaren Galerie-Bilder bleiben im Layout unverändert.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                      {uploadedGalleryItems.map((image) => {
-                        const imageIndex = projectGalleryImages.findIndex(
-                          (item) => item && typeof item === "object" && item.id === image.id
-                        );
-
-                        return (
-                          <div key={image.id} className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20">
-                            <img
-                              src={image.image_url}
-                              alt={image.alt || "Projektbild"}
-                              onClick={() => setProjectGalleryLightbox(imageIndex)}
-                              className="h-36 w-full cursor-zoom-in object-cover transition duration-300 hover:brightness-110"
-                            />
-                            <div className="absolute right-2 top-2 flex gap-2">
-                              <button
-                                type="button"
-                                onClick={() => replaceProjectGalleryImage(image)}
-                                className="cursor-pointer rounded-full bg-cyan-400 p-2 text-black shadow-lg hover:bg-cyan-300"
-                              >
-                                <Edit3 className="h-4 w-4" />
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => deleteProjectGalleryImage(image)}
-                                className="rounded-full bg-red-500 p-2 text-white shadow-lg hover:bg-red-400"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </button>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-              </>
+                <div className="grid gap-6">
+                  {visible.slice(1, 3).map((img, i) => (
+                    <GradientBorder key={i} gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[2rem]" className="group" innerClassName="relative overflow-hidden rounded-[1.95rem] bg-[#07111f]">
+                      <img src={typeof img === "object" ? img.image_url : img} alt="Projektbild"
+                        onClick={() => setGalleryLightboxIndex(i + 1)}
+                        className="h-[247px] w-full cursor-zoom-in object-cover transition duration-700 group-hover:scale-105 group-hover:brightness-110" />
+                    </GradientBorder>
+                  ))}
+                </div>
+              </div>
             );
           })()}
         </section>
 
-        
-{/* ── Contact ── */}
+        {/* ── Contact ── */}
         <section id="kontakt" className="mx-auto max-w-7xl px-4 pb-12 sm:px-5 sm:pb-24">
           <div className="rounded-[1.5rem] bg-cyan-400 p-4 text-black shadow-2xl shadow-cyan-500/30 sm:rounded-[2.5rem] sm:p-8 lg:p-12">
             <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
               <div>
                 <p className="text-sm font-black uppercase tracking-widest">Kontakt</p>
-                <h2 className="mt-3 text-[1.85rem] font-black leading-tight min-[390px]:text-3xl sm:mt-4 sm:text-5xl lg:text-6xl">
-                  Zusammenarbeit an modernen Elektronikprojekten.
-                </h2>
-                <p className="mt-4 max-w-2xl text-[15px] leading-7 text-black/80 sm:mt-6 sm:text-lg sm:leading-9">
-                  Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle
-                  Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder
-                  individuelle Entwicklungen.
-                </p>
+                <h2 className="mt-3 text-[1.85rem] font-black leading-tight sm:text-5xl lg:text-6xl">Zusammenarbeit an modernen Elektronikprojekten.</h2>
+                <p className="mt-4 max-w-2xl text-[15px] leading-7 text-black/80 sm:text-lg">Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder individuelle Entwicklungen.</p>
               </div>
               <div className="rounded-[1.25rem] sm:rounded-[2rem] p-[1.5px] bg-gradient-to-br from-cyan-400/60 via-cyan-500/40 to-cyan-400/60">
                 <div className="rounded-[1.2rem] sm:rounded-[1.95rem] bg-[#050816] p-3 sm:p-8 text-white">
-                  <div className="grid h-full gap-5">
+                  <div className="grid gap-5">
                     {[
                       { icon: Mail, label: "E-Mail", value: "donguyennhan.de@gmail.com" },
                       { icon: Globe, label: "Standort", value: "Deutschland" },
-                      {
-                        icon: CircuitBoard,
-                        label: "Schwerpunkt",
-                        value: "IoT · Robotik · Embedded · Automatisierung",
-                      },
-                      {
-                        icon: Wrench,
-                        label: "Sicherheit",
-                        value: "Auth · RLS · Geschützte Adminrechte",
-                      },
+                      { icon: CircuitBoard, label: "Schwerpunkt", value: "IoT · Robotik · Embedded · Automatisierung" },
+                      { icon: Wrench, label: "Tools", value: "SPS · AutoCAD · EPLAN · C++ · Qt" },
                     ].map(({ icon: Icon, label, value }) => (
-                      <div
-                        key={label}
-                        className="flex items-center gap-3 rounded-2xl border border-white/10 p-3 sm:gap-4 sm:p-4"
-                      >
+                      <div key={label} className="flex items-center gap-3 rounded-2xl border border-white/10 p-3 sm:gap-4 sm:p-4">
                         <Icon className="h-6 w-6 text-cyan-300" />
                         <div>
                           <p className="text-sm text-zinc-400">{label}</p>
@@ -2179,51 +965,200 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
 
       <footer className="border-t border-cyan-500/10 bg-black py-10 text-center text-zinc-400">
         <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-          <a href="/my-electronics-blog/impressum" className="transition hover:text-cyan-400">
-            Impressum
-          </a>
-          <a href="/my-electronics-blog/datenschutz" className="transition hover:text-cyan-400">
-            Datenschutz
-          </a>
+          <a href="/my-electronics-blog/impressum" className="transition hover:text-cyan-400">Impressum</a>
+          <a href="/my-electronics-blog/datenschutz" className="transition hover:text-cyan-400">Datenschutz</a>
         </div>
-        <p className="mt-4 text-xs text-zinc-500">
-          © 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.
-        </p>
+        <p className="mt-4 text-xs text-zinc-500">© 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.</p>
       </footer>
+
+      {/* Lightboxes */}
+      {lightbox && <Lightbox images={lightbox.images} index={lightbox.index} onClose={() => setLightbox(null)} />}
+      {galleryLightboxIndex !== null && galleryImages.length > 0 && (
+        <Lightbox images={galleryImages} index={galleryLightboxIndex} onClose={() => setGalleryLightboxIndex(null)} />
+      )}
+
+      {/* Admin Panel overlay */}
+      {adminVisible && isAdmin && (
+        <AdminPanel
+          posts={posts}
+          galleryImages={galleryImages}
+          onClose={() => setAdminVisible(false)}
+          onSave={onSavePost}
+          onDelete={onDeletePost}
+          onMoveOrder={onMovePost}
+          onSaveGallery={onSaveGallery}
+          onDeleteGallery={onDeleteGallery}
+          onExport={onExport}
+          onImport={onImport}
+          onReset={onReset}
+          message={message}
+          setMessage={setMessage}
+        />
+      )}
     </div>
   );
 }
 
+// ─────────────────────────────────────────────
+// APP ROOT (routing + state)
+// ─────────────────────────────────────────────
 function App() {
-  const isAdminRoute =
-    typeof window !== "undefined" &&
-    new URLSearchParams(window.location.search).get("admin") === "1";
-
+  const isAdminRoute = new URLSearchParams(window.location.search).get("admin") === "1";
   const [adminVisible, setAdminVisible] = useState(false);
-  const [adminUnlocked, setAdminUnlocked] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.sessionStorage.getItem("my-electronics-blog.adminUnlocked") === "1";
+  const [adminUnlocked, setAdminUnlocked] = useState(() =>
+    sessionStorage.getItem("my-electronics-blog.adminUnlocked") === "1"
+  );
+  const [page, setPage] = useState("home"); // "home" | "post"
+  const [currentPostId, setCurrentPostId] = useState(null);
+
+  // ── Data state ──
+  const [posts, setPosts] = useState(() => {
+    const stored = readStorage(POSTS_KEY, null);
+    return Array.isArray(stored) && stored.length ? stored : DEMO_POSTS;
   });
 
-  function unlockAdmin() {
+  const [galleryImages, setGalleryImages] = useState(() => {
+    const stored = readStorage(GALLERY_KEY, null);
+    return Array.isArray(stored) && stored.length ? stored : DEFAULT_GALLERY;
+  });
+
+  const isAdmin = isAdminRoute && adminUnlocked;
+  const currentPost = useMemo(() => posts.find(p => String(p.id) === String(currentPostId)) || null, [posts, currentPostId]);
+
+  // ── Navigation ──
+  const openPost = useCallback((id) => {
+    setCurrentPostId(id);
+    setPage("post");
+  }, []);
+
+  const goHome = useCallback(() => {
+    setPage("home");
+    setCurrentPostId(null);
+  }, []);
+
+  // ── Admin unlock ──
+  const unlockAdmin = () => {
     setAdminUnlocked(true);
     setAdminVisible(true);
-    if (typeof window !== "undefined") {
-      window.sessionStorage.setItem("my-electronics-blog.adminUnlocked", "1");
-    }
-  }
+    sessionStorage.setItem("my-electronics-blog.adminUnlocked", "1");
+  };
+
+  // ── Post operations ──
+  const handleSavePost = useCallback((payload, editingMode) => {
+    setPosts(prev => {
+      const next = editingMode
+        ? prev.map(p => String(p.id) === String(payload.id) ? payload : p)
+        : [payload, ...prev];
+      writeStorage(POSTS_KEY, next);
+      return next;
+    });
+  }, []);
+
+  const handleDeletePost = useCallback((id) => {
+    setPosts(prev => {
+      const next = prev.filter(p => String(p.id) !== String(id));
+      writeStorage(POSTS_KEY, next);
+      return next;
+    });
+    if (String(currentPostId) === String(id)) goHome();
+  }, [currentPostId, goHome]);
+
+  const handleMovePost = useCallback((postId, direction) => {
+    setPosts(prev => {
+      const sorted = [...prev].sort((a, b) => {
+        const oA = isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
+        const oB = isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
+        return oA !== oB ? oA - oB : new Date(b.created_at || 0) - new Date(a.created_at || 0);
+      });
+      const idx = sorted.findIndex(p => String(p.id) === String(postId));
+      const targetIdx = idx + direction;
+      if (idx < 0 || targetIdx < 0 || targetIdx >= sorted.length) return prev;
+      const reordered = [...sorted];
+      const [moved] = reordered.splice(idx, 1);
+      reordered.splice(targetIdx, 0, moved);
+      const orderMap = new Map(reordered.map((p, i) => [String(p.id), (i + 1) * 10]));
+      const next = prev.map(p => orderMap.has(String(p.id)) ? { ...p, sort_order: orderMap.get(String(p.id)) } : p);
+      writeStorage(POSTS_KEY, next);
+      return next;
+    });
+  }, []);
+
+  // ── Gallery operations ──
+  const handleSaveGallery = useCallback((paths) => {
+    const newImages = paths.map((p, i) => ({
+      id: `local-gallery-${Date.now()}-${i}`,
+      image_url: normalizeImagePath(p),
+      alt: "Projektbild",
+      sort_order: galleryImages.length + i + 1,
+      created_at: new Date().toISOString(),
+    }));
+    setGalleryImages(prev => {
+      const next = [...prev, ...newImages];
+      writeStorage(GALLERY_KEY, next);
+      return next;
+    });
+  }, [galleryImages.length]);
+
+  const handleDeleteGallery = useCallback((id) => {
+    setGalleryImages(prev => {
+      const next = prev.filter(img => !(img && typeof img === "object" && img.id === id));
+      writeStorage(GALLERY_KEY, next);
+      return next;
+    });
+  }, []);
+
+  // ── Export / Import / Reset ──
+  const handleExport = () => {
+    downloadJson("my-electronics-blog-backup.json", { posts, projectGalleryImages: galleryImages, exported_at: new Date().toISOString() });
+  };
+
+  const handleImport = () => {
+    const raw = window.prompt("JSON-Backup hier einfügen:");
+    if (!raw) return;
+    try {
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed.posts)) { alert("Import fehlgeschlagen: posts muss ein Array sein."); return; }
+      writeStorage(POSTS_KEY, parsed.posts);
+      const gallery = Array.isArray(parsed.projectGalleryImages) ? parsed.projectGalleryImages : galleryImages;
+      writeStorage(GALLERY_KEY, gallery);
+      setPosts(parsed.posts);
+      setGalleryImages(gallery);
+    } catch { alert("Import fehlgeschlagen: ungültiges JSON."); }
+  };
+
+  const handleReset = () => {
+    if (!window.confirm("Lokale Daten wirklich zurücksetzen?")) return;
+    removeStorage(POSTS_KEY);
+    removeStorage(GALLERY_KEY);
+    setPosts(DEMO_POSTS);
+    setGalleryImages(DEFAULT_GALLERY);
+    goHome();
+  };
 
   return (
     <>
-      <SiteHeader onAdminClick={unlockAdmin} adminUnlocked={adminUnlocked} />
+      <SiteHeader onAdminClick={unlockAdmin} adminUnlocked={adminUnlocked} onNavigate={goHome} currentPage={page} />
 
-      <Home
-        adminVisible={adminVisible}
-        setAdminVisible={setAdminVisible}
-        adminUnlocked={adminUnlocked}
-      />
-
-      {!isAdminRoute && <CookieBanner />}
+      {page === "post" && currentPost ? (
+        <PostDetailPage post={currentPost} onBack={goHome} />
+      ) : (
+        <HomePage
+          posts={posts}
+          galleryImages={galleryImages}
+          isAdmin={isAdmin}
+          onOpenPost={openPost}
+          onSavePost={handleSavePost}
+          onDeletePost={handleDeletePost}
+          onMovePost={handleMovePost}
+          onSaveGallery={handleSaveGallery}
+          onDeleteGallery={handleDeleteGallery}
+          onExport={handleExport}
+          onImport={handleImport}
+          onReset={handleReset}
+          adminVisible={adminVisible}
+          setAdminVisible={setAdminVisible}
+        />
+      )}
     </>
   );
 }
