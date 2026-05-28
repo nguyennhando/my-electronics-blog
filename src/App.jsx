@@ -738,7 +738,7 @@ function PostDetailPage({ post, onBack }) {
         </motion.div>
       </main>
 
-      {lightboxIndex >= 0 && (
+      {lightboxIndex !== null && (
         <Lightbox images={allImages} index={lightboxIndex} onClose={() => setLightboxIndex(null)} />
       )}
     </div>
