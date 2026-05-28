@@ -720,21 +720,7 @@ function BlogPostPage() {
         setLoading(false);
         return;
       }
-      if (!supabase) {
-        setPost(null);
-        setLoading(false);
-        return;
-      }
-      const { data, error } = await supabase
-        .from("posts")
-        .select(
-          "id,title,category,image_url,image_gallery,excerpt,content,tags,read_time,published,created_at,updated_at,external_link,project_status,sort_order"
-        )
-        .eq("id", id)
-        .single();
-      if (error) setPost(null);
-      else setPost(data);
-      setLoading(false);
+      
     }
     loadPost();
   }, [id]);
