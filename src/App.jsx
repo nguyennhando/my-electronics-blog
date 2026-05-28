@@ -994,10 +994,41 @@ function HomePage({ posts, galleryImages, isAdmin, onOpenPost, onGoImpressum, on
                 <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">Persönlicher Weg</p>
                 <h2 className="mt-3 text-2xl font-black leading-tight sm:text-4xl">Nguyen Nhan Do – Technik lernen. Erfahrung sammeln. Mich weiterentwickeln.</h2>
                 <div className="mt-5 space-y-4 text-sm leading-7 text-zinc-300 sm:text-base sm:leading-8">
-                  <p>Ich bin 2013 nach Deutschland gekommen – nicht, weil mein Leben in Vietnam schlecht war, sondern weil ich wissen wollte, wie weit ich mich persönlich und beruflich entwickeln kann, wenn ich meine Komfortzone verlasse.</p>
-                  <p>Nach mehreren Jahren unterschiedlicher beruflicher Erfahrungen habe ich mich bewusst entschieden, wieder stärker in die technische Richtung zurückzugehen und mich langfristig im Bereich Elektronik, Messtechnik und Automatisierung weiterzuentwickeln.</p>
-                  <p>Deshalb habe ich zusätzliche Weiterbildungen in SPS-Programmierung, C++/Qt, AutoCAD und EPLAN absolviert, um mein Wissen gezielt auszubauen und neue technische Bereiche besser zu verstehen.</p>
-                  <p>Dieser Blog ist kein Ort für Motivationstexte oder perfekte Erfolgsgeschichten. Ich möchte hier ehrlich über meinen Weg sprechen – über das Leben und Arbeiten in Deutschland, technische Themen und persönliche Entwicklung.</p>
+                  <p>
+                Ich bin 2013 nach Deutschland gekommen – nicht, weil mein Leben in Vietnam schlecht war,
+                sondern weil ich wissen wollte, wie weit ich mich persönlich und beruflich entwickeln kann,
+                wenn ich meine Komfortzone verlasse und in einem völlig neuen Umfeld neu anfange.
+              </p>
+
+              <p className="mt-4">
+                Die ersten Jahre in Deutschland waren für mich vor allem eine Zeit des Ankommens, Lernens
+                und Anpassens. Neben den Sprachkursen habe ich in verschiedenen Bereichen gearbeitet –
+                unter anderem in der Gastronomie, im Management und später auch in der Selbstständigkeit.
+              </p>
+
+              <p className="mt-4">
+                Nach mehreren Jahren unterschiedlicher beruflicher Erfahrungen habe ich mich bewusst
+                entschieden, wieder stärker in die technische Richtung zurückzugehen und mich langfristig im
+                Bereich Elektronik, Messtechnik und Automatisierung weiterzuentwickeln.
+              </p>
+
+              <p className="mt-4">
+                In den letzten Jahren konnte ich praktische Erfahrungen in der Kalibrierung, Fehlersuche,
+                Prüfung und Entwicklung elektronischer Systeme sammeln und gleichzeitig mein technisches
+                Wissen kontinuierlich erweitern.
+              </p>
+
+              <p className="mt-4">
+                Deshalb habe ich zusätzliche Weiterbildungen in SPS-Programmierung, C++/Qt, AutoCAD und
+                EPLAN absolviert, um mein Wissen gezielt auszubauen und neue technische Bereiche besser zu
+                verstehen.
+              </p>
+
+              <p className="mt-4">
+                Dieser Blog ist kein Ort für Motivationstexte oder perfekte Erfolgsgeschichten. Ich möchte
+                hier ehrlich über meinen Weg sprechen – über das Leben und Arbeiten in Deutschland,
+                technische Themen, persönliche Erfahrungen, Herausforderungen und Entwicklung.
+              </p>
                 </div>
               </div>
             </div>
