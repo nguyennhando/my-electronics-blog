@@ -653,7 +653,8 @@ function PostDetailPage({ post, onBack }) {
   useEffect(() => { window.scrollTo({ top: 0 }); }, [post.id]);
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen text-white bg-[#07111f]"
+  style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px)", backgroundSize: "60px 60px" }}>
       <Background />
       <main className="mx-auto max-w-5xl px-4 pt-[110px] pb-20 sm:px-5">
         {/* Back Button */}
