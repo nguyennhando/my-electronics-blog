@@ -1175,7 +1175,7 @@ function HomePage({ posts, galleryImages, isAdmin, onOpenPost, onGoImpressum, on
                     {[
                       { icon: Mail, label: "E-Mail", value: "donguyennhan.de@gmail.com" },
                       { icon: Globe, label: "Standort", value: "Deutschland" },
-                      { icon: CircuitBoard, label: "Schwerpunkt", value: "IoT · Robotik · Embedded · Automatisierung" },
+                      { icon: CircuitBoard, label: "Schwerpunkt", value: "IoT · Automatisierung" },
                       { icon: Wrench, label: "Tools", value: "SPS · AutoCAD · EPLAN · C++ · Qt" },
                     ].map(({ icon: Icon, label, value }) => (
                       <div key={label} className="flex items-center gap-3 rounded-2xl border border-white/10 p-3 sm:gap-4 sm:p-4">
