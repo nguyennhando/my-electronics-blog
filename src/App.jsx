@@ -818,10 +818,13 @@ function Home({ adminVisible, setAdminVisible }) {
   typeof window !== "undefined" &&
   new URLSearchParams(window.location.search).get("admin") === "1";
 
-const PUBLIC_DEPLOY = !isAdminRoute;
- 
-  const [session] = useState({ user: { email: "Static Local Admin" } });
-  const [isAdmin] = useState(true);
+  const PUBLIC_DEPLOY = !isAdminRoute;
+
+  // Static GitHub Pages mode:
+  // - Public URL: no admin rights, no edit/delete buttons.
+  // - Admin URL (?admin=1): admin rights only after password prompt opens adminVisible.
+  const isAdmin = Boolean(isAdminRoute && adminVisible);
+  const session = isAdmin ? { user: { email: "Static Local Admin" } } : null;
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [posts, setPosts] = useState(demoPosts);
