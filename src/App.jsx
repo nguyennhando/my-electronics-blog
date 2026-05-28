@@ -1060,30 +1060,9 @@ function Home({ adminVisible, setAdminVisible }) {
     setIsAdmin(Boolean(data));
   }
 
-  async function loadPosts() {
-  if (!supabase) return;
-
-  setLoading(true);
-
-  let query = supabase
-    .from("posts")
-    .select("*")
-    .order("sort_order", { ascending: true, nullsFirst: false })
-    .order("created_at", { ascending: false });
-
-  // Chỉ user thường mới filter published
-  if (!isAdmin) {
-    query = query.eq("published", true);
-  }
-
-  const { data, error } = await query;
-
-  setLoading(false);
-
-  if (data?.length) {
-    setPosts(data);
-    setSelectedPost(data[0]);
-  }
+async function loadPosts() {
+  setPosts(demoPosts);
+  setSelectedPost(demoPosts[0]);
 }
 
   async function login(e) {
