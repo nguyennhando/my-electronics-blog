@@ -326,6 +326,10 @@ function SiteHeader({ onAdminClick }) {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const showAdminEntry =
+  typeof window !== "undefined" &&
+  new URLSearchParams(window.location.search).get("admin") === "1";
+
   function scrollToSection(id) {
     setMenuOpen(false);
     navigate(`/${id}`);
@@ -341,9 +345,15 @@ function SiteHeader({ onAdminClick }) {
   }
 
   function openAdmin() {
+  const password = window.prompt("Admin Passwort");
+
+  if (password === "Nhan1986.,") {
     setMenuOpen(false);
     onAdminClick?.();
+  } else {
+    window.alert("Falsches Passwort");
   }
+}
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
@@ -375,13 +385,15 @@ function SiteHeader({ onAdminClick }) {
               {id === "projekte" ? "Galerie" : id.charAt(0).toUpperCase() + id.slice(1)}
             </button>
           ))}
-          <button
-            type="button"
-            onClick={openAdmin}
-            className="rounded-full border border-cyan-400/30 bg-cyan-400/5 px-5 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400/10 hover:border-cyan-400/60"
-          >
-            Admin
-          </button>
+          {showAdminEntry && (
+  <button
+    type="button"
+    onClick={openAdmin}
+    className="rounded-full border border-cyan-400/30 bg-cyan-400/5 px-5 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400/10 hover:border-cyan-400/60"
+  >
+    Admin
+  </button>
+)}
         </div>
 
         <button
@@ -411,13 +423,15 @@ function SiteHeader({ onAdminClick }) {
                 {label}
               </button>
             ))}
-            <button
-              type="button"
-              onClick={openAdmin}
-              className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300"
-            >
-              Admin
-            </button>
+           {showAdminEntry && (
+  <button
+    type="button"
+    onClick={openAdmin}
+    className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300"
+  >
+    Admin
+  </button>
+)}
           </div>
         </div>
       )}
@@ -974,6 +988,11 @@ function AboutWideCard() {
    HOME PAGE
 ══════════════════════════════════════════════ */
 function Home({ adminVisible, setAdminVisible }) {
+  const isAdminRoute =
+  typeof window !== "undefined" &&
+  new URLSearchParams(window.location.search).get("admin") === "1";
+
+const PUBLIC_DEPLOY = !isAdminRoute;
   const navigate = useNavigate();
   const location = useLocation();
   const [session] = useState({ user: { email: "Static Local Admin" } });
@@ -997,7 +1016,17 @@ function Home({ adminVisible, setAdminVisible }) {
   // Build hero slides from posts
   const heroSlides = useMemo(
   () =>
-    posts.slice(0, 3).map((p) => ({
+    [...posts]
+      .sort((a, b) => {
+        const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
+        const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
+
+        if (orderA !== orderB) return orderA - orderB;
+
+        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+      })
+      .slice(0, 3)
+      .map((p) => ({
   id: p.id,
   image: p.image_url,
         category: p.category,
@@ -1222,41 +1251,52 @@ async function loadPosts() {
     setMessage("Beitrag wurde lokal im Browser gelöscht.");
   }
 
-  async function movePostOrder(postId, direction) {
-    if (!isAdmin) {
-      setMessage("Keine Berechtigung. Nur Admins dürfen die Reihenfolge ändern.");
-      return;
-    }
-
-    const ordered = [...posts].sort((a, b) => {
-      const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
-      const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
-      if (orderA !== orderB) return orderA - orderB;
-      return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-    });
-
-    const currentIndex = ordered.findIndex((post) => String(post.id) === String(postId));
-    const targetIndex = currentIndex + direction;
-    if (currentIndex < 0 || targetIndex < 0 || targetIndex >= ordered.length) return;
-
-    const currentPost = ordered[currentIndex];
-    const targetPost = ordered[targetIndex];
-    const currentOrder = Number.isFinite(Number(currentPost.sort_order)) ? Number(currentPost.sort_order) : (currentIndex + 1) * 10;
-    const targetOrder = Number.isFinite(Number(targetPost.sort_order)) ? Number(targetPost.sort_order) : (targetIndex + 1) * 10;
-
-    setPosts((prev) => {
-      const nextPosts = prev.map((post) => {
-        if (String(post.id) === String(currentPost.id)) return { ...post, sort_order: targetOrder };
-        if (String(post.id) === String(targetPost.id)) return { ...post, sort_order: currentOrder };
-        return post;
-      });
-      writeJsonStorage(STATIC_POSTS_STORAGE_KEY, nextPosts);
-      return nextPosts;
-    });
-
-    setMessage("Reihenfolge wurde lokal im Browser gespeichert.");
+function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
+  if (!isAdmin) {
+    setMessage("Keine Berechtigung. Nur Admins dürfen die Reihenfolge ändern.");
+    return;
   }
 
+  const orderedVisible = [...visiblePosts].sort((a, b) => {
+    const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
+    const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
+
+    if (orderA !== orderB) return orderA - orderB;
+    return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+  });
+
+  const currentIndex = orderedVisible.findIndex(
+    (post) => String(post.id) === String(postId)
+  );
+
+  const targetIndex = currentIndex + direction;
+
+  if (currentIndex < 0 || targetIndex < 0 || targetIndex >= orderedVisible.length) {
+    setMessage("Diese Karte kann nicht weiter verschoben werden.");
+    return;
+  }
+
+  const reorderedVisible = [...orderedVisible];
+  const [movedPost] = reorderedVisible.splice(currentIndex, 1);
+  reorderedVisible.splice(targetIndex, 0, movedPost);
+
+  const orderMap = new Map(
+    reorderedVisible.map((post, index) => [String(post.id), (index + 1) * 10])
+  );
+
+  setPosts((prev) => {
+    const nextPosts = prev.map((post) =>
+      orderMap.has(String(post.id))
+        ? { ...post, sort_order: orderMap.get(String(post.id)) }
+        : post
+    );
+
+    writeJsonStorage(STATIC_POSTS_STORAGE_KEY, nextPosts);
+    return nextPosts;
+  });
+
+  setMessage("Reihenfolge wurde lokal im Browser gespeichert.");
+}
   function exportLocalData() {
     downloadJsonFile("my-electronics-blog-local-data.json", {
       posts,
@@ -1310,19 +1350,29 @@ async function loadPosts() {
   const categories = ["Alle", ...new Set(posts.map((post) => post.category))];
 
   const filteredPosts = useMemo(() => {
-    const q = search.toLowerCase();
-    return posts.filter((post) => {
+  const q = search.toLowerCase();
+
+  return posts
+    .filter((post) => {
       const categoryMatch = category === "Alle" || post.category === category;
       const tags = Array.isArray(post.tags) ? post.tags : [];
+
       const searchMatch =
         post.title.toLowerCase().includes(q) ||
         post.excerpt.toLowerCase().includes(q) ||
         post.content.toLowerCase().includes(q) ||
         tags.some((tag) => tag.toLowerCase().includes(q));
-      return categoryMatch && searchMatch;
-    });
-  }, [posts, search, category]);
 
+      return categoryMatch && searchMatch;
+    })
+    .sort((a, b) => {
+      const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
+      const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
+
+      if (orderA !== orderB) return orderA - orderB;
+      return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+    });
+}, [posts, search, category]);
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#050816] text-white">
       <Background />
@@ -1418,7 +1468,7 @@ async function loadPosts() {
         </section>
 
         {/* ── Admin Panel ── */}
-        {adminVisible && (
+        {!PUBLIC_DEPLOY && adminVisible && (
           <section className="fixed inset-0 z-[100] overflow-y-auto bg-black/70 px-4 py-6 backdrop-blur-md sm:px-5 sm:py-8">
             <div className="mx-auto max-w-7xl">
               <GradientBorder
@@ -1927,21 +1977,22 @@ async function loadPosts() {
                         {isAdmin && (
                           <>
                             <button
-                              type="button"
-                              onClick={() => movePostOrder(post.id, -1)}
-                              className="rounded-2xl border border-white/10 px-3 py-2 text-sm font-black transition hover:bg-white/10"
-                              title="Weiter nach vorne"
-                            >
-                              ↑
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => movePostOrder(post.id, 1)}
-                              className="rounded-2xl border border-white/10 px-3 py-2 text-sm font-black transition hover:bg-white/10"
-                              title="Weiter nach hinten"
-                            >
-                              ↓
-                            </button>
+  type="button"
+  onClick={() => movePostOrder(post.id, -1, filteredPosts)}
+  className="rounded-2xl border border-white/10 px-3 py-2 text-sm font-black transition hover:bg-white/10"
+  title="Weiter nach vorne"
+>
+  ↑
+</button>
+
+<button
+  type="button"
+  onClick={() => movePostOrder(post.id, 1, filteredPosts)}
+  className="rounded-2xl border border-white/10 px-3 py-2 text-sm font-black transition hover:bg-white/10"
+  title="Weiter nach hinten"
+>
+  ↓
+</button>
                             <button
                               type="button"
                               onClick={() => editPost(post)}
