@@ -319,7 +319,7 @@ function Background() {
 }
 
 
-function SiteHeader({ onAdminClick }) {
+function SiteHeader({ onAdminClick, adminUnlocked }) {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -341,6 +341,12 @@ function SiteHeader({ onAdminClick }) {
 }
 
   function openAdmin() {
+  if (adminUnlocked) {
+    setMenuOpen(false);
+    onAdminClick?.();
+    return;
+  }
+
   const password = window.prompt("Admin Passwort");
 
   if (password === "Nhan1986.,") {
@@ -813,7 +819,7 @@ function AboutWideCard() {
 /* ══════════════════════════════════════════════
    HOME PAGE
 ══════════════════════════════════════════════ */
-function Home({ adminVisible, setAdminVisible }) {
+function Home({ adminVisible, setAdminVisible, adminUnlocked }) {
   const isAdminRoute =
   typeof window !== "undefined" &&
   new URLSearchParams(window.location.search).get("admin") === "1";
@@ -1288,7 +1294,7 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
         </section>
 
         {/* ── Admin Panel ── */}
-        {!PUBLIC_DEPLOY && adminVisible && (
+        {!PUBLIC_DEPLOY && adminVisible && isAdmin && (
           <section className="fixed inset-0 z-[100] overflow-y-auto bg-black/70 px-4 py-6 backdrop-blur-md sm:px-5 sm:py-8">
             <div className="mx-auto max-w-7xl">
               <GradientBorder
@@ -1306,8 +1312,8 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                   <button
                     type="button"
                     onClick={() => {
-  window.location.href = "/my-electronics-blog/";
-}}
+                      setAdminVisible(false);
+                    }}
                     className="rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10"
                   >
                     Schließen
@@ -2086,14 +2092,27 @@ function App() {
     new URLSearchParams(window.location.search).get("admin") === "1";
 
   const [adminVisible, setAdminVisible] = useState(false);
+  const [adminUnlocked, setAdminUnlocked] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.sessionStorage.getItem("my-electronics-blog.adminUnlocked") === "1";
+  });
+
+  function unlockAdmin() {
+    setAdminUnlocked(true);
+    setAdminVisible(true);
+    if (typeof window !== "undefined") {
+      window.sessionStorage.setItem("my-electronics-blog.adminUnlocked", "1");
+    }
+  }
 
   return (
     <>
-      <SiteHeader onAdminClick={() => setAdminVisible(true)} />
+      <SiteHeader onAdminClick={unlockAdmin} adminUnlocked={adminUnlocked} />
 
       <Home
         adminVisible={adminVisible}
         setAdminVisible={setAdminVisible}
+        adminUnlocked={adminUnlocked}
       />
 
       {!isAdminRoute && <CookieBanner />}
