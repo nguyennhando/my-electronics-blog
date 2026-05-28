@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState, useRef } from "react";
 import { Routes, Route, Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { createClient } from "@supabase/supabase-js";
 import CookieBanner from "./components/CookieBanner";
 import Impressum from "./pages/Impressum";
 import Datenschutz from "./pages/Datenschutz";
@@ -36,16 +35,62 @@ import {
   
 } from "lucide-react";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
-
-
-const STORAGE_BUCKET = "blog-images";
-const MAX_IMAGE_SIZE_BYTES = 2 * 1024 * 1024; // 2MB
 const MAX_POST_GALLERY_IMAGES = 6;
 const MAX_PROJECT_GALLERY_IMAGES = 12;
-const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const STATIC_POSTS_STORAGE_KEY = "my-electronics-blog.posts.v1";
+const STATIC_GALLERY_STORAGE_KEY = "my-electronics-blog.projectGallery.v1";
+
+const DEFAULT_PROJECT_GALLERY_IMAGES = [
+  "/my-electronics-blog/images/finance-main.webp",
+  "/my-electronics-blog/images/finance-chart.webp",
+  "/my-electronics-blog/images/finance-dashboard.webp",
+];
+
+function readJsonStorage(key, fallbackValue) {
+  if (typeof window === "undefined") return fallbackValue;
+  try {
+    const raw = window.localStorage.getItem(key);
+    if (!raw) return fallbackValue;
+    return JSON.parse(raw);
+  } catch {
+    return fallbackValue;
+  }
+}
+
+function writeJsonStorage(key, value) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(key, JSON.stringify(value, null, 2));
+}
+
+function removeJsonStorage(key) {
+  if (typeof window === "undefined") return;
+  window.localStorage.removeItem(key);
+}
+
+function getStoredPosts() {
+  const storedPosts = readJsonStorage(STATIC_POSTS_STORAGE_KEY, null);
+  return Array.isArray(storedPosts) && storedPosts.length ? storedPosts : demoPosts;
+}
+
+function getStoredProjectGalleryImages() {
+  const storedImages = readJsonStorage(STATIC_GALLERY_STORAGE_KEY, null);
+  return Array.isArray(storedImages) && storedImages.length
+    ? storedImages
+    : DEFAULT_PROJECT_GALLERY_IMAGES;
+}
+
+function downloadJsonFile(filename, data) {
+  if (typeof document === "undefined") return;
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
 
 function normalizeImageList(value) {
   if (!value) return [];
@@ -68,35 +113,6 @@ function uniqueImageUrls(urls) {
   return [...new Set((urls || []).filter(Boolean))];
 }
 
-function validateImageFile(file) {
-  if (!file) return "Keine Datei ausgewählt.";
-  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-    return "Nur JPG, PNG oder WEBP erlaubt.";
-  }
-  if (file.size > MAX_IMAGE_SIZE_BYTES) {
-    return "Bild zu groß. Maximal 2MB erlaubt.";
-  }
-  return null;
-}
-
-function getStoragePathFromPublicUrl(url) {
-  if (!url || !supabaseUrl || !url.startsWith(supabaseUrl)) return null;
-  const marker = `/storage/v1/object/public/${STORAGE_BUCKET}/`;
-  const markerIndex = url.indexOf(marker);
-  if (markerIndex < 0) return null;
-  const rawPath = url.slice(markerIndex + marker.length).split("?")[0];
-  try {
-    return decodeURIComponent(rawPath);
-  } catch {
-    return rawPath;
-  }
-}
-
-async function removeStorageImages(urls) {
-  // Bilder liegen jetzt in GitHub Pages / public/images.
-  // Die App löscht nur Datenbankeinträge, keine Dateien aus Storage.
-  return;
-}
 
 function normalizeLocalImagePath(value) {
   const path = String(value || "").trim();
@@ -714,13 +730,10 @@ function BlogPostPage() {
   useEffect(() => {
     async function loadPost() {
       setLoading(true);
-      const demoPost = demoPosts.find((item) => String(item.id) === String(id));
-      if (demoPost) {
-        setPost(demoPost);
-        setLoading(false);
-        return;
-      }
-      
+      const allPosts = getStoredPosts();
+      const foundPost = allPosts.find((item) => String(item.id) === String(id));
+      setPost(foundPost || null);
+      setLoading(false);
     }
     loadPost();
   }, [id]);
@@ -963,8 +976,8 @@ function AboutWideCard() {
 function Home({ adminVisible, setAdminVisible }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [session, setSession] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [session] = useState({ user: { email: "Static Local Admin" } });
+  const [isAdmin] = useState(true);
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [posts, setPosts] = useState(demoPosts);
@@ -979,7 +992,7 @@ function Home({ adminVisible, setAdminVisible }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const hasSupabase = Boolean(supabase);
+  const hasSupabase = true;
 
   // Build hero slides from posts
   const heroSlides = useMemo(
@@ -1005,24 +1018,9 @@ function Home({ adminVisible, setAdminVisible }) {
 
 
   useEffect(() => {
-    if (!supabase) return;
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-    });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, currentSession) => {
-      setSession(currentSession);
-    });
-    return () => listener.subscription.unsubscribe();
-  }, []);
-
-  useEffect(() => {
   loadPosts();
   loadProjectGalleryImages();
-}, [session, isAdmin]);
-
-  useEffect(() => {
-    checkAdmin();
-  }, [session]);
+}, []);
 
   useEffect(() => {
     const section = location.pathname.replace("/", "");
@@ -1033,83 +1031,28 @@ function Home({ adminVisible, setAdminVisible }) {
     }
   }, [location.pathname]);
 
-  async function checkAdmin() {
-    if (!supabase || !session?.user) {
-      setIsAdmin(false);
-      return;
-    }
-    const { data, error } = await supabase.rpc("is_admin");
-    if (error) {
-      setIsAdmin(false);
-      return;
-    }
-    setIsAdmin(Boolean(data));
-  }
-
 async function loadPosts() {
-  setPosts(demoPosts);
-  setSelectedPost(demoPosts[0]);
+  const nextPosts = getStoredPosts();
+  setPosts(nextPosts);
+  setSelectedPost(nextPosts[0] || null);
 }
 
   async function login(e) {
     e.preventDefault();
-    if (!supabase) {
-      setMessage("Supabase ist noch nicht konfiguriert. Bitte .env.local erstellen.");
-      return;
-    }
-    setLoading(true);
-    setMessage("");
-    const { error } = await supabase.auth.signInWithPassword({
-      email: loginEmail,
-      password: loginPassword,
-    });
-    setLoading(false);
-    if (error) {
-      setMessage("Login fehlgeschlagen. E-Mail, Passwort oder Adminrechte prüfen.");
-      return;
-    }
     setLoginEmail("");
     setLoginPassword("");
-    setMessage("Login erfolgreich.");
+    setMessage("GitHub Pages läuft statisch. Der Admin speichert jetzt lokal im Browser.");
   }
 
   async function logout() {
-    if (!supabase) return;
-    await supabase.auth.signOut();
-    setIsAdmin(false);
-    setMessage("Sie wurden abgemeldet.");
+    setMessage("GitHub Pages läuft statisch. Es gibt keinen Supabase-Login mehr; lokale Daten bleiben im Browser gespeichert.");
   }
 
   async function loadProjectGalleryImages() {
-    const fallbackImages = [
-      "/my-electronics-blog/images/finance-main.webp",
-      "/my-electronics-blog/images/finance-chart.webp",
-      "/my-electronics-blog/images/finance-dashboard.webp",
-    ];
-
-    if (!supabase) {
-      setProjectGalleryImages(fallbackImages);
-      return;
-    }
-
-    const { data, error } = await supabase
-      .from("project_gallery_images")
-      .select("id,image_url,alt,sort_order,created_at")
-      .order("sort_order", { ascending: true, nullsFirst: false })
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      setProjectGalleryImages(fallbackImages);
-      return;
-    }
-
-    // Luôn giữ 3 ảnh gốc hiển thị như thiết kế ban đầu.
-    // Ảnh upload thêm từ Admin sẽ nằm sau và xem được bằng nút next/prev trong lightbox.
-    setProjectGalleryImages([...fallbackImages, ...(data || [])]);
+    setProjectGalleryImages(getStoredProjectGalleryImages());
   }
 
   async function uploadProjectGalleryImages() {
-    if (!supabase) return;
     if (!isAdmin) {
       setMessage("Keine Berechtigung. Nur Admins dürfen Galerie-Bilder speichern.");
       return;
@@ -1127,61 +1070,54 @@ async function loadPosts() {
       return;
     }
 
-    try {
-      setLoading(true);
-      const rows = imagePaths.map((image_url, index) => ({
-        image_url,
-        alt: "Projektbild",
-        sort_order: customGalleryCount + index + 1,
-      }));
-      const { error } = await supabase.from("project_gallery_images").insert(rows);
-      if (error) throw error;
-      setMessage("Galerie-Bildpfade wurden gespeichert.");
-      await loadProjectGalleryImages();
-    } catch (error) {
-      setMessage(error.message || "Galerie konnte nicht gespeichert werden.");
-    } finally {
-      setLoading(false);
-    }
+    const rows = imagePaths.map((image_url, index) => ({
+      id: `local-gallery-${Date.now()}-${index}`,
+      image_url,
+      alt: "Projektbild",
+      sort_order: customGalleryCount + index + 1,
+      created_at: new Date().toISOString(),
+    }));
+
+    setProjectGalleryImages((prev) => {
+      const nextImages = [...prev, ...rows];
+      writeJsonStorage(STATIC_GALLERY_STORAGE_KEY, nextImages);
+      return nextImages;
+    });
+    setMessage("Galerie-Bildpfade wurden lokal im Browser gespeichert. Export JSON nutzen, wenn Sie ein Backup wollen.");
   }
 
   async function deleteProjectGalleryImage(image) {
-    if (!supabase || !isAdmin || !image?.id) return;
+    if (!isAdmin || !image?.id) return;
     const confirmed = window.confirm("Dieses Galerie-Bild wirklich löschen?");
     if (!confirmed) return;
-    setLoading(true);
-    const { error } = await supabase.from("project_gallery_images").delete().eq("id", image.id);
-    setLoading(false);
-    if (error) {
-      setMessage("Galerie-Bild konnte nicht gelöscht werden.");
-      return;
-    }
-    setMessage("Galerie-Bild wurde gelöscht.");
-    await loadProjectGalleryImages();
+
+    setProjectGalleryImages((prev) => {
+      const nextImages = prev.filter((item) => !(item && typeof item === "object" && item.id === image.id));
+      writeJsonStorage(STATIC_GALLERY_STORAGE_KEY, nextImages);
+      return nextImages;
+    });
+    setMessage("Galerie-Bild wurde lokal im Browser gelöscht.");
   }
 
   async function replaceProjectGalleryImage(image) {
-    if (!supabase || !isAdmin || !image?.id) return;
+    if (!isAdmin || !image?.id) return;
     const input = window.prompt(
       "Neuen Bildpfad einfügen:",
       image.image_url || "/my-electronics-blog/images/posts/"
     );
     const newUrl = normalizeLocalImagePath(input);
     if (!newUrl) return;
-    try {
-      setLoading(true);
-      const { error } = await supabase
-        .from("project_gallery_images")
-        .update({ image_url: newUrl })
-        .eq("id", image.id);
-      if (error) throw error;
-      setMessage("Galerie-Bildpfad wurde ersetzt.");
-      await loadProjectGalleryImages();
-    } catch (error) {
-      setMessage(error.message || "Galerie-Bild konnte nicht ersetzt werden.");
-    } finally {
-      setLoading(false);
-    }
+
+    setProjectGalleryImages((prev) => {
+      const nextImages = prev.map((item) =>
+        item && typeof item === "object" && item.id === image.id
+          ? { ...item, image_url: newUrl }
+          : item
+      );
+      writeJsonStorage(STATIC_GALLERY_STORAGE_KEY, nextImages);
+      return nextImages;
+    });
+    setMessage("Galerie-Bildpfad wurde lokal im Browser ersetzt.");
   }
 
   function uploadImage(value) {
@@ -1212,11 +1148,12 @@ async function loadPosts() {
 
   async function savePost(e) {
     e.preventDefault();
-    if (!supabase || !isAdmin) {
+    if (!isAdmin) {
       setMessage("Keine Berechtigung. Nur Admins dürfen Beiträge speichern.");
       return;
     }
     const payload = {
+      id: editingMode && editingPost.id ? editingPost.id : `local-post-${Date.now()}`,
       title: editingPost.title.trim(),
       category: editingPost.category,
       image_url: editingPost.image_url.trim(),
@@ -1232,6 +1169,7 @@ async function loadPosts() {
           : editingPost.tags,
       read_time: editingPost.read_time || "5 Min.",
       published: Boolean(editingPost.published),
+      created_at: editingPost.created_at || new Date().toISOString(),
       external_link: editingPost.external_link?.trim() || null,
       project_status: normalizeProjectStatus(editingPost.project_status),
       sort_order: Number.isFinite(Number(editingPost.sort_order)) ? Number(editingPost.sort_order) : 100,
@@ -1240,23 +1178,18 @@ async function loadPosts() {
       setMessage("Titel, Kurzbeschreibung und Inhalt sind Pflichtfelder.");
       return;
     }
-    setLoading(true);
-    const request = editingMode
-      ? supabase.from("posts").update(payload).eq("id", editingPost.id).select().single()
-      : supabase.from("posts").insert(payload).select().single();
-    const { data, error } = await request;
 
-
-    setLoading(false);
-    if (error) {
-      setMessage("Speichern fehlgeschlagen. Prüfen Sie Adminrechte und RLS-Policies.");
-      return;
-    }
-    setMessage("Beitrag wurde sicher gespeichert.");
+    setPosts((prev) => {
+      const nextPosts = editingMode
+        ? prev.map((post) => (String(post.id) === String(payload.id) ? payload : post))
+        : [payload, ...prev];
+      writeJsonStorage(STATIC_POSTS_STORAGE_KEY, nextPosts);
+      return nextPosts;
+    });
+    setSelectedPost(payload);
+    setMessage("Beitrag wurde lokal im Browser gespeichert. Export JSON nutzen, wenn Sie ein Backup wollen.");
     setEditingPost(createEmptyPost());
     setEditingMode(false);
-    await loadPosts();
-    if (data) setSelectedPost(data);
   }
 
   function editPost(post) {
@@ -1273,26 +1206,24 @@ async function loadPosts() {
   }
 
   async function deletePost(id) {
-    if (!supabase || !isAdmin) {
+    if (!isAdmin) {
       setMessage("Keine Berechtigung. Nur Admins dürfen Beiträge löschen.");
       return;
     }
     const confirmed = window.confirm("Diesen Beitrag wirklich löschen?");
     if (!confirmed) return;
-    setLoading(true);
 
-    const { error } = await supabase.from("posts").delete().eq("id", id);
-    setLoading(false);
-    if (error) {
-      setMessage("Löschen fehlgeschlagen. Prüfen Sie Adminrechte und RLS-Policies.");
-      return;
-    }
-    setMessage("Beitrag wurde gelöscht.");
-    await loadPosts();
+    setPosts((prev) => {
+      const nextPosts = prev.filter((post) => String(post.id) !== String(id));
+      writeJsonStorage(STATIC_POSTS_STORAGE_KEY, nextPosts);
+      setSelectedPost(nextPosts[0] || null);
+      return nextPosts;
+    });
+    setMessage("Beitrag wurde lokal im Browser gelöscht.");
   }
 
   async function movePostOrder(postId, direction) {
-    if (!supabase || !isAdmin) {
+    if (!isAdmin) {
       setMessage("Keine Berechtigung. Nur Admins dürfen die Reihenfolge ändern.");
       return;
     }
@@ -1313,24 +1244,67 @@ async function loadPosts() {
     const currentOrder = Number.isFinite(Number(currentPost.sort_order)) ? Number(currentPost.sort_order) : (currentIndex + 1) * 10;
     const targetOrder = Number.isFinite(Number(targetPost.sort_order)) ? Number(targetPost.sort_order) : (targetIndex + 1) * 10;
 
-    setLoading(true);
-    const { error: firstError } = await supabase
-      .from("posts")
-      .update({ sort_order: targetOrder })
-      .eq("id", currentPost.id);
-    const { error: secondError } = await supabase
-      .from("posts")
-      .update({ sort_order: currentOrder })
-      .eq("id", targetPost.id);
-    setLoading(false);
+    setPosts((prev) => {
+      const nextPosts = prev.map((post) => {
+        if (String(post.id) === String(currentPost.id)) return { ...post, sort_order: targetOrder };
+        if (String(post.id) === String(targetPost.id)) return { ...post, sort_order: currentOrder };
+        return post;
+      });
+      writeJsonStorage(STATIC_POSTS_STORAGE_KEY, nextPosts);
+      return nextPosts;
+    });
 
-    if (firstError || secondError) {
-      setMessage("Reihenfolge konnte nicht gespeichert werden. Prüfen Sie Adminrechte und RLS-Policies.");
-      return;
+    setMessage("Reihenfolge wurde lokal im Browser gespeichert.");
+  }
+
+  function exportLocalData() {
+    downloadJsonFile("my-electronics-blog-local-data.json", {
+      posts,
+      projectGalleryImages,
+      exported_at: new Date().toISOString(),
+    });
+    setMessage("Lokales Backup wurde als JSON heruntergeladen.");
+  }
+
+  function importLocalData() {
+    const raw = window.prompt(
+      "JSON-Backup hier einfügen. Erwartetes Format: { posts: [...], projectGalleryImages: [...] }"
+    );
+    if (!raw) return;
+    try {
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed.posts)) {
+        setMessage("Import fehlgeschlagen: posts muss ein Array sein.");
+        return;
+      }
+      const importedPosts = parsed.posts;
+      const importedGallery = Array.isArray(parsed.projectGalleryImages)
+        ? parsed.projectGalleryImages
+        : projectGalleryImages;
+      writeJsonStorage(STATIC_POSTS_STORAGE_KEY, importedPosts);
+      writeJsonStorage(STATIC_GALLERY_STORAGE_KEY, importedGallery);
+      setPosts(importedPosts);
+      setSelectedPost(importedPosts[0] || null);
+      setProjectGalleryImages(importedGallery);
+      setMessage("JSON wurde importiert und lokal im Browser gespeichert.");
+    } catch {
+      setMessage("Import fehlgeschlagen: ungültiges JSON.");
     }
+  }
 
-    setMessage("Reihenfolge wurde gespeichert.");
-    await loadPosts();
+  function resetLocalData() {
+    const confirmed = window.confirm(
+      "Lokale Admin-Daten wirklich zurücksetzen? Danach werden wieder die Beiträge aus dem Code angezeigt."
+    );
+    if (!confirmed) return;
+    removeJsonStorage(STATIC_POSTS_STORAGE_KEY);
+    removeJsonStorage(STATIC_GALLERY_STORAGE_KEY);
+    setPosts(demoPosts);
+    setSelectedPost(demoPosts[0] || null);
+    setProjectGalleryImages(DEFAULT_PROJECT_GALLERY_IMAGES);
+    setEditingPost(createEmptyPost());
+    setEditingMode(false);
+    setMessage("Lokale Admin-Daten wurden zurückgesetzt.");
   }
 
   const categories = ["Alle", ...new Set(posts.map((post) => post.category))];
@@ -1455,7 +1429,7 @@ async function loadPosts() {
                 <div className="mb-5 flex items-center justify-between gap-3">
                   <div>
                     <p className="text-xs font-bold uppercase tracking-widest text-cyan-300">
-                      Sicherer Adminbereich
+                      Lokaler Adminbereich
                     </p>
                     <h2 className="text-xl font-black sm:text-3xl">Beitragsverwaltung</h2>
                   </div>
@@ -1536,10 +1510,10 @@ async function loadPosts() {
                     <div className="mb-6 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
                       <div>
                         <p className="text-sm text-zinc-400">
-                          Angemeldet als {session.user.email}
+                          Modus: {session.user.email}
                         </p>
                         <p className="mt-1 font-bold text-cyan-300">
-                          Adminrechte aktiv. Änderungen werden durch RLS geschützt.
+                          Lokaler Modus aktiv. Änderungen werden im Browser gespeichert.
                         </p>
                       </div>
                       <div className="flex flex-col gap-3 sm:flex-row">
@@ -1553,10 +1527,25 @@ async function loadPosts() {
                           <Plus className="h-5 w-5" /> Neuer Beitrag
                         </button>
                         <button
-                          onClick={logout}
+                          type="button"
+                          onClick={exportLocalData}
+                          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-cyan-400/30 px-5 py-3 font-bold text-cyan-300 transition hover:bg-cyan-400/10"
+                        >
+                          Export JSON
+                        </button>
+                        <button
+                          type="button"
+                          onClick={importLocalData}
+                          className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-5 py-3 font-bold transition hover:bg-white/10"
+                        >
+                          Import JSON
+                        </button>
+                        <button
+                          type="button"
+                          onClick={resetLocalData}
                           className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#050816] px-5 py-3 font-bold transition hover:bg-black"
                         >
-                          <LogOut className="h-5 w-5" /> Logout
+                          Zurücksetzen
                         </button>
                       </div>
                     </div>
