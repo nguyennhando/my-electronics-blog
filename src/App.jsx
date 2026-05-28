@@ -1,6 +1,3 @@
-import CookieBanner from "./components/CookieBanner";
-import Impressum from "./pages/Impressum";
-import Datenschutz from "./pages/Datenschutz";
 import React, { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -1198,21 +1195,8 @@ function HomePage({ posts, galleryImages, isAdmin, onOpenPost, onSavePost, onDel
 
       <footer className="border-t border-cyan-500/10 bg-black py-10 text-center text-zinc-400">
         <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-          <button
-  type="button"
-  onClick={() => setPage("impressum")}
-  className="transition hover:text-cyan-400"
->
-  Impressum
-</button>
-
-<button
-  type="button"
-  onClick={() => setPage("datenschutz")}
-  className="transition hover:text-cyan-400"
->
-  Datenschutz
-</button>
+          <a href="/my-electronics-blog/impressum" className="transition hover:text-cyan-400">Impressum</a>
+          <a href="/my-electronics-blog/datenschutz" className="transition hover:text-cyan-400">Datenschutz</a>
         </div>
         <p className="mt-4 text-xs text-zinc-500">© 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.</p>
       </footer>
@@ -1256,31 +1240,20 @@ function App() {
   );
   const [page, setPage] = useState("home"); // "home" | "post"
   if (page === "impressum") {
-  return <Impressum />;
+  return (
+    <ImpressumPage
+      onBack={() => setPage("home")}
+    />
+  );
 }
 
 if (page === "datenschutz") {
-  return <Datenschutz />;
-}
-
-return (
-  <>
-    <Background />
-
-    <SiteHeader
-      onAdminClick={() => setAdminVisible(true)}
-      adminUnlocked={adminUnlocked}
-      onNavigate={setPage}
-      currentPage={page}
+  return (
+    <DatenschutzPage
+      onBack={() => setPage("home")}
     />
-
-    <main>
-      ...
-    </main>
-
-    <CookieBanner />
-  </>
-);
+  );
+}
   const [currentPostId, setCurrentPostId] = useState(null);
 
   // ── Data state ──
