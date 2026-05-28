@@ -828,8 +828,8 @@ function Home({ adminVisible, setAdminVisible, adminUnlocked }) {
 
   // Static GitHub Pages mode:
   // - Public URL: no admin rights, no edit/delete buttons.
-  // - Admin URL (?admin=1): admin rights only after password prompt opens adminVisible.
-  const isAdmin = Boolean(isAdminRoute && adminVisible);
+  // - Admin URL (?admin=1): admin rights remain after password unlock, even when panel is closed.
+  const isAdmin = Boolean(isAdminRoute && adminUnlocked);
   const session = isAdmin ? { user: { email: "Static Local Admin" } } : null;
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
