@@ -1,9 +1,6 @@
 import React, { useEffect, useMemo, useState, useRef } from "react";
-import { Routes, Route, Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import CookieBanner from "./components/CookieBanner";
-import Impressum from "./pages/Impressum";
-import Datenschutz from "./pages/Datenschutz";
 import {
   CircuitBoard,
   Cpu,
@@ -20,11 +17,9 @@ import {
   Trash2,
   Edit3,
   Plus,
-  LogOut,
   ShieldCheck,
   Wrench,
   Mail,
-  Phone,
   MonitorSmartphone,
   Workflow,
   AlertTriangle,
@@ -32,7 +27,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Code2,
-  
 } from "lucide-react";
 
 const MAX_POST_GALLERY_IMAGES = 6;
@@ -69,7 +63,9 @@ function removeJsonStorage(key) {
 
 function getStoredPosts() {
   const storedPosts = readJsonStorage(STATIC_POSTS_STORAGE_KEY, null);
-  return Array.isArray(storedPosts) && storedPosts.length ? storedPosts : demoPosts;
+  return Array.isArray(storedPosts) && storedPosts.length
+    ? storedPosts
+    : demoPosts;
 }
 
 function getStoredProjectGalleryImages() {
@@ -81,7 +77,9 @@ function getStoredProjectGalleryImages() {
 
 function downloadJsonFile(filename, data) {
   if (typeof document === "undefined") return;
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json;charset=utf-8" });
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: "application/json;charset=utf-8",
+  });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
@@ -112,7 +110,6 @@ function normalizeImageList(value) {
 function uniqueImageUrls(urls) {
   return [...new Set((urls || []).filter(Boolean))];
 }
-
 
 function normalizeLocalImagePath(value) {
   const path = String(value || "").trim();
@@ -228,11 +225,15 @@ function getIcon(category) {
 
 function formatDate(date) {
   if (!date) return "Kein Datum";
+
+  const parsedDate = new Date(date);
+  if (Number.isNaN(parsedDate.getTime())) return "Ungültiges Datum";
+
   return new Intl.DateTimeFormat("de-DE", {
     day: "2-digit",
     month: "long",
     year: "numeric",
-  }).format(new Date(date));
+  }).format(parsedDate);
 }
 
 function normalizeProjectStatus(status) {
@@ -295,8 +296,12 @@ function GradientBorder({
   const innerFlex = stretch ? "flex-1" : "";
   return (
     <div className={`relative ${rounded} ${padding} ${outerFlex} ${className}`}>
-      <div className={`absolute inset-0 ${rounded} bg-gradient-to-r ${gradient} opacity-70`} />
-      <div className={`relative ${rounded} ${innerFlex} ${innerClassName}`}>{children}</div>
+      <div
+        className={`absolute inset-0 ${rounded} bg-gradient-to-r ${gradient} opacity-70`}
+      />
+      <div className={`relative ${rounded} ${innerFlex} ${innerClassName}`}>
+        {children}
+      </div>
     </div>
   );
 }
@@ -321,44 +326,41 @@ function Background() {
   );
 }
 
-
-function SiteHeader({ onAdminClick }) {
-  const navigate = useNavigate();
+function SiteHeader({ onAdminClick, showAdminEntry = false }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const showAdminEntry =
-  typeof window !== "undefined" &&
-  new URLSearchParams(window.location.search).get("admin") === "1";
-
   function scrollToSection(id) {
-  setMenuOpen(false);
-  document.getElementById(id)?.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
-}
+    setMenuOpen(false);
+    document.getElementById(id)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
 
   function goHome() {
     setMenuOpen(false);
-    navigate("/");
-    setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 80);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function openAdmin() {
-  const password = window.prompt("Admin Passwort");
+    const password = window.prompt("Admin Passwort");
 
-  if (password === "Nhan1986.,") {
-    setMenuOpen(false);
-    onAdminClick?.();
-  } else {
-    window.alert("Falsches Passwort");
+    if (password === "Nhan1986.,") {
+      setMenuOpen(false);
+      onAdminClick?.();
+    } else {
+      window.alert("Falsches Passwort");
+    }
   }
-}
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-5 sm:py-4">
-        <button type="button" onClick={goHome} className="flex items-center gap-3 text-left">
+        <button
+          type="button"
+          onClick={goHome}
+          className="flex items-center gap-3 text-left"
+        >
           <div className="flex h-12 w-12 overflow-hidden rounded-2xl sm:h-14 sm:w-14">
             <img
               src="/my-electronics-blog/images/logo.webp"
@@ -367,7 +369,9 @@ function SiteHeader({ onAdminClick }) {
             />
           </div>
           <div>
-            <h1 className="text-base font-black text-white sm:text-xl">Nguyen Nhan Do</h1>
+            <h1 className="text-base font-black text-white sm:text-xl">
+              Nguyen Nhan Do
+            </h1>
             <p className="max-w-[190px] text-[10px] leading-tight text-zinc-400 sm:max-w-none sm:text-xs">
               Technik • Entwicklung • Lernen
             </p>
@@ -382,33 +386,35 @@ function SiteHeader({ onAdminClick }) {
               onClick={() => scrollToSection(id)}
               className="text-sm text-zinc-300 transition hover:text-cyan-300 capitalize"
             >
-              {id === "projekte" ? "Galerie" : id.charAt(0).toUpperCase() + id.slice(1)}
+              {id === "projekte"
+                ? "Galerie"
+                : id.charAt(0).toUpperCase() + id.slice(1)}
             </button>
           ))}
           {showAdminEntry && (
-  <button
-    type="button"
-    onClick={openAdmin}
-    className="rounded-full border border-cyan-400/30 bg-cyan-400/5 px-5 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400/10 hover:border-cyan-400/60"
-  >
-    Admin
-  </button>
-)}
+            <button
+              type="button"
+              onClick={openAdmin}
+              className="rounded-full border border-cyan-400/30 bg-cyan-400/5 px-5 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400/10 hover:border-cyan-400/60"
+            >
+              Admin
+            </button>
+          )}
         </div>
 
         <button
-  type="button"
-  className="rounded-xl border border-white/10 p-2 text-white hover:bg-white/10 md:hidden"
-  onClick={() => setMenuOpen((v) => !v)}
-  aria-label="Menü öffnen"
->
-  {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-</button>
+          type="button"
+          className="rounded-xl border border-white/10 p-2 text-white hover:bg-white/10 md:hidden"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label="Menü öffnen"
+        >
+          {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
       </nav>
 
       {menuOpen && (
-  <div className="border-t border-white/10 bg-[#050816]/95 px-5 py-4 text-white md:hidden">
-    <div className="grid gap-2">
+        <div className="border-t border-white/10 bg-[#050816]/95 px-5 py-4 text-white md:hidden">
+          <div className="grid gap-2">
             {[
               ["blog", "Blog"],
               ["projekte", "Projekte"],
@@ -423,15 +429,15 @@ function SiteHeader({ onAdminClick }) {
                 {label}
               </button>
             ))}
-           {showAdminEntry && (
-  <button
-    type="button"
-    onClick={openAdmin}
-    className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300"
-  >
-    Admin
-  </button>
-)}
+            {showAdminEntry && (
+              <button
+                type="button"
+                onClick={openAdmin}
+                className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300"
+              >
+                Admin
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -458,7 +464,11 @@ const textContainerVariants = {
 
 const textItemVariants = {
   hidden: { opacity: 0, y: 22 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+  },
   exit: { opacity: 0, y: -14, transition: { duration: 0.25, ease: "easeIn" } },
 };
 
@@ -488,7 +498,6 @@ const glowVariants = {
 };
 
 function HeroSlideshow({ slides, onDiscover }) {
-  const navigate = useNavigate();
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const timerRef = useRef(null);
@@ -524,24 +533,26 @@ function HeroSlideshow({ slides, onDiscover }) {
     <section className="relative mx-auto grid max-w-7xl items-center gap-8 px-4 py-10 sm:px-5 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-24">
       {/* ── LEFT: Staggered text ── */}
       <div className="relative z-10">
-      
         <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-4 py-2 backdrop-blur-sm">
-  <CircuitBoard className="h-4 w-4 text-cyan-400" />
-  <span className="text-sm font-medium text-cyan-300">
-    Elektrokonstruktion · Prüftechnik · Software
-  </span>
-</div>
-      
+          <CircuitBoard className="h-4 w-4 text-cyan-400" />
+          <span className="text-sm font-medium text-cyan-300">
+            Elektrokonstruktion · Prüftechnik · Software
+          </span>
+        </div>
+
         {/* Static main headline */}
         <h2 className="max-w-4xl text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-        Technik. Dokumentation. Entwicklung.
+          Technik. Dokumentation. Entwicklung.
         </h2>
 
         {/* Static description */}
         <p className="mt-5 max-w-2xl text-[15px] leading-7 text-zinc-300 sm:mt-8 sm:text-lg sm:leading-9">
-        Diese Website habe ich selbst entwickelt, um technische Projekte, Lernfortschritte und praktische Erfahrungen 
-        im Bereich Elektronik, Embedded Systems, Messtechnik und technischer Softwareentwicklung zu dokumentieren.
-        Zudem erweitere ich mein Wissen kontinuierlich durch praktische Projekte, eigene Entwicklungen und technisches Selbststudium.
+          Diese Website habe ich selbst entwickelt, um technische Projekte,
+          Lernfortschritte und praktische Erfahrungen im Bereich Elektronik,
+          Embedded Systems, Messtechnik und technischer Softwareentwicklung zu
+          dokumentieren. Zudem erweitere ich mein Wissen kontinuierlich durch
+          praktische Projekte, eigene Entwicklungen und technisches
+          Selbststudium.
         </p>
 
         {/* CTA buttons */}
@@ -557,23 +568,23 @@ function HeroSlideshow({ slides, onDiscover }) {
 
         <div className="mt-8 flex flex-wrap gap-4">
           <a
-  href="https://drive.google.com/drive/folders/1y6MZUhoZJCIou-SL9BHbkA-CjpXxKGz5?usp=sharing"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="inline-flex items-center gap-3 rounded-2xl border border-zinc-600/40 bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 px-6 py-4 font-bold text-zinc-100 shadow-xl shadow-black/40 transition duration-300 hover:border-zinc-400/50 hover:from-zinc-600 hover:via-zinc-700 hover:to-zinc-900 hover:shadow-2xl hover:shadow-black/50"
->
-  <ExternalLink className="h-5 w-5" />
-  Open Docs.
-</a>
+            href="https://drive.google.com/drive/folders/1y6MZUhoZJCIou-SL9BHbkA-CjpXxKGz5?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 rounded-2xl border border-zinc-600/40 bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 px-6 py-4 font-bold text-zinc-100 shadow-xl shadow-black/40 transition duration-300 hover:border-zinc-400/50 hover:from-zinc-600 hover:via-zinc-700 hover:to-zinc-900 hover:shadow-2xl hover:shadow-black/50"
+          >
+            <ExternalLink className="h-5 w-5" />
+            Open Docs.
+          </a>
           <a
-  href="https://github.com/nguyennhando?tab=repositories"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-6 py-4 font-bold text-black shadow-xl shadow-orange-500/30 transition hover:from-orange-400 hover:to-amber-300"
->
-  <Code2 className="h-5 w-5" />
-  Source Code
-</a>
+            href="https://github.com/nguyennhando?tab=repositories"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-6 py-4 font-bold text-black shadow-xl shadow-orange-500/30 transition hover:from-orange-400 hover:to-amber-300"
+          >
+            <Code2 className="h-5 w-5" />
+            Source Code
+          </a>
         </div>
       </div>
 
@@ -589,27 +600,28 @@ function HeroSlideshow({ slides, onDiscover }) {
 
         {/* Card wrapper with gradient border */}
         <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] lg:max-w-none shadow-2xl shadow-cyan-500/10">
-        
-          
-        <div className="relative overflow-hidden rounded-[1.95rem] bg-[#080d1f]" style={{ height: "720px" }}>
+          <div
+            className="relative overflow-hidden rounded-[1.95rem] bg-[#080d1f]"
+            style={{ height: "720px" }}
+          >
             <AnimatePresence mode="wait">
               <motion.div
-  key={current}
-  variants={cardVariants}
-  initial="hidden"
-  animate="visible"
-  exit="exit"
-  whileHover={{ scale: 1.015 }}
-  onClick={() =>
-  document.getElementById("blog")?.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  })
-}
-  onMouseEnter={() => clearInterval(timerRef.current)}
-  onMouseLeave={startTimer}
-  className="flex flex-col h-full cursor-pointer"
->
+                key={current}
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                whileHover={{ scale: 1.015 }}
+                onClick={() =>
+                  document.getElementById("blog")?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  })
+                }
+                onMouseEnter={() => clearInterval(timerRef.current)}
+                onMouseLeave={startTimer}
+                className="flex flex-col h-full cursor-pointer"
+              >
                 {/* Image */}
                 <div className="relative h-[360px] lg:h-[420px] shrink-0 overflow-hidden">
                   <motion.img
@@ -661,7 +673,10 @@ function HeroSlideshow({ slides, onDiscover }) {
                     </motion.p>
 
                     {/* Tags row */}
-                    <motion.div variants={textItemVariants} className="mt-4 flex flex-wrap gap-2">
+                    <motion.div
+                      variants={textItemVariants}
+                      className="mt-4 flex flex-wrap gap-2"
+                    >
                       {(slide.tags || []).slice(0, 3).map((tag) => (
                         <span
                           key={tag}
@@ -672,11 +687,11 @@ function HeroSlideshow({ slides, onDiscover }) {
                       ))}
                     </motion.div>
                     <motion.div
-  variants={textItemVariants}
-  className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-cyan-300"
->
-  Projekt öffnen <ArrowRight className="h-4 w-4" />
-</motion.div>
+                      variants={textItemVariants}
+                      className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-cyan-300"
+                    >
+                      Projekt öffnen <ArrowRight className="h-4 w-4" />
+                    </motion.div>
                   </motion.div>
                 </AnimatePresence>
               </motion.div>
@@ -698,7 +713,10 @@ function HeroSlideshow({ slides, onDiscover }) {
                       className="absolute inset-y-0 left-0 rounded-full bg-cyan-400"
                       initial={{ width: "0%" }}
                       animate={{ width: "100%" }}
-                      transition={{ duration: SLIDE_INTERVAL / 1000, ease: "linear" }}
+                      transition={{
+                        duration: SLIDE_INTERVAL / 1000,
+                        ease: "linear",
+                      }}
                     />
                   )}
                   {idx < current && (
@@ -721,7 +739,8 @@ function HeroSlideshow({ slides, onDiscover }) {
             <ChevronLeft className="h-5 w-5" />
           </button>
           <span className="flex items-center gap-1 text-xs text-zinc-600">
-            <span className="font-bold text-zinc-400">{current + 1}</span>/{slides.length}
+            <span className="font-bold text-zinc-400">{current + 1}</span>/
+            {slides.length}
           </span>
           <button
             type="button"
@@ -737,178 +756,119 @@ function HeroSlideshow({ slides, onDiscover }) {
   );
 }
 
-/* ══════════════════════════════════════════════
-   BLOG POST PAGE
-══════════════════════════════════════════════ */
-function BlogPostPage() {
-  const { id } = useParams();
-  const [post, setPost] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [lightboxIndex, setLightboxIndex] = useState(null);
+function PostDetailModal({ post, onClose, onOpenImage }) {
+  if (!post) return null;
 
-  useEffect(() => {
-    async function loadPost() {
-      setLoading(true);
-      const allPosts = getStoredPosts();
-      const foundPost = allPosts.find((item) => String(item.id) === String(id));
-      setPost(foundPost || null);
-      setLoading(false);
-    }
-    loadPost();
-  }, [id]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#050816] px-4 pb-20 pt-[140px] text-center text-zinc-300">
-        <Background />
-        Beitrag wird geladen...
-      </div>
-    );
-  }
-
-  if (!post) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#050816] px-6 text-white">
-        <Background />
-        <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-3xl">
-          <div className="rounded-3xl bg-[#07111f] p-10 text-center backdrop-blur-xl">
-            <h1 className="text-3xl font-black">Beitrag nicht gefunden</h1>
-            <Link
-              to="/"
-              className="mt-6 inline-flex rounded-2xl bg-cyan-400 px-6 py-3 font-bold text-black"
-            >
-              Zurück zur Startseite
-            </Link>
-          </div>
-        </GradientBorder>
-      </div>
-    );
-  }
-
-  const postImages = uniqueImageUrls([post.image_url, ...normalizeImageList(post.image_gallery)]);
-  const activeLightboxImage = lightboxIndex !== null ? postImages[lightboxIndex] : null;
+  const Icon = getIcon(post.category);
+  const galleryImages = normalizeImageList(post.image_gallery);
+  const tags = Array.isArray(post.tags) ? post.tags : [];
+  const isConcept = isIdeaPost(post);
 
   return (
-    <div className="min-h-screen bg-[#050816] px-4 pb-10 pt-[120px] text-white sm:px-6 sm:pb-20 sm:pt-[140px]">
-      <Background />
-      <div className="mx-auto max-w-5xl">
-        {activeLightboxImage && (
-          <div
-            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-md px-4"
-            onClick={() => setLightboxIndex(null)}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.88 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.25 }}
-              className="relative max-h-[90vh] max-w-5xl w-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <img
-                src={activeLightboxImage}
-                alt={post.title}
-                className="w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl"
-              />
-              {postImages.length > 1 && (
-                <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setLightboxIndex((prev) => (prev - 1 + postImages.length) % postImages.length)}
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"
-                  >
-                    <ChevronLeft className="h-5 w-5" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setLightboxIndex((prev) => (prev + 1) % postImages.length)}
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"
-                  >
-                    <ChevronRight className="h-5 w-5" />
-                  </button>
-                </div>
-              )}
-              <button
-                onClick={() => setLightboxIndex(null)}
-                className="absolute -top-4 -right-4 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400 text-black shadow-xl shadow-cyan-500/40 hover:bg-cyan-300 transition"
-              >
-                <X className="h-5 w-5 stroke-[3]" />
-              </button>
-            </motion.div>
-          </div>
-        )}
-
-        <GradientBorder
-          gradient="from-cyan-400 via-cyan-500 to-cyan-400"
-          rounded="rounded-[2rem]"
-          innerClassName="overflow-hidden rounded-[2rem] bg-[#07111f] backdrop-blur-xl"
-        >
+    <div
+      className="fixed inset-0 z-[190] overflow-y-auto bg-black/80 px-4 py-6 backdrop-blur-md sm:px-5 sm:py-10"
+      onClick={onClose}
+    >
+      <motion.article
+        initial={{ opacity: 0, y: 24, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.25 }}
+        className="mx-auto max-w-5xl overflow-hidden rounded-[2rem] border border-cyan-400/20 bg-[#07111f] shadow-2xl shadow-cyan-500/20"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="relative h-64 overflow-hidden sm:h-96">
           <img
             src={post.image_url}
             alt={post.title}
-            onClick={() => setLightboxIndex(0)}
-            className="h-72 w-full object-cover sm:h-[420px] cursor-zoom-in transition duration-300 hover:brightness-110"
+            className={`h-full w-full object-cover ${isConcept ? "grayscale opacity-80" : ""}`}
           />
-          {postImages.length > 1 && (
-            <div className="grid grid-cols-2 gap-3 border-b border-white/10 p-4 sm:grid-cols-4">
-              {postImages.slice(1, MAX_POST_GALLERY_IMAGES + 1).map((url, index) => (
-                <button
-                  key={url}
-                  type="button"
-                  onClick={() => setLightboxIndex(index + 1)}
-                  className="overflow-hidden rounded-2xl border border-white/10"
-                >
-                  <img
-                    src={url}
-                    alt={`${post.title} ${index + 2}`}
-                    className="h-28 w-full cursor-zoom-in object-cover transition duration-300 hover:scale-105 hover:brightness-110"
-                  />
-                </button>
-              ))}
-            </div>
-          )}
-          <div className="p-6 sm:p-10">
-            <div className="mb-5 flex flex-wrap gap-3 text-sm text-zinc-400">
-              <span className="rounded-full bg-cyan-400 px-4 py-2 font-bold text-black">
-                {post.category}
-              </span>
-              <span>{formatDate(post.created_at)}</span>
-              {post.read_time && <span>{post.read_time}</span>}
-            </div>
-            <h1 className="text-3xl font-black leading-tight sm:text-5xl">{post.title}</h1>
-            <p className="mt-8 whitespace-pre-line text-base leading-8 text-zinc-300 sm:text-lg sm:leading-9">
-              {post.content}
-            </p>
-            <div className="mt-10 flex flex-wrap gap-3">
-              {(post.tags || []).map((tag) => (
+          <div className="absolute inset-0 bg-gradient-to-t from-[#07111f] via-[#07111f]/20 to-transparent" />
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur transition hover:bg-black/80"
+            aria-label="Beitrag schließen"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="p-5 sm:p-8">
+          <div className="mb-5 flex flex-wrap items-center gap-3 text-xs text-zinc-300">
+            <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">
+              <Icon className="h-3.5 w-3.5" /> {post.category}
+            </span>
+            <span
+              className={`rounded-full border px-3 py-1 font-bold ${getProjectStatusClasses(post.project_status)}`}
+            >
+              {getProjectStatusLabel(post.project_status)}
+            </span>
+            <span className="inline-flex items-center gap-1">
+              <CalendarDays className="h-3.5 w-3.5" />{" "}
+              {formatDate(post.created_at)}
+            </span>
+            <span>{post.read_time || "5 Min."}</span>
+          </div>
+
+          <h2 className="text-2xl font-black leading-tight text-white sm:text-4xl">
+            {post.title}
+          </h2>
+
+          <p className="mt-5 text-base font-semibold leading-8 text-cyan-100">
+            {post.excerpt}
+          </p>
+
+          <div className="mt-6 whitespace-pre-line text-sm leading-7 text-zinc-300 sm:text-base sm:leading-8">
+            {post.content}
+          </div>
+
+          {!!tags.length && (
+            <div className="mt-7 flex flex-wrap gap-2">
+              {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-sm text-cyan-300"
+                  className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-400"
                 >
                   #{tag}
                 </span>
               ))}
             </div>
-            {post.external_link && (
-              <div className="mt-8">
-                <a
-                  href={post.external_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-2xl border border-cyan-400/40 bg-cyan-400/10 px-6 py-4 font-bold text-cyan-300 transition hover:bg-cyan-400/20 hover:border-cyan-400/70"
+          )}
+
+          {!!galleryImages.length && (
+            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+              {galleryImages.map((url) => (
+                <button
+                  key={url}
+                  type="button"
+                  onClick={() =>
+                    onOpenImage({ image_url: url, title: post.title })
+                  }
+                  className="overflow-hidden rounded-2xl border border-white/10"
                 >
-                  <ExternalLink className="h-5 w-5" /> Zum Projekt
-                </a>
-              </div>
-            )}
-            <Link
-              to="/"
-              className="mt-6 inline-flex rounded-2xl bg-cyan-400 px-6 py-4 font-bold text-black transition hover:bg-cyan-300"
+                  <img
+                    src={url}
+                    alt={post.title}
+                    className="h-40 w-full object-cover transition duration-500 hover:scale-105"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+
+          {post.external_link && !isConcept && (
+            <a
+              href={post.external_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 inline-flex items-center gap-2 rounded-2xl bg-cyan-400 px-6 py-3 font-black text-black transition hover:bg-cyan-300"
             >
-              ← Zurück zur Startseite
-            </Link>
-          </div>
-        </GradientBorder>
-      </div>
+              Zum Projekt <ExternalLink className="h-5 w-5" />
+            </a>
+          )}
+        </div>
+      </motion.article>
     </div>
   );
 }
@@ -923,18 +883,18 @@ function AboutWideCard() {
       >
         <div className="grid items-stretch gap-6 p-4 sm:p-6 lg:grid-cols-2 lg:gap-8">
           <div className="grid min-h-full gap-4 lg:grid-rows-2">
-  <img
-    src="/my-electronics-blog/images/about-1.webp"
-    alt="Nguyen Nhan Do Technik"
-    className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]"
-  />
+            <img
+              src="/my-electronics-blog/images/about-1.webp"
+              alt="Nguyen Nhan Do Technik"
+              className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]"
+            />
 
-  <img
-    src="/my-electronics-blog/images/about-2.webp"
-    alt="Elektronik und Entwicklung"
-    className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]"
-  />
-</div>
+            <img
+              src="/my-electronics-blog/images/about-2.webp"
+              alt="Elektronik und Entwicklung"
+              className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]"
+            />
+          </div>
 
           <div className="flex flex-col justify-center">
             <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">
@@ -942,46 +902,56 @@ function AboutWideCard() {
             </p>
 
             <h2 className="mt-3 text-2xl font-black leading-tight sm:text-4xl">
-              Nguyen Nhan Do – Technik lernen. Erfahrung sammeln. Mich weiterentwickeln.
+              Nguyen Nhan Do – Technik lernen. Erfahrung sammeln. Mich
+              weiterentwickeln.
             </h2>
 
             <div className="mt-5 text-sm leading-7 text-zinc-300 sm:text-base sm:leading-8">
               <p>
-                Ich bin 2013 nach Deutschland gekommen – nicht, weil mein Leben in Vietnam schlecht war,
-                sondern weil ich wissen wollte, wie weit ich mich persönlich und beruflich entwickeln kann,
-                wenn ich meine Komfortzone verlasse und in einem völlig neuen Umfeld neu anfange.
+                Ich bin 2013 nach Deutschland gekommen – nicht, weil mein Leben
+                in Vietnam schlecht war, sondern weil ich wissen wollte, wie
+                weit ich mich persönlich und beruflich entwickeln kann, wenn ich
+                meine Komfortzone verlasse und in einem völlig neuen Umfeld neu
+                anfange.
               </p>
 
               <p className="mt-4">
-                Die ersten Jahre in Deutschland waren für mich vor allem eine Zeit des Ankommens, Lernens
-                und Anpassens. Neben den Sprachkursen habe ich in verschiedenen Bereichen gearbeitet –
-                unter anderem in der Gastronomie, im Management und später auch in der Selbstständigkeit.
+                Die ersten Jahre in Deutschland waren für mich vor allem eine
+                Zeit des Ankommens, Lernens und Anpassens. Neben den
+                Sprachkursen habe ich in verschiedenen Bereichen gearbeitet –
+                unter anderem in der Gastronomie, im Management und später auch
+                in der Selbstständigkeit.
               </p>
 
               <p className="mt-4">
-                Nach mehreren Jahren unterschiedlicher beruflicher Erfahrungen habe ich mich bewusst
-                entschieden, wieder stärker in die technische Richtung zurückzugehen und mich langfristig im
-                Bereich Elektronik, Messtechnik und Automatisierung weiterzuentwickeln.
+                Nach mehreren Jahren unterschiedlicher beruflicher Erfahrungen
+                habe ich mich bewusst entschieden, wieder stärker in die
+                technische Richtung zurückzugehen und mich langfristig im
+                Bereich Elektronik, Messtechnik und Automatisierung
+                weiterzuentwickeln.
               </p>
 
               <p className="mt-4">
-                In den letzten Jahren konnte ich praktische Erfahrungen in der Kalibrierung, Fehlersuche,
-                Prüfung und Entwicklung elektronischer Systeme sammeln und gleichzeitig mein technisches
+                In den letzten Jahren konnte ich praktische Erfahrungen in der
+                Kalibrierung, Fehlersuche, Prüfung und Entwicklung
+                elektronischer Systeme sammeln und gleichzeitig mein technisches
                 Wissen kontinuierlich erweitern.
               </p>
 
               <p className="mt-4">
-                Deshalb habe ich zusätzliche Weiterbildungen in SPS-Programmierung, C++/Qt, AutoCAD und
-                EPLAN absolviert, um mein Wissen gezielt auszubauen und neue technische Bereiche besser zu
-                verstehen.
+                Deshalb habe ich zusätzliche Weiterbildungen in
+                SPS-Programmierung, C++/Qt, AutoCAD und EPLAN absolviert, um
+                mein Wissen gezielt auszubauen und neue technische Bereiche
+                besser zu verstehen.
               </p>
 
               <p className="mt-4">
-                Dieser Blog ist kein Ort für Motivationstexte oder perfekte Erfolgsgeschichten. Ich möchte
-                hier ehrlich über meinen Weg sprechen – über das Leben und Arbeiten in Deutschland,
-                technische Themen, persönliche Erfahrungen, Herausforderungen und Entwicklung.
+                Dieser Blog ist kein Ort für Motivationstexte oder perfekte
+                Erfolgsgeschichten. Ich möchte hier ehrlich über meinen Weg
+                sprechen – über das Leben und Arbeiten in Deutschland,
+                technische Themen, persönliche Erfahrungen, Herausforderungen
+                und Entwicklung.
               </p>
-              
             </div>
           </div>
         </div>
@@ -992,20 +962,16 @@ function AboutWideCard() {
 /* ══════════════════════════════════════════════
    HOME PAGE
 ══════════════════════════════════════════════ */
-function Home({ adminVisible, setAdminVisible }) {
-  const isAdminRoute =
-  typeof window !== "undefined" &&
-  new URLSearchParams(window.location.search).get("admin") === "1";
+function Home({ adminVisible, setAdminVisible, isAdminRoute }) {
+  const PUBLIC_DEPLOY = !isAdminRoute;
 
-const PUBLIC_DEPLOY = !isAdminRoute;
-  const navigate = useNavigate();
-  const location = useLocation();
   const [session] = useState({ user: { email: "Static Local Admin" } });
   const [isAdmin] = useState(true);
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [posts, setPosts] = useState(demoPosts);
   const [selectedPost, setSelectedPost] = useState(demoPosts[0]);
+  const [activePost, setActivePost] = useState(null);
   const [blogImageLightbox, setBlogImageLightbox] = useState(null);
   const [projectGalleryLightbox, setProjectGalleryLightbox] = useState(null);
   const [projectGalleryImages, setProjectGalleryImages] = useState([]);
@@ -1020,58 +986,64 @@ const PUBLIC_DEPLOY = !isAdminRoute;
 
   // Build hero slides from posts
   const heroSlides = useMemo(
-  () =>
-    [...posts]
-      .sort((a, b) => {
-        const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
-        const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
+    () =>
+      [...posts]
+        .sort((a, b) => {
+          const orderA = Number.isFinite(Number(a.sort_order))
+            ? Number(a.sort_order)
+            : 100;
+          const orderB = Number.isFinite(Number(b.sort_order))
+            ? Number(b.sort_order)
+            : 100;
 
-        if (orderA !== orderB) return orderA - orderB;
+          if (orderA !== orderB) return orderA - orderB;
 
-        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-      })
-      .slice(0, 3)
-      .map((p) => ({
-  id: p.id,
-  image: p.image_url,
-        category: p.category,
-        readTime: p.read_time || "5 Min.",
-        title: p.title,
-        text: p.excerpt,
-        tags: Array.isArray(p.tags) ? p.tags : [],
-      })),
-    [posts]
+          return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+        })
+        .slice(0, 3)
+        .map((p) => ({
+          id: p.id,
+          image: p.image_url,
+          category: p.category,
+          readTime: p.read_time || "5 Min.",
+          title: p.title,
+          text: p.excerpt,
+          tags: Array.isArray(p.tags) ? p.tags : [],
+        })),
+    [posts],
   );
 
- function scrollToSection(id) {
-  document.getElementById(id)?.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
-}
-
+  function scrollToSection(id) {
+    document.getElementById(id)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
 
   useEffect(() => {
-  loadPosts();
-  loadProjectGalleryImages();
-}, []);
+    loadPosts();
+    loadProjectGalleryImages();
+  }, []);
 
-
-async function loadPosts() {
-  const nextPosts = getStoredPosts();
-  setPosts(nextPosts);
-  setSelectedPost(nextPosts[0] || null);
-}
+  async function loadPosts() {
+    const nextPosts = getStoredPosts();
+    setPosts(nextPosts);
+    setSelectedPost(nextPosts[0] || null);
+  }
 
   async function login(e) {
     e.preventDefault();
     setLoginEmail("");
     setLoginPassword("");
-    setMessage("GitHub Pages läuft statisch. Der Admin speichert jetzt lokal im Browser.");
+    setMessage(
+      "GitHub Pages läuft statisch. Der Admin speichert jetzt lokal im Browser.",
+    );
   }
 
   async function logout() {
-    setMessage("GitHub Pages läuft statisch. Es gibt keinen Supabase-Login mehr; lokale Daten bleiben im Browser gespeichert.");
+    setMessage(
+      "GitHub Pages läuft statisch. Es gibt keinen Supabase-Login mehr; lokale Daten bleiben im Browser gespeichert.",
+    );
   }
 
   async function loadProjectGalleryImages() {
@@ -1080,19 +1052,27 @@ async function loadPosts() {
 
   async function uploadProjectGalleryImages() {
     if (!isAdmin) {
-      setMessage("Keine Berechtigung. Nur Admins dürfen Galerie-Bilder speichern.");
+      setMessage(
+        "Keine Berechtigung. Nur Admins dürfen Galerie-Bilder speichern.",
+      );
       return;
     }
 
     const input = window.prompt(
-      "Bildpfad einfügen, z.B. /my-electronics-blog/images/posts/projekt.webp oder mehrere Pfade zeilenweise:"
+      "Bildpfad einfügen, z.B. /my-electronics-blog/images/posts/projekt.webp oder mehrere Pfade zeilenweise:",
     );
-    const imagePaths = normalizeImageList(input).map(normalizeLocalImagePath).filter(Boolean);
+    const imagePaths = normalizeImageList(input)
+      .map(normalizeLocalImagePath)
+      .filter(Boolean);
     if (!imagePaths.length) return;
 
-    const customGalleryCount = projectGalleryImages.filter((image) => image && typeof image === "object" && image.id).length;
+    const customGalleryCount = projectGalleryImages.filter(
+      (image) => image && typeof image === "object" && image.id,
+    ).length;
     if (customGalleryCount + imagePaths.length > MAX_PROJECT_GALLERY_IMAGES) {
-      setMessage(`Zu viele Galerie-Bilder. Maximal ${MAX_PROJECT_GALLERY_IMAGES} Bilder erlaubt.`);
+      setMessage(
+        `Zu viele Galerie-Bilder. Maximal ${MAX_PROJECT_GALLERY_IMAGES} Bilder erlaubt.`,
+      );
       return;
     }
 
@@ -1109,7 +1089,9 @@ async function loadPosts() {
       writeJsonStorage(STATIC_GALLERY_STORAGE_KEY, nextImages);
       return nextImages;
     });
-    setMessage("Galerie-Bildpfade wurden lokal im Browser gespeichert. Export JSON nutzen, wenn Sie ein Backup wollen.");
+    setMessage(
+      "Galerie-Bildpfade wurden lokal im Browser gespeichert. Export JSON nutzen, wenn Sie ein Backup wollen.",
+    );
   }
 
   async function deleteProjectGalleryImage(image) {
@@ -1118,7 +1100,9 @@ async function loadPosts() {
     if (!confirmed) return;
 
     setProjectGalleryImages((prev) => {
-      const nextImages = prev.filter((item) => !(item && typeof item === "object" && item.id === image.id));
+      const nextImages = prev.filter(
+        (item) => !(item && typeof item === "object" && item.id === image.id),
+      );
       writeJsonStorage(STATIC_GALLERY_STORAGE_KEY, nextImages);
       return nextImages;
     });
@@ -1129,7 +1113,7 @@ async function loadPosts() {
     if (!isAdmin || !image?.id) return;
     const input = window.prompt(
       "Neuen Bildpfad einfügen:",
-      image.image_url || "/my-electronics-blog/images/posts/"
+      image.image_url || "/my-electronics-blog/images/posts/",
     );
     const newUrl = normalizeLocalImagePath(input);
     if (!newUrl) return;
@@ -1138,7 +1122,7 @@ async function loadPosts() {
       const nextImages = prev.map((item) =>
         item && typeof item === "object" && item.id === image.id
           ? { ...item, image_url: newUrl }
-          : item
+          : item,
       );
       writeJsonStorage(STATIC_GALLERY_STORAGE_KEY, nextImages);
       return nextImages;
@@ -1152,9 +1136,13 @@ async function loadPosts() {
   }
 
   function uploadPostGalleryImages(value) {
-    const imagePaths = normalizeImageList(value).map(normalizeLocalImagePath).filter(Boolean);
+    const imagePaths = normalizeImageList(value)
+      .map(normalizeLocalImagePath)
+      .filter(Boolean);
     if (imagePaths.length > MAX_POST_GALLERY_IMAGES) {
-      setMessage(`Zu viele Bilder im Beitrag. Maximal ${MAX_POST_GALLERY_IMAGES} Zusatzbilder erlaubt.`);
+      setMessage(
+        `Zu viele Bilder im Beitrag. Maximal ${MAX_POST_GALLERY_IMAGES} Zusatzbilder erlaubt.`,
+      );
       return;
     }
 
@@ -1167,7 +1155,9 @@ async function loadPosts() {
   function removePostGalleryImage(url) {
     setEditingPost((prev) => ({
       ...prev,
-      image_gallery: normalizeImageList(prev.image_gallery).filter((item) => item !== url),
+      image_gallery: normalizeImageList(prev.image_gallery).filter(
+        (item) => item !== url,
+      ),
     }));
     setMessage("Bild aus dem Beitrag entfernt.");
   }
@@ -1179,11 +1169,17 @@ async function loadPosts() {
       return;
     }
     const payload = {
-      id: editingMode && editingPost.id ? editingPost.id : `local-post-${Date.now()}`,
+      id:
+        editingMode && editingPost.id
+          ? editingPost.id
+          : `local-post-${Date.now()}`,
       title: editingPost.title.trim(),
       category: editingPost.category,
       image_url: editingPost.image_url.trim(),
-      image_gallery: normalizeImageList(editingPost.image_gallery).slice(0, MAX_POST_GALLERY_IMAGES),
+      image_gallery: normalizeImageList(editingPost.image_gallery).slice(
+        0,
+        MAX_POST_GALLERY_IMAGES,
+      ),
       excerpt: editingPost.excerpt.trim(),
       content: editingPost.content.trim(),
       tags:
@@ -1198,7 +1194,9 @@ async function loadPosts() {
       created_at: editingPost.created_at || new Date().toISOString(),
       external_link: editingPost.external_link?.trim() || null,
       project_status: normalizeProjectStatus(editingPost.project_status),
-      sort_order: Number.isFinite(Number(editingPost.sort_order)) ? Number(editingPost.sort_order) : 100,
+      sort_order: Number.isFinite(Number(editingPost.sort_order))
+        ? Number(editingPost.sort_order)
+        : 100,
     };
     if (!payload.title || !payload.excerpt || !payload.content) {
       setMessage("Titel, Kurzbeschreibung und Inhalt sind Pflichtfelder.");
@@ -1207,13 +1205,17 @@ async function loadPosts() {
 
     setPosts((prev) => {
       const nextPosts = editingMode
-        ? prev.map((post) => (String(post.id) === String(payload.id) ? payload : post))
+        ? prev.map((post) =>
+            String(post.id) === String(payload.id) ? payload : post,
+          )
         : [payload, ...prev];
       writeJsonStorage(STATIC_POSTS_STORAGE_KEY, nextPosts);
       return nextPosts;
     });
     setSelectedPost(payload);
-    setMessage("Beitrag wurde lokal im Browser gespeichert. Export JSON nutzen, wenn Sie ein Backup wollen.");
+    setMessage(
+      "Beitrag wurde lokal im Browser gespeichert. Export JSON nutzen, wenn Sie ein Backup wollen.",
+    );
     setEditingPost(createEmptyPost());
     setEditingMode(false);
   }
@@ -1227,7 +1229,9 @@ async function loadPosts() {
       external_link: post.external_link || "",
       image_gallery: normalizeImageList(post.image_gallery),
       project_status: normalizeProjectStatus(post.project_status),
-      sort_order: Number.isFinite(Number(post.sort_order)) ? post.sort_order : 100,
+      sort_order: Number.isFinite(Number(post.sort_order))
+        ? post.sort_order
+        : 100,
     });
   }
 
@@ -1248,52 +1252,65 @@ async function loadPosts() {
     setMessage("Beitrag wurde lokal im Browser gelöscht.");
   }
 
-function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
-  if (!isAdmin) {
-    setMessage("Keine Berechtigung. Nur Admins dürfen die Reihenfolge ändern.");
-    return;
-  }
+  function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
+    if (!isAdmin) {
+      setMessage(
+        "Keine Berechtigung. Nur Admins dürfen die Reihenfolge ändern.",
+      );
+      return;
+    }
 
-  const orderedVisible = [...visiblePosts].sort((a, b) => {
-    const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
-    const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
+    const orderedVisible = [...visiblePosts].sort((a, b) => {
+      const orderA = Number.isFinite(Number(a.sort_order))
+        ? Number(a.sort_order)
+        : 100;
+      const orderB = Number.isFinite(Number(b.sort_order))
+        ? Number(b.sort_order)
+        : 100;
 
-    if (orderA !== orderB) return orderA - orderB;
-    return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-  });
+      if (orderA !== orderB) return orderA - orderB;
+      return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+    });
 
-  const currentIndex = orderedVisible.findIndex(
-    (post) => String(post.id) === String(postId)
-  );
-
-  const targetIndex = currentIndex + direction;
-
-  if (currentIndex < 0 || targetIndex < 0 || targetIndex >= orderedVisible.length) {
-    setMessage("Diese Karte kann nicht weiter verschoben werden.");
-    return;
-  }
-
-  const reorderedVisible = [...orderedVisible];
-  const [movedPost] = reorderedVisible.splice(currentIndex, 1);
-  reorderedVisible.splice(targetIndex, 0, movedPost);
-
-  const orderMap = new Map(
-    reorderedVisible.map((post, index) => [String(post.id), (index + 1) * 10])
-  );
-
-  setPosts((prev) => {
-    const nextPosts = prev.map((post) =>
-      orderMap.has(String(post.id))
-        ? { ...post, sort_order: orderMap.get(String(post.id)) }
-        : post
+    const currentIndex = orderedVisible.findIndex(
+      (post) => String(post.id) === String(postId),
     );
 
-    writeJsonStorage(STATIC_POSTS_STORAGE_KEY, nextPosts);
-    return nextPosts;
-  });
+    const targetIndex = currentIndex + direction;
 
-  setMessage("Reihenfolge wurde lokal im Browser gespeichert.");
-}
+    if (
+      currentIndex < 0 ||
+      targetIndex < 0 ||
+      targetIndex >= orderedVisible.length
+    ) {
+      setMessage("Diese Karte kann nicht weiter verschoben werden.");
+      return;
+    }
+
+    const reorderedVisible = [...orderedVisible];
+    const [movedPost] = reorderedVisible.splice(currentIndex, 1);
+    reorderedVisible.splice(targetIndex, 0, movedPost);
+
+    const orderMap = new Map(
+      reorderedVisible.map((post, index) => [
+        String(post.id),
+        (index + 1) * 10,
+      ]),
+    );
+
+    setPosts((prev) => {
+      const nextPosts = prev.map((post) =>
+        orderMap.has(String(post.id))
+          ? { ...post, sort_order: orderMap.get(String(post.id)) }
+          : post,
+      );
+
+      writeJsonStorage(STATIC_POSTS_STORAGE_KEY, nextPosts);
+      return nextPosts;
+    });
+
+    setMessage("Reihenfolge wurde lokal im Browser gespeichert.");
+  }
   function exportLocalData() {
     downloadJsonFile("my-electronics-blog-local-data.json", {
       posts,
@@ -1305,7 +1322,7 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
 
   function importLocalData() {
     const raw = window.prompt(
-      "JSON-Backup hier einfügen. Erwartetes Format: { posts: [...], projectGalleryImages: [...] }"
+      "JSON-Backup hier einfügen. Erwartetes Format: { posts: [...], projectGalleryImages: [...] }",
     );
     if (!raw) return;
     try {
@@ -1331,7 +1348,7 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
 
   function resetLocalData() {
     const confirmed = window.confirm(
-      "Lokale Admin-Daten wirklich zurücksetzen? Danach werden wieder die Beiträge aus dem Code angezeigt."
+      "Lokale Admin-Daten wirklich zurücksetzen? Danach werden wieder die Beiträge aus dem Code angezeigt.",
     );
     if (!confirmed) return;
     removeJsonStorage(STATIC_POSTS_STORAGE_KEY);
@@ -1347,33 +1364,36 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
   const categories = ["Alle", ...new Set(posts.map((post) => post.category))];
 
   const filteredPosts = useMemo(() => {
-  const q = search.toLowerCase();
+    const q = search.toLowerCase();
 
-  return posts
-    .filter((post) => {
-      const categoryMatch = category === "Alle" || post.category === category;
-      const tags = Array.isArray(post.tags) ? post.tags : [];
+    return posts
+      .filter((post) => {
+        const categoryMatch = category === "Alle" || post.category === category;
+        const tags = Array.isArray(post.tags) ? post.tags : [];
 
-      const searchMatch =
-        post.title.toLowerCase().includes(q) ||
-        post.excerpt.toLowerCase().includes(q) ||
-        post.content.toLowerCase().includes(q) ||
-        tags.some((tag) => tag.toLowerCase().includes(q));
+        const searchMatch =
+          post.title.toLowerCase().includes(q) ||
+          post.excerpt.toLowerCase().includes(q) ||
+          post.content.toLowerCase().includes(q) ||
+          tags.some((tag) => tag.toLowerCase().includes(q));
 
-      return categoryMatch && searchMatch;
-    })
-    .sort((a, b) => {
-      const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
-      const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
+        return categoryMatch && searchMatch;
+      })
+      .sort((a, b) => {
+        const orderA = Number.isFinite(Number(a.sort_order))
+          ? Number(a.sort_order)
+          : 100;
+        const orderB = Number.isFinite(Number(b.sort_order))
+          ? Number(b.sort_order)
+          : 100;
 
-      if (orderA !== orderB) return orderA - orderB;
-      return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-    });
-}, [posts, search, category]);
+        if (orderA !== orderB) return orderA - orderB;
+        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+      });
+  }, [posts, search, category]);
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#050816] text-white">
       <Background />
-
 
       <main className="pt-[90px]">
         {/* ── Hero Slideshow (Split Layout) ── */}
@@ -1382,59 +1402,56 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
           onDiscover={() => scrollToSection("blog")}
         />
 
-      {/* ── IMPORTANT TRANSPARENCY NOTICE ── */}
-<section className="mx-auto max-w-7xl px-4 pt-5 pb-2 sm:px-5">
-  <div className="relative overflow-hidden rounded-[2rem] border border-yellow-400/30 bg-gradient-to-br from-yellow-500/10 via-orange-500/10 to-red-500/10 p-[2px] shadow-2xl shadow-yellow-500/20">
+        {/* ── IMPORTANT TRANSPARENCY NOTICE ── */}
+        <section className="mx-auto max-w-7xl px-4 pt-5 pb-2 sm:px-5">
+          <div className="relative overflow-hidden rounded-[2rem] border border-yellow-400/30 bg-gradient-to-br from-yellow-500/10 via-orange-500/10 to-red-500/10 p-[2px] shadow-2xl shadow-yellow-500/20">
+            {/* Animated glow */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(250,204,21,0.25),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(249,115,22,0.18),transparent_35%)]" />
 
-    {/* Animated glow */}
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(250,204,21,0.25),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(249,115,22,0.18),transparent_35%)]" />
+            <div className="relative rounded-[1.9rem] bg-[#07111f]/95 p-5 sm:p-6 backdrop-blur-xl">
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+                {/* BIG WARNING ICON */}
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-yellow-400/30 bg-yellow-400/10 text-yellow-300 shadow-lg shadow-yellow-500/20">
+                  <AlertTriangle className="h-9 w-9 stroke-[2.5]" />
+                </div>
 
-    <div className="relative rounded-[1.9rem] bg-[#07111f]/95 p-5 sm:p-6 backdrop-blur-xl">
+                <div className="flex-1">
+                  {/* TITLE */}
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3 py-1 text-xs font-black uppercase tracking-widest text-yellow-300">
+                      Transparenz
+                    </span>
 
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+                    <h2 className="text-2xl font-black tracking-tight text-white sm:text-3xl">
+                      Projektinformationen & Transparenz
+                    </h2>
+                  </div>
 
-        {/* BIG WARNING ICON */}
-        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-yellow-400/30 bg-yellow-400/10 text-yellow-300 shadow-lg shadow-yellow-500/20">
-          <AlertTriangle className="h-9 w-9 stroke-[2.5]" />
-        </div>
-
-        <div className="flex-1">
-
-          {/* TITLE */}
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3 py-1 text-xs font-black uppercase tracking-widest text-yellow-300">
-              Transparenz
-            </span>
-
-            <h2 className="text-2xl font-black tracking-tight text-white sm:text-3xl">
-              Projektinformationen & Transparenz
-            </h2>
+                  {/* TEXT */}
+                  <p className="mt-5 text-sm leading-7 text-zinc-300 sm:text-base sm:leading-7">
+                    Die auf dieser Website gezeigten Fotos von Laborumgebungen,
+                    technischen Arbeitsplätzen und elektronischen Geräten dienen
+                    ausschließlich der Veranschaulichung meiner technischen
+                    Interessen und praktischen Erfahrungen.
+                    <span className="mt-4 block font-semibold text-yellow-200">
+                      Sie zeigen weder meinen tatsächlichen Arbeitsplatz noch
+                      interne Bereiche oder reale Arbeitsumgebungen eines
+                      Unternehmens.
+                    </span>
+                    <span className="mt-4 block">
+                      Die dargestellten Szenen und Geräte dienen ausschließlich
+                      illustrativen Zwecken und stehen nicht in Verbindung mit
+                      internen Projekten, vertraulichen Informationen oder
+                      realen Unternehmensumgebungen.
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
+        </section>
 
-          {/* TEXT */}
-          <p className="mt-5 text-sm leading-7 text-zinc-300 sm:text-base sm:leading-7">
-            Die auf dieser Website gezeigten Fotos von Laborumgebungen, 
-            technischen Arbeitsplätzen und elektronischen Geräten dienen ausschließlich 
-            der Veranschaulichung meiner technischen Interessen und praktischen Erfahrungen.
-
-            <span className="mt-4 block font-semibold text-yellow-200">
-              Sie zeigen weder meinen tatsächlichen Arbeitsplatz noch interne Bereiche 
-              oder reale Arbeitsumgebungen eines Unternehmens.
-            </span>
-
-            <span className="mt-4 block">
-              Die dargestellten Szenen und Geräte dienen ausschließlich illustrativen Zwecken 
-              und stehen nicht in Verbindung mit internen Projekten, 
-              vertraulichen Informationen oder realen Unternehmensumgebungen.
-            </span>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-       <AboutWideCard /> 
+        <AboutWideCard />
 
         {/* ── Feature Cards ── */}
         <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5 sm:py-10">
@@ -1442,7 +1459,11 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
             {features.map((feature) => {
               const Icon = feature.icon;
               return (
-                <motion.div whileHover={{ y: -5 }} key={feature.title} className="group flex flex-col">
+                <motion.div
+                  whileHover={{ y: -5 }}
+                  key={feature.title}
+                  className="group flex flex-col"
+                >
                   <GradientBorder
                     gradient={feature.gradient}
                     rounded="rounded-[1.4rem] sm:rounded-[2rem]"
@@ -1453,7 +1474,9 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                     <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-400/15 text-cyan-300 sm:mb-5 sm:h-14 sm:w-14">
                       <Icon className="h-7 w-7" />
                     </div>
-                    <h3 className="text-lg font-black sm:text-xl">{feature.title}</h3>
+                    <h3 className="text-lg font-black sm:text-xl">
+                      {feature.title}
+                    </h3>
                     <p className="mt-2 text-sm leading-5 text-zinc-400 sm:text-[15px] sm:leading-6">
                       {feature.text}
                     </p>
@@ -1478,11 +1501,15 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                     <p className="text-xs font-bold uppercase tracking-widest text-cyan-300">
                       Lokaler Adminbereich
                     </p>
-                    <h2 className="text-xl font-black sm:text-3xl">Beitragsverwaltung</h2>
+                    <h2 className="text-xl font-black sm:text-3xl">
+                      Beitragsverwaltung
+                    </h2>
                   </div>
                   <button
                     type="button"
-                    onClick={() => setAdminVisible(false)}
+                    onClick={() => {
+                      window.location.href = "/my-electronics-blog/";
+                    }}
                     className="rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10"
                   >
                     Schließen
@@ -1495,7 +1522,8 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                       <AlertTriangle className="h-5 w-5 shrink-0" />
                       <p>
                         Supabase ist noch nicht konfiguriert. Erstellen Sie eine{" "}
-                        <b>.env.local</b> Datei mit VITE_SUPABASE_URL und VITE_SUPABASE_ANON_KEY.
+                        <b>.env.local</b> Datei mit VITE_SUPABASE_URL und
+                        VITE_SUPABASE_ANON_KEY.
                       </p>
                     </div>
                   </div>
@@ -1513,7 +1541,9 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                     className="grid gap-4 lg:grid-cols-[1fr_1fr_auto] lg:items-end"
                   >
                     <div>
-                      <label className="mb-2 block text-sm text-zinc-400">Admin E-Mail</label>
+                      <label className="mb-2 block text-sm text-zinc-400">
+                        Admin E-Mail
+                      </label>
                       <input
                         type="email"
                         value={loginEmail}
@@ -1523,7 +1553,9 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                       />
                     </div>
                     <div>
-                      <label className="mb-2 block text-sm text-zinc-400">Passwort</label>
+                      <label className="mb-2 block text-sm text-zinc-400">
+                        Passwort
+                      </label>
                       <input
                         type="password"
                         value={loginPassword}
@@ -1541,8 +1573,9 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                   </form>
                 ) : !isAdmin ? (
                   <div className="rounded-2xl border border-red-400/20 bg-red-400/10 p-5 text-red-100">
-                    Sie sind angemeldet, aber dieses Konto hat keine Adminrechte. Tragen Sie die
-                    User-ID in der Tabelle profiles als role = admin ein.
+                    Sie sind angemeldet, aber dieses Konto hat keine
+                    Adminrechte. Tragen Sie die User-ID in der Tabelle profiles
+                    als role = admin ein.
                     <div className="mt-4">
                       <button
                         onClick={logout}
@@ -1560,7 +1593,8 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                           Modus: {session.user.email}
                         </p>
                         <p className="mt-1 font-bold text-cyan-300">
-                          Lokaler Modus aktiv. Änderungen werden im Browser gespeichert.
+                          Lokaler Modus aktiv. Änderungen werden im Browser
+                          gespeichert.
                         </p>
                       </div>
                       <div className="flex flex-col gap-3 sm:flex-row">
@@ -1597,17 +1631,28 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                       </div>
                     </div>
 
-                    <form onSubmit={savePost} className="grid gap-4 lg:grid-cols-2">
+                    <form
+                      onSubmit={savePost}
+                      className="grid gap-4 lg:grid-cols-2"
+                    >
                       <input
                         value={editingPost.title}
-                        onChange={(e) => setEditingPost({ ...editingPost, title: e.target.value })}
+                        onChange={(e) =>
+                          setEditingPost({
+                            ...editingPost,
+                            title: e.target.value,
+                          })
+                        }
                         placeholder="Titel des Beitrags"
                         className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4"
                       />
                       <select
                         value={editingPost.category}
                         onChange={(e) =>
-                          setEditingPost({ ...editingPost, category: e.target.value })
+                          setEditingPost({
+                            ...editingPost,
+                            category: e.target.value,
+                          })
                         }
                         className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4"
                       >
@@ -1646,7 +1691,10 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                       <select
                         value={editingPost.project_status || "done"}
                         onChange={(e) =>
-                          setEditingPost({ ...editingPost, project_status: e.target.value })
+                          setEditingPost({
+                            ...editingPost,
+                            project_status: e.target.value,
+                          })
                         }
                         className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4"
                       >
@@ -1659,14 +1707,19 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                         type="number"
                         value={editingPost.sort_order ?? 100}
                         onChange={(e) =>
-                          setEditingPost({ ...editingPost, sort_order: e.target.value })
+                          setEditingPost({
+                            ...editingPost,
+                            sort_order: e.target.value,
+                          })
                         }
                         placeholder="Reihenfolge: kleine Zahl = weiter vorne"
                         className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4"
                       />
 
                       <div className="lg:col-span-2">
-                        <label className="mb-2 block text-sm text-zinc-400">Bildpfad / Bild-URL</label>
+                        <label className="mb-2 block text-sm text-zinc-400">
+                          Bildpfad / Bild-URL
+                        </label>
                         <input
                           type="text"
                           value={editingPost.image_url || ""}
@@ -1684,47 +1737,66 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                       </div>
 
                       <div className="lg:col-span-2">
-                        <label className="mb-2 block text-sm text-zinc-400">Zusatzbilder zum Beitrag</label>
+                        <label className="mb-2 block text-sm text-zinc-400">
+                          Zusatzbilder zum Beitrag
+                        </label>
                         <textarea
-  value={
-    Array.isArray(editingPost.image_gallery)
-      ? editingPost.image_gallery.join("\n")
-      : editingPost.image_gallery || ""
-  }
-  onChange={(e) =>
-    setEditingPost((prev) => ({
-      ...prev,
-      image_gallery: e.target.value,
-    }))
-  }
-  onBlur={(e) => uploadPostGalleryImages(e.target.value)}
-  placeholder={
-    "/my-electronics-blog/images/posts/detail-1.webp\n/my-electronics-blog/images/posts/detail-2.webp"
-  }
-  rows={4}
-  className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white outline-none ring-cyan-400/30 focus:ring-4"
-/>
-                        {!!normalizeImageList(editingPost.image_gallery).length && (
+                          value={
+                            Array.isArray(editingPost.image_gallery)
+                              ? editingPost.image_gallery.join("\n")
+                              : editingPost.image_gallery || ""
+                          }
+                          onChange={(e) =>
+                            setEditingPost((prev) => ({
+                              ...prev,
+                              image_gallery: e.target.value,
+                            }))
+                          }
+                          onBlur={(e) =>
+                            uploadPostGalleryImages(e.target.value)
+                          }
+                          placeholder={
+                            "/my-electronics-blog/images/posts/detail-1.webp\n/my-electronics-blog/images/posts/detail-2.webp"
+                          }
+                          rows={4}
+                          className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white outline-none ring-cyan-400/30 focus:ring-4"
+                        />
+                        {!!normalizeImageList(editingPost.image_gallery)
+                          .length && (
                           <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                            {normalizeImageList(editingPost.image_gallery).map((url) => (
-                              <div key={url} className="relative overflow-hidden rounded-2xl border border-white/10">
-                                <img src={url} alt="Zusatzbild" className="h-32 w-full object-cover" />
-                                <button
-                                  type="button"
-                                  onClick={() => removePostGalleryImage(url)}
-                                  className="absolute right-2 top-2 rounded-full bg-red-500/90 p-2 text-white hover:bg-red-500"
+                            {normalizeImageList(editingPost.image_gallery).map(
+                              (url) => (
+                                <div
+                                  key={url}
+                                  className="relative overflow-hidden rounded-2xl border border-white/10"
                                 >
-                                  <Trash2 className="h-4 w-4" />
-                                </button>
-                              </div>
-                            ))}
+                                  <img
+                                    src={url}
+                                    alt="Zusatzbild"
+                                    className="h-32 w-full object-cover"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => removePostGalleryImage(url)}
+                                    className="absolute right-2 top-2 rounded-full bg-red-500/90 p-2 text-white hover:bg-red-500"
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </button>
+                                </div>
+                              ),
+                            )}
                           </div>
                         )}
                       </div>
 
                       <input
                         value={editingPost.tags}
-                        onChange={(e) => setEditingPost({ ...editingPost, tags: e.target.value })}
+                        onChange={(e) =>
+                          setEditingPost({
+                            ...editingPost,
+                            tags: e.target.value,
+                          })
+                        }
                         placeholder="Tags: ESP32, MQTT, Sensorik"
                         className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2"
                       />
@@ -1732,7 +1804,10 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                       <input
                         value={editingPost.external_link || ""}
                         onChange={(e) =>
-                          setEditingPost({ ...editingPost, external_link: e.target.value })
+                          setEditingPost({
+                            ...editingPost,
+                            external_link: e.target.value,
+                          })
                         }
                         placeholder="Externer Link (optional): https://github.com/..."
                         className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2"
@@ -1741,7 +1816,10 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                       <textarea
                         value={editingPost.excerpt}
                         onChange={(e) =>
-                          setEditingPost({ ...editingPost, excerpt: e.target.value })
+                          setEditingPost({
+                            ...editingPost,
+                            excerpt: e.target.value,
+                          })
                         }
                         placeholder="Kurzbeschreibung"
                         className="min-h-28 rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2"
@@ -1749,7 +1827,10 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                       <textarea
                         value={editingPost.content}
                         onChange={(e) =>
-                          setEditingPost({ ...editingPost, content: e.target.value })
+                          setEditingPost({
+                            ...editingPost,
+                            content: e.target.value,
+                          })
                         }
                         placeholder="Vollständiger Inhalt des Beitrags"
                         className="min-h-52 rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2"
@@ -1759,7 +1840,10 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                           type="checkbox"
                           checked={editingPost.published}
                           onChange={(e) =>
-                            setEditingPost({ ...editingPost, published: e.target.checked })
+                            setEditingPost({
+                              ...editingPost,
+                              published: e.target.checked,
+                            })
                           }
                         />
                         Veröffentlicht
@@ -1778,79 +1862,89 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
           </section>
         )}
 
-{/* ── WARNING CARD ── */}
+        {/* ── WARNING CARD ── */}
         <section className="mx-auto max-w-7xl px-4 py-8 sm:px-5">
-  <div className="rounded-[2rem] p-[1.5px] bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-400">
-  <div className="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl">
-    <div className="grid lg:grid-cols-[0.4fr_0.6fr]">
-      
-      {/* LEFT IMAGE */}
-      <div className="relative h-48 lg:h-auto">
-        <img
-          src="/my-electronics-blog/images/project-warning.webp"
-          alt="Projekt Hinweis"
-          className="h-full w-full object-cover"
-        />
+          <div className="rounded-[2rem] p-[1.5px] bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-400">
+            <div className="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl">
+              <div className="grid lg:grid-cols-[0.4fr_0.6fr]">
+                {/* LEFT IMAGE */}
+                <div className="relative h-48 lg:h-auto">
+                  <img
+                    src="/my-electronics-blog/images/project-warning.webp"
+                    alt="Projekt Hinweis"
+                    className="h-full w-full object-cover"
+                  />
 
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
-      </div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
+                </div>
 
-      {/* RIGHT CONTENT */}
-      <div className="flex flex-col justify-center p-5 sm:p-6 lg:p-7">
-        <div className="inline-flex w-fit items-center gap-2 rounded-full border border-yellow-400/20 bg-yellow-400/10 px-4 py-2 text-sm font-bold text-yellow-300">
-          <AlertTriangle className="h-4 w-4" />
-          Wichtiger Hinweis
-        </div>
+                {/* RIGHT CONTENT */}
+                <div className="flex flex-col justify-center p-5 sm:p-6 lg:p-7">
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border border-yellow-400/20 bg-yellow-400/10 px-4 py-2 text-sm font-bold text-yellow-300">
+                    <AlertTriangle className="h-4 w-4" />
+                    Wichtiger Hinweis
+                  </div>
 
-        <h2 className="mt-5 text-2xl font-black leading-tight text-white sm:text-3xl">
-          Wichtiger Hinweis zu meinen Projekten
-        </h2>
+                  <h2 className="mt-5 text-2xl font-black leading-tight text-white sm:text-3xl">
+                    Wichtiger Hinweis zu meinen Projekten
+                  </h2>
 
-        <div className="mt-6 space-y-5 text-sm leading-7 text-zinc-300 sm:text-base sm:leading-8">
-          <p>
-            <span className="font-bold text-yellow-300">🚨 Hinweis:</span>{" "}
-            Projekte mit der Kennzeichnung{" "}
-            <span className="font-semibold text-cyan-300">
-              „Konzept"
-            </span>{" "}
-            oder{" "}
-            <span className="font-semibold text-cyan-300">
-              „Konzeptprojekt"
-            </span>{" "}
-            befinden sich derzeit noch in der Ideen- bzw. Konzeptphase und
-            wurden bisher noch nicht praktisch umgesetzt.
-          </p>
+                  <div className="mt-6 space-y-5 text-sm leading-7 text-zinc-300 sm:text-base sm:leading-8">
+                    <p>
+                      <span className="font-bold text-yellow-300">
+                        🚨 Hinweis:
+                      </span>{" "}
+                      Projekte mit der Kennzeichnung{" "}
+                      <span className="font-semibold text-cyan-300">
+                        „Konzept"
+                      </span>{" "}
+                      oder{" "}
+                      <span className="font-semibold text-cyan-300">
+                        „Konzeptprojekt"
+                      </span>{" "}
+                      befinden sich derzeit noch in der Ideen- bzw. Konzeptphase
+                      und wurden bisher noch nicht praktisch umgesetzt.
+                    </p>
 
-          <p>
-            Eine zukünftige Weiterentwicklung oder Realisierung dieser Projekte
-            ist jedoch geplant.
-          </p>
+                    <p>
+                      Eine zukünftige Weiterentwicklung oder Realisierung dieser
+                      Projekte ist jedoch geplant.
+                    </p>
 
-          <p>
-            Alle anderen Projekte können über{" "}
-            <span className="font-semibold text-cyan-300">
-              „Beitrag lesen"
-            </span>{" "}
-            geöffnet werden.
-          </p>
+                    <p>
+                      Alle anderen Projekte können über{" "}
+                      <span className="font-semibold text-cyan-300">
+                        „Beitrag lesen"
+                      </span>{" "}
+                      geöffnet werden.
+                    </p>
 
-          <p>
-            Am Ende der jeweiligen Projektseite befindet sich die Schaltfläche{" "}
-            <span className="font-semibold text-cyan-300">
-              „Zum Projekt"
-            </span>
-            . Dort stehen projektbezogene Dateien wie PDF-Dokumentationen,
-            TIA-Portal-Projekte, AutoCAD-Dateien sowie Source Code und weitere
-            technische Projektdateien zur Verfügung.
-          </p>
-        </div>
-      </div>
-        </div>
-  </div>
-</div>
-</section>
+                    <p>
+                      Am Ende der jeweiligen Projektseite befindet sich die
+                      Schaltfläche{" "}
+                      <span className="font-semibold text-cyan-300">
+                        „Zum Projekt"
+                      </span>
+                      . Dort stehen projektbezogene Dateien wie
+                      PDF-Dokumentationen, TIA-Portal-Projekte, AutoCAD-Dateien
+                      sowie Source Code und weitere technische Projektdateien
+                      zur Verfügung.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-        
+        {activePost && (
+          <PostDetailModal
+            post={activePost}
+            onClose={() => setActivePost(null)}
+            onOpenImage={setBlogImageLightbox}
+          />
+        )}
+
         {blogImageLightbox && (
           <div
             className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 px-4 backdrop-blur-md"
@@ -1880,15 +1974,18 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
           </div>
         )}
 
-{/* ── Blog Section ── */}
-        <section id="blog" className="mx-auto max-w-7xl px-4 py-10 sm:px-5 sm:py-16">
+        {/* ── Blog Section ── */}
+        <section
+          id="blog"
+          className="mx-auto max-w-7xl px-4 py-10 sm:px-5 sm:py-16"
+        >
           <div className="mb-7 flex flex-col justify-between gap-5 sm:mb-10 lg:flex-row lg:items-end">
             <div>
               <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">
                 Technik Blog
               </p>
               <h2 className="mt-2 text-[1.75rem] font-black leading-[1.1] tracking-tight min-[390px]:text-[2rem] sm:mt-3 sm:text-4xl lg:text-5xl">
-              Elektronikprojekte & Dokumentationen
+                Elektronikprojekte & Dokumentationen
               </h2>
             </div>
 
@@ -1921,9 +2018,17 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
               const Icon = getIcon(post.category);
               const idea = isIdeaPost(post);
               return (
-                <motion.div whileHover={idea ? undefined : { y: -5 }} key={post.id} className="group flex h-full">
+                <motion.div
+                  whileHover={idea ? undefined : { y: -5 }}
+                  key={post.id}
+                  className="group flex h-full"
+                >
                   <GradientBorder
-                    gradient={idea ? "from-zinc-600 via-zinc-500 to-zinc-600" : "from-cyan-400 via-cyan-500 to-cyan-400"}
+                    gradient={
+                      idea
+                        ? "from-zinc-600 via-zinc-500 to-zinc-600"
+                        : "from-cyan-400 via-cyan-500 to-cyan-400"
+                    }
                     rounded="rounded-[1.4rem] sm:rounded-[2rem]"
                     className="flex flex-1"
                     innerClassName="flex flex-1 flex-col overflow-hidden rounded-[1.35rem] sm:rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl min-h-[560px]"
@@ -1933,19 +2038,22 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                       alt={post.title}
                       onClick={() => setBlogImageLightbox(post)}
                       className={`h-44 w-full shrink-0 cursor-zoom-in object-cover transition duration-300 hover:brightness-110 min-[390px]:h-48 sm:h-56 ${
-  idea ? "grayscale opacity-70" : ""
-}`}
+                        idea ? "grayscale opacity-70" : ""
+                      }`}
                     />
                     <div className="flex flex-1 flex-col p-4 sm:p-6">
                       <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
                         <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">
                           <Icon className="h-3.5 w-3.5" /> {post.category}
                         </span>
-                        <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getProjectStatusClasses(post.project_status)}`}>
+                        <span
+                          className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getProjectStatusClasses(post.project_status)}`}
+                        >
                           {getProjectStatusLabel(post.project_status)}
                         </span>
                         <span className="inline-flex items-center gap-1">
-                          <CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at)}
+                          <CalendarDays className="h-3.5 w-3.5" />{" "}
+                          {formatDate(post.created_at)}
                         </span>
                       </div>
                       <h3 className="text-lg font-black leading-tight min-[390px]:text-xl sm:text-2xl">
@@ -1965,31 +2073,39 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                         ))}
                       </div>
                       <div className="mt-auto flex gap-2 pt-6 sm:gap-3">
-  <Link
-    to={`/post/${post.id}`}
-    className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base"
-  >
-    Beitrag lesen
-  </Link>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedPost(post);
+                            setActivePost(post);
+                          }}
+                          className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base"
+                        >
+                          Beitrag lesen
+                        </button>
                         {isAdmin && (
                           <>
                             <button
-  type="button"
-  onClick={() => movePostOrder(post.id, -1, filteredPosts)}
-  className="rounded-2xl border border-white/10 px-3 py-2 text-sm font-black transition hover:bg-white/10"
-  title="Weiter nach vorne"
->
-  ↑
-</button>
+                              type="button"
+                              onClick={() =>
+                                movePostOrder(post.id, -1, filteredPosts)
+                              }
+                              className="rounded-2xl border border-white/10 px-3 py-2 text-sm font-black transition hover:bg-white/10"
+                              title="Weiter nach vorne"
+                            >
+                              ↑
+                            </button>
 
-<button
-  type="button"
-  onClick={() => movePostOrder(post.id, 1, filteredPosts)}
-  className="rounded-2xl border border-white/10 px-3 py-2 text-sm font-black transition hover:bg-white/10"
-  title="Weiter nach hinten"
->
-  ↓
-</button>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                movePostOrder(post.id, 1, filteredPosts)
+                              }
+                              className="rounded-2xl border border-white/10 px-3 py-2 text-sm font-black transition hover:bg-white/10"
+                              title="Weiter nach hinten"
+                            >
+                              ↓
+                            </button>
                             <button
                               type="button"
                               onClick={() => editPost(post)}
@@ -2016,11 +2132,18 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
         </section>
 
         {/* ── Gallery ── */}
-        <section id="projekte" className="mx-auto max-w-7xl px-4 py-16 sm:px-5 sm:py-24">
+        <section
+          id="projekte"
+          className="mx-auto max-w-7xl px-4 py-16 sm:px-5 sm:py-24"
+        >
           <div className="mb-10 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">Galerie</p>
-              <h2 className="mt-3 text-4xl font-black sm:text-5xl">Projektbilder</h2>
+              <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">
+                Galerie
+              </p>
+              <h2 className="mt-3 text-4xl font-black sm:text-5xl">
+                Projektbilder
+              </h2>
             </div>
             {isAdmin && (
               <button
@@ -2033,64 +2156,82 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
             )}
           </div>
 
-          {projectGalleryLightbox !== null && projectGalleryImages[projectGalleryLightbox] && (
-            <div
-              className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 px-4 backdrop-blur-md"
-              onClick={() => setProjectGalleryLightbox(null)}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.88 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.25 }}
-                className="relative max-h-[90vh] w-full max-w-5xl"
-                onClick={(e) => e.stopPropagation()}
+          {projectGalleryLightbox !== null &&
+            projectGalleryImages[projectGalleryLightbox] && (
+              <div
+                className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 px-4 backdrop-blur-md"
+                onClick={() => setProjectGalleryLightbox(null)}
               >
-                <img
-                  src={projectGalleryImages[projectGalleryLightbox].image_url || projectGalleryImages[projectGalleryLightbox]}
-                  alt={projectGalleryImages[projectGalleryLightbox].alt || "Projektbild"}
-                  className="max-h-[85vh] w-full rounded-2xl object-contain shadow-2xl"
-                />
-                {projectGalleryImages.length > 1 && (
-                  <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setProjectGalleryLightbox((prev) => (prev - 1 + projectGalleryImages.length) % projectGalleryImages.length)}
-                      className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"
-                    >
-                      <ChevronLeft className="h-5 w-5" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setProjectGalleryLightbox((prev) => (prev + 1) % projectGalleryImages.length)}
-                      className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"
-                    >
-                      <ChevronRight className="h-5 w-5" />
-                    </button>
-                  </div>
-                )}
-                <button
-                  type="button"
-                  onClick={() => setProjectGalleryLightbox(null)}
-                  className="absolute -right-4 -top-4 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400 text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-300"
-                  aria-label="Bild schließen"
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.88 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.25 }}
+                  className="relative max-h-[90vh] w-full max-w-5xl"
+                  onClick={(e) => e.stopPropagation()}
                 >
-                  <X className="h-5 w-5 stroke-[3]" />
-                </button>
-              </motion.div>
-            </div>
-          )}
+                  <img
+                    src={
+                      projectGalleryImages[projectGalleryLightbox].image_url ||
+                      projectGalleryImages[projectGalleryLightbox]
+                    }
+                    alt={
+                      projectGalleryImages[projectGalleryLightbox].alt ||
+                      "Projektbild"
+                    }
+                    className="max-h-[85vh] w-full rounded-2xl object-contain shadow-2xl"
+                  />
+                  {projectGalleryImages.length > 1 && (
+                    <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setProjectGalleryLightbox(
+                            (prev) =>
+                              (prev - 1 + projectGalleryImages.length) %
+                              projectGalleryImages.length,
+                          )
+                        }
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"
+                      >
+                        <ChevronLeft className="h-5 w-5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setProjectGalleryLightbox(
+                            (prev) => (prev + 1) % projectGalleryImages.length,
+                          )
+                        }
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"
+                      >
+                        <ChevronRight className="h-5 w-5" />
+                      </button>
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setProjectGalleryLightbox(null)}
+                    className="absolute -right-4 -top-4 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400 text-black shadow-xl shadow-cyan-500/40 transition hover:bg-cyan-300"
+                    aria-label="Bild schließen"
+                  >
+                    <X className="h-5 w-5 stroke-[3]" />
+                  </button>
+                </motion.div>
+              </div>
+            )}
 
           {(() => {
             // Chỉ 3 ảnh đầu hiển thị ngoài trang để giữ layout cũ.
             // Toàn bộ ảnh còn lại vẫn xem được khi bấm zoom và dùng next/prev.
             const visibleGalleryItems = projectGalleryImages.slice(0, 3);
             const uploadedGalleryItems = projectGalleryImages.filter(
-              (image) => image && typeof image === "object" && image.id
+              (image) => image && typeof image === "object" && image.id,
             );
 
             const renderGalleryCard = (image, index, size = "small") => {
               const imageUrl = image.image_url || image;
-              const imageAlt = image.alt || (index === 0 ? selectedPost.title : "Projektbild");
+              const imageAlt =
+                image.alt || (index === 0 ? selectedPost.title : "Projektbild");
               const heightClass = size === "large" ? "h-[520px]" : "h-[247px]";
 
               return (
@@ -2115,13 +2256,16 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
               <>
                 <div className="grid gap-6 lg:grid-cols-3">
                   <div className="lg:col-span-2">
-                    {visibleGalleryItems[0] && renderGalleryCard(visibleGalleryItems[0], 0, "large")}
+                    {visibleGalleryItems[0] &&
+                      renderGalleryCard(visibleGalleryItems[0], 0, "large")}
                   </div>
 
                   <div className="grid gap-6">
-                    {visibleGalleryItems.slice(1, 3).map((image, index) =>
-                      renderGalleryCard(image, index + 1, "small")
-                    )}
+                    {visibleGalleryItems
+                      .slice(1, 3)
+                      .map((image, index) =>
+                        renderGalleryCard(image, index + 1, "small"),
+                      )}
                   </div>
                 </div>
 
@@ -2133,7 +2277,9 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                           Galerie-Verwaltung
                         </p>
                         <p className="text-sm text-zinc-400">
-                          Hier kannst du hochgeladene Galerie-Bilder ersetzen oder löschen. Die 3 sichtbaren Galerie-Bilder bleiben im Layout unverändert.
+                          Hier kannst du hochgeladene Galerie-Bilder ersetzen
+                          oder löschen. Die 3 sichtbaren Galerie-Bilder bleiben
+                          im Layout unverändert.
                         </p>
                       </div>
                     </div>
@@ -2141,21 +2287,31 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                       {uploadedGalleryItems.map((image) => {
                         const imageIndex = projectGalleryImages.findIndex(
-                          (item) => item && typeof item === "object" && item.id === image.id
+                          (item) =>
+                            item &&
+                            typeof item === "object" &&
+                            item.id === image.id,
                         );
 
                         return (
-                          <div key={image.id} className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20">
+                          <div
+                            key={image.id}
+                            className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/20"
+                          >
                             <img
                               src={image.image_url}
                               alt={image.alt || "Projektbild"}
-                              onClick={() => setProjectGalleryLightbox(imageIndex)}
+                              onClick={() =>
+                                setProjectGalleryLightbox(imageIndex)
+                              }
                               className="h-36 w-full cursor-zoom-in object-cover transition duration-300 hover:brightness-110"
                             />
                             <div className="absolute right-2 top-2 flex gap-2">
                               <button
                                 type="button"
-                                onClick={() => replaceProjectGalleryImage(image)}
+                                onClick={() =>
+                                  replaceProjectGalleryImage(image)
+                                }
                                 className="cursor-pointer rounded-full bg-cyan-400 p-2 text-black shadow-lg hover:bg-cyan-300"
                               >
                                 <Edit3 className="h-4 w-4" />
@@ -2179,27 +2335,36 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
           })()}
         </section>
 
-        
-{/* ── Contact ── */}
-        <section id="kontakt" className="mx-auto max-w-7xl px-4 pb-12 sm:px-5 sm:pb-24">
+        {/* ── Contact ── */}
+        <section
+          id="kontakt"
+          className="mx-auto max-w-7xl px-4 pb-12 sm:px-5 sm:pb-24"
+        >
           <div className="rounded-[1.5rem] bg-cyan-400 p-4 text-black shadow-2xl shadow-cyan-500/30 sm:rounded-[2.5rem] sm:p-8 lg:p-12">
             <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
               <div>
-                <p className="text-sm font-black uppercase tracking-widest">Kontakt</p>
+                <p className="text-sm font-black uppercase tracking-widest">
+                  Kontakt
+                </p>
                 <h2 className="mt-3 text-[1.85rem] font-black leading-tight min-[390px]:text-3xl sm:mt-4 sm:text-5xl lg:text-6xl">
                   Zusammenarbeit an modernen Elektronikprojekten.
                 </h2>
                 <p className="mt-4 max-w-2xl text-[15px] leading-7 text-black/80 sm:mt-6 sm:text-lg sm:leading-9">
-                  Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle
-                  Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder
-                  individuelle Entwicklungen.
+                  Sie suchen Unterstützung für Embedded-Systeme, Sensorik,
+                  Robotik oder industrielle Automatisierung? Kontaktieren Sie
+                  mich für technische Zusammenarbeit oder individuelle
+                  Entwicklungen.
                 </p>
               </div>
               <div className="rounded-[1.25rem] sm:rounded-[2rem] p-[1.5px] bg-gradient-to-br from-cyan-400/60 via-cyan-500/40 to-cyan-400/60">
                 <div className="rounded-[1.2rem] sm:rounded-[1.95rem] bg-[#050816] p-3 sm:p-8 text-white">
                   <div className="grid h-full gap-5">
                     {[
-                      { icon: Mail, label: "E-Mail", value: "donguyennhan.de@gmail.com" },
+                      {
+                        icon: Mail,
+                        label: "E-Mail",
+                        value: "donguyennhan.de@gmail.com",
+                      },
                       { icon: Globe, label: "Standort", value: "Deutschland" },
                       {
                         icon: CircuitBoard,
@@ -2219,7 +2384,9 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
                         <Icon className="h-6 w-6 text-cyan-300" />
                         <div>
                           <p className="text-sm text-zinc-400">{label}</p>
-                          <p className="break-all text-sm font-bold sm:text-base">{value}</p>
+                          <p className="break-all text-sm font-bold sm:text-base">
+                            {value}
+                          </p>
                         </div>
                       </div>
                     ))}
@@ -2233,45 +2400,51 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
 
       <footer className="border-t border-cyan-500/10 bg-black py-10 text-center text-zinc-400">
         <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-          <Link to="/impressum" className="transition hover:text-cyan-400">
+          <a
+            href="/my-electronics-blog/impressum"
+            className="transition hover:text-cyan-400"
+          >
             Impressum
-          </Link>
-          <Link to="/datenschutz" className="transition hover:text-cyan-400">
+          </a>
+          <a
+            href="/my-electronics-blog/datenschutz"
+            className="transition hover:text-cyan-400"
+          >
             Datenschutz
-          </Link>
+          </a>
         </div>
         <p className="mt-4 text-xs text-zinc-500">
-          © 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.
+          © 2026 ElektronikLab — Moderne Elektronik- und
+          Automatisierungsprojekte.
         </p>
       </footer>
     </div>
   );
 }
 
-export default function App() {
-  const navigate = useNavigate();
+function App() {
+  const isAdminRoute =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("admin") === "1";
+
   const [adminVisible, setAdminVisible] = useState(false);
-
-  function openAdminPanel() {
-    navigate("/");
-    setAdminVisible(true);
-  }
-
-  const homeElement = <Home adminVisible={adminVisible} setAdminVisible={setAdminVisible} />;
 
   return (
     <>
-      <SiteHeader onAdminClick={openAdminPanel} />
-      <Routes>
-        <Route path="/" element={homeElement} />
-        <Route path="/blog" element={homeElement} />
-        <Route path="/projekte" element={homeElement} />
-        <Route path="/kontakt" element={homeElement} />
-        <Route path="/post/:id" element={<BlogPostPage />} />
-        <Route path="/impressum" element={<Impressum />} />
-        <Route path="/datenschutz" element={<Datenschutz />} />
-      </Routes>
+      <SiteHeader
+        showAdminEntry={isAdminRoute}
+        onAdminClick={() => setAdminVisible(true)}
+      />
+
+      <Home
+        adminVisible={adminVisible}
+        setAdminVisible={setAdminVisible}
+        isAdminRoute={isAdminRoute}
+      />
+
       <CookieBanner />
     </>
   );
 }
+
+export default App;
