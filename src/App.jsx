@@ -834,7 +834,7 @@ function Home({ adminVisible, setAdminVisible, adminUnlocked }) {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [posts, setPosts] = useState(demoPosts);
-  const [selectedPost, setSelectedPost] = useState(demoPosts[0]);
+  const [selectedPost, setSelectedPost] = useState(null);
   const [blogImageLightbox, setBlogImageLightbox] = useState(null);
   const [projectGalleryLightbox, setProjectGalleryLightbox] = useState(null);
   const [projectGalleryImages, setProjectGalleryImages] = useState([]);
@@ -881,13 +881,10 @@ function Home({ adminVisible, setAdminVisible, adminUnlocked }) {
 
 function openPost(post) {
   setSelectedPost(post);
+}
 
-  window.requestAnimationFrame(() => {
-    document.getElementById("post-detail")?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  });
+function closePost() {
+  setSelectedPost(null);
 }
 
 
@@ -1858,108 +1855,131 @@ function movePostOrder(postId, direction, visiblePosts = filteredPosts) {
           </div>
         </section>
 
-        {/* ── Selected Post Detail ── */}
-        {selectedPost && (
-          <section id="post-detail" className="mx-auto max-w-7xl scroll-mt-28 px-4 py-10 sm:px-5 sm:py-16">
-            <GradientBorder
-              gradient={isIdeaPost(selectedPost) ? "from-zinc-600 via-zinc-500 to-zinc-600" : "from-cyan-400 via-cyan-500 to-cyan-400"}
-              rounded="rounded-[2rem]"
-              innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl"
+        {/* ── Post Detail Modal ── */}
+        <AnimatePresence>
+          {selectedPost && (
+            <motion.div
+              className="fixed inset-0 z-[180] flex items-center justify-center bg-black/80 px-4 py-6 backdrop-blur-md"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closePost}
             >
-              <div className="grid gap-6 p-4 sm:p-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
-                <div>
-                  <img
-                    src={selectedPost.image_url}
-                    alt={selectedPost.title}
-                    onClick={() => setBlogImageLightbox(selectedPost)}
-                    className={`h-72 w-full cursor-zoom-in rounded-[1.5rem] object-cover shadow-2xl shadow-black/30 sm:h-[420px] ${
-                      isIdeaPost(selectedPost) ? "grayscale opacity-75" : ""
-                    }`}
-                  />
+              <motion.section
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="post-modal-title"
+                className="relative max-h-[92vh] w-full max-w-6xl overflow-y-auto rounded-[2rem] border border-cyan-400/30 bg-[#07111f] shadow-2xl shadow-cyan-500/20"
+                initial={{ opacity: 0, y: 30, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 20, scale: 0.96 }}
+                transition={{ duration: 0.22 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  type="button"
+                  onClick={closePost}
+                  className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-cyan-400 text-black shadow-xl shadow-cyan-500/30 transition hover:bg-cyan-300"
+                  aria-label="Beitrag schließen"
+                >
+                  <X className="h-6 w-6 stroke-[3]" />
+                </button>
 
-                  {!!normalizeImageList(selectedPost.image_gallery).length && (
-                    <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                      {normalizeImageList(selectedPost.image_gallery).map((url) => (
-                        <img
-                          key={url}
-                          src={url}
-                          alt={`${selectedPost.title} Zusatzbild`}
-                          onClick={() => setBlogImageLightbox({ ...selectedPost, image_url: url })}
-                          className="h-28 w-full cursor-zoom-in rounded-2xl object-cover transition hover:brightness-110"
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <div className="grid gap-6 p-4 sm:p-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
+                  <div>
+                    <img
+                      src={selectedPost.image_url}
+                      alt={selectedPost.title}
+                      onClick={() => setBlogImageLightbox(selectedPost)}
+                      className={`h-72 w-full cursor-zoom-in rounded-[1.5rem] object-cover shadow-2xl shadow-black/30 sm:h-[420px] ${
+                        isIdeaPost(selectedPost) ? "grayscale opacity-75" : ""
+                      }`}
+                    />
 
-                <article className="flex flex-col justify-center">
-                  <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
-                    <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">
-                      {selectedPost.category}
-                    </span>
-                    <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getProjectStatusClasses(selectedPost.project_status)}`}>
-                      {getProjectStatusLabel(selectedPost.project_status)}
-                    </span>
-                    <span className="inline-flex items-center gap-1">
-                      <CalendarDays className="h-3.5 w-3.5" /> {formatDate(selectedPost.created_at)}
-                    </span>
-                    <span>{selectedPost.read_time || "5 Min."}</span>
+                    {!!normalizeImageList(selectedPost.image_gallery).length && (
+                      <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                        {normalizeImageList(selectedPost.image_gallery).map((url) => (
+                          <img
+                            key={url}
+                            src={url}
+                            alt={`${selectedPost.title} Zusatzbild`}
+                            onClick={() => setBlogImageLightbox({ ...selectedPost, image_url: url })}
+                            className="h-28 w-full cursor-zoom-in rounded-2xl object-cover transition hover:brightness-110"
+                          />
+                        ))}
+                      </div>
+                    )}
                   </div>
 
-                  <h2 className="text-2xl font-black leading-tight text-white sm:text-4xl lg:text-5xl">
-                    {selectedPost.title}
-                  </h2>
-
-                  <p className="mt-5 text-base font-semibold leading-8 text-cyan-100/90">
-                    {selectedPost.excerpt}
-                  </p>
-
-                  <div className="mt-6 whitespace-pre-line text-sm leading-7 text-zinc-300 sm:text-base sm:leading-8">
-                    {selectedPost.content}
-                  </div>
-
-                  {!!(Array.isArray(selectedPost.tags) ? selectedPost.tags : []).length && (
-                    <div className="mt-6 flex flex-wrap gap-2">
-                      {selectedPost.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full border border-cyan-400/20 bg-cyan-400/8 px-3 py-1 text-xs text-cyan-300"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                    {selectedPost.external_link && !isIdeaPost(selectedPost) ? (
-                      <a
-                        href={selectedPost.external_link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-6 py-4 font-black text-black transition hover:bg-cyan-300"
-                      >
-                        Zum Projekt <ExternalLink className="h-5 w-5" />
-                      </a>
-                    ) : (
-                      <span className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-6 py-4 font-bold text-zinc-400">
-                        {isIdeaPost(selectedPost) ? "Konzeptprojekt – noch nicht umgesetzt" : "Kein Projektlink hinterlegt"}
+                  <article className="flex flex-col justify-center pr-0 sm:pr-10">
+                    <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
+                      <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">
+                        {selectedPost.category}
                       </span>
+                      <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getProjectStatusClasses(selectedPost.project_status)}`}>
+                        {getProjectStatusLabel(selectedPost.project_status)}
+                      </span>
+                      <span className="inline-flex items-center gap-1">
+                        <CalendarDays className="h-3.5 w-3.5" /> {formatDate(selectedPost.created_at)}
+                      </span>
+                      <span>{selectedPost.read_time || "5 Min."}</span>
+                    </div>
+
+                    <h2 id="post-modal-title" className="text-2xl font-black leading-tight text-white sm:text-4xl lg:text-5xl">
+                      {selectedPost.title}
+                    </h2>
+
+                    <p className="mt-5 text-base font-semibold leading-8 text-cyan-100/90">
+                      {selectedPost.excerpt}
+                    </p>
+
+                    <div className="mt-6 whitespace-pre-line text-sm leading-7 text-zinc-300 sm:text-base sm:leading-8">
+                      {selectedPost.content}
+                    </div>
+
+                    {!!(Array.isArray(selectedPost.tags) ? selectedPost.tags : []).length && (
+                      <div className="mt-6 flex flex-wrap gap-2">
+                        {selectedPost.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full border border-cyan-400/20 bg-cyan-400/8 px-3 py-1 text-xs text-cyan-300"
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
                     )}
 
-                    <button
-                      type="button"
-                      onClick={() => scrollToSection("blog")}
-                      className="inline-flex items-center justify-center rounded-2xl border border-white/10 px-6 py-4 font-bold text-zinc-200 transition hover:bg-white/10"
-                    >
-                      Zurück zum Blog
-                    </button>
-                  </div>
-                </article>
-              </div>
-            </GradientBorder>
-          </section>
-        )}
+                    <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                      {selectedPost.external_link && !isIdeaPost(selectedPost) ? (
+                        <a
+                          href={selectedPost.external_link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-6 py-4 font-black text-black transition hover:bg-cyan-300"
+                        >
+                          Zum Projekt <ExternalLink className="h-5 w-5" />
+                        </a>
+                      ) : (
+                        <span className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-6 py-4 font-bold text-zinc-400">
+                          {isIdeaPost(selectedPost) ? "Konzeptprojekt – noch nicht umgesetzt" : "Kein Projektlink hinterlegt"}
+                        </span>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={closePost}
+                        className="inline-flex items-center justify-center rounded-2xl border border-white/10 px-6 py-4 font-bold text-zinc-200 transition hover:bg-white/10"
+                      >
+                        Schließen
+                      </button>
+                    </div>
+                  </article>
+                </div>
+              </motion.section>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* ── Gallery ── */}
         <section id="projekte" className="mx-auto max-w-7xl px-4 py-16 sm:px-5 sm:py-24">
