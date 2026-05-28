@@ -1,3 +1,4 @@
+import CookieBanner from "./components/CookieBanner";
 import React, { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -920,7 +921,7 @@ function AdminPanel({ posts, galleryImages, onClose, onSave, onDelete, onMoveOrd
 // ─────────────────────────────────────────────
 // HOME PAGE
 // ─────────────────────────────────────────────
-function HomePage({ posts, galleryImages, isAdmin, onOpenPost, onSavePost, onDeletePost, onMovePost, onSaveGallery, onDeleteGallery, onExport, onImport, onReset, adminVisible, setAdminVisible }) {
+function HomePage({ posts, galleryImages, isAdmin, onOpenPost, onGoImpressum, onGoDatenschutz, onSavePost, onDeletePost, onMovePost, onSaveGallery, onDeleteGallery, onExport, onImport, onReset, adminVisible, setAdminVisible }) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Alle");
   const [lightbox, setLightbox] = useState(null); // { images, index }
@@ -1195,8 +1196,8 @@ function HomePage({ posts, galleryImages, isAdmin, onOpenPost, onSavePost, onDel
 
       <footer className="border-t border-cyan-500/10 bg-black py-10 text-center text-zinc-400">
         <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-          <a href="/my-electronics-blog/impressum" className="transition hover:text-cyan-400">Impressum</a>
-          <a href="/my-electronics-blog/datenschutz" className="transition hover:text-cyan-400">Datenschutz</a>
+          <button type="button" onClick={onGoImpressum} className="transition hover:text-cyan-400">Impressum</button>
+          <button type="button" onClick={onGoDatenschutz} className="transition hover:text-cyan-400">Datenschutz</button>
         </div>
         <p className="mt-4 text-xs text-zinc-500">© 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.</p>
       </footer>
@@ -1229,6 +1230,62 @@ function HomePage({ posts, galleryImages, isAdmin, onOpenPost, onSavePost, onDel
   );
 }
 
+
+// ─────────────────────────────────────────────
+// LEGAL PAGES
+// ─────────────────────────────────────────────
+function LegalPageLayout({ title, children, onBack }) {
+  return (
+    <div className="min-h-screen overflow-x-hidden bg-[#050816] text-white">
+      <Background />
+      <main className="mx-auto max-w-5xl px-4 pt-[110px] pb-20 sm:px-5">
+        <button
+          type="button"
+          onClick={onBack}
+          className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-bold text-zinc-300 transition hover:bg-white/10 hover:text-cyan-300"
+        >
+          <ArrowLeft className="h-4 w-4" /> Zurück
+        </button>
+
+        <GradientBorder
+          gradient="from-cyan-400 via-cyan-500 to-cyan-400"
+          rounded="rounded-[2rem]"
+          innerClassName="rounded-[1.95rem] bg-[#07111f]/95 p-6 sm:p-10 backdrop-blur-xl"
+        >
+          <h1 className="text-3xl font-black text-white sm:text-5xl">{title}</h1>
+          <div className="mt-8 space-y-5 text-sm leading-8 text-zinc-300 sm:text-base">
+            {children}
+          </div>
+        </GradientBorder>
+      </main>
+    </div>
+  );
+}
+
+function ImpressumPage({ onBack }) {
+  return (
+    <LegalPageLayout title="Impressum" onBack={onBack}>
+      <p><strong>Angaben gemäß § 5 TMG</strong></p>
+      <p>Nguyen Nhan Do<br />Deutschland</p>
+      <p><strong>Kontakt</strong><br />E-Mail: donguyennhan.de@gmail.com</p>
+      <p><strong>Haftung für Inhalte</strong><br />Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte wird keine Gewähr übernommen.</p>
+      <p><strong>Haftung für Links</strong><br />Diese Website enthält Links zu externen Webseiten Dritter. Auf deren Inhalte besteht kein Einfluss. Für diese fremden Inhalte wird keine Gewähr übernommen.</p>
+    </LegalPageLayout>
+  );
+}
+
+function DatenschutzPage({ onBack }) {
+  return (
+    <LegalPageLayout title="Datenschutzerklärung" onBack={onBack}>
+      <p>Diese Website dient der Darstellung persönlicher technischer Projekte und Informationen.</p>
+      <p><strong>Server-Logdaten</strong><br />Beim Besuch der Website können durch den Hosting-Anbieter technische Zugriffsdaten verarbeitet werden, zum Beispiel IP-Adresse, Browsertyp, Uhrzeit des Zugriffs und aufgerufene Seiten.</p>
+      <p><strong>Cookies / LocalStorage</strong><br />Diese Website kann LocalStorage verwenden, um lokale Einstellungen wie Cookie-Zustimmung oder lokal gespeicherte Blogdaten zu speichern.</p>
+      <p><strong>Externe Links</strong><br />Beim Anklicken externer Links, zum Beispiel GitHub oder Google Drive, gelten die Datenschutzbestimmungen der jeweiligen Anbieter.</p>
+      <p><strong>Kontakt</strong><br />Bei Fragen zum Datenschutz: donguyennhan.de@gmail.com</p>
+    </LegalPageLayout>
+  );
+}
+
 // ─────────────────────────────────────────────
 // APP ROOT (routing + state)
 // ─────────────────────────────────────────────
@@ -1238,22 +1295,7 @@ function App() {
   const [adminUnlocked, setAdminUnlocked] = useState(() =>
     sessionStorage.getItem("my-electronics-blog.adminUnlocked") === "1"
   );
-  const [page, setPage] = useState("home"); // "home" | "post"
-  if (page === "impressum") {
-  return (
-    <ImpressumPage
-      onBack={() => setPage("home")}
-    />
-  );
-}
-
-if (page === "datenschutz") {
-  return (
-    <DatenschutzPage
-      onBack={() => setPage("home")}
-    />
-  );
-}
+  const [page, setPage] = useState("home"); // "home" | "post" | "impressum" | "datenschutz"
   const [currentPostId, setCurrentPostId] = useState(null);
 
   // ── Data state ──
@@ -1278,6 +1320,16 @@ if (page === "datenschutz") {
 
   const goHome = useCallback(() => {
     setPage("home");
+    setCurrentPostId(null);
+  }, []);
+
+  const goImpressum = useCallback(() => {
+    setPage("impressum");
+    setCurrentPostId(null);
+  }, []);
+
+  const goDatenschutz = useCallback(() => {
+    setPage("datenschutz");
     setCurrentPostId(null);
   }, []);
 
@@ -1380,8 +1432,17 @@ if (page === "datenschutz") {
     goHome();
   };
 
+  if (page === "impressum") {
+    return <ImpressumPage onBack={goHome} />;
+  }
+
+  if (page === "datenschutz") {
+    return <DatenschutzPage onBack={goHome} />;
+  }
+
   return (
     <>
+     <CookieBanner />
       <SiteHeader onAdminClick={unlockAdmin} adminUnlocked={adminUnlocked} onNavigate={goHome} currentPage={page} />
 
       {page === "post" && currentPost ? (
@@ -1392,6 +1453,8 @@ if (page === "datenschutz") {
           galleryImages={galleryImages}
           isAdmin={isAdmin}
           onOpenPost={openPost}
+          onGoImpressum={goImpressum}
+          onGoDatenschutz={goDatenschutz}
           onSavePost={handleSavePost}
           onDeletePost={handleDeletePost}
           onMovePost={handleMovePost}
