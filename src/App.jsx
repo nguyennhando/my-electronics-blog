@@ -1296,11 +1296,30 @@ function LegalPageLayout({ title, children, onBack }) {
 function ImpressumPage({ onBack }) {
   return (
     <LegalPageLayout title="Impressum" onBack={onBack}>
-      <p><strong>Angaben gemäß § 5 TMG</strong></p>
-      <p>Nguyen Nhan Do<br />Deutschland</p>
-      <p><strong>Kontakt</strong><br />E-Mail: donguyennhan.de@gmail.com</p>
-      <p><strong>Haftung für Inhalte</strong><br />Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte wird keine Gewähr übernommen.</p>
-      <p><strong>Haftung für Links</strong><br />Diese Website enthält Links zu externen Webseiten Dritter. Auf deren Inhalte besteht kein Einfluss. Für diese fremden Inhalte wird keine Gewähr übernommen.</p>
+      <section>
+        <p className="font-bold text-white">Angaben gemäß § 5 TMG</p>
+        <p>Nguyen Nhan Do<br />Hugo-Sinzheimerstr. 15<br />60437 Frankfurt am Main<br />Deutschland</p>
+      </section>
+      <section>
+        <p className="font-bold text-white">Kontakt</p>
+        <p>E-Mail: donguyennhan.de@gmail.com</p>
+      </section>
+      <section>
+        <p className="font-bold text-white">Verantwortlich für den Inhalt</p>
+        <p>Nguyen Nhan Do<br />Hugo-Sinzheimerstr. 15<br />60437 Frankfurt am Main</p>
+      </section>
+      <section>
+        <p className="font-bold text-white">Haftungsausschluss</p>
+        <p>Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für externe Links und deren Inhalte. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.</p>
+      </section>
+      <section>
+        <p className="font-bold text-white">Streitschlichtung</p>
+        <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="text-cyan-400 underline hover:text-cyan-300">ec.europa.eu/consumers/odr</a>. Ich bin nicht bereit oder verpflichtet, an Streitbeilegungsverfahren teilzunehmen.</p>
+      </section>
+      <section>
+        <p className="font-bold text-white">Urheberrecht</p>
+        <p>Die durch den Seitenbetreiber erstellten Inhalte unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung oder Verbreitung bedarf der schriftlichen Zustimmung des Autors.</p>
+      </section>
     </LegalPageLayout>
   );
 }
@@ -1308,11 +1327,31 @@ function ImpressumPage({ onBack }) {
 function DatenschutzPage({ onBack }) {
   return (
     <LegalPageLayout title="Datenschutzerklärung" onBack={onBack}>
-      <p>Diese Website dient der Darstellung persönlicher technischer Projekte und Informationen.</p>
-      <p><strong>Server-Logdaten</strong><br />Beim Besuch der Website können durch den Hosting-Anbieter technische Zugriffsdaten verarbeitet werden, zum Beispiel IP-Adresse, Browsertyp, Uhrzeit des Zugriffs und aufgerufene Seiten.</p>
-      <p><strong>Cookies / LocalStorage</strong><br />Diese Website kann LocalStorage verwenden, um lokale Einstellungen wie Cookie-Zustimmung oder lokal gespeicherte Blogdaten zu speichern.</p>
-      <p><strong>Externe Links</strong><br />Beim Anklicken externer Links, zum Beispiel GitHub oder Google Drive, gelten die Datenschutzbestimmungen der jeweiligen Anbieter.</p>
-      <p><strong>Kontakt</strong><br />Bei Fragen zum Datenschutz: donguyennhan.de@gmail.com</p>
+      <section>
+        <p className="font-bold text-white">1. Verantwortlicher</p>
+        <p>Nguyen Nhan Do<br />Hugo-Sinzheimerstr. 15<br />60437 Frankfurt am Main<br />E-Mail: donguyennhan.de@gmail.com</p>
+      </section>
+      <section>
+        <p className="font-bold text-white">2. Hosting & Server-Logfiles</p>
+        <p>Diese Website wird über <strong>GitHub Pages</strong> (GitHub Inc., USA) gehostet. Beim Abruf werden technische Daten wie IP-Adresse, Browsertyp, Datum/Uhrzeit und aufgerufene Seiten verarbeitet. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.</p>
+      </section>
+      <section>
+        <p className="font-bold text-white">3. Lokale Datenspeicherung (localStorage)</p>
+        <p>Diese Website verwendet ausschließlich localStorage zur Speicherung der Cookie-Zustimmung und lokaler Blogdaten. Es werden keine Tracking-Cookies oder Werbe-Cookies eingesetzt. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.</p>
+      </section>
+      <section>
+        <p className="font-bold text-white">4. Externe Links</p>
+        <p>Diese Website enthält Links zu GitHub und Google Drive. Beim Aufruf externer Links gelten die Datenschutzbestimmungen der jeweiligen Anbieter. Ich habe keinen Einfluss auf deren Datenverarbeitung.</p>
+      </section>
+      <section>
+        <p className="font-bold text-white">5. Ihre Rechte gemäß DSGVO</p>
+        <p>Sie haben das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21). Kontakt: donguyennhan.de@gmail.com</p>
+        <p className="mt-3">Zuständige Aufsichtsbehörde: <strong>Hessischer Beauftragter für Datenschutz und Informationsfreiheit (HBDI)</strong>, Postfach 3163, 65021 Wiesbaden — <a href="https://datenschutz.hessen.de" target="_blank" rel="noopener noreferrer" className="text-cyan-400 underline hover:text-cyan-300">datenschutz.hessen.de</a></p>
+      </section>
+      <section>
+        <p className="font-bold text-white">6. Streitschlichtung</p>
+        <p>Ich bin nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+      </section>
     </LegalPageLayout>
   );
 }
