@@ -1475,9 +1475,10 @@ function DatenschutzPage({ onBack }) {
         <p className="mt-3">
           Soweit localStorage verwendet wird, dient dies ausschließlich der
           lokalen Speicherung technischer oder funktionaler Einstellungen im
-          Browser, zum Beispiel zur Speicherung einer Cookie- oder
-          Datenschutzhinweis-Auswahl. Diese Daten werden nicht zu Werbezwecken
-          verwendet und nicht an Dritte übermittelt.
+          Browser, beispielsweise zur Speicherung dieses Datenschutzhinweises
+          oder anderer technisch notwendiger Benutzereinstellungen. Diese Daten
+          werden nicht zu Werbezwecken verwendet und nicht an Dritte
+          übermittelt.
         </p>
 
         <p className="mt-3">
