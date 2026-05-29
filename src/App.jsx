@@ -486,11 +486,21 @@ function SiteHeader({ onAdminClick, adminUnlocked, onNavigate, currentPage }) {
   const goHome = () => { setMenuOpen(false); onNavigate("home"); window.scrollTo({ top: 0, behavior: "smooth" }); };
 
   const openAdmin = () => {
-    if (adminUnlocked) { setMenuOpen(false); onAdminClick(); return; }
-    const pw = window.prompt("Admin Passwort");
-    if (pw === "Nhan1986.,") { setMenuOpen(false); onAdminClick(); }
-    else window.alert("Falsches Passwort");
-  };
+  if (adminUnlocked) {
+    setMenuOpen(false);
+    onAdminClick();
+    return;
+  }
+
+  const pw = window.prompt("Admin Passwort");
+
+  if (pw === import.meta.env.VITE_ADMIN_PASSWORD) {
+    setMenuOpen(false);
+    onAdminClick();
+  } else {
+    window.alert("Falsches Passwort");
+  }
+};
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
