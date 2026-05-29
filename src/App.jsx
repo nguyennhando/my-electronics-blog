@@ -1297,28 +1297,86 @@ function ImpressumPage({ onBack }) {
   return (
     <LegalPageLayout title="Impressum" onBack={onBack}>
       <section>
-        <p className="font-bold text-white">Angaben gemäß § 5 TMG</p>
-        <p>Nguyen Nhan Do<br />Hugo-Sinzheimerstr. 15<br />60437 Frankfurt am Main<br />Deutschland</p>
+        <p className="font-bold text-white">Angaben gemäß § 5 DDG</p>
+        <p>
+          Nguyen Nhan Do
+          <br />
+          Hugo-Sinzheimerstr. 15
+          <br />
+          60437 Frankfurt am Main
+          <br />
+          Deutschland
+        </p>
       </section>
+
       <section>
         <p className="font-bold text-white">Kontakt</p>
-        <p>E-Mail: donguyennhan.de@gmail.com</p>
+        <p>
+          E-Mail:{" "}
+          <a
+            href="mailto:donguyennhan.de@gmail.com"
+            className="text-cyan-400 underline hover:text-cyan-300"
+          >
+            donguyennhan.de@gmail.com
+          </a>
+        </p>
       </section>
+
       <section>
-        <p className="font-bold text-white">Verantwortlich für den Inhalt</p>
-        <p>Nguyen Nhan Do<br />Hugo-Sinzheimerstr. 15<br />60437 Frankfurt am Main</p>
+        <p className="font-bold text-white">
+          Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
+        </p>
+        <p>
+          Nguyen Nhan Do
+          <br />
+          Hugo-Sinzheimerstr. 15
+          <br />
+          60437 Frankfurt am Main
+          <br />
+          Deutschland
+        </p>
       </section>
+
       <section>
-        <p className="font-bold text-white">Haftungsausschluss</p>
-        <p>Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für externe Links und deren Inhalte. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.</p>
+        <p className="font-bold text-white">Hinweis zum Inhalt</p>
+        <p>
+          Diese Website ist ein persönliches Portfolio sowie ein technischer
+          Blog. Die Inhalte dienen der Dokumentation privater Projekte,
+          technischer Experimente, Forschung, Weiterbildung und dem fachlichen
+          Austausch.
+        </p>
+        <p className="mt-3">
+          Es werden über diese Website keine Waren oder Dienstleistungen
+          angeboten oder verkauft.
+        </p>
       </section>
+
       <section>
-        <p className="font-bold text-white">Streitschlichtung</p>
-        <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="text-cyan-400 underline hover:text-cyan-300">ec.europa.eu/consumers/odr</a>. Ich bin nicht bereit oder verpflichtet, an Streitbeilegungsverfahren teilzunehmen.</p>
+        <p className="font-bold text-white">Haftung für Inhalte</p>
+        <p>
+          Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt
+          erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der
+          Inhalte kann jedoch keine Gewähr übernommen werden.
+        </p>
       </section>
+
+      <section>
+        <p className="font-bold text-white">Haftung für Links</p>
+        <p>
+          Diese Website enthält Links zu externen Websites Dritter. Auf deren
+          Inhalte habe ich keinen Einfluss. Für die Inhalte der verlinkten
+          Seiten sind ausschließlich deren jeweilige Betreiber verantwortlich.
+        </p>
+      </section>
+
       <section>
         <p className="font-bold text-white">Urheberrecht</p>
-        <p>Die durch den Seitenbetreiber erstellten Inhalte unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung oder Verbreitung bedarf der schriftlichen Zustimmung des Autors.</p>
+        <p>
+          Die auf dieser Website veröffentlichten Inhalte und Werke unterliegen
+          dem deutschen Urheberrecht. Jede Art der Verwertung außerhalb der
+          Grenzen des Urheberrechts bedarf der vorherigen schriftlichen
+          Zustimmung des jeweiligen Autors bzw. Rechteinhabers.
+        </p>
       </section>
     </LegalPageLayout>
   );
@@ -1329,28 +1387,202 @@ function DatenschutzPage({ onBack }) {
     <LegalPageLayout title="Datenschutzerklärung" onBack={onBack}>
       <section>
         <p className="font-bold text-white">1. Verantwortlicher</p>
-        <p>Nguyen Nhan Do<br />Hugo-Sinzheimerstr. 15<br />60437 Frankfurt am Main<br />E-Mail: donguyennhan.de@gmail.com</p>
+
+        <p>
+          Nguyen Nhan Do
+          <br />
+          Hugo-Sinzheimerstr. 15
+          <br />
+          60437 Frankfurt am Main
+          <br />
+          Deutschland
+          <br />
+          E-Mail:{" "}
+          <a
+            href="mailto:donguyennhan.de@gmail.com"
+            className="text-cyan-400 underline hover:text-cyan-300"
+          >
+            donguyennhan.de@gmail.com
+          </a>
+        </p>
       </section>
+
       <section>
-        <p className="font-bold text-white">2. Hosting & Server-Logfiles</p>
-        <p>Diese Website wird über <strong>GitHub Pages</strong> (GitHub Inc., USA) gehostet. Beim Abruf werden technische Daten wie IP-Adresse, Browsertyp, Datum/Uhrzeit und aufgerufene Seiten verarbeitet. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.</p>
+        <p className="font-bold text-white">2. Allgemeine Hinweise</p>
+
+        <p>
+          Diese Website ist ein persönliches Portfolio sowie ein technischer
+          Blog. Es werden keine Waren oder Dienstleistungen über diese Website
+          angeboten oder verkauft. Es werden keine Nutzerkonten, kein Newsletter
+          und kein Kontaktformular betrieben.
+        </p>
       </section>
+
       <section>
-        <p className="font-bold text-white">3. Lokale Datenspeicherung (localStorage)</p>
-        <p>Diese Website verwendet ausschließlich localStorage zur Speicherung der Cookie-Zustimmung und lokaler Blogdaten. Es werden keine Tracking-Cookies oder Werbe-Cookies eingesetzt. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.</p>
+        <p className="font-bold text-white">3. Hosting über GitHub Pages</p>
+
+        <p>
+          Diese Website wird über GitHub Pages gehostet, einen Dienst der
+          GitHub, Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA.
+          Beim Besuch dieser Website können durch GitHub technische Daten
+          verarbeitet werden, insbesondere IP-Adresse, Datum und Uhrzeit des
+          Zugriffs, Browserinformationen, Betriebssysteminformationen sowie die
+          aufgerufenen Seiten.
+        </p>
+
+        <p className="mt-3">
+          Die Verarbeitung erfolgt zur sicheren und zuverlässigen Bereitstellung
+          der Website. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Das
+          berechtigte Interesse liegt in der technischen Bereitstellung,
+          Stabilität und Sicherheit dieser Website.
+        </p>
+
+        <p className="mt-3">
+          Weitere Informationen zur Datenverarbeitung durch GitHub finden Sie in
+          der Datenschutzerklärung von GitHub:{" "}
+          <a
+            href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cyan-400 underline hover:text-cyan-300"
+          >
+            GitHub Privacy Statement
+          </a>
+          .
+        </p>
       </section>
+
       <section>
-        <p className="font-bold text-white">4. Externe Links</p>
-        <p>Diese Website enthält Links zu GitHub und Google Drive. Beim Aufruf externer Links gelten die Datenschutzbestimmungen der jeweiligen Anbieter. Ich habe keinen Einfluss auf deren Datenverarbeitung.</p>
+        <p className="font-bold text-white">
+          4. Cookies und lokale Speicherung
+        </p>
+
+        <p>
+          Diese Website verwendet keine Tracking-Cookies, keine Werbe-Cookies
+          und keine Analyse-Cookies.
+        </p>
+
+        <p className="mt-3">
+          Soweit localStorage verwendet wird, dient dies ausschließlich der
+          lokalen Speicherung technischer oder funktionaler Einstellungen im
+          Browser, zum Beispiel zur Speicherung einer Cookie- oder
+          Datenschutzhinweis-Auswahl. Diese Daten werden nicht zu Werbezwecken
+          verwendet und nicht an Dritte übermittelt.
+        </p>
+
+        <p className="mt-3">
+          Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte
+          Interesse liegt in der nutzerfreundlichen und technisch sinnvollen
+          Bereitstellung der Website.
+        </p>
       </section>
+
       <section>
-        <p className="font-bold text-white">5. Ihre Rechte gemäß DSGVO</p>
-        <p>Sie haben das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21). Kontakt: donguyennhan.de@gmail.com</p>
-        <p className="mt-3">Zuständige Aufsichtsbehörde: <strong>Hessischer Beauftragter für Datenschutz und Informationsfreiheit (HBDI)</strong>, Postfach 3163, 65021 Wiesbaden — <a href="https://datenschutz.hessen.de" target="_blank" rel="noopener noreferrer" className="text-cyan-400 underline hover:text-cyan-300">datenschutz.hessen.de</a></p>
+        <p className="font-bold text-white">5. Keine Analyse-Tools</p>
+
+        <p>
+          Auf dieser Website werden keine Analyse-Tools wie Google Analytics,
+          Meta Pixel, Hotjar oder vergleichbare Tracking-Dienste eingesetzt.
+        </p>
       </section>
+
       <section>
-        <p className="font-bold text-white">6. Streitschlichtung</p>
-        <p>Ich bin nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+        <p className="font-bold text-white">6. Kontaktaufnahme per E-Mail</p>
+
+        <p>
+          Wenn Sie mich per E-Mail kontaktieren, werden die von Ihnen
+          übermittelten Daten ausschließlich zur Bearbeitung Ihrer Anfrage
+          verarbeitet. Eine Weitergabe an Dritte erfolgt nicht, sofern keine
+          gesetzliche Pflicht dazu besteht.
+        </p>
+
+        <p className="mt-3">
+          Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, sofern die Anfrage
+          mit vorvertraglichen oder vertraglichen Maßnahmen zusammenhängt.
+          In allen anderen Fällen ist die Rechtsgrundlage Art. 6 Abs. 1 lit. f
+          DSGVO. Das berechtigte Interesse liegt in der Bearbeitung und
+          Beantwortung Ihrer Anfrage.
+        </p>
+      </section>
+
+      <section>
+        <p className="font-bold text-white">7. Externe Links</p>
+
+        <p>
+          Diese Website enthält Links zu externen Websites, insbesondere zu
+          GitHub, Google Drive oder anderen technischen Ressourcen. Wenn Sie
+          einen externen Link anklicken, verlassen Sie diese Website. Für die
+          Datenverarbeitung auf den verlinkten Websites sind ausschließlich die
+          jeweiligen Anbieter verantwortlich.
+        </p>
+      </section>
+
+      <section>
+        <p className="font-bold text-white">8. Ihre Rechte</p>
+
+        <p>
+          Sie haben nach der DSGVO das Recht auf Auskunft nach Art. 15 DSGVO,
+          Berichtigung nach Art. 16 DSGVO, Löschung nach Art. 17 DSGVO,
+          Einschränkung der Verarbeitung nach Art. 18 DSGVO,
+          Datenübertragbarkeit nach Art. 20 DSGVO sowie Widerspruch gegen die
+          Verarbeitung nach Art. 21 DSGVO.
+        </p>
+
+        <p className="mt-3">
+          Zur Ausübung Ihrer Rechte können Sie mich jederzeit per E-Mail
+          kontaktieren:{" "}
+          <a
+            href="mailto:donguyennhan.de@gmail.com"
+            className="text-cyan-400 underline hover:text-cyan-300"
+          >
+            donguyennhan.de@gmail.com
+          </a>
+          .
+        </p>
+      </section>
+
+      <section>
+        <p className="font-bold text-white">
+          9. Beschwerderecht bei der Aufsichtsbehörde
+        </p>
+
+        <p>
+          Sie haben das Recht, sich bei einer Datenschutzaufsichtsbehörde zu
+          beschweren, wenn Sie der Ansicht sind, dass die Verarbeitung Ihrer
+          personenbezogenen Daten gegen die DSGVO verstößt.
+        </p>
+
+        <p className="mt-3">
+          Zuständige Aufsichtsbehörde:
+          <br />
+          Der Hessische Beauftragte für Datenschutz und Informationsfreiheit
+          <br />
+          Postfach 3163
+          <br />
+          65021 Wiesbaden
+          <br />
+          Deutschland
+          <br />
+          Website:{" "}
+          <a
+            href="https://datenschutz.hessen.de"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cyan-400 underline hover:text-cyan-300"
+          >
+            datenschutz.hessen.de
+          </a>
+        </p>
+      </section>
+
+      <section>
+        <p className="font-bold text-white">10. Aktualität dieser Erklärung</p>
+
+        <p>
+          Diese Datenschutzerklärung kann angepasst werden, wenn sich die
+          Website, die eingesetzten Dienste oder die rechtlichen Anforderungen
+          ändern.
+        </p>
       </section>
     </LegalPageLayout>
   );
