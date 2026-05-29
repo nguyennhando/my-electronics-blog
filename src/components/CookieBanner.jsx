@@ -1,23 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const consent = localStorage.getItem('cookie-consent');
+    const consent = localStorage.getItem("privacy-notice");
 
     if (!consent) {
       setVisible(true);
     }
   }, []);
 
-  const acceptCookies = () => {
-    localStorage.setItem('cookie-consent', 'accepted');
+  const acceptNotice = () => {
+    localStorage.setItem("privacy-notice", "accepted");
     setVisible(false);
   };
 
-  const rejectCookies = () => {
-    localStorage.setItem('cookie-consent', 'rejected');
+  const rejectNotice = () => {
+    localStorage.setItem("privacy-notice", "rejected");
     setVisible(false);
   };
 
@@ -29,30 +29,33 @@ export default function CookieBanner() {
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h3 className="text-xl font-bold text-white">
-              Datenschutzeinstellungen
+              Datenschutzhinweis
             </h3>
 
             <p className="mt-2 text-sm leading-7 text-zinc-300">
-              Diese Website verwendet technisch notwendige Cookies und lokale
-              Speicherung, um die Sicherheit, Anmeldung und Benutzererfahrung
-              zu verbessern. Weitere Informationen finden Sie in der
-              Datenschutzerklärung.
+              Diese Website verwendet keine Tracking-Cookies, keine
+              Werbe-Cookies und keine Analyse-Cookies. Es wird lediglich eine
+              lokale Speicherung im Browser verwendet, um diese
+              Datenschutzhinweis-Auswahl zu speichern. Weitere Informationen
+              finden Sie in der Datenschutzerklärung.
             </p>
           </div>
 
           <div className="flex gap-3">
             <button
-              onClick={rejectCookies}
+              type="button"
+              onClick={rejectNotice}
               className="rounded-2xl border border-zinc-700 px-5 py-3 text-sm font-semibold text-zinc-300 transition hover:border-zinc-500 hover:bg-zinc-900"
             >
-              Ablehnen
+              Schließen
             </button>
 
             <button
-              onClick={acceptCookies}
+              type="button"
+              onClick={acceptNotice}
               className="rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-bold text-black transition hover:scale-105"
             >
-              Alle akzeptieren
+              Verstanden
             </button>
           </div>
         </div>
