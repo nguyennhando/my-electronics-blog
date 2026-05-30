@@ -697,8 +697,11 @@ function MarkdownEditorPage() {
 // HOME PAGE
 // ─────────────────────────────────────────────
 function HomePage({ posts, galleryImages, onOpenPost, onGoImpressum, onGoDatenschutz }) {
+  const POSTS_PER_PAGE = 15;
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Alle");
+  const [currentPage, setCurrentPage] = useState(1);
   const [lightbox, setLightbox] = useState(null); // { images, index }
   const [galleryLightboxIndex, setGalleryLightboxIndex] = useState(null);
 
@@ -725,6 +728,24 @@ function HomePage({ posts, galleryImages, onOpenPost, onGoImpressum, onGoDatensc
       return oA !== oB ? oA - oB : new Date(b.created_at || 0) - new Date(a.created_at || 0);
     });
   }, [posts, search, category]);
+
+  const totalPages = Math.max(
+  1,
+  Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
+);
+
+const paginatedPosts = filteredPosts.slice(
+  (currentPage - 1) * POSTS_PER_PAGE,
+  currentPage * POSTS_PER_PAGE
+);
+
+useEffect(() => {
+  setCurrentPage(1);
+}, [search, category]);
+
+useEffect(() => {
+  setCurrentPage(1);
+}, [search, category]);
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#050816] text-white">
@@ -874,7 +895,7 @@ function HomePage({ posts, galleryImages, onOpenPost, onGoImpressum, onGoDatensc
           )}
 
           <div className="grid auto-rows-fr gap-4 min-[620px]:grid-cols-2 xl:grid-cols-3 xl:gap-6">
-            {filteredPosts.map(post => {
+            {paginatedPosts.map(post => {
               const Icon = getCategoryIcon(post.category);
               const idea = isIdea(post);
               return (
@@ -911,6 +932,58 @@ function HomePage({ posts, galleryImages, onOpenPost, onGoImpressum, onGoDatensc
               );
             })}
           </div>
+
+          {totalPages > 1 && (
+  <div className="mt-10 flex flex-col items-center justify-center gap-4">
+    <div className="text-sm font-semibold text-zinc-400">
+      Seite {currentPage} von {totalPages}
+    </div>
+
+    <div className="flex flex-wrap items-center justify-center gap-2">
+      <button
+        type="button"
+        disabled={currentPage === 1}
+        onClick={() => {
+          setCurrentPage((page) => Math.max(page - 1, 1));
+          document.getElementById("blog")?.scrollIntoView({ behavior: "smooth" });
+        }}
+        className="rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        ← Vorherige
+      </button>
+
+      {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+        <button
+          key={page}
+          type="button"
+          onClick={() => {
+            setCurrentPage(page);
+            document.getElementById("blog")?.scrollIntoView({ behavior: "smooth" });
+          }}
+          className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black transition ${
+            currentPage === page
+              ? "bg-cyan-400 text-black"
+              : "border border-white/10 text-zinc-300 hover:bg-white/10"
+          }`}
+        >
+          {page}
+        </button>
+      ))}
+
+      <button
+        type="button"
+        disabled={currentPage === totalPages}
+        onClick={() => {
+          setCurrentPage((page) => Math.min(page + 1, totalPages));
+          document.getElementById("blog")?.scrollIntoView({ behavior: "smooth" });
+        }}
+        className="rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        Nächste →
+      </button>
+    </div>
+  </div>
+)}
         </section>
 
         {/* ── Gallery ── */}
