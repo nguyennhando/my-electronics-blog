@@ -1,41 +1,48 @@
-import matter from "gray-matter";
-
 const files = import.meta.glob("../content/*.md", {
   eager: true,
   query: "?raw",
   import: "default",
 });
 
-const toArray = (value) => {
-  if (Array.isArray(value)) return value;
-  if (!value) return [];
-  return String(value)
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean);
-};
+function parseFrontmatter(raw) {
+  const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
 
-export const POSTS = Object.entries(files)
-  .map(([path, raw]) => {
-    const { data, content } = matter(raw);
-    const slug = data.slug || path.split("/").pop().replace(/\.md$/, "");
-
+  if (!match) {
     return {
-      ...data,
-      id: data.id || slug,
-      slug,
-      content,
-      image_gallery: toArray(data.image_gallery),
-      tags: toArray(data.tags),
-      published: data.published !== false,
-      external_link: data.external_link || null,
-      created_at: data.created_at || new Date().toISOString(),
-      sort_order: Number.isFinite(Number(data.sort_order)) ? Number(data.sort_order) : 100,
+      data: {},
+      content: raw,
     };
-  })
-  .sort((a, b) => {
-    const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
-    const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
-    if (orderA !== orderB) return orderA - orderB;
-    return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+  }
+
+  const [, frontmatter, content] = match;
+
+  const data = {};
+
+  frontmatter.split("\n").forEach((line) => {
+    const idx = line.indexOf(":");
+
+    if (idx === -1) return;
+
+    const key = line.slice(0, idx).trim();
+    const value = line.slice(idx + 1).trim();
+
+    data[key] = value;
   });
+
+  return {
+    data,
+    content,
+  };
+}
+
+export const POSTS = Object.entries(files).map(([path, raw]) => {
+  const { data, content } = parseFrontmatter(raw);
+
+  return {
+    ...data,
+    slug:
+      data.slug ||
+      path.split("/").pop().replace(".md", ""),
+    content,
+  };
+});
