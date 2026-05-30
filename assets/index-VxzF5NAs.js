@@ -513,53 +513,6 @@ Das Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, 
 
 Aktueller Status:
 Konzeptprojekt / in Planung
-`,"../content/konzeptprojekt-esp32-basierte-mqtt-sensoruberwachung-fur-smart-home-anwendungen - Kopie.md":`---
-id: local-post-1779960913660
-title: 'Konzeptprojekt: ESP32-basierte MQTT-Sensorüberwachung für Smart-Home-Anwendungen'
-category: IoT
-image_url: /my-electronics-blog/images/posts/SmartHome-main.webp
-image_gallery: []
-excerpt: Geplantes Lernprojekt zur Entwicklung einer einfachen IoT-Plattform auf Basis
-  eines ESP32-Mikrocontrollers. Ziel des Projekts ist die Erfassung und Visualisierung
-  verschiedener Sensordaten über WLAN und MQTT.
-tags:
-- ESP32
-- MQTT
-read_time: 5 Min.
-published: true
-created_at: '2026-05-28T09:35:13.660Z'
-external_link: ''
-project_status: in_progress
-sort_order: 100
-slug: konzeptprojekt-esp32-basierte-mqtt-sensoruberwachung-fur-smart-home-anwendungen
----
-
-# Konzeptprojekt: ESP32-basierte MQTT-Sensorüberwachung für Smart-Home-Anwendungen
-
-Geplantes Lernprojekt zur Entwicklung einer einfachen IoT-Plattform auf Basis eines ESP32-Mikrocontrollers. Ziel des Projekts ist die Erfassung und Visualisierung verschiedener Sensordaten über WLAN und MQTT.
-
-Dieses Projekt befindet sich aktuell in der Konzept- und Lernphase.
-
-Geplant ist die Entwicklung einer einfachen IoT-Sensorplattform auf Basis eines ESP32-Mikrocontrollers zur Erfassung und Visualisierung verschiedener Sensordaten.
-
-Vorgesehene Hardware:
-- ESP32 Dev Board
-- DHT22 Temperatur- und Feuchtigkeitssensor
-- Relaismodul für einfache Schaltfunktionen
-- MQTT Broker (z.B. Mosquitto)
-- Dashboard zur Datenvisualisierung
-
-Geplante Funktionen:
-- WLAN-Kommunikation
-- MQTT Publish/Subscribe
-- Sensorüberwachung
-- Dashboard-Visualisierung
-- Erweiterung um zusätzliche Sensoren und Aktoren
-
-Das Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, MQTT-Kommunikation und IoT-Anwendungen.
-
-Aktueller Status:
-Konzeptprojekt / in Planung
 `,"../content/konzeptprojekt-esp32-basierte-mqtt-sensoruberwachung-fur-smart-home-anwendungen.md":`---
 id: local-post-1779960913660
 title: 'Konzeptprojekt: ESP32-basierte MQTT-Sensorüberwachung für Smart-Home-Anwendungen'
@@ -607,55 +560,6 @@ Das Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, 
 
 Aktueller Status:
 Konzeptprojekt / in Planung
-`,"../content/konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485 - Kopie.md":`---
-id: local-post-1779960691288
-title: 'Konzeptprojekt: ESP32-basiertes 4–20mA IoT-Gateway mit MQTT und RS485'
-category: IoT
-image_url: /my-electronics-blog/images/posts/ESP32-main.webp
-image_gallery: []
-excerpt: Geplantes Lern- und Entwicklungsprojekt zur Erfassung von 4–20mA-Sensorsignalen
-  mit ESP32, ADS1115 und MQTT-Kommunikation. Ziel des Projekts ist die Entwicklung
-  eines einfachen industriellen IoT-Prototyps zur Sensorüberwachung und Datenvisualisierung
-  über Home Assistant.
-tags:
-- ESP32
-- MQTT
-read_time: 5 Min.
-published: true
-created_at: '2026-05-28T09:31:31.288Z'
-external_link: ''
-project_status: idea
-sort_order: 90
-slug: konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485
----
-
-# Konzeptprojekt: ESP32-basiertes 4–20mA IoT-Gateway mit MQTT und RS485
-
-Geplantes Lern- und Entwicklungsprojekt zur Erfassung von 4–20mA-Sensorsignalen mit ESP32, ADS1115 und MQTT-Kommunikation. Ziel des Projekts ist die Entwicklung eines einfachen industriellen IoT-Prototyps zur Sensorüberwachung und Datenvisualisierung über Home Assistant.
-
-Dieses Projekt befindet sich aktuell in der Konzept- und Planungsphase.
-
-Ziel ist die Entwicklung eines einfachen IoT-Gateways zur Verarbeitung industrieller 4–20mA-Sensorsignale mit ESP32.
-
-Geplante Funktionen:
-• Erfassung von 4–20mA-Sensorsignalen über ADS1115
-• MQTT-Kommunikation für IoT-Anwendungen
-• RS485 / Modbus-RTU-Unterstützung
-• Visualisierung der Sensordaten über Home Assistant
-• Spannungsversorgung für industrielle 12–24VDC-Umgebungen
-
-Für die erste Entwicklungsphase ist ein schneller Prototyp mit ESP32-DevKit, ADS1115-Modul und MQTT-Anbindung vorgesehen. Nach erfolgreichem Funktionstest ist die Entwicklung einer eigenen PCB-Version mit KiCad geplant.
-
-Geplante Technologien:
-• ESP32-S3
-• ADS1115
-• MQTT
-• RS485 / Modbus RTU
-• Home Assistant
-• KiCad
-
-Aktueller Status:
-Konzeptphase / Lernprojekt
 `,"../content/konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485.md":`---
 id: local-post-1779960691288
 title: 'Konzeptprojekt: ESP32-basiertes 4–20mA IoT-Gateway mit MQTT und RS485'
@@ -705,54 +609,6 @@ Geplante Technologien:
 
 Aktueller Status:
 Konzeptphase / Lernprojekt
-`,"../content/konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt - Kopie.md":`---
-id: local-post-1779960950659
-title: 'Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT'
-category: Elektrotechnik
-image_url: /my-electronics-blog/images/posts/Schaltnetzteil-main.webp
-image_gallery: []
-excerpt: Geplantes Lernprojekt zur Überwachung von Spannungs-, Strom- und Temperaturwerten
-  eines DC-Schaltnetzteils mit ESP32 und MQTT-Kommunikation.
-tags:
-- MQTT
-- Schaltnetzteil
-read_time: 5 Min.
-published: true
-created_at: '2026-05-28T09:35:50.659Z'
-external_link: ''
-project_status: idea
-sort_order: 100
-slug: konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt
----
-
-# Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT
-
-Geplantes Lernprojekt zur Überwachung von Spannungs-, Strom- und Temperaturwerten eines DC-Schaltnetzteils mit ESP32 und MQTT-Kommunikation.
-
-Dieses Projekt befindet sich aktuell in der Konzept- und Lernphase.
-
-Geplant ist die Entwicklung eines einfachen Überwachungssystems für DC-Schaltnetzteile auf Basis eines ESP32-Mikrocontrollers.
-
-Ziel des Projekts ist die Erfassung und Visualisierung von Spannungs-, Strom- und Temperaturwerten über WLAN und MQTT.
-
-Vorgesehene Hardware:
-- ESP32 Dev Board
-- Stromsensor (ACS712 oder INA219)
-- Temperatursensor
-- OLED Display
-- WLAN- und MQTT-Kommunikation
-
-Geplante Funktionen:
-- Spannungs- und Stromüberwachung
-- Temperaturüberwachung
-- MQTT-Datenübertragung
-- Dashboard-Visualisierung
-- Einfache Status- und Fehleranzeige
-
-Das Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, Sensorik und industrieller Energieüberwachung.
-
-Aktueller Status:
-Konzeptprojekt / in Planung
 `,"../content/konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt.md":`---
 id: local-post-1779960950659
 title: 'Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT'
@@ -801,48 +657,6 @@ Das Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, 
 
 Aktueller Status:
 Konzeptprojekt / in Planung
-`,"../content/plc-programmierung-einer-industriellen-tauchanlage - Kopie.md":`---
-id: demo-3
-title: PLC-Programmierung einer industriellen Tauchanlage
-category: SPS-Programmierung
-image_url: /my-electronics-blog/images/posts/Tauchanlage-main.webp
-image_gallery:
-- /my-electronics-blog/images/posts/Tauchanlage-1.webp
-- /my-electronics-blog/images/posts/Tauchanlage-2.webp
-excerpt: Automatisierte Tauchanlage mit SPS-Steuerung. Automatischer Transport und
-  Tauchprozess mit Siemens S7-300. Hand- und Automatikbetrieb im TIA Portal realisiert.
-tags:
-- SPS
-- S7300
-- TiaPortal
-read_time: 5 Min.
-published: true
-created_at: '2026-04-29T12:00:00Z'
-external_link: https://drive.google.com/drive/folders/1WgBLk6R1F-_J_oisAxwNgQyFdcKVzb-m
-project_status: done
-sort_order: 50
-slug: plc-programmierung-einer-industriellen-tauchanlage
----
-
-# PLC-Programmierung einer industriellen Tauchanlage
-
-Automatisierte Tauchanlage mit Siemens S7-300
-
-Dieses Projekt umfasst die Entwicklung und Programmierung einer automatisierten Tauchanlage zur Steuerung eines industriellen Transport- und Tauchprozesses.
-Die Anlage ermöglicht das automatische Verfahren, Heben und Senken eines Werkstückkorbs zwischen zwei Tauchbädern unter Berücksichtigung definierter Sicherheits- und Bewegungsbedingungen.
-
-Die Steuerung wurde mit einer Siemens S7-300 CPU im TIA Portal realisiert.
-Das Projekt beinhaltet sowohl einen Handbetrieb zur manuellen Steuerung der Achsen als auch einen vollautomatischen Ablauf mit sequenzieller Prozesssteuerung.
-
-Im Automatikbetrieb fährt der Korb selbstständig zu den einzelnen Tauchstationen, führt definierte Tauch- und Abtropfzeiten aus und kehrt anschließend in die Ausgangsposition zurück.
-Zusätzlich wurden Endlagensensoren, Sicherheitsabfragen, Statusanzeigen, Motorsteuerungen sowie eine Werkstückzählung mit Zeitstempel-Historie implementiert.
-
-Die Softwarestruktur besteht aus mehreren Funktionsbausteinen für Betriebsarten, Ausgangssteuerung, Ablaufsteuerung, Teilehistorie und Diagnosefunktionen.
-Zur Verbesserung der Übersichtlichkeit wurden symbolische Variablen, Datenbausteine sowie strukturierte Datentypen verwendet.
-
-Das Projekt demonstriert praxisnah die Umsetzung industrieller Automatisierungstechnik mit SPS, Sensorik, Aktorik und Ablaufsteuerung im Siemens TIA Portal.
-
-**Zum Projekte klicken, um die vollständige Dokumentation und Projektdateien im Detail anzusehen.**
 `,"../content/plc-programmierung-einer-industriellen-tauchanlage.md":`---
 id: demo-3
 title: PLC-Programmierung einer industriellen Tauchanlage
@@ -885,83 +699,6 @@ Zur Verbesserung der Übersichtlichkeit wurden symbolische Variablen, Datenbaust
 Das Projekt demonstriert praxisnah die Umsetzung industrieller Automatisierungstechnik mit SPS, Sensorik, Aktorik und Ablaufsteuerung im Siemens TIA Portal.
 
 **Zum Projekte klicken, um die vollständige Dokumentation und Projektdateien im Detail anzusehen.**
-`,"../content/technischer-portfolio-blog-mit-react-supabase-und-adminbereich - Kopie.md":`---
-id: local-post-1779960647159
-title: Technischer Portfolio-Blog mit React, Supabase und Adminbereich
-category: Softwareentwicklung
-image_url: /my-electronics-blog/images/posts/Portfolio-Blog-main.webp
-image_gallery: []
-excerpt: Entwicklung einer modernen Portfolio- und Blog-Webanwendung zur Präsentation
-  technischer Projekte, Dokumentationen und persönlicher Entwicklung. Die Website
-  wurde mit React, Tailwind CSS, Framer Motion und Supabase umgesetzt und verfügt
-  über einen geschützten Adminbereich zur Verwaltung von Beiträgen.
-tags:
-- React
-- Supabase
-- Tailwind
-read_time: 5 Min.
-published: true
-created_at: '2026-05-28T09:30:47.159Z'
-external_link: https://github.com/nguyennhando/my-electronics-blog
-project_status: done
-sort_order: 80
-slug: technischer-portfolio-blog-mit-react-supabase-und-adminbereich
----
-
-# Technischer Portfolio-Blog mit React, Supabase und Adminbereich
-
-Entwicklung einer modernen Portfolio- und Blog-Webanwendung zur Präsentation technischer Projekte, Dokumentationen und persönlicher Entwicklung. Die Website wurde mit React, Tailwind CSS, Framer Motion und Supabase umgesetzt und verfügt über einen geschützten Adminbereich zur Verwaltung von Beiträgen.
-
-Dieses Projekt ist eine selbst entwickelte Portfolio- und Blog-Webanwendung, mit der ich technische Projekte, Dokumentationen und persönliche Lernerfahrungen zentral präsentieren und verwalten kann.
-
-Die Website wurde mit React entwickelt und nutzt eine moderne Komponentenstruktur. Für das Design kommt Tailwind CSS zum Einsatz. Dadurch konnte eine responsive, dunkle Benutzeroberfläche mit technischen Farbakzenten, Kartenlayouts, Animationen und einer klaren Struktur umgesetzt werden.
-
-Ein wichtiger Bestandteil des Projekts ist der integrierte Adminbereich. Nach erfolgreichem Login können Beiträge erstellt, bearbeitet, gelöscht und sortiert werden. Zusätzlich können Kategorien, Tags, Projektstatus, Bilder, Kurzbeschreibungen, vollständige Inhalte und externe Links gepflegt werden.
-
-Für die Datenverwaltung wird Supabase verwendet. Die Beiträge werden in einer Datenbank gespeichert, Bilder können über Supabase Storage hochgeladen werden und der Zugriff auf den Adminbereich wird über Supabase Authentication abgesichert. Änderungen an Beiträgen sind zusätzlich durch Row Level Security geschützt.
-
-Die Anwendung enthält unter anderem folgende Funktionen:
-
-- Startseite mit animiertem Hero-Slider
-- Projekt- und Blogübersicht
-- Suchfunktion nach Technologien und Inhalten
-- Kategoriefilter
-- Detailseite für einzelne Beiträge
-- Geschützter Adminbereich
-- Login- und Logout-Funktion
-- Beitrag erstellen, bearbeiten und löschen
-- Bild-Upload über Supabase Storage
-- Sortierung der Beiträge
-- Projektstatus wie Idee, In Arbeit oder Umgesetzt
-- Responsive Design für Desktop, Tablet und Smartphone
-- Animationen mit Framer Motion
-- Rechtliche Seiten wie Impressum und Datenschutz
-
-Besonderer Fokus lag auf einer professionellen technischen Darstellung. Die Website soll nicht nur Projekte zeigen, sondern auch den eigenen Entwicklungsprozess dokumentieren. Deshalb wurde das Projekt so aufgebaut, dass neue technische Inhalte einfach ergänzt und langfristig gepflegt werden können.
-
-Technisch verbindet das Projekt Frontend-Entwicklung, Datenbankanbindung, Authentifizierung, Dateispeicherung und Benutzeroberfläche in einer vollständigen Webanwendung.
-
-Verwendete Technologien:
-
-- React
-- React Router
-- Tailwind CSS
-- Framer Motion
-- Supabase Auth
-- Supabase Database
-- Supabase Storage
-- Lucide React Icons
-- Vite
-- JavaScript
-
-Durch dieses Projekt konnte ich praktische Erfahrungen in moderner Webentwicklung, Datenbankintegration, Benutzerverwaltung, UI-Design und Deployment sammeln. Gleichzeitig dient die Website als zentrale Plattform, um meine technischen Projekte aus Elektrotechnik, Embedded Systems, Automatisierungstechnik und Softwareentwicklung professionell zu präsentieren.
-
-Der vollständige Open-Source-Quellcode dieses Projekts ist öffentlich verfügbar. 
-Über die Schaltfläche „Zum Projekt“ gelangen Sie direkt zum GitHub-Repository, in dem der gesamte Source Code, die Projektstruktur sowie weitere technische Projektdateien bereitgestellt werden.
-
-Aktualisierung des Systems (23.05.2026) :
-
-Zur Optimierung der Bandbreitennutzung wurde das Bildmanagement der Website angepasst. Die Bilddateien werden nun direkt über GitHub Pages bereitgestellt, während Supabase weiterhin für Datenbank, Authentifizierung und die Verwaltung der Inhalte verwendet wird. Dadurch konnte die Nutzung des Supabase Storage reduziert werden, ohne die bestehende Systemarchitektur zu verändern.
 `,"../content/technischer-portfolio-blog-mit-react-supabase-und-adminbereich.md":`---
 id: local-post-1779960647159
 title: Technischer Portfolio-Blog mit React, Supabase und Adminbereich
@@ -1039,60 +776,6 @@ Der vollständige Open-Source-Quellcode dieses Projekts ist öffentlich verfügb
 Aktualisierung des Systems (23.05.2026) :
 
 Zur Optimierung der Bandbreitennutzung wurde das Bildmanagement der Website angepasst. Die Bilddateien werden nun direkt über GitHub Pages bereitgestellt, während Supabase weiterhin für Datenbank, Authentifizierung und die Verwaltung der Inhalte verwendet wird. Dadurch konnte die Nutzung des Supabase Storage reduziert werden, ohne die bestehende Systemarchitektur zu verändern.
-`,"../content/visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen - Kopie.md":`---
-id: local-post-1779960317991
-title: Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens
-  WinCC
-category: SPS-Programmierung
-image_url: /my-electronics-blog/images/posts/Mischbehälter-main.webp
-image_gallery:
-- /my-electronics-blog/images/posts/Mischbehälter-1.webp
-- /my-electronics-blog/images/posts/Mischbehälter-2.webp
-- /my-electronics-blog/images/posts/Mischbehälter-3.webp
-excerpt: 'Dieses Projekt beschreibt die Entwicklung eines industriellen HMI-Systems
-  zur Überwachung und Steuerung eines Mischbehälters mit Siemens SIMATIC WinCC Runtime
-  Advanced.
-
-  Die Anwendung ermöglicht die Visualisierung von Sensoren, Ventilen, Motoren und
-  Temperaturwerten in Echtzeit sowie die Bedienung im Automatik- und Handbetrieb.
-  Ziel des Projekts ist eine benutzerfreundliche, sichere und effiziente Prozesssteuerung
-  für industrielle Mischprozesse.'
-tags:
-- SPS
-read_time: 5 Min.
-published: true
-created_at: '2026-05-28T09:25:17.991Z'
-external_link: https://drive.google.com/drive/folders/1Vrz5hK6aTVExshjDZIi92ecTgQaFo_kq
-project_status: done
-sort_order: 40
-slug: visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen
----
-
-# Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens WinCC
-
-Dieses Projekt umfasst die Entwicklung eines modernen HMI-Visualisierungssystems zur Überwachung und Steuerung eines industriellen Mischbehälters mit Siemens SIMATIC WinCC Runtime Advanced und einer Siemens SPS S7-1200/1500.
-
-Die Anwendung ermöglicht die Visualisierung von Sensoren, Ventilen, Motoren und Temperaturwerten in Echtzeit sowie die Bedienung im Automatik- und Handbetrieb. Ziel des Projekts ist eine benutzerfreundliche, sichere und effiziente Prozesssteuerung für industrielle Mischprozesse.
-
-Das System wurde entwickelt, um industrielle Mischprozesse effizient, sicher und benutzerfreundlich zu steuern. Über die HMI-Oberfläche können verschiedene Prozessparameter in Echtzeit überwacht und bedient werden. Dazu gehören unter anderem Motoren, Ventile, Sensoren, Temperaturanzeigen sowie automatische und manuelle Betriebsarten.
-
-Die Visualisierung ermöglicht dem Bediener eine klare Darstellung des gesamten Mischprozesses. Der aktuelle Anlagenstatus wird grafisch dargestellt, wodurch Materialfluss, Motoraktivitäten und Ventilstellungen jederzeit nachvollziehbar sind. Zusätzlich wurden Sicherheitsfunktionen wie Not-Halt, Statusmeldungen und Alarmanzeigen integriert, um einen sicheren Anlagenbetrieb zu gewährleisten.
-
-Im Automatikbetrieb erfolgt die Prozesssteuerung schrittweise über definierte Ablaufsequenzen. Dabei werden Sensorwerte verarbeitet und Aktoren automatisch angesteuert. Im Handbetrieb können einzelne Komponenten manuell getestet und gesteuert werden, was insbesondere bei Wartung und Inbetriebnahme wichtig ist.
-
-Das Projekt beinhaltet außerdem:
-
-* Echtzeit-Kommunikation zwischen SPS und HMI
-* Prozessvisualisierung und Anlagenüberwachung
-* Temperaturüberwachung und Statusanzeigen
-* Steuerung von Ventilen und Motoren
-* Automatik- und Handbetrieb
-* Fehler- und Alarmmanagement
-* Benutzerfreundliche Bedienoberfläche
-
-Ziel des Projekts ist die Entwicklung einer zuverlässigen und effizienten Lösung für industrielle Automatisierungsprozesse. Durch die Kombination aus Siemens SPS-Technologie und WinCC Runtime Advanced entsteht ein leistungsfähiges HMI-System zur Optimierung von Produktionsabläufen und zur Erhöhung der Betriebssicherheit.
-
-Klicken Sie auf die Schaltfläche „Zum Projekt“, um die vollständige Projektdokumentation und weitere Details zum HMI-System anzuzeigen.
 `,"../content/visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen.md":`---
 id: local-post-1779960317991
 title: Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens
@@ -1147,46 +830,6 @@ Das Projekt beinhaltet außerdem:
 Ziel des Projekts ist die Entwicklung einer zuverlässigen und effizienten Lösung für industrielle Automatisierungsprozesse. Durch die Kombination aus Siemens SPS-Technologie und WinCC Runtime Advanced entsteht ein leistungsfähiges HMI-System zur Optimierung von Produktionsabläufen und zur Erhöhung der Betriebssicherheit.
 
 Klicken Sie auf die Schaltfläche „Zum Projekt“, um die vollständige Projektdokumentation und weitere Details zum HMI-System anzuzeigen.
-`,"../content/wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi - Kopie.md":`---
-id: local-post-1779960469574
-title: WinCC Fischertechnikmodell – Automatik- und Handbetrieb mit HMI
-category: SPS-Programmierung
-image_url: /my-electronics-blog/images/posts/FischerTechnik-main.webp
-image_gallery:
-- /my-electronics-blog/images/posts/FischerTechnik-1.webp
-excerpt: Programmierung eines Fischertechnik-Pressenmodells mit Siemens CPU1512C,
-  ET200SP und TP700 Comfort Panel. Implementiert werden Automatikbetrieb, Handbetrieb,
-  Benutzerverwaltung, Rezepturverwaltung, Alarmmeldungen sowie eine vollständige HMI-Bedienoberfläche.
-tags:
-- WinCC
-- SPS
-- HMI
-read_time: 5 Min.
-published: true
-created_at: '2026-05-28T09:27:49.574Z'
-external_link: https://drive.google.com/drive/folders/1XwbZqMA_neR7FqreJCQsHW4ddtIEpOKi?usp=drive_link
-project_status: done
-sort_order: 60
-slug: wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi
----
-
-# WinCC Fischertechnikmodell – Automatik- und Handbetrieb mit HMI
-
-Entwicklung einer SPS- und HMI-Steuerung für das Fischertechnik-Pressenmodell mit Siemens CPU1512C, ET200SP und TP700 Comfort Panel.
-
-Programmierung eines Fischertechnik-Pressenmodells mit Siemens CPU1512C, ET200SP und TP700 Comfort Panel. Implementiert werden Automatikbetrieb, Handbetrieb, Benutzerverwaltung, Rezepturverwaltung, Alarmmeldungen sowie eine vollständige HMI-Bedienoberfläche.
-
-Implementiert werden:
-
-Automatikbetrieb
-Handbetrieb / Einrichtbetrieb
-Benutzerverwaltung
-Alarm- und Meldesystem
-Rezeptverwaltung
-HMI-Visualisierung über WinCC
-
-Die Kommunikation erfolgt über Profinet.
-Das System befindet sich aktuell noch in der Fertigstellung und Optimierung. ⚙️
 `,"../content/wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi.md":`---
 id: local-post-1779960469574
 title: WinCC Fischertechnikmodell – Automatik- und Handbetrieb mit HMI
