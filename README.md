@@ -73,6 +73,16 @@ Supported `project_status` values are `idea`, `in_progress` and `done`. Lower `s
 
 The Markdown parser supports wrapped scalar values and `-` list items for `image_gallery` and `tags`.
 
+## Markdown Editor
+
+Open `?admin=1` to use the Markdown export form:
+
+```text
+https://nguyennhando.github.io/my-electronics-blog/?admin=1
+```
+
+Create a new post or select an existing post to edit its loaded content. The form downloads a `.md` file only. Move the downloaded file into `src/content/`, replace the old file when editing, add any referenced images to `public/images/posts/`, then deploy the site. The editor does not modify the deployed website directly.
+
 ## Deployment
 
 The Vite base path is configured for GitHub Pages:

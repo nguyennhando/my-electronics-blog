@@ -8,7 +8,7 @@ import {
   CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X,
   CalendarDays, ArrowRight, ShieldCheck,
   Wrench, Mail, MonitorSmartphone, Workflow, AlertTriangle, ExternalLink,
-  ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock,
+  ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock, Download, FileText,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────
@@ -64,6 +64,87 @@ const getCategoryIcon = (cat) => {
   };
   return map[cat] || Cpu;
 };
+
+const slugify = (value) => String(value || "")
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "")
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, "-")
+  .replace(/^-+|-+$/g, "");
+
+const singleLine = (value) => String(value || "").replace(/\s+/g, " ").trim();
+
+const markdownList = (items) => items.length
+  ? items.map((item) => `- ${singleLine(item)}`).join("\n")
+  : "[]";
+
+const createMarkdownFile = (post) => `---
+id: ${singleLine(post.slug)}
+slug: ${singleLine(post.slug)}
+title: ${singleLine(post.title)}
+category: ${singleLine(post.category)}
+image_url: ${singleLine(post.image_url)}
+image_gallery:
+${markdownList(post.image_gallery)}
+excerpt: ${singleLine(post.excerpt)}
+tags:
+${markdownList(post.tags)}
+read_time: ${singleLine(post.read_time)}
+published: ${post.published}
+created_at: '${post.created_at}'
+external_link: ${singleLine(post.external_link)}
+project_status: ${post.project_status}
+sort_order: ${Number(post.sort_order) || 100}
+---
+
+${post.content.trim()}
+`;
+
+const downloadTextFile = (filename, content) => {
+  const blob = new Blob([content], { type: "text/markdown;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+};
+
+const emptyEditorForm = () => ({
+  title: "",
+  slug: "",
+  category: "IoT",
+  image_url: "",
+  image_gallery: "",
+  excerpt: "",
+  tags: "",
+  read_time: "5 Min.",
+  published: true,
+  created_at: new Date().toISOString(),
+  external_link: "",
+  project_status: "done",
+  sort_order: 100,
+  content: "# Neuer Beitrag\n\nProjektbeschreibung...",
+});
+
+const postToEditorForm = (post) => ({
+  title: post.title || "",
+  slug: post.slug || "",
+  category: post.category || "IoT",
+  image_url: post.image_url || "",
+  image_gallery: normalizeImageList(post.image_gallery).join("\n"),
+  excerpt: post.excerpt || "",
+  tags: Array.isArray(post.tags) ? post.tags.join(", ") : "",
+  read_time: post.read_time || "5 Min.",
+  published: post.published !== false,
+  created_at: post.created_at || new Date().toISOString(),
+  external_link: post.external_link || "",
+  project_status: normalizeStatus(post.project_status),
+  sort_order: Number.isFinite(Number(post.sort_order)) ? Number(post.sort_order) : 100,
+  content: post.content || "",
+});
 
 // ─────────────────────────────────────────────
 // DEMO DATA
@@ -412,6 +493,165 @@ function PostDetailPage({ post, onBack }) {
       {lightboxIndex !== null && (
         <Lightbox images={allImages} index={lightboxIndex} onClose={() => setLightboxIndex(null)} />
       )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+// MARKDOWN EDITOR
+// ─────────────────────────────────────────────
+function MarkdownEditorPage() {
+  const [form, setForm] = useState(emptyEditorForm);
+  const [selectedSlug, setSelectedSlug] = useState("");
+  const [slugEdited, setSlugEdited] = useState(false);
+
+  const update = (key, value) => {
+    setForm((current) => {
+      const next = { ...current, [key]: value };
+      if (key === "title" && !slugEdited) next.slug = slugify(value);
+      return next;
+    });
+  };
+
+  const exportPost = () => {
+    const slug = form.slug || slugify(form.title);
+    if (!slug || !form.title.trim() || !form.excerpt.trim() || !form.content.trim()) {
+      window.alert("Titel, Slug, Kurzbeschreibung und Inhalt sind Pflichtfelder.");
+      return;
+    }
+
+    const markdown = createMarkdownFile({
+      ...form,
+      slug,
+      image_gallery: form.image_gallery.split("\n").map((item) => item.trim()).filter(Boolean),
+      tags: form.tags.split(",").map((item) => item.trim()).filter(Boolean),
+    });
+    downloadTextFile(`${slug}.md`, markdown);
+  };
+
+  const selectPost = (slug) => {
+    setSelectedSlug(slug);
+    if (!slug) {
+      setForm(emptyEditorForm());
+      setSlugEdited(false);
+      return;
+    }
+
+    const post = POSTS.find((item) => item.slug === slug);
+    if (!post) return;
+    setForm(postToEditorForm(post));
+    setSlugEdited(true);
+  };
+
+  const inputClass = "w-full rounded-xl border border-white/10 bg-[#07111f] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 placeholder:text-zinc-600 focus:ring-4";
+  const labelClass = "mb-2 block text-xs font-bold uppercase text-zinc-400";
+
+  return (
+    <div className="min-h-screen bg-[#050816] text-white">
+      <Background />
+      <header className="sticky top-0 z-30 border-b border-white/10 bg-[#050816]/90 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-5">
+          <div className="flex items-center gap-3">
+            <FileText className="h-6 w-6 text-cyan-300" />
+            <div>
+              <h1 className="font-black">Markdown-Beitrag erstellen</h1>
+              <p className="text-xs text-zinc-500">ElektronikLab</p>
+            </div>
+          </div>
+          <a href="/my-electronics-blog/" className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
+            <ArrowLeft className="h-4 w-4" /> Blog
+          </a>
+        </div>
+      </header>
+
+      <main className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-5 lg:grid-cols-[1.05fr_0.95fr]">
+        <section className="space-y-5">
+          <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-5">
+            <label className={labelClass}>Beitrag laden oder neu erstellen</label>
+            <select className={inputClass} value={selectedSlug} onChange={(e) => selectPost(e.target.value)}>
+              <option value="">Neuer Beitrag</option>
+              {POSTS.map((post) => <option key={post.slug} value={post.slug}>{post.title}</option>)}
+            </select>
+          </div>
+
+          <div className="grid gap-4 rounded-2xl border border-white/10 bg-black/20 p-5 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <label className={labelClass}>Titel *</label>
+              <input className={inputClass} value={form.title} onChange={(e) => update("title", e.target.value)} placeholder="Titel des Projekts" />
+            </div>
+            <div>
+              <label className={labelClass}>Slug *</label>
+              <input className={inputClass} value={form.slug} onChange={(e) => { setSlugEdited(true); update("slug", slugify(e.target.value)); }} placeholder="projekt-name" />
+            </div>
+            <div>
+              <label className={labelClass}>Kategorie</label>
+              <input className={inputClass} value={form.category} onChange={(e) => update("category", e.target.value)} />
+            </div>
+            <div>
+              <label className={labelClass}>Status</label>
+              <select className={inputClass} value={form.project_status} onChange={(e) => update("project_status", e.target.value)}>
+                <option value="idea">Idee</option>
+                <option value="in_progress">In Arbeit</option>
+                <option value="done">Umgesetzt</option>
+              </select>
+            </div>
+            <div>
+              <label className={labelClass}>Reihenfolge</label>
+              <input className={inputClass} type="number" value={form.sort_order} onChange={(e) => update("sort_order", e.target.value)} />
+            </div>
+            <div className="sm:col-span-2">
+              <label className={labelClass}>Kurzbeschreibung *</label>
+              <textarea className={inputClass} rows={3} value={form.excerpt} onChange={(e) => update("excerpt", e.target.value)} />
+            </div>
+            <div className="sm:col-span-2">
+              <label className={labelClass}>Hauptbild</label>
+              <input className={inputClass} value={form.image_url} onChange={(e) => update("image_url", e.target.value)} placeholder="/my-electronics-blog/images/posts/bild.webp" />
+            </div>
+            <div className="sm:col-span-2">
+              <label className={labelClass}>Galeriebilder, ein Pfad pro Zeile</label>
+              <textarea className={inputClass} rows={3} value={form.image_gallery} onChange={(e) => update("image_gallery", e.target.value)} />
+            </div>
+            <div>
+              <label className={labelClass}>Tags, durch Komma getrennt</label>
+              <input className={inputClass} value={form.tags} onChange={(e) => update("tags", e.target.value)} placeholder="ESP32, MQTT, IoT" />
+            </div>
+            <div>
+              <label className={labelClass}>Lesezeit</label>
+              <input className={inputClass} value={form.read_time} onChange={(e) => update("read_time", e.target.value)} />
+            </div>
+            <div className="sm:col-span-2">
+              <label className={labelClass}>Externer Projektlink</label>
+              <input className={inputClass} value={form.external_link} onChange={(e) => update("external_link", e.target.value)} placeholder="https://..." />
+            </div>
+            <label className="flex items-center gap-3 text-sm font-bold text-zinc-300">
+              <input type="checkbox" checked={form.published} onChange={(e) => update("published", e.target.checked)} />
+              Veröffentlicht
+            </label>
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
+            <label className={labelClass}>Markdown-Inhalt *</label>
+            <textarea className={`${inputClass} min-h-[420px] font-mono leading-6`} value={form.content} onChange={(e) => update("content", e.target.value)} />
+          </div>
+        </section>
+
+        <aside className="lg:sticky lg:top-[90px] lg:self-start">
+          <div className="rounded-2xl border border-white/10 bg-[#07111f]/95 p-5">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="font-black text-cyan-300">Vorschau</h2>
+              <button type="button" onClick={exportPost} className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2 text-sm font-black text-black transition hover:bg-cyan-300">
+                <Download className="h-4 w-4" /> MD exportieren
+              </button>
+            </div>
+            {form.image_url && <img src={form.image_url} alt="" className="mt-5 h-48 w-full rounded-xl object-cover" />}
+            <h3 className="mt-5 text-2xl font-black">{form.title || "Titel des Beitrags"}</h3>
+            <p className="mt-3 text-sm leading-7 text-zinc-400">{form.excerpt || "Kurzbeschreibung des Projekts"}</p>
+            <div className="prose prose-invert mt-6 max-w-none prose-headings:text-white prose-p:text-zinc-300 prose-strong:text-white prose-li:text-zinc-300">
+              <ReactMarkdown>{form.content}</ReactMarkdown>
+            </div>
+          </div>
+        </aside>
+      </main>
     </div>
   );
 }
@@ -1056,6 +1296,7 @@ function DatenschutzPage({ onBack }) {
 // APP ROOT (routing + state)
 // ─────────────────────────────────────────────
 function App() {
+  const isMarkdownEditor = new URLSearchParams(window.location.search).get("admin") === "1";
   const [page, setPage] = useState("home"); // "home" | "post" | "impressum" | "datenschutz"
   const [currentPostId, setCurrentPostId] = useState(null);
 
@@ -1084,6 +1325,10 @@ function App() {
     setPage("datenschutz");
     setCurrentPostId(null);
   }, []);
+
+  if (isMarkdownEditor) {
+    return <MarkdownEditorPage />;
+  }
 
   if (page === "impressum") {
     return <ImpressumPage onBack={goHome} />;
