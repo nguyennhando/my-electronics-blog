@@ -200,7 +200,7 @@ read_time: 6 Min.
 published: true
 created_at: 2026-05-30T10:00:00.000Z
 external_link:
-project_status: done
+project_status: idea
 sort_order: 100
 ---
 
