@@ -5,13 +5,8 @@ export default function CookieBanner() {
     () => !localStorage.getItem("privacy-notice")
   );
 
-  const acceptNotice = () => {
-    localStorage.setItem("privacy-notice", "accepted");
-    setVisible(false);
-  };
-
-  const rejectNotice = () => {
-    localStorage.setItem("privacy-notice", "rejected");
+  const dismissNotice = () => {
+    localStorage.setItem("privacy-notice", "acknowledged");
     setVisible(false);
   };
 
@@ -38,15 +33,7 @@ export default function CookieBanner() {
           <div className="flex gap-3">
             <button
               type="button"
-              onClick={rejectNotice}
-              className="rounded-2xl border border-zinc-700 px-5 py-3 text-sm font-semibold text-zinc-300 transition hover:border-zinc-500 hover:bg-zinc-900"
-            >
-              Schließen
-            </button>
-
-            <button
-              type="button"
-              onClick={acceptNotice}
+              onClick={dismissNotice}
               className="rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-bold text-black transition hover:scale-105"
             >
               Verstanden

@@ -6,7 +6,7 @@ import { POSTS } from "./lib/posts";
 
 import {
   CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X,
-  CalendarDays, ArrowRight, Save, Trash2, Edit3, Plus, ShieldCheck,
+  CalendarDays, ArrowRight, ShieldCheck,
   Wrench, Mail, MonitorSmartphone, Workflow, AlertTriangle, ExternalLink,
   ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock,
 } from "lucide-react";
@@ -14,9 +14,6 @@ import {
 // ─────────────────────────────────────────────
 // CONSTANTS
 // ─────────────────────────────────────────────
-const MAX_POST_GALLERY_IMAGES = 6;
-const POSTS_KEY = "my-electronics-blog.posts.v1";
-const GALLERY_KEY = "my-electronics-blog.projectGallery.v1";
 const SLIDE_INTERVAL = 5000;
 
 const DEFAULT_GALLERY = [
@@ -24,29 +21,6 @@ const DEFAULT_GALLERY = [
   "/my-electronics-blog/images/finance-chart.webp",
   "/my-electronics-blog/images/finance-dashboard.webp",
 ];
-
-// ─────────────────────────────────────────────
-// STORAGE HELPERS
-// ─────────────────────────────────────────────
-const readStorage = (key, fallback) => {
-  try {
-    const raw = localStorage.getItem(key);
-    if (!raw) return fallback;
-    return JSON.parse(raw);
-  } catch { return fallback; }
-};
-
-const writeStorage = (key, value) => {
-  try { localStorage.setItem(key, JSON.stringify(value, null, 2)); } catch {
-    // Ignore unavailable or full browser storage.
-  }
-};
-
-const removeStorage = (key) => {
-  try { localStorage.removeItem(key); } catch {
-    // Ignore unavailable browser storage.
-  }
-};
 
 // ─────────────────────────────────────────────
 // DATA HELPERS
@@ -63,16 +37,6 @@ const normalizeImageList = (value) => {
     }
   }
   return [];
-};
-
-const normalizeImagePath = (value) => {
-  const path = String(value || "").trim();
-  if (!path) return "";
-  if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  if (path.startsWith("/my-electronics-blog/")) return path;
-  if (path.startsWith("/images/")) return `/my-electronics-blog${path}`;
-  if (path.startsWith("images/")) return `/my-electronics-blog/${path}`;
-  return `/my-electronics-blog/images/posts/${path.replace(/^\/+/, "")}`;
 };
 
 const normalizeStatus = (s) => ["idea", "in_progress", "done"].includes(s) ? s : "done";
@@ -101,36 +65,15 @@ const getCategoryIcon = (cat) => {
   return map[cat] || Cpu;
 };
 
-const downloadJson = (filename, data) => {
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url; a.download = filename;
-  document.body.appendChild(a); a.click();
-  a.remove(); URL.revokeObjectURL(url);
-};
-
 // ─────────────────────────────────────────────
 // DEMO DATA
 // ─────────────────────────────────────────────
-const DEMO_POSTS = POSTS;
-
 const FEATURES = [
   { icon: Cpu, title: "Elektronik & Embedded Systems", text: "Eigene Lernprojekte rund um Mikrocontroller, Sensorik und hardwarenahe Entwicklung zur praktischen Erweiterung meines technischen Wissens." },
   { icon: Workflow, title: "Automatisierung & Steuerung", text: "Praktische Übungen und kleinere Projekte, um industrielle Abläufe, Steuerungstechnik und technische Prozesse besser zu verstehen." },
   { icon: ShieldCheck, title: "Technisches Lernen", text: "Dokumentation meines Lernwegs, technischer Erfahrungen und neuer Themen, mit denen ich mich kontinuierlich beschäftige." },
   { icon: MonitorSmartphone, title: "Eigene Entwicklung", text: "Diese Website dient als persönliche Plattform, um Projekte, Ideen und technische Fortschritte übersichtlich festzuhalten." },
 ];
-
-const EMPTY_POST = () => ({
-  id: null, title: "", category: "IoT",
-  image_url: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
-  image_gallery: [], excerpt: "", content: "",
-  tags: "ESP32, Sensorik", read_time: "5 Min.",
-  published: true, external_link: "",
-  project_status: "done", sort_order: 100,
-  created_at: new Date().toISOString(),
-});
 
 // ─────────────────────────────────────────────
 // REUSABLE COMPONENTS
@@ -198,9 +141,8 @@ function Lightbox({ images, index, onClose }) {
 // ─────────────────────────────────────────────
 // HEADER
 // ─────────────────────────────────────────────
-function SiteHeader({ onAdminClick, adminUnlocked, onNavigate, currentPage }) {
+function SiteHeader({ onNavigate, currentPage }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const isAdminRoute = new URLSearchParams(window.location.search).get("admin") === "1";
 
   const scrollTo = (id) => {
     setMenuOpen(false);
@@ -209,23 +151,6 @@ function SiteHeader({ onAdminClick, adminUnlocked, onNavigate, currentPage }) {
   };
 
   const goHome = () => { setMenuOpen(false); onNavigate("home"); window.scrollTo({ top: 0, behavior: "smooth" }); };
-
-  const openAdmin = () => {
-  if (adminUnlocked) {
-    setMenuOpen(false);
-    onAdminClick();
-    return;
-  }
-
-  const pw = window.prompt("Admin Passwort");
-
-  if (pw === import.meta.env.VITE_ADMIN_PASSWORD) {
-    setMenuOpen(false);
-    onAdminClick();
-  } else {
-    window.alert("Falsches Passwort");
-  }
-};
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
@@ -244,11 +169,6 @@ function SiteHeader({ onAdminClick, adminUnlocked, onNavigate, currentPage }) {
           {[["blog", "Blog"], ["projekte", "Galerie"], ["kontakt", "Kontakt"]].map(([id, label]) => (
             <button key={id} type="button" onClick={() => scrollTo(id)} className="text-sm text-zinc-300 transition hover:text-cyan-300">{label}</button>
           ))}
-          {isAdminRoute && (
-            <button type="button" onClick={openAdmin} className="rounded-full border border-cyan-400/30 bg-cyan-400/5 px-5 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400/10 hover:border-cyan-400/60">
-              Admin
-            </button>
-          )}
         </div>
 
         <button type="button" className="rounded-xl border border-white/10 p-2 text-white hover:bg-white/10 md:hidden" onClick={() => setMenuOpen(v => !v)}>
@@ -262,9 +182,6 @@ function SiteHeader({ onAdminClick, adminUnlocked, onNavigate, currentPage }) {
             {[["blog", "Blog"], ["projekte", "Projekte"], ["kontakt", "Kontakt"]].map(([id, label]) => (
               <button key={id} type="button" onClick={() => scrollTo(id)} className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300">{label}</button>
             ))}
-            {isAdminRoute && (
-              <button type="button" onClick={openAdmin} className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300">Admin</button>
-            )}
           </div>
         </div>
       )}
@@ -500,185 +417,13 @@ function PostDetailPage({ post, onBack }) {
 }
 
 // ─────────────────────────────────────────────
-// ADMIN PANEL
-// ─────────────────────────────────────────────
-function AdminPanel({ posts, onClose, onSave, onDelete, onMoveOrder, onExport, onImport, onReset, message, setMessage }) {
-  const [editingPost, setEditingPost] = useState(EMPTY_POST());
-  const [editingMode, setEditingMode] = useState(false);
-
-  const startEdit = (post) => {
-    setEditingMode(true);
-    setEditingPost({
-      ...post,
-      tags: Array.isArray(post.tags) ? post.tags.join(", ") : "",
-      external_link: post.external_link || "",
-      image_gallery: normalizeImageList(post.image_gallery),
-      project_status: normalizeStatus(post.project_status),
-      sort_order: isFinite(Number(post.sort_order)) ? post.sort_order : 100,
-    });
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const handleSave = (e) => {
-    e.preventDefault();
-    const payload = {
-      id: editingMode && editingPost.id ? editingPost.id : `local-post-${Date.now()}`,
-      title: editingPost.title.trim(),
-      category: editingPost.category,
-      image_url: editingPost.image_url.trim(),
-      image_gallery: normalizeImageList(editingPost.image_gallery).slice(0, MAX_POST_GALLERY_IMAGES),
-      excerpt: editingPost.excerpt.trim(),
-      content: editingPost.content.trim(),
-      tags: typeof editingPost.tags === "string"
-        ? editingPost.tags.split(",").map(t => t.trim()).filter(Boolean)
-        : editingPost.tags,
-      read_time: editingPost.read_time || "5 Min.",
-      published: Boolean(editingPost.published),
-      created_at: editingPost.created_at || new Date().toISOString(),
-      external_link: editingPost.external_link?.trim() || null,
-      project_status: normalizeStatus(editingPost.project_status),
-      sort_order: isFinite(Number(editingPost.sort_order)) ? Number(editingPost.sort_order) : 100,
-    };
-    if (!payload.title || !payload.excerpt || !payload.content) {
-      setMessage("Titel, Kurzbeschreibung und Inhalt sind Pflichtfelder.");
-      return;
-    }
-    onSave(payload, editingMode);
-    setEditingPost(EMPTY_POST());
-    setEditingMode(false);
-  };
-
-  const handleDelete = (id) => {
-    if (!window.confirm("Diesen Beitrag wirklich löschen?")) return;
-    onDelete(id);
-  };
-
-  return (
-    <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/70 px-4 py-6 backdrop-blur-md sm:px-5 sm:py-8">
-      <div className="mx-auto max-w-7xl">
-        <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[2rem]" innerClassName="rounded-[1.95rem] bg-[#07111f] p-5 sm:p-6 shadow-2xl shadow-cyan-500/20 backdrop-blur-xl">
-          <div className="mb-5 flex items-center justify-between gap-3">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-cyan-300">Lokaler Adminbereich</p>
-              <h2 className="text-xl font-black sm:text-3xl">Beitragsverwaltung</h2>
-            </div>
-            <button type="button" onClick={onClose} className="rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">Schließen</button>
-          </div>
-
-          {message && (
-            <div className="mb-5 rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-4 text-sm text-zinc-200 flex justify-between gap-3">
-              <span>{message}</span>
-              <button onClick={() => setMessage("")} className="text-zinc-400 hover:text-white"><X className="h-4 w-4" /></button>
-            </div>
-          )}
-
-          {/* Top Actions */}
-          <div className="mb-6 flex flex-wrap gap-3">
-            <button onClick={() => { setEditingPost(EMPTY_POST()); setEditingMode(false); }} className="inline-flex items-center gap-2 rounded-2xl border border-white/10 px-5 py-3 font-bold transition hover:bg-white/10"><Plus className="h-5 w-5" /> Neuer Beitrag</button>
-            <button onClick={onExport} className="inline-flex items-center gap-2 rounded-2xl border border-cyan-400/30 px-5 py-3 font-bold text-cyan-300 transition hover:bg-cyan-400/10">Export JSON</button>
-            <button onClick={onImport} className="inline-flex items-center gap-2 rounded-2xl border border-white/10 px-5 py-3 font-bold transition hover:bg-white/10">Import JSON</button>
-            <button onClick={onReset} className="inline-flex items-center gap-2 rounded-2xl border border-red-500/20 px-5 py-3 font-bold text-red-400 transition hover:bg-red-500/10">Zurücksetzen</button>
-          </div>
-
-          {/* ── FORM ── */}
-          <div className="mb-8 rounded-2xl border border-white/10 bg-black/20 p-5">
-            <h3 className="mb-4 font-black text-lg text-cyan-300">{editingMode ? "Beitrag bearbeiten" : "Neuer Beitrag"}</h3>
-            <form onSubmit={handleSave} className="grid gap-4 lg:grid-cols-2">
-              <input value={editingPost.title} onChange={e => setEditingPost(p => ({ ...p, title: e.target.value }))} placeholder="Titel des Beitrags *" className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4" />
-
-              <select value={editingPost.category} onChange={e => setEditingPost(p => ({ ...p, category: e.target.value }))} className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4">
-                {["IoT","Robotik","Messtechnik","Elektrotechnik","Elektrokonstruktion","Automatisierungstechnik","SPS-Programmierung","Embedded Systems","WinCC & HMI","Softwareentwicklung","Über mich","Karriere & Weiterbildung","Technische Erfahrungen"].map(c => <option key={c}>{c}</option>)}
-              </select>
-
-              <select value={editingPost.project_status} onChange={e => setEditingPost(p => ({ ...p, project_status: e.target.value }))} className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4">
-                <option value="idea">Idee / Offline</option>
-                <option value="in_progress">In Arbeit</option>
-                <option value="done">Umgesetzt</option>
-              </select>
-
-              <input type="number" value={editingPost.sort_order ?? 100} onChange={e => setEditingPost(p => ({ ...p, sort_order: e.target.value }))} placeholder="Reihenfolge (kleine Zahl = vorne)" className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4" />
-
-              <div className="lg:col-span-2">
-                <label className="mb-2 block text-sm text-zinc-400">Bild-URL oder Pfad</label>
-                <input type="text" value={editingPost.image_url || ""} onChange={e => setEditingPost(p => ({ ...p, image_url: normalizeImagePath(e.target.value) }))} placeholder="https://... oder /my-electronics-blog/images/posts/..." className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white outline-none ring-cyan-400/30 focus:ring-4" />
-                {editingPost.image_url && <img src={editingPost.image_url} alt="Vorschau" className="mt-4 h-40 w-full rounded-2xl object-cover border border-white/10" onError={e => e.target.style.display = "none"} />}
-              </div>
-
-              <div className="lg:col-span-2">
-                <label className="mb-2 block text-sm text-zinc-400">Zusatzbilder (ein Pfad pro Zeile, max. {MAX_POST_GALLERY_IMAGES})</label>
-                <textarea
-                  value={Array.isArray(editingPost.image_gallery) ? editingPost.image_gallery.join("\n") : editingPost.image_gallery || ""}
-                  onChange={e => setEditingPost(p => ({ ...p, image_gallery: e.target.value.split("\n").map(s => s.trim()).filter(Boolean) }))}
-                  placeholder="/my-electronics-blog/images/posts/detail-1.webp" rows={3}
-                  className="w-full rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 text-white outline-none ring-cyan-400/30 focus:ring-4"
-                />
-              </div>
-
-              <input value={editingPost.tags} onChange={e => setEditingPost(p => ({ ...p, tags: e.target.value }))} placeholder="Tags: ESP32, MQTT, Sensorik" className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2" />
-              <input value={editingPost.external_link || ""} onChange={e => setEditingPost(p => ({ ...p, external_link: e.target.value }))} placeholder="Externer Link (optional): https://github.com/..." className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2" />
-              <input value={editingPost.read_time || ""} onChange={e => setEditingPost(p => ({ ...p, read_time: e.target.value }))} placeholder="Lesezeit z.B. 5 Min." className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4" />
-              <input type="datetime-local" value={editingPost.created_at ? editingPost.created_at.slice(0,16) : ""} onChange={e => setEditingPost(p => ({ ...p, created_at: new Date(e.target.value).toISOString() }))} className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4" />
-              <textarea value={editingPost.excerpt} onChange={e => setEditingPost(p => ({ ...p, excerpt: e.target.value }))} placeholder="Kurzbeschreibung *" className="min-h-24 rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2" />
-              <textarea value={editingPost.content} onChange={e => setEditingPost(p => ({ ...p, content: e.target.value }))} placeholder="Vollständiger Inhalt *" className="min-h-48 rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 outline-none ring-cyan-400/30 focus:ring-4 lg:col-span-2" />
-              <label className="flex items-center gap-3 rounded-2xl border border-white/10 bg-[#050816] px-5 py-4 lg:col-span-2">
-                <input type="checkbox" checked={editingPost.published} onChange={e => setEditingPost(p => ({ ...p, published: e.target.checked }))} />
-                Veröffentlicht
-              </label>
-              <div className="flex gap-3 lg:col-span-2">
-                <button className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-6 py-4 font-black text-black transition hover:bg-cyan-300">
-                  <Save className="h-5 w-5" /> {editingMode ? "Änderungen speichern" : "Beitrag erstellen"}
-                </button>
-                {editingMode && (
-                  <button type="button" onClick={() => { setEditingPost(EMPTY_POST()); setEditingMode(false); }} className="rounded-2xl border border-white/10 px-6 py-4 font-bold transition hover:bg-white/10">Abbrechen</button>
-                )}
-              </div>
-            </form>
-          </div>
-
-          {/* ── POST LIST ── */}
-          <div>
-            <h3 className="mb-4 font-black text-lg">Alle Beiträge ({posts.length})</h3>
-            <div className="grid gap-3">
-              {[...posts].sort((a, b) => {
-                const oA = isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
-                const oB = isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
-                return oA !== oB ? oA - oB : new Date(b.created_at || 0) - new Date(a.created_at || 0);
-              }).map((post, idx, arr) => (
-                <div key={post.id} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/20 p-3 sm:p-4">
-                  <img src={post.image_url} alt={post.title} className={`h-16 w-24 shrink-0 rounded-xl object-cover ${isIdea(post) ? "grayscale opacity-60" : ""}`} onError={e => e.target.style.display = "none"} />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-white truncate text-sm sm:text-base">{post.title}</p>
-                    <div className="mt-1 flex flex-wrap gap-2 text-xs">
-                      <span className="rounded-full bg-cyan-400/20 text-cyan-300 px-2 py-0.5">{post.category}</span>
-                      <span className={`rounded-full border px-2 py-0.5 ${getStatusClasses(post.project_status)}`}>{getStatusLabel(post.project_status)}</span>
-                      <span className="text-zinc-500">#{post.sort_order}</span>
-                    </div>
-                  </div>
-                  <div className="flex shrink-0 gap-2">
-                    <button type="button" onClick={() => onMoveOrder(post.id, -1)} disabled={idx === 0} className="rounded-xl border border-white/10 px-2.5 py-2 text-sm font-black transition hover:bg-white/10 disabled:opacity-30" title="Nach vorne">↑</button>
-                    <button type="button" onClick={() => onMoveOrder(post.id, 1)} disabled={idx === arr.length - 1} className="rounded-xl border border-white/10 px-2.5 py-2 text-sm font-black transition hover:bg-white/10 disabled:opacity-30" title="Nach hinten">↓</button>
-                    <button type="button" onClick={() => startEdit(post)} className="rounded-xl border border-white/10 p-2.5 transition hover:bg-white/10"><Edit3 className="h-4 w-4" /></button>
-                    <button type="button" onClick={() => handleDelete(post.id)} className="rounded-xl border border-red-500/20 p-2.5 text-red-400 transition hover:bg-red-500/10"><Trash2 className="h-4 w-4" /></button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </GradientBorder>
-      </div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────
 // HOME PAGE
 // ─────────────────────────────────────────────
-function HomePage({ posts, galleryImages, isAdmin, onOpenPost, onGoImpressum, onGoDatenschutz, onSavePost, onDeletePost, onMovePost, onSaveGallery, onExport, onImport, onReset, adminVisible, setAdminVisible }) {
+function HomePage({ posts, galleryImages, onOpenPost, onGoImpressum, onGoDatenschutz }) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Alle");
   const [lightbox, setLightbox] = useState(null); // { images, index }
   const [galleryLightboxIndex, setGalleryLightboxIndex] = useState(null);
-  const [message, setMessage] = useState("");
 
   const heroSlides = useMemo(() =>
     [...posts].sort((a, b) => {
@@ -882,14 +627,6 @@ function HomePage({ posts, galleryImages, isAdmin, onOpenPost, onGoImpressum, on
                           className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base">
                           Beitrag lesen
                         </button>
-                        {isAdmin && (
-                          <>
-                            <button type="button" onClick={() => onMovePost(post.id, -1)} className="rounded-2xl border border-white/10 px-3 py-2 font-black transition hover:bg-white/10" title="Nach vorne">↑</button>
-                            <button type="button" onClick={() => onMovePost(post.id, 1)} className="rounded-2xl border border-white/10 px-3 py-2 font-black transition hover:bg-white/10" title="Nach hinten">↓</button>
-                            <button type="button" onClick={() => { setAdminVisible(true); }} className="rounded-2xl border border-white/10 p-3 transition hover:bg-white/10" title="Im Admin bearbeiten"><Edit3 className="h-5 w-5" /></button>
-                            <button type="button" onClick={() => { if (window.confirm("Beitrag löschen?")) onDeletePost(post.id); }} className="rounded-2xl border border-red-500/20 p-3 text-red-400 transition hover:bg-red-500/10"><Trash2 className="h-5 w-5" /></button>
-                          </>
-                        )}
                       </div>
                     </div>
                   </GradientBorder>
@@ -906,14 +643,6 @@ function HomePage({ posts, galleryImages, isAdmin, onOpenPost, onGoImpressum, on
               <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">Galerie</p>
               <h2 className="mt-3 text-4xl font-black sm:text-5xl">Projektbilder</h2>
             </div>
-            {isAdmin && (
-              <button type="button" onClick={() => {
-                const input = window.prompt("Bildpfad einfügen (zeilenweise für mehrere):");
-                if (input) onSaveGallery(input.split("\n").map(s => s.trim()).filter(Boolean));
-              }} className="inline-flex items-center gap-2 rounded-2xl bg-cyan-400 px-5 py-3 font-black text-black transition hover:bg-cyan-300">
-                <Plus className="h-5 w-5" /> Galerie-Bilder hinzufügen
-              </button>
-            )}
           </div>
 
           {(() => {
@@ -991,21 +720,6 @@ function HomePage({ posts, galleryImages, isAdmin, onOpenPost, onGoImpressum, on
         <Lightbox images={galleryImages} index={galleryLightboxIndex} onClose={() => setGalleryLightboxIndex(null)} />
       )}
 
-      {/* Admin Panel overlay */}
-      {adminVisible && isAdmin && (
-        <AdminPanel
-          posts={posts}
-          onClose={() => setAdminVisible(false)}
-          onSave={onSavePost}
-          onDelete={onDeletePost}
-          onMoveOrder={onMovePost}
-          onExport={onExport}
-          onImport={onImport}
-          onReset={onReset}
-          message={message}
-          setMessage={setMessage}
-        />
-      )}
     </div>
   );
 }
@@ -1342,26 +1056,12 @@ function DatenschutzPage({ onBack }) {
 // APP ROOT (routing + state)
 // ─────────────────────────────────────────────
 function App() {
-  const isAdminRoute = new URLSearchParams(window.location.search).get("admin") === "1";
-  const [adminVisible, setAdminVisible] = useState(false);
-  const [adminUnlocked, setAdminUnlocked] = useState(() =>
-    sessionStorage.getItem("my-electronics-blog.adminUnlocked") === "1"
-  );
   const [page, setPage] = useState("home"); // "home" | "post" | "impressum" | "datenschutz"
   const [currentPostId, setCurrentPostId] = useState(null);
 
   // ── Data state ──
-  const [posts, setPosts] = useState(() => {
-    const stored = readStorage(POSTS_KEY, null);
-    return Array.isArray(stored) && stored.length ? stored : DEMO_POSTS;
-  });
-
-  const [galleryImages, setGalleryImages] = useState(() => {
-    const stored = readStorage(GALLERY_KEY, null);
-    return Array.isArray(stored) && stored.length ? stored : DEFAULT_GALLERY;
-  });
-
-  const isAdmin = isAdminRoute && adminUnlocked;
+  const posts = POSTS;
+  const galleryImages = DEFAULT_GALLERY;
   const currentPost = useMemo(() => posts.find(p => String(p.id) === String(currentPostId)) || null, [posts, currentPostId]);
 
   // ── Navigation ──
@@ -1385,97 +1085,6 @@ function App() {
     setCurrentPostId(null);
   }, []);
 
-  // ── Admin unlock ──
-  const unlockAdmin = () => {
-    setAdminUnlocked(true);
-    setAdminVisible(true);
-    sessionStorage.setItem("my-electronics-blog.adminUnlocked", "1");
-  };
-
-  // ── Post operations ──
-  const handleSavePost = useCallback((payload, editingMode) => {
-    setPosts(prev => {
-      const next = editingMode
-        ? prev.map(p => String(p.id) === String(payload.id) ? payload : p)
-        : [payload, ...prev];
-      writeStorage(POSTS_KEY, next);
-      return next;
-    });
-  }, []);
-
-  const handleDeletePost = useCallback((id) => {
-    setPosts(prev => {
-      const next = prev.filter(p => String(p.id) !== String(id));
-      writeStorage(POSTS_KEY, next);
-      return next;
-    });
-    if (String(currentPostId) === String(id)) goHome();
-  }, [currentPostId, goHome]);
-
-  const handleMovePost = useCallback((postId, direction) => {
-    setPosts(prev => {
-      const sorted = [...prev].sort((a, b) => {
-        const oA = isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
-        const oB = isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
-        return oA !== oB ? oA - oB : new Date(b.created_at || 0) - new Date(a.created_at || 0);
-      });
-      const idx = sorted.findIndex(p => String(p.id) === String(postId));
-      const targetIdx = idx + direction;
-      if (idx < 0 || targetIdx < 0 || targetIdx >= sorted.length) return prev;
-      const reordered = [...sorted];
-      const [moved] = reordered.splice(idx, 1);
-      reordered.splice(targetIdx, 0, moved);
-      const orderMap = new Map(reordered.map((p, i) => [String(p.id), (i + 1) * 10]));
-      const next = prev.map(p => orderMap.has(String(p.id)) ? { ...p, sort_order: orderMap.get(String(p.id)) } : p);
-      writeStorage(POSTS_KEY, next);
-      return next;
-    });
-  }, []);
-
-  // ── Gallery operations ──
-  const handleSaveGallery = useCallback((paths) => {
-    const newImages = paths.map((p, i) => ({
-      id: `local-gallery-${Date.now()}-${i}`,
-      image_url: normalizeImagePath(p),
-      alt: "Projektbild",
-      sort_order: galleryImages.length + i + 1,
-      created_at: new Date().toISOString(),
-    }));
-    setGalleryImages(prev => {
-      const next = [...prev, ...newImages];
-      writeStorage(GALLERY_KEY, next);
-      return next;
-    });
-  }, [galleryImages.length]);
-
-  // ── Export / Import / Reset ──
-  const handleExport = () => {
-    downloadJson("my-electronics-blog-backup.json", { posts, projectGalleryImages: galleryImages, exported_at: new Date().toISOString() });
-  };
-
-  const handleImport = () => {
-    const raw = window.prompt("JSON-Backup hier einfügen:");
-    if (!raw) return;
-    try {
-      const parsed = JSON.parse(raw);
-      if (!Array.isArray(parsed.posts)) { alert("Import fehlgeschlagen: posts muss ein Array sein."); return; }
-      writeStorage(POSTS_KEY, parsed.posts);
-      const gallery = Array.isArray(parsed.projectGalleryImages) ? parsed.projectGalleryImages : galleryImages;
-      writeStorage(GALLERY_KEY, gallery);
-      setPosts(parsed.posts);
-      setGalleryImages(gallery);
-    } catch { alert("Import fehlgeschlagen: ungültiges JSON."); }
-  };
-
-  const handleReset = () => {
-    if (!window.confirm("Lokale Daten wirklich zurücksetzen?")) return;
-    removeStorage(POSTS_KEY);
-    removeStorage(GALLERY_KEY);
-    setPosts(DEMO_POSTS);
-    setGalleryImages(DEFAULT_GALLERY);
-    goHome();
-  };
-
   if (page === "impressum") {
     return <ImpressumPage onBack={goHome} />;
   }
@@ -1487,7 +1096,7 @@ function App() {
   return (
     <>
      <CookieBanner />
-      <SiteHeader onAdminClick={unlockAdmin} adminUnlocked={adminUnlocked} onNavigate={goHome} currentPage={page} />
+      <SiteHeader onNavigate={goHome} currentPage={page} />
 
       {page === "post" && currentPost ? (
         <PostDetailPage post={currentPost} onBack={goHome} />
@@ -1495,19 +1104,9 @@ function App() {
         <HomePage
           posts={posts}
           galleryImages={galleryImages}
-          isAdmin={isAdmin}
           onOpenPost={openPost}
           onGoImpressum={goImpressum}
           onGoDatenschutz={goDatenschutz}
-          onSavePost={handleSavePost}
-          onDeletePost={handleDeletePost}
-          onMovePost={handleMovePost}
-          onSaveGallery={handleSaveGallery}
-          onExport={handleExport}
-          onImport={handleImport}
-          onReset={handleReset}
-          adminVisible={adminVisible}
-          setAdminVisible={setAdminVisible}
         />
       )}
     </>

@@ -51,6 +51,11 @@ const parseFrontmatter = (raw) => {
       continue;
     }
 
+    if (/^\s+/.test(line) && currentKey && !Array.isArray(data[currentKey])) {
+      data[currentKey] = `${data[currentKey] || ""} ${parseValue(line)}`.trim();
+      continue;
+    }
+
     const idx = line.indexOf(":");
     if (idx === -1) continue;
 
@@ -60,7 +65,7 @@ const parseFrontmatter = (raw) => {
     currentKey = key;
 
     if (value === "") {
-      data[key] = [];
+      data[key] = "";
     } else if (value === "[]") {
       data[key] = [];
     } else {

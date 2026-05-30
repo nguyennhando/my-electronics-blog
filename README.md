@@ -18,12 +18,6 @@ npm install
 npm run dev
 ```
 
-Create `.env.local` for the local admin password:
-
-```env
-VITE_ADMIN_PASSWORD=your_password
-```
-
 Build the production version:
 
 ```bash
@@ -39,7 +33,7 @@ src/
   components/         Shared UI components
   content/            Markdown blog posts
   lib/posts.js        Markdown loading and frontmatter parsing
-  App.jsx             Application UI and local admin state
+  App.jsx             Application UI
   index.css           Tailwind CSS entrypoint
   main.jsx            React entrypoint
 ```
@@ -77,11 +71,7 @@ Post content...
 
 Supported `project_status` values are `idea`, `in_progress` and `done`. Lower `sort_order` values appear first.
 
-The Markdown parser is intentionally small. Keep scalar frontmatter values on one line and use `-` list items for `image_gallery` and `tags`.
-
-## Local Admin
-
-Open the site with `?admin=1` to reveal the local admin entry. Changes made in the admin panel are stored in the browser's `localStorage`; Markdown files remain the version-controlled source for the default posts.
+The Markdown parser supports wrapped scalar values and `-` list items for `image_gallery` and `tags`.
 
 ## Deployment
 
