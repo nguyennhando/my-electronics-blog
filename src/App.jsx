@@ -1,5 +1,5 @@
 import CookieBanner from "./components/CookieBanner";
-import { useEffect, useMemo, useState, useRef, useCallback } from "react";
+import { createElement, useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { POSTS } from "./lib/posts";
@@ -545,6 +545,9 @@ function MarkdownEditorPage() {
 
   const inputClass = "w-full rounded-xl border border-white/10 bg-[#07111f] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 placeholder:text-zinc-600 focus:ring-4";
   const labelClass = "mb-2 block text-xs font-bold uppercase text-zinc-400";
+  const PreviewIcon = getCategoryIcon(form.category);
+  const previewTags = form.tags.split(",").map((item) => item.trim()).filter(Boolean);
+  const previewIsIdea = isIdea(form);
 
   return (
     <div className="min-h-screen bg-[#050816] text-white">
@@ -636,18 +639,52 @@ function MarkdownEditorPage() {
         </section>
 
         <aside className="lg:sticky lg:top-[90px] lg:self-start">
-          <div className="rounded-2xl border border-white/10 bg-[#07111f]/95 p-5">
+          <div className="space-y-5 rounded-2xl border border-white/10 bg-[#07111f]/95 p-5">
             <div className="flex items-center justify-between gap-3">
               <h2 className="font-black text-cyan-300">Vorschau</h2>
               <button type="button" onClick={exportPost} className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2 text-sm font-black text-black transition hover:bg-cyan-300">
                 <Download className="h-4 w-4" /> MD exportieren
               </button>
             </div>
-            {form.image_url && <img src={form.image_url} alt="" className="mt-5 h-48 w-full rounded-xl object-cover" />}
-            <h3 className="mt-5 text-2xl font-black">{form.title || "Titel des Beitrags"}</h3>
-            <p className="mt-3 text-sm leading-7 text-zinc-400">{form.excerpt || "Kurzbeschreibung des Projekts"}</p>
-            <div className="prose prose-invert mt-6 max-w-none prose-headings:text-white prose-p:text-zinc-300 prose-strong:text-white prose-li:text-zinc-300">
-              <ReactMarkdown>{form.content}</ReactMarkdown>
+
+            <div>
+              <p className="mb-3 text-xs font-bold uppercase text-zinc-500">Blog-Karte</p>
+              <GradientBorder
+                gradient={previewIsIdea ? "from-zinc-600 via-zinc-500 to-zinc-600" : "from-cyan-400 via-cyan-500 to-cyan-400"}
+                rounded="rounded-[1.4rem] sm:rounded-[2rem]"
+                className="flex"
+                innerClassName="flex min-h-[560px] flex-1 flex-col overflow-hidden rounded-[1.35rem] sm:rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl"
+              >
+                <div className="h-44 w-full shrink-0 bg-black/30 sm:h-56">
+                  {form.image_url ? (
+                    <img src={form.image_url} alt="" className={`h-full w-full object-cover ${previewIsIdea ? "grayscale opacity-70" : ""}`} />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-sm text-zinc-600">Kein Hauptbild</div>
+                  )}
+                </div>
+                <div className="flex flex-1 flex-col p-4 sm:p-6">
+                  <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
+                    <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">{createElement(PreviewIcon, { className: "h-3.5 w-3.5" })} {form.category || "Kategorie"}</span>
+                    <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getStatusClasses(form.project_status)}`}>{getStatusLabel(form.project_status)}</span>
+                    <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(form.created_at)}</span>
+                  </div>
+                  <h3 className="text-lg font-black leading-tight sm:text-2xl">{form.title || "Titel des Beitrags"}</h3>
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-zinc-400 sm:text-base sm:leading-7">{form.excerpt || "Kurzbeschreibung des Projekts"}</p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {previewTags.map((tag) => <span key={tag} className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-400">#{tag}</span>)}
+                  </div>
+                  <div className="mt-auto pt-6">
+                    <span className="block rounded-2xl bg-cyan-400 px-5 py-3 text-center text-sm font-bold text-black sm:text-base">Beitrag lesen</span>
+                  </div>
+                </div>
+              </GradientBorder>
+            </div>
+
+            <div className="border-t border-white/10 pt-5">
+              <p className="mb-3 text-xs font-bold uppercase text-zinc-500">Markdown-Inhalt</p>
+              <div className="prose prose-invert max-w-none prose-headings:text-white prose-p:text-zinc-300 prose-strong:text-white prose-li:text-zinc-300">
+                <ReactMarkdown>{form.content}</ReactMarkdown>
+              </div>
             </div>
           </div>
         </aside>
