@@ -1005,10 +1005,16 @@ function HomePage({ posts, galleryImages, onOpenPost, onGoImpressum, onGoDatensc
 // ─────────────────────────────────────────────
 // LEGAL PAGES
 // ─────────────────────────────────────────────
-function LegalPageLayout({ title, children, onBack }) {
+function LegalPageLayout({ title, children, onBack, onNavigate }) {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#050816] text-white">
       <Background />
+
+      <SiteHeader
+        onNavigate={onNavigate}
+        currentPage="legal"
+      />
+
       <main className="mx-auto max-w-5xl px-4 pt-[110px] pb-20 sm:px-5">
         <button
           type="button"
@@ -1033,9 +1039,13 @@ function LegalPageLayout({ title, children, onBack }) {
   );
 }
 
-function ImpressumPage({ onBack }) {
+function ImpressumPage({ onBack, onNavigate }) {
   return (
-    <LegalPageLayout title="Impressum" onBack={onBack}>
+    <LegalPageLayout
+      title="Impressum"
+      onBack={onBack}
+      onNavigate={onNavigate}
+    >
       <section>
         <p className="font-bold text-white">Angaben gemäß § 5 DDG</p>
         <p>
@@ -1122,9 +1132,13 @@ function ImpressumPage({ onBack }) {
   );
 }
 
-function DatenschutzPage({ onBack }) {
+function DatenschutzPage({ onBack, onNavigate }) {
   return (
-    <LegalPageLayout title="Datenschutzerklärung" onBack={onBack}>
+    <LegalPageLayout
+      title="Datenschutz"
+      onBack={onBack}
+      onNavigate={onNavigate}
+    >
       <section>
         <p className="font-bold text-white">1. Verantwortlicher</p>
 
@@ -1368,12 +1382,22 @@ function App() {
   }
 
   if (page === "impressum") {
-    return <ImpressumPage onBack={goHome} />;
-  }
+  return (
+    <ImpressumPage
+      onBack={goHome}
+      onNavigate={setPage}
+    />
+  );
+}
 
-  if (page === "datenschutz") {
-    return <DatenschutzPage onBack={goHome} />;
-  }
+if (page === "datenschutz") {
+  return (
+    <DatenschutzPage
+      onBack={goHome}
+      onNavigate={setPage}
+    />
+  );
+}
 
   return (
     <>
