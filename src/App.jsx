@@ -707,7 +707,7 @@ function HomePage({ posts, galleryImages, onOpenPost, onGoImpressum, onGoDatensc
       const oA = isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
       const oB = isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
       return oA !== oB ? oA - oB : new Date(b.created_at || 0) - new Date(a.created_at || 0);
-    }).slice(0, 3).map(p => ({ id: p.id, image: p.image_url, category: p.category, readTime: p.read_time || "5 Min.", title: p.title, text: p.excerpt, tags: Array.isArray(p.tags) ? p.tags : [] })),
+    }).slice(0, 6).map(p => ({ id: p.id, image: p.image_url, category: p.category, readTime: p.read_time || "5 Min.", title: p.title, text: p.excerpt, tags: Array.isArray(p.tags) ? p.tags : [] })),
     [posts]
   );
 
