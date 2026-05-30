@@ -1,266 +1,92 @@
 # ElektronikLab
 
-<p align="center">
-  <img src="./screenshots/home.png" width="100%" />
-</p>
+Portfolio and technical blog for electronics, automation, embedded systems and engineering projects.
 
-Modern electronics and automation project platform built with React, Vite, TailwindCSS and Supabase.
-
-This website was developed to document technical projects, embedded systems, automation workflows and engineering-related developments in a clean and professional way.
-
----
-
-## Status
-
-Project currently under active development.
-
----
-
-## Screenshots
-
-### Home Page
-
-<p align="center">
-  <img src="./screenshots/home.png" width="100%" />
-</p>
-
----
-
-### Technical Blog
-
-<p align="center">
-  <img src="./screenshots/blog.png" width="100%" />
-</p>
-
----
-
-### Admin Dashboard
-
-<p align="center">
-  <img src="./screenshots/admin.png" width="100%" />
-</p>
-
----
-
-### Mobile View
-
-<p align="center">
-  <img src="./screenshots/mobile.png" width="35%" />
-</p>
-
----
-
-## Features
-
-- Responsive modern UI
-- Technical blog system
-- Electronics & automation project showcase
-- Secure admin dashboard
-- Supabase authentication
-- Role-based access control (RLS)
-- Dynamic project management
-- Image upload system
-- Search & category filtering
-- Animated hero slideshow
-- Mobile optimized layout
-- Cookie banner
-- Impressum & Datenschutz pages
-- External project/document links
-
----
-
-## Technologies
-
-### Frontend
+## Stack
 
 - React
 - Vite
-- TailwindCSS
+- Tailwind CSS
 - Framer Motion
-- React Router DOM
+- React Markdown
 - Lucide React
 
-### Backend / Database
-
-- Supabase
-- PostgreSQL
-- Supabase Auth
-- Supabase Storage
-- Row Level Security (RLS)
-
----
-
-## Project Structure
-
-```bash
-src/
-│
-├── components/
-│   └── CookieBanner.jsx
-│
-├── pages/
-│   ├── Impressum.jsx
-│   └── Datenschutz.jsx
-│
-├── App.jsx
-└── main.jsx
-```
-
----
-
-## Installation
-
-### Clone repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/elektroniklab.git
-```
-
-### Enter project directory
-
-```bash
-cd elektroniklab
-```
-
-### Install dependencies
+## Development
 
 ```bash
 npm install
-```
-
----
-
-## Environment Variables
-
-Create a `.env.local` file:
-
-```env
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
----
-
-## Start Development Server
-
-```bash
 npm run dev
 ```
 
----
+Create `.env.local` for the local admin password:
 
-## Build Production Version
+```env
+VITE_ADMIN_PASSWORD=your_password
+```
+
+Build the production version:
 
 ```bash
 npm run build
 ```
 
----
+## Project Structure
 
-## Supabase Setup
-
-### Required Tables
-
-### posts
-
-| Column        | Type      |
-| ------------- | ---------- |
-| id            | uuid       |
-| title         | text       |
-| category      | text       |
-| image_url     | text       |
-| excerpt       | text       |
-| content       | text       |
-| tags          | text[]     |
-| read_time     | text       |
-| published     | boolean    |
-| external_link | text       |
-| created_at    | timestamp  |
-
----
-
-### profiles
-
-| Column | Type |
-| ------ | ---- |
-| id     | uuid |
-| role   | text |
-
----
-
-## Authentication & Security
-
-The admin area is protected with:
-
-- Supabase Authentication
-- Row Level Security (RLS)
-- Admin role validation
-- Protected CRUD operations
-
-Only users with:
-
-```sql
-role = 'admin'
+```text
+public/
+  images/             Static images used by the site and blog posts
+src/
+  components/         Shared UI components
+  content/            Markdown blog posts
+  lib/posts.js        Markdown loading and frontmatter parsing
+  App.jsx             Application UI and local admin state
+  index.css           Tailwind CSS entrypoint
+  main.jsx            React entrypoint
 ```
 
-inside the `profiles` table can manage posts.
+## Markdown Posts
 
+Blog posts are stored as `.md` files in `src/content/`. Vite loads them at build time through `import.meta.glob` in `src/lib/posts.js`.
+
+Each post starts with frontmatter:
+
+```md
+---
+id: esp32-mqtt-gateway
+slug: esp32-mqtt-gateway
+title: ESP32 als MQTT-Gateway
+category: IoT
+image_url: /my-electronics-blog/images/posts/ESP32-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/detail-1.webp
+tags:
+- ESP32
+- MQTT
+read_time: 5 Min.
+published: true
+created_at: '2026-05-30T10:00:00.000Z'
+external_link: ''
+project_status: done
+sort_order: 100
 ---
 
-## Storage Bucket
+# ESP32 als MQTT-Gateway
 
-Create a public bucket:
+Post content...
+```
+
+Supported `project_status` values are `idea`, `in_progress` and `done`. Lower `sort_order` values appear first.
+
+The Markdown parser is intentionally small. Keep scalar frontmatter values on one line and use `-` list items for `image_gallery` and `tags`.
+
+## Local Admin
+
+Open the site with `?admin=1` to reveal the local admin entry. Changes made in the admin panel are stored in the browser's `localStorage`; Markdown files remain the version-controlled source for the default posts.
+
+## Deployment
+
+The Vite base path is configured for GitHub Pages:
 
 ```bash
-blog-images
+npm run deploy
 ```
-
-Used for:
-
-- project thumbnails
-- uploaded blog images
-- technical documentation assets
-
----
-
-## Design Philosophy
-
-The UI design focuses on:
-
-- modern engineering aesthetics
-- dark technical interface
-- glassmorphism
-- responsive layouts
-- smooth animations
-- industrial / cyber inspired visuals
-
----
-
-## Future Improvements
-
-Planned future features:
-
-- multilingual support
-- markdown editor
-- syntax highlighting
-- PDF project viewer
-- project timelines
-- analytics dashboard
-- dark/light theme switcher
-- comment system
-
----
-
-## Author
-
-Nguyen Nhan Do
-
-Germany
-
-Electronics • Automation • Embedded Systems • Engineering
-
----
-
-## License
-
-This project is licensed under the MIT License.

@@ -1,5 +1,5 @@
 import CookieBanner from "./components/CookieBanner";
-import React, { useEffect, useMemo, useState, useRef, useCallback } from "react";
+import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { POSTS } from "./lib/posts";
@@ -15,7 +15,6 @@ import {
 // CONSTANTS
 // ─────────────────────────────────────────────
 const MAX_POST_GALLERY_IMAGES = 6;
-const MAX_PROJECT_GALLERY_IMAGES = 12;
 const POSTS_KEY = "my-electronics-blog.posts.v1";
 const GALLERY_KEY = "my-electronics-blog.projectGallery.v1";
 const SLIDE_INTERVAL = 5000;
@@ -38,11 +37,15 @@ const readStorage = (key, fallback) => {
 };
 
 const writeStorage = (key, value) => {
-  try { localStorage.setItem(key, JSON.stringify(value, null, 2)); } catch {}
+  try { localStorage.setItem(key, JSON.stringify(value, null, 2)); } catch {
+    // Ignore unavailable or full browser storage.
+  }
 };
 
 const removeStorage = (key) => {
-  try { localStorage.removeItem(key); } catch {}
+  try { localStorage.removeItem(key); } catch {
+    // Ignore unavailable browser storage.
+  }
 };
 
 // ─────────────────────────────────────────────
@@ -71,8 +74,6 @@ const normalizeImagePath = (value) => {
   if (path.startsWith("images/")) return `/my-electronics-blog/${path}`;
   return `/my-electronics-blog/images/posts/${path.replace(/^\/+/, "")}`;
 };
-
-const uniqueUrls = (urls) => [...new Set((urls || []).filter(Boolean))];
 
 const normalizeStatus = (s) => ["idea", "in_progress", "done"].includes(s) ? s : "done";
 
@@ -501,10 +502,9 @@ function PostDetailPage({ post, onBack }) {
 // ─────────────────────────────────────────────
 // ADMIN PANEL
 // ─────────────────────────────────────────────
-function AdminPanel({ posts, galleryImages, onClose, onSave, onDelete, onMoveOrder, onSaveGallery, onDeleteGallery, onExport, onImport, onReset, message, setMessage }) {
+function AdminPanel({ posts, onClose, onSave, onDelete, onMoveOrder, onExport, onImport, onReset, message, setMessage }) {
   const [editingPost, setEditingPost] = useState(EMPTY_POST());
   const [editingMode, setEditingMode] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const startEdit = (post) => {
     setEditingMode(true);
@@ -625,7 +625,7 @@ function AdminPanel({ posts, galleryImages, onClose, onSave, onDelete, onMoveOrd
                 Veröffentlicht
               </label>
               <div className="flex gap-3 lg:col-span-2">
-                <button disabled={loading} className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-6 py-4 font-black text-black transition hover:bg-cyan-300 disabled:opacity-60">
+                <button className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-6 py-4 font-black text-black transition hover:bg-cyan-300">
                   <Save className="h-5 w-5" /> {editingMode ? "Änderungen speichern" : "Beitrag erstellen"}
                 </button>
                 {editingMode && (
@@ -673,7 +673,7 @@ function AdminPanel({ posts, galleryImages, onClose, onSave, onDelete, onMoveOrd
 // ─────────────────────────────────────────────
 // HOME PAGE
 // ─────────────────────────────────────────────
-function HomePage({ posts, galleryImages, isAdmin, onOpenPost, onGoImpressum, onGoDatenschutz, onSavePost, onDeletePost, onMovePost, onSaveGallery, onDeleteGallery, onExport, onImport, onReset, adminVisible, setAdminVisible }) {
+function HomePage({ posts, galleryImages, isAdmin, onOpenPost, onGoImpressum, onGoDatenschutz, onSavePost, onDeletePost, onMovePost, onSaveGallery, onExport, onImport, onReset, adminVisible, setAdminVisible }) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Alle");
   const [lightbox, setLightbox] = useState(null); // { images, index }
@@ -995,13 +995,10 @@ function HomePage({ posts, galleryImages, isAdmin, onOpenPost, onGoImpressum, on
       {adminVisible && isAdmin && (
         <AdminPanel
           posts={posts}
-          galleryImages={galleryImages}
           onClose={() => setAdminVisible(false)}
           onSave={onSavePost}
           onDelete={onDeletePost}
           onMoveOrder={onMovePost}
-          onSaveGallery={onSaveGallery}
-          onDeleteGallery={onDeleteGallery}
           onExport={onExport}
           onImport={onImport}
           onReset={onReset}
@@ -1451,14 +1448,6 @@ function App() {
     });
   }, [galleryImages.length]);
 
-  const handleDeleteGallery = useCallback((id) => {
-    setGalleryImages(prev => {
-      const next = prev.filter(img => !(img && typeof img === "object" && img.id === id));
-      writeStorage(GALLERY_KEY, next);
-      return next;
-    });
-  }, []);
-
   // ── Export / Import / Reset ──
   const handleExport = () => {
     downloadJson("my-electronics-blog-backup.json", { posts, projectGalleryImages: galleryImages, exported_at: new Date().toISOString() });
@@ -1514,7 +1503,6 @@ function App() {
           onDeletePost={handleDeletePost}
           onMovePost={handleMovePost}
           onSaveGallery={handleSaveGallery}
-          onDeleteGallery={handleDeleteGallery}
           onExport={handleExport}
           onImport={handleImport}
           onReset={handleReset}
