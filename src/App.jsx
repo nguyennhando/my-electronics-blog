@@ -1397,9 +1397,9 @@ const paginatedPosts = filteredPosts.slice(
                   <span className="absolute bottom-4 right-4 rounded-full border border-white/15 bg-black/55 px-3 py-1.5 text-xs font-bold text-zinc-200 backdrop-blur sm:bottom-5 sm:right-5">Vergrößern</span>
                 </button>
 
-                <div className="hidden gap-3 lg:grid lg:grid-rows-2">
+                <div className="hidden min-h-0 gap-3 lg:grid lg:grid-rows-2">
                   {gallerySideImages.map(({ image, index }) => (
-                    <button key={`${image}-${index}`} type="button" onClick={() => setSelectedGalleryIndex(index)} className="group relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-black/30 transition hover:border-cyan-400/50">
+                    <button key={`${image}-${index}`} type="button" onClick={() => setSelectedGalleryIndex(index)} className="group relative min-h-0 overflow-hidden rounded-[1.35rem] border border-white/10 bg-black/30 transition hover:border-cyan-400/50">
                       <img src={image} alt={`Galeriebild ${index + 1}`} className="h-full w-full object-cover transition duration-500 group-hover:scale-105 group-hover:brightness-110" />
                       <span className="absolute bottom-3 right-3 rounded-full border border-white/15 bg-black/55 px-2.5 py-1 text-xs font-bold text-zinc-200 backdrop-blur">Bild {index + 1}</span>
                     </button>
@@ -1407,7 +1407,7 @@ const paginatedPosts = filteredPosts.slice(
                 </div>
               </div>
 
-              <div className="mt-3 flex gap-3 overflow-x-auto pb-1 sm:mt-4">
+              <div className="mt-5 flex gap-3 overflow-x-auto border-t border-white/10 pt-4 pb-1">
                 {galleryImages.map((image, index) => (
                   <button key={`${image}-${index}`} type="button" onClick={() => setSelectedGalleryIndex(index)} className={`relative h-20 w-28 shrink-0 overflow-hidden rounded-xl border-2 transition sm:h-24 sm:w-36 ${selectedGalleryIndex === index ? "border-cyan-300 shadow-lg shadow-cyan-500/20" : "border-white/10 opacity-70 hover:border-cyan-400/50 hover:opacity-100"}`}>
                     <img src={image} alt={`Galeriebild ${index + 1}`} className="h-full w-full object-cover" />
