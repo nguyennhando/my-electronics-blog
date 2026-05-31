@@ -2,7 +2,7 @@ import CookieBanner from "./components/CookieBanner";
 import { createElement, useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { CONTENT_POSTS, KNOWLEDGE_POSTS, PERSONAL_WAY, POSTS, SITE_SETTINGS } from "./lib/posts";
+import { CONTENT_POSTS, GALLERY_IMAGES, KNOWLEDGE_POSTS, PERSONAL_WAY, POSTS, SITE_SETTINGS } from "./lib/posts";
 
 import {
   CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X,
@@ -17,10 +17,12 @@ import {
 // ─────────────────────────────────────────────
 const SLIDE_INTERVAL = 5000;
 
-const DEFAULT_GALLERY = [
-  "/my-electronics-blog/images/finance-main.webp",
-  "/my-electronics-blog/images/finance-chart.webp",
-  "/my-electronics-blog/images/finance-dashboard.webp",
+const DEFAULT_GALLERY_IMAGES = [
+  "/my-electronics-blog/images/posts/Dampfmaschine-main.webp",
+  "/my-electronics-blog/images/posts/finanzmanager-main.webp",
+  "/my-electronics-blog/images/posts/Mischbehälter-main.webp",
+  "/my-electronics-blog/images/posts/Flaschenzug-main.webp",
+  "/my-electronics-blog/images/posts/Tauchanlage-main.webp",
 ];
 
 // ─────────────────────────────────────────────
@@ -116,6 +118,13 @@ const createSiteSettingsFile = (siteSettings) => `---
 type: site_settings
 background_image: ${singleLine(siteSettings.background_image)}
 ---
+`;
+
+const createGallerySettingsFile = (images) => `---
+type: gallery_settings
+---
+
+${JSON.stringify(images, null, 2)}
 `;
 
 const downloadTextFile = (filename, content) => {
@@ -691,6 +700,8 @@ function MarkdownEditorPage() {
   const [personalWayForm, setPersonalWayForm] = useState(PERSONAL_WAY);
   const [showSiteSettingsEditor, setShowSiteSettingsEditor] = useState(false);
   const [siteSettingsForm, setSiteSettingsForm] = useState(SITE_SETTINGS);
+  const [showGalleryEditor, setShowGalleryEditor] = useState(false);
+  const [galleryImagesForm, setGalleryImagesForm] = useState((GALLERY_IMAGES.length ? GALLERY_IMAGES : DEFAULT_GALLERY_IMAGES).join("\n"));
 
   const update = (key, value) => {
     setForm((current) => {
@@ -787,6 +798,20 @@ function MarkdownEditorPage() {
     downloadTextFile(output.filename, output.markdown);
   };
 
+  const getGallerySettingsExport = () => ({
+    filename: "gallery-settings.md",
+    markdown: createGallerySettingsFile(galleryImagesForm.split("\n").map((item) => item.trim()).filter(Boolean)),
+  });
+
+  const saveGallerySettingsToDirectory = async () => {
+    await saveMarkdownToDirectory(getGallerySettingsExport());
+  };
+
+  const exportGallerySettings = () => {
+    const output = getGallerySettingsExport();
+    downloadTextFile(output.filename, output.markdown);
+  };
+
   const selectPost = (slug) => {
     setSelectedSlug(slug);
     if (!slug) {
@@ -855,6 +880,37 @@ function MarkdownEditorPage() {
                     <Save className="h-4 w-4" /> In Ordner speichern
                   </button>
                   <button type="button" onClick={exportSiteSettings} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
+                    <Download className="h-4 w-4" /> MD exportieren
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-5">
+            <button type="button" onClick={() => setShowGalleryEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
+              <span>
+                <span className="block text-xs font-bold uppercase text-cyan-300">Startseite</span>
+                <span className="mt-1 block font-black">Projektgalerie bearbeiten</span>
+              </span>
+              <ImageIcon className="h-5 w-5 text-cyan-300" />
+            </button>
+
+            {showGalleryEditor && (
+              <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
+                <div>
+                  <label className={labelClass}>Galeriebilder, ein Pfad pro Zeile</label>
+                  <textarea className={`${inputClass} min-h-[220px] font-mono leading-6`} value={galleryImagesForm} onChange={(e) => setGalleryImagesForm(e.target.value)} placeholder="/my-electronics-blog/images/galerie/bild.webp" />
+                  <p className="mt-2 text-xs leading-5 text-zinc-500">Die Galerie ist frei zusammengestellt. Die Bilder müssen keinem bestimmten Projekt zugeordnet sein.</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {galleryImagesForm.split("\n").map((item) => item.trim()).filter(Boolean).slice(0, 6).map((image) => <img key={image} src={image} alt="" className="h-28 w-full rounded-xl object-cover" />)}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button type="button" onClick={saveGallerySettingsToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2 text-sm font-black text-black transition hover:bg-cyan-300">
+                    <Save className="h-4 w-4" /> In Ordner speichern
+                  </button>
+                  <button type="button" onClick={exportGallerySettings} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
                     <Download className="h-4 w-4" /> MD exportieren
                   </button>
                 </div>
@@ -1064,7 +1120,7 @@ function HomePage({ posts, galleryImages, onOpenPost, onGoImpressum, onGoDatensc
   const [category, setCategory] = useState("Alle");
   const [currentPage, setCurrentPage] = useState(1);
   const [lightbox, setLightbox] = useState(null); // { images, index }
-  const [galleryLightboxIndex, setGalleryLightboxIndex] = useState(null);
+  const [galleryLightbox, setGalleryLightbox] = useState(null);
 
   const heroSlides = useMemo(() =>
     [...posts].sort((a, b) => {
@@ -1314,31 +1370,25 @@ const paginatedPosts = filteredPosts.slice(
             </div>
           </div>
 
-          {(() => {
-            const visible = galleryImages.slice(0, 3);
-            return (
-              <div className="grid gap-6 lg:grid-cols-3">
-                <div className="lg:col-span-2">
-                  {visible[0] && (
-                    <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[2rem]" className="group" innerClassName="relative overflow-hidden rounded-[1.95rem] bg-[#07111f]">
-                      <img src={typeof visible[0] === "object" ? visible[0].image_url : visible[0]} alt="Projektbild"
-                        onClick={() => setGalleryLightboxIndex(0)}
-                        className="h-[520px] w-full cursor-zoom-in object-cover transition duration-700 group-hover:scale-105 group-hover:brightness-110" />
-                    </GradientBorder>
-                  )}
-                </div>
-                <div className="grid gap-6">
-                  {visible.slice(1, 3).map((img, i) => (
-                    <GradientBorder key={i} gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[2rem]" className="group" innerClassName="relative overflow-hidden rounded-[1.95rem] bg-[#07111f]">
-                      <img src={typeof img === "object" ? img.image_url : img} alt="Projektbild"
-                        onClick={() => setGalleryLightboxIndex(i + 1)}
-                        className="h-[247px] w-full cursor-zoom-in object-cover transition duration-700 group-hover:scale-105 group-hover:brightness-110" />
-                    </GradientBorder>
-                  ))}
-                </div>
-              </div>
-            );
-          })()}
+          <div className="grid gap-6 lg:grid-cols-3">
+            {galleryImages.slice(0, 1).map((image) => (
+              <button key={image} type="button" onClick={() => setGalleryLightbox({ images: galleryImages, index: 0 })} className="group lg:col-span-2">
+                <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[2rem]" innerClassName="relative overflow-hidden rounded-[1.95rem] bg-[#07111f]">
+                  <img src={image} alt="Galeriebild" className="h-[420px] w-full object-cover transition duration-700 group-hover:scale-105 group-hover:brightness-110 sm:h-[520px]" />
+                </GradientBorder>
+              </button>
+            ))}
+            <div className="grid gap-6">
+              {galleryImages.slice(1, 3).map((image, index) => (
+                <button key={image} type="button" onClick={() => setGalleryLightbox({ images: galleryImages, index: index + 1 })} className="group">
+                  <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[2rem]" innerClassName="relative overflow-hidden rounded-[1.95rem] bg-[#07111f]">
+                    <img src={image} alt="Galeriebild" className="h-[210px] w-full object-cover transition duration-700 group-hover:scale-105 group-hover:brightness-110 sm:h-[247px]" />
+                    {index === 1 && galleryImages.length > 3 && <span className="absolute bottom-4 right-4 rounded-full bg-cyan-400 px-3 py-1 text-xs font-black text-black">+{galleryImages.length - 3} weitere Bilder</span>}
+                  </GradientBorder>
+                </button>
+              ))}
+            </div>
+          </div>
         </section>
 
         {/* ── Contact ── */}
@@ -1385,8 +1435,8 @@ const paginatedPosts = filteredPosts.slice(
 
       {/* Lightboxes */}
       {lightbox && <Lightbox images={lightbox.images} index={lightbox.index} onClose={() => setLightbox(null)} />}
-      {galleryLightboxIndex !== null && galleryImages.length > 0 && (
-        <Lightbox images={galleryImages} index={galleryLightboxIndex} onClose={() => setGalleryLightboxIndex(null)} />
+      {galleryLightbox && (
+        <Lightbox images={galleryLightbox.images} index={galleryLightbox.index} onClose={() => setGalleryLightbox(null)} />
       )}
 
     </div>
@@ -1746,7 +1796,7 @@ function App() {
   // ── Data state ──
   const posts = POSTS;
   const knowledgePosts = KNOWLEDGE_POSTS;
-  const galleryImages = DEFAULT_GALLERY;
+  const galleryImages = GALLERY_IMAGES.length ? GALLERY_IMAGES : DEFAULT_GALLERY_IMAGES;
   const currentPost = useMemo(() => posts.find(p => String(p.id) === String(currentPostId)) || null, [posts, currentPostId]);
   const currentKnowledgePost = useMemo(() => knowledgePosts.find(p => String(p.id) === String(currentPostId)) || null, [knowledgePosts, currentPostId]);
 

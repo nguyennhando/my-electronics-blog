@@ -102,9 +102,21 @@ const parsedFiles = Object.entries(files)
 
 export const PERSONAL_WAY = parsedFiles.find((entry) => entry.type === "personal_way");
 export const SITE_SETTINGS = parsedFiles.find((entry) => entry.type === "site_settings");
+const gallerySettings = parsedFiles.find((entry) => entry.type === "gallery_settings");
+
+export const GALLERY_IMAGES = (() => {
+  if (!gallerySettings?.content) return [];
+
+  try {
+    const images = JSON.parse(gallerySettings.content);
+    return Array.isArray(images) ? images.filter((image) => typeof image === "string" && image.trim()) : [];
+  } catch {
+    return [];
+  }
+})();
 
 export const CONTENT_POSTS = parsedFiles
-  .filter((post) => !["personal_way", "site_settings"].includes(post.type))
+  .filter((post) => !["personal_way", "site_settings", "gallery_settings"].includes(post.type))
   .sort((a, b) => {
     const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
     const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
