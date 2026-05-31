@@ -1132,6 +1132,7 @@ function HomePage({ posts, galleryImages, onOpenPost, onGoImpressum, onGoDatensc
   const [currentPage, setCurrentPage] = useState(1);
   const [lightbox, setLightbox] = useState(null); // { images, index }
   const [galleryLightbox, setGalleryLightbox] = useState(null);
+  const [selectedGalleryIndex, setSelectedGalleryIndex] = useState(0);
 
   const heroSlides = useMemo(() =>
     [...posts].sort((a, b) => {
@@ -1381,25 +1382,30 @@ const paginatedPosts = filteredPosts.slice(
             </div>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-3">
-            {galleryImages.slice(0, 1).map((image) => (
-              <button key={image} type="button" onClick={() => setGalleryLightbox({ images: galleryImages, index: 0 })} className="group lg:col-span-2">
-                <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[2rem]" innerClassName="relative overflow-hidden rounded-[1.95rem] bg-[#07111f]">
-                  <img src={image} alt="Galeriebild" className="h-[420px] w-full object-cover transition duration-700 group-hover:scale-105 group-hover:brightness-110 sm:h-[520px]" />
-                </GradientBorder>
+          {galleryImages.length > 0 && (
+            <div className="rounded-[2rem] border border-white/10 bg-[#07111f]/90 p-3 shadow-2xl shadow-cyan-950/20 sm:p-4">
+              <button type="button" onClick={() => setGalleryLightbox({ images: galleryImages, index: selectedGalleryIndex })} className="group relative block w-full overflow-hidden rounded-[1.55rem] bg-black/30 text-left">
+                <img src={galleryImages[selectedGalleryIndex] || galleryImages[0]} alt="Galeriebild" className="h-[300px] w-full object-cover transition duration-700 group-hover:scale-[1.025] group-hover:brightness-110 sm:h-[460px] lg:h-[560px]" />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10" />
+                <div className="absolute bottom-4 left-4 flex flex-wrap items-center gap-2 sm:bottom-5 sm:left-5">
+                  <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black uppercase tracking-widest text-black">Galerie</span>
+                  <span className="rounded-full border border-white/15 bg-black/55 px-3 py-1.5 text-xs font-bold text-zinc-200 backdrop-blur">
+                    Bild {selectedGalleryIndex + 1} / {galleryImages.length}
+                  </span>
+                </div>
+                <span className="absolute bottom-4 right-4 rounded-full border border-white/15 bg-black/55 px-3 py-1.5 text-xs font-bold text-zinc-200 backdrop-blur sm:bottom-5 sm:right-5">Vergrößern</span>
               </button>
-            ))}
-            <div className="grid gap-6">
-              {galleryImages.slice(1, 3).map((image, index) => (
-                <button key={image} type="button" onClick={() => setGalleryLightbox({ images: galleryImages, index: index + 1 })} className="group">
-                  <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[2rem]" innerClassName="relative overflow-hidden rounded-[1.95rem] bg-[#07111f]">
-                    <img src={image} alt="Galeriebild" className="h-[210px] w-full object-cover transition duration-700 group-hover:scale-105 group-hover:brightness-110 sm:h-[247px]" />
-                    {index === 1 && galleryImages.length > 3 && <span className="absolute bottom-4 right-4 rounded-full bg-cyan-400 px-3 py-1 text-xs font-black text-black">+{galleryImages.length - 3} weitere Bilder</span>}
-                  </GradientBorder>
-                </button>
-              ))}
+
+              <div className="mt-3 flex gap-3 overflow-x-auto pb-1 sm:mt-4">
+                {galleryImages.map((image, index) => (
+                  <button key={`${image}-${index}`} type="button" onClick={() => setSelectedGalleryIndex(index)} className={`relative h-20 w-28 shrink-0 overflow-hidden rounded-xl border-2 transition sm:h-24 sm:w-36 ${selectedGalleryIndex === index ? "border-cyan-300 shadow-lg shadow-cyan-500/20" : "border-white/10 opacity-70 hover:border-cyan-400/50 hover:opacity-100"}`}>
+                    <img src={image} alt={`Galeriebild ${index + 1}`} className="h-full w-full object-cover" />
+                    <span className="absolute bottom-1 right-1 rounded bg-black/65 px-1.5 py-0.5 text-[10px] font-bold text-zinc-200">{index + 1}</span>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </section>
 
         {/* ── Contact ── */}
