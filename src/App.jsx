@@ -187,13 +187,10 @@ function GradientBorder({ children, gradient = "from-cyan-400 via-cyan-500 to-cy
 function Background() {
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden bg-[#07111f]">
-      {SITE_SETTINGS.background_image && <img src={SITE_SETTINGS.background_image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.45),transparent_30%),radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.42),transparent_32%),radial-gradient(circle_at_20%_80%,rgba(168,85,247,0.38),transparent_34%),radial-gradient(circle_at_80%_80%,rgba(236,72,153,0.34),transparent_32%)]" />
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-900/30 to-fuchsia-600/20" />
-      <div className="absolute inset-0 opacity-[0.16]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.16) 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
-      <div className="absolute left-[-120px] top-[-120px] h-[520px] w-[520px] rounded-full bg-cyan-400/35 blur-3xl" />
-      <div className="absolute right-[-160px] top-[15%] h-[560px] w-[560px] rounded-full bg-blue-500/35 blur-3xl" />
-      <div className="absolute bottom-[-180px] left-[20%] h-[520px] w-[520px] rounded-full bg-fuchsia-500/30 blur-3xl" />
+      {SITE_SETTINGS.background_image && <img src={SITE_SETTINGS.background_image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-25" />}
+      <div className="absolute inset-0 bg-black/65" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#050816]/70 via-[#07111f]/80 to-[#050816]/95" />
+      <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
     </div>
   );
 }
