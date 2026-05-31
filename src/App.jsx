@@ -33,10 +33,11 @@ const UI_TEXT = {
     transparency: "Transparenz", transparencyTitle: "Projektinformationen & Transparenz", transparencyText: "Die auf dieser Website gezeigten Fotos von Laborumgebungen, technischen Arbeitsplätzen und elektronischen Geräten dienen ausschließlich der Veranschaulichung meiner technischen Interessen und praktischen Erfahrungen.", transparencyStrong: "Sie zeigen weder meinen tatsächlichen Arbeitsplatz noch interne Bereiche oder reale Arbeitsumgebungen eines Unternehmens.",
     personalWay: "Persönlicher Weg", importantNotice: "Wichtiger Hinweis", importantTitle: "Wichtiger Hinweis zu meinen Projekten",
     warningOne: "Projekte mit der Kennzeichnung „Konzept“ befinden sich noch in der Ideen- bzw. Konzeptphase und wurden bisher noch nicht praktisch umgesetzt.", warningTwo: "Alle anderen Projekte können über „Beitrag lesen“ geöffnet werden. Am Ende der jeweiligen Projektseite befindet sich die Schaltfläche „Zum Projekt“ mit projektbezogenen Dateien.",
-    collaborationTitle: "Zusammenarbeit an modernen Elektronikprojekten.", collaborationText: "Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder individuelle Entwicklungen.", privacy: "Datenschutz", back: "Zurück", country: "Deutschland",
+    collaborationTitle: "Zusammenarbeit an modernen Elektronikprojekten.", collaborationText: "Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder individuelle Entwicklungen.", privacy: "Datenschutz", legalNotice: "Impressum", back: "Zurück", country: "Deutschland",
     knowledgeNoticeParagraphs: ["Viele Grundlagen und technische Informationen in diesem Bereich sind bereits in Fachbüchern, Dokumentationen oder anderen Quellen verfügbar.", "Der Schwerpunkt dieser Wissensbibliothek liegt daher nicht nur auf der Sammlung von Lernmaterialien. Ich möchte vor allem Themen genauer analysieren, die aus meiner Sicht an anderen Stellen nicht immer verständlich oder ausreichend nachvollziehbar erklärt werden.", "Die Beiträge spiegeln meinen persönlichen Lernprozess und mein aktuelles technisches Verständnis wider. Sie sollen Zusammenhänge Schritt für Schritt greifbarer machen und zugleich als Grundlage für weitere Untersuchungen dienen."],
     noKnowledge: "Noch keine passenden Beiträge", noKnowledgeText: "Neue Lernnotizen und Analysen werden hier nach und nach ergänzt.", footer: "© 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.",
     conceptProject: "Konzeptprojekt – noch nicht umgesetzt", noProjectLink: "Kein Projektlink hinterlegt",
+    heroBadge: "Elektrokonstruktion · Prüftechnik · Software", docs: "Dokumente", sourceCode: "Quellcode", focusValue: "IoT · Automatisierung",
   },
   en: {
     tagline: "Technology · Development · Learning", gallery: "Gallery", contact: "Contact", knowledge: "Knowledge & Research",
@@ -53,10 +54,11 @@ const UI_TEXT = {
     transparency: "Transparency", transparencyTitle: "Project Information & Transparency", transparencyText: "The photos of laboratory environments, technical workspaces and electronic devices shown on this website are solely intended to illustrate my technical interests and practical experience.", transparencyStrong: "They do not show my actual workplace, internal areas or real working environments of any company.",
     personalWay: "Personal Journey", importantNotice: "Important Notice", importantTitle: "Important notice about my projects",
     warningOne: "Projects marked as “Concept” are still in the idea or concept phase and have not yet been implemented in practice.", warningTwo: "All other projects can be opened via “Read article”. At the end of each project page, the “Open project” button provides project-related files.",
-    collaborationTitle: "Collaboration on modern electronics projects.", collaborationText: "Are you looking for support with embedded systems, sensors, robotics or industrial automation? Contact me for technical collaboration or individual developments.", privacy: "Privacy", back: "Back", country: "Germany",
+    collaborationTitle: "Collaboration on modern electronics projects.", collaborationText: "Are you looking for support with embedded systems, sensors, robotics or industrial automation? Contact me for technical collaboration or individual developments.", privacy: "Privacy", legalNotice: "Legal Notice", back: "Back", country: "Germany",
     knowledgeNoticeParagraphs: ["Many fundamentals and technical details in this section are already available in textbooks, documentation or other sources.", "The focus of this knowledge library is therefore not merely collecting learning material. I especially want to analyse topics that, from my perspective, are not always explained clearly or comprehensibly elsewhere.", "The articles reflect my personal learning process and my current technical understanding. They aim to make connections easier to grasp step by step and provide a basis for further investigation."],
     noKnowledge: "No matching articles yet", noKnowledgeText: "New learning notes and analyses will gradually be added here.", footer: "© 2026 ElektronikLab — Modern electronics and automation projects.",
     conceptProject: "Concept project – not yet implemented", noProjectLink: "No project link provided",
+    heroBadge: "Electrical Design · Testing · Software", docs: "Documents", sourceCode: "Source Code", focusValue: "IoT · Automation",
   },
   vi: {
     tagline: "Kỹ thuật · Phát triển · Học hỏi", gallery: "Thư viện ảnh", contact: "Liên hệ", knowledge: "Kiến thức & Nghiên cứu",
@@ -73,10 +75,11 @@ const UI_TEXT = {
     transparency: "Minh bạch", transparencyTitle: "Thông tin dự án & Minh bạch", transparencyText: "Các hình ảnh về phòng thí nghiệm, không gian làm việc kỹ thuật và thiết bị điện tử trên website này chỉ nhằm minh họa cho sở thích kỹ thuật và kinh nghiệm thực hành của tôi.", transparencyStrong: "Chúng không thể hiện nơi làm việc thực tế, khu vực nội bộ hay môi trường làm việc thật của bất kỳ doanh nghiệp nào.",
     personalWay: "Hành trình cá nhân", importantNotice: "Lưu ý quan trọng", importantTitle: "Lưu ý quan trọng về các dự án của tôi",
     warningOne: "Các dự án có nhãn “Ý tưởng” vẫn đang ở giai đoạn ý tưởng hoặc khái niệm và chưa được triển khai thực tế.", warningTwo: "Các dự án khác có thể được mở bằng nút “Đọc bài viết”. Cuối mỗi trang dự án có nút “Mở dự án” với các tệp liên quan.",
-    collaborationTitle: "Hợp tác trong các dự án điện tử hiện đại.", collaborationText: "Bạn cần hỗ trợ về hệ thống nhúng, cảm biến, robot hoặc tự động hóa công nghiệp? Hãy liên hệ với tôi để hợp tác kỹ thuật hoặc phát triển giải pháp riêng.", privacy: "Quyền riêng tư", back: "Quay lại", country: "Đức",
+    collaborationTitle: "Hợp tác trong các dự án điện tử hiện đại.", collaborationText: "Bạn cần hỗ trợ về hệ thống nhúng, cảm biến, robot hoặc tự động hóa công nghiệp? Hãy liên hệ với tôi để hợp tác kỹ thuật hoặc phát triển giải pháp riêng.", privacy: "Quyền riêng tư", legalNotice: "Thông tin pháp lý", back: "Quay lại", country: "Đức",
     knowledgeNoticeParagraphs: ["Nhiều kiến thức nền tảng và thông tin kỹ thuật trong khu vực này đã có trong sách chuyên ngành, tài liệu hoặc các nguồn khác.", "Vì vậy, trọng tâm của thư viện kiến thức không chỉ là tập hợp tài liệu học tập. Tôi muốn phân tích kỹ hơn những chủ đề mà theo góc nhìn của mình chưa được giải thích thật sự rõ ràng hoặc dễ hiểu ở những nơi khác.", "Các bài viết phản ánh quá trình học tập và hiểu biết kỹ thuật hiện tại của tôi. Mục tiêu là làm rõ các mối liên hệ từng bước và tạo nền tảng cho những nghiên cứu tiếp theo."],
     noKnowledge: "Chưa có bài viết phù hợp", noKnowledgeText: "Các ghi chú học tập và phân tích mới sẽ được bổ sung dần tại đây.", footer: "© 2026 ElektronikLab — Các dự án điện tử và tự động hóa hiện đại.",
     conceptProject: "Dự án ý tưởng – chưa được triển khai", noProjectLink: "Chưa có liên kết dự án",
+    heroBadge: "Thiết kế điện · Kiểm thử · Phần mềm", docs: "Tài liệu", sourceCode: "Mã nguồn", focusValue: "IoT · Tự động hóa",
   },
 };
 const getUiText = (language) => UI_TEXT[language] || UI_TEXT.de;
@@ -267,6 +270,43 @@ const FEATURES = {
   ],
 };
 
+const PERSONAL_WAY_TRANSLATIONS = {
+  en: {
+    title: "Nguyen Nhan Do - Learning technology. Gaining experience. Continuing to grow.",
+    content: `I came to Germany in 2013 - not because my life in Vietnam was bad, but because I wanted to discover how far I could develop personally and professionally by leaving my comfort zone and starting again in a completely new environment.
+
+My first years in Germany were mainly a time of arriving, learning and adapting. Alongside language courses, I worked in several fields, including hospitality, management and later self-employment.
+
+After several years of varied professional experience, I consciously decided to return more strongly to technology and develop in electronics, measurement technology and automation over the long term.
+
+In recent years, I have gained practical experience in calibration, troubleshooting, testing and the development of electronic systems while continuously expanding my technical knowledge.
+
+I have also completed further training in PLC programming, C++/Qt, AutoCAD and EPLAN to deepen my knowledge and better understand new technical fields.
+
+This blog primarily documents my technical projects, experience and learning processes. It is a place where I record knowledge, collect ideas and document my professional development over time.
+
+All content is based on personal projects, independent learning and publicly accessible knowledge. Confidential information, internal documents or projects from current or former employers are not published.`,
+  },
+  vi: {
+    title: "Nguyen Nhan Do - Học kỹ thuật. Tích lũy kinh nghiệm. Không ngừng phát triển.",
+    content: `Tôi đến Đức vào năm 2013 - không phải vì cuộc sống ở Việt Nam không tốt, mà vì tôi muốn tìm hiểu mình có thể phát triển xa đến đâu về mặt cá nhân và nghề nghiệp khi rời khỏi vùng an toàn và bắt đầu lại trong một môi trường hoàn toàn mới.
+
+Những năm đầu tại Đức chủ yếu là khoảng thời gian làm quen, học hỏi và thích nghi. Bên cạnh các khóa học ngôn ngữ, tôi đã làm việc trong nhiều lĩnh vực khác nhau, bao gồm nhà hàng, quản lý và sau đó là tự kinh doanh.
+
+Sau nhiều năm tích lũy kinh nghiệm nghề nghiệp đa dạng, tôi chủ động quyết định quay trở lại định hướng kỹ thuật rõ ràng hơn và phát triển lâu dài trong lĩnh vực điện tử, đo lường và tự động hóa.
+
+Trong những năm gần đây, tôi đã tích lũy kinh nghiệm thực tế về hiệu chuẩn, tìm lỗi, kiểm thử và phát triển hệ thống điện tử, đồng thời liên tục mở rộng kiến thức kỹ thuật.
+
+Tôi cũng đã hoàn thành các khóa đào tạo về lập trình PLC, C++/Qt, AutoCAD và EPLAN để nâng cao kiến thức và hiểu rõ hơn các lĩnh vực kỹ thuật mới.
+
+Blog này chủ yếu dùng để ghi lại các dự án kỹ thuật, kinh nghiệm và quá trình học tập của tôi. Tại đây, tôi lưu giữ kiến thức, tập hợp ý tưởng và ghi lại sự phát triển chuyên môn theo thời gian.
+
+Tất cả nội dung đều dựa trên dự án cá nhân, quá trình tự học và kiến thức công khai. Thông tin bảo mật, tài liệu nội bộ hoặc dự án của công ty hiện tại hay trước đây tất nhiên không được công bố.`,
+  },
+};
+
+const getPersonalWay = (language) => PERSONAL_WAY_TRANSLATIONS[language] || PERSONAL_WAY;
+
 // ─────────────────────────────────────────────
 // REUSABLE COMPONENTS
 // ─────────────────────────────────────────────
@@ -431,7 +471,7 @@ function HeroSlideshow({ slides, onDiscover, onOpenPost, language }) {
       <div className="relative z-10">
         <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-4 py-2 backdrop-blur-sm">
           <CircuitBoard className="h-4 w-4 text-cyan-400" />
-          <span className="text-sm font-medium text-cyan-300">Elektrokonstruktion · Prüftechnik · Software</span>
+          <span className="text-sm font-medium text-cyan-300">{t.heroBadge}</span>
         </div>
         <h2 className="max-w-4xl text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">{t.heroTitle}</h2>
         <p className="mt-5 max-w-2xl text-[15px] leading-7 text-zinc-300 sm:mt-8 sm:text-lg sm:leading-9">{t.heroText}</p>
@@ -442,10 +482,10 @@ function HeroSlideshow({ slides, onDiscover, onOpenPost, language }) {
         </div>
         <div className="mt-8 flex flex-wrap gap-4">
           <a href="https://drive.google.com/drive/folders/1y6MZUhoZJCIou-SL9BHbkA-CjpXxKGz5?usp=sharing" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 rounded-2xl border border-zinc-600/40 bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 px-6 py-4 font-bold text-zinc-100 shadow-xl shadow-black/40 transition hover:border-zinc-400/50">
-            <ExternalLink className="h-5 w-5" /> Open Docs.
+            <ExternalLink className="h-5 w-5" /> {t.docs}
           </a>
           <a href="https://github.com/nguyennhando?tab=repositories" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-6 py-4 font-bold text-black shadow-xl shadow-orange-500/30 transition hover:from-orange-400 hover:to-amber-300">
-            <Code2 className="h-5 w-5" /> Source Code
+            <Code2 className="h-5 w-5" /> {t.sourceCode}
           </a>
         </div>
       </div>
@@ -1217,6 +1257,7 @@ function MarkdownEditorPage() {
 function HomePage({ posts, galleryImages, onOpenPost, onGoImpressum, onGoDatenschutz, language }) {
   const POSTS_PER_PAGE = 15;
   const t = getUiText(language);
+  const personalWay = getPersonalWay(language);
 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("__all__");
@@ -1300,9 +1341,9 @@ const paginatedPosts = filteredPosts.slice(
               </div>
               <div className="flex flex-col justify-center">
                 <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">{t.personalWay}</p>
-                <h2 className="mt-3 text-2xl font-black leading-tight sm:text-4xl">{PERSONAL_WAY.title}</h2>
+                <h2 className="mt-3 text-2xl font-black leading-tight sm:text-4xl">{personalWay.title}</h2>
                 <div className="prose prose-invert mt-5 max-w-none text-sm leading-7 text-zinc-300 prose-p:my-4 prose-p:text-zinc-300 sm:text-base sm:leading-8">
-                  <ReactMarkdown>{PERSONAL_WAY.content}</ReactMarkdown>
+                  <ReactMarkdown>{personalWay.content}</ReactMarkdown>
                 </div>
               </div>
             </div>
@@ -1526,7 +1567,7 @@ const paginatedPosts = filteredPosts.slice(
                     {[
                       {icon: Code2, label: "GitHub", value: "github.com/nguyennhando"},
                       { icon: Globe, label: t.location, value: t.country },
-                      { icon: CircuitBoard, label: t.focus, value: "IoT · Automatisierung" },
+                      { icon: CircuitBoard, label: t.focus, value: t.focusValue },
                       { icon: Wrench, label: "Tools", value: "SPS · AutoCAD · EPLAN · C++ · Qt" },
                     ].map(({ icon: Icon, label, value }) => (
                       <div key={label} className="flex items-center gap-3 rounded-2xl border border-white/10 p-3 sm:gap-4 sm:p-4">
@@ -1547,7 +1588,7 @@ const paginatedPosts = filteredPosts.slice(
 
       <footer className="border-t border-cyan-500/10 bg-black py-10 text-center text-zinc-400">
         <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-          <button type="button" onClick={onGoImpressum} className="transition hover:text-cyan-400">Impressum</button>
+          <button type="button" onClick={onGoImpressum} className="transition hover:text-cyan-400">{t.legalNotice}</button>
           <button type="button" onClick={onGoDatenschutz} className="transition hover:text-cyan-400">{t.privacy}</button>
         </div>
         <p className="mt-4 text-xs text-zinc-500">{t.footer}</p>
