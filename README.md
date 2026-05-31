@@ -86,6 +86,8 @@ In Chrome or Edge:
 
 Use `Persönlicher Weg bearbeiten` in the local editor to update the homepage card. Its content is stored in `src/content/personal-way.md`.
 
+Use `Website-Hintergrund bearbeiten` to update the optional website background image. Its path is stored in `src/content/site-settings.md`. Leave the field empty to keep the default gradient background.
+
 ## Markdown Format
 
 Each blog post starts with frontmatter:

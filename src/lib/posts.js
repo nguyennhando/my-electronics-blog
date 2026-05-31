@@ -101,9 +101,10 @@ const parsedFiles = Object.entries(files)
   });
 
 export const PERSONAL_WAY = parsedFiles.find((entry) => entry.type === "personal_way");
+export const SITE_SETTINGS = parsedFiles.find((entry) => entry.type === "site_settings");
 
 export const POSTS = parsedFiles
-  .filter((post) => post.type !== "personal_way")
+  .filter((post) => !["personal_way", "site_settings"].includes(post.type))
   .filter((post) => post.published !== false)
   .sort((a, b) => {
     const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;

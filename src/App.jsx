@@ -2,13 +2,13 @@ import CookieBanner from "./components/CookieBanner";
 import { createElement, useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { PERSONAL_WAY, POSTS } from "./lib/posts";
+import { PERSONAL_WAY, POSTS, SITE_SETTINGS } from "./lib/posts";
 
 import {
   CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X,
   CalendarDays, ArrowRight, ShieldCheck,
   Wrench, Mail, MonitorSmartphone, Workflow, AlertTriangle, ExternalLink,
-  ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock, Download, FileText, Pencil, Save,
+  ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock, Download, FileText, Image as ImageIcon, Pencil, Save,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────
@@ -110,6 +110,12 @@ image_2: ${singleLine(personalWay.image_2)}
 ${personalWay.content.trim()}
 `;
 
+const createSiteSettingsFile = (siteSettings) => `---
+type: site_settings
+background_image: ${singleLine(siteSettings.background_image)}
+---
+`;
+
 const downloadTextFile = (filename, content) => {
   const blob = new Blob([content], { type: "text/markdown;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -181,6 +187,7 @@ function GradientBorder({ children, gradient = "from-cyan-400 via-cyan-500 to-cy
 function Background() {
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden bg-[#07111f]">
+      {SITE_SETTINGS.background_image && <img src={SITE_SETTINGS.background_image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.45),transparent_30%),radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.42),transparent_32%),radial-gradient(circle_at_20%_80%,rgba(168,85,247,0.38),transparent_34%),radial-gradient(circle_at_80%_80%,rgba(236,72,153,0.34),transparent_32%)]" />
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-900/30 to-fuchsia-600/20" />
       <div className="absolute inset-0 opacity-[0.16]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.16) 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
@@ -518,6 +525,8 @@ function MarkdownEditorPage() {
   const [saveMessage, setSaveMessage] = useState("");
   const [showPersonalWayEditor, setShowPersonalWayEditor] = useState(false);
   const [personalWayForm, setPersonalWayForm] = useState(PERSONAL_WAY);
+  const [showSiteSettingsEditor, setShowSiteSettingsEditor] = useState(false);
+  const [siteSettingsForm, setSiteSettingsForm] = useState(SITE_SETTINGS);
 
   const update = (key, value) => {
     setForm((current) => {
@@ -600,6 +609,20 @@ function MarkdownEditorPage() {
     downloadTextFile(output.filename, output.markdown);
   };
 
+  const getSiteSettingsExport = () => ({
+    filename: "site-settings.md",
+    markdown: createSiteSettingsFile(siteSettingsForm),
+  });
+
+  const saveSiteSettingsToDirectory = async () => {
+    await saveMarkdownToDirectory(getSiteSettingsExport());
+  };
+
+  const exportSiteSettings = () => {
+    const output = getSiteSettingsExport();
+    downloadTextFile(output.filename, output.markdown);
+  };
+
   const selectPost = (slug) => {
     setSelectedSlug(slug);
     if (!slug) {
@@ -640,6 +663,41 @@ function MarkdownEditorPage() {
 
       <main className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-5 lg:grid-cols-[1.05fr_0.95fr]">
         <section className="space-y-5">
+          <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/5 p-5">
+            <button type="button" onClick={() => setShowSiteSettingsEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
+              <span>
+                <span className="block text-xs font-bold uppercase text-emerald-300">Website</span>
+                <span className="mt-1 block font-black">Website-Hintergrund bearbeiten</span>
+              </span>
+              <ImageIcon className="h-5 w-5 text-emerald-300" />
+            </button>
+
+            {showSiteSettingsEditor && (
+              <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
+                <div>
+                  <label className={labelClass}>Hintergrundbild</label>
+                  <input className={inputClass} value={siteSettingsForm.background_image} onChange={(e) => setSiteSettingsForm((current) => ({ ...current, background_image: e.target.value }))} placeholder="/my-electronics-blog/images/background.webp" />
+                </div>
+                <div className="relative h-44 overflow-hidden rounded-xl border border-white/10 bg-[#07111f]">
+                  {siteSettingsForm.background_image ? (
+                    <img src={siteSettingsForm.background_image} alt="" className="h-full w-full object-cover opacity-60" />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-sm text-zinc-500">Standard-Hintergrund ohne Bild</div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-900/30 to-fuchsia-600/20" />
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button type="button" onClick={saveSiteSettingsToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-emerald-400 px-4 py-2 text-sm font-black text-black transition hover:bg-emerald-300">
+                    <Save className="h-4 w-4" /> In Ordner speichern
+                  </button>
+                  <button type="button" onClick={exportSiteSettings} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
+                    <Download className="h-4 w-4" /> MD exportieren
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="rounded-2xl border border-fuchsia-400/20 bg-fuchsia-400/5 p-5">
             <button type="button" onClick={() => setShowPersonalWayEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
               <span>
