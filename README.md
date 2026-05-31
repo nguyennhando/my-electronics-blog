@@ -20,9 +20,9 @@ The website is built as a static React application and deployed through GitHub P
 
 ## Website Sections
 
-| Blog with search and filters | Project image gallery |
+| Blog with search and filters | Feature cards and project notice |
 | --- | --- |
-| ![Blog section](docs/github-images/website-blog-section.webp) | ![Gallery section](docs/github-images/website-gallery-section.webp) |
+| ![Blog section](docs/github-images/website-blog-section.webp) | ![Feature cards and project notice](docs/github-images/website-features-section.webp) |
 
 ## Local Content Editor
 
@@ -146,7 +146,7 @@ Image naming convention:
 - `website-home-desktop.webp`: desktop homepage screenshot and README cover
 - `website-home-mobile.webp`: mobile homepage screenshot
 - `website-blog-section.webp`: blog cards, search and category filter
-- `website-gallery-section.webp`: project image gallery
+- `website-features-section.webp`: feature cards and project notice
 - `website-editor-local.webp`: local Markdown editor screenshot
 
 ## Deployment
