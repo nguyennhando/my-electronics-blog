@@ -1,8 +1,38 @@
 # ElektronikLab
 
-Portfolio and technical blog for electronics, automation, embedded systems and engineering projects.
+Personal portfolio and technical blog for electronics, automation, embedded systems and engineering projects.
 
-## Stack
+[![Live Website](https://img.shields.io/badge/Live_Website-Open-22d3ee?style=for-the-badge)](https://nguyennhando.github.io/my-electronics-blog/)
+
+![ElektronikLab workspace](public/images/about-1.webp)
+
+## Overview
+
+ElektronikLab documents practical projects, technical concepts and learning progress in areas such as electronics, measurement technology, industrial automation and software development.
+
+The website is built as a static React application and deployed through GitHub Pages. Blog posts and homepage content are stored as Markdown files and loaded at build time.
+
+## Featured Projects
+
+| Industrial process visualization | PLC-controlled diving system |
+| --- | --- |
+| ![Industrial mixing process](public/images/posts/Mischbehälter-main.webp) | ![PLC-controlled diving system](public/images/posts/Tauchanlage-main.webp) |
+
+| Smart Home with ESP32 | AutoCAD steam engine |
+| --- | --- |
+| ![ESP32 Smart Home project](public/images/posts/SmartHome-main.webp) | ![AutoCAD steam engine](public/images/posts/Dampfmaschine-main.webp) |
+
+## Features
+
+- Responsive portfolio and technical blog
+- Markdown-based project articles with frontmatter
+- Categories, tags, search and project status filters
+- Project image galleries and external project links
+- Editable homepage card for the personal journey section
+- Local-only Markdown editor for creating and updating content
+- Content Security Policy for the production website
+
+## Tech Stack
 
 - React
 - Vite
@@ -10,39 +40,49 @@ Portfolio and technical blog for electronics, automation, embedded systems and e
 - Framer Motion
 - React Markdown
 - Lucide React
+- GitHub Pages
 
-## Development
+## Getting Started
+
+Install the dependencies and start the development server:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Build the production version:
+Create a production build:
 
 ```bash
 npm run build
 ```
 
-## Project Structure
+## Content Management
 
-```text
-public/
-  images/             Static images used by the site and blog posts
-src/
-  components/         Shared UI components
-  content/            Markdown blog posts
-  lib/posts.js        Markdown loading and frontmatter parsing
-  App.jsx             Application UI
-  index.css           Tailwind CSS entrypoint
-  main.jsx            React entrypoint
+Blog posts are stored in `src/content/`. Images are stored in `public/images/`.
+
+Start the local Markdown editor:
+
+```bash
+npm run admin
 ```
 
-## Markdown Posts
+The editor is intentionally available only during local development. It is removed from the production bundle and cannot be opened through the public GitHub Pages website.
 
-Blog posts are stored as `.md` files in `src/content/`. Vite loads them at build time through `import.meta.glob` in `src/lib/posts.js`.
+In Chrome or Edge:
 
-Each post starts with frontmatter:
+1. Create a new post or select an existing post.
+2. Edit the content and preview the result.
+3. Click `In Ordner speichern`.
+4. Select `src/content/` the first time.
+5. Add referenced images to `public/images/posts/`.
+6. Deploy the updated website.
+
+Use `Persönlicher Weg bearbeiten` in the local editor to update the homepage card. Its content is stored in `src/content/personal-way.md`.
+
+## Markdown Format
+
+Each blog post starts with frontmatter:
 
 ```md
 ---
@@ -69,24 +109,46 @@ sort_order: 100
 Post content...
 ```
 
-Supported `project_status` values are `idea`, `in_progress` and `done`. Lower `sort_order` values appear first.
+Supported `project_status` values:
 
-The Markdown parser supports wrapped scalar values and `-` list items for `image_gallery` and `tags`.
+- `idea`
+- `in_progress`
+- `done`
 
-## Markdown Editor
+Lower `sort_order` values appear first.
 
-Open `?admin=1` to use the Markdown export form:
+## Project Structure
 
 ```text
-https://nguyennhando.github.io/my-electronics-blog/?admin=1
+public/
+  images/             Static website and project images
+src/
+  components/         Shared UI components
+  content/            Markdown posts and homepage content
+  lib/posts.js        Markdown loading and frontmatter parsing
+  App.jsx             Application UI
+  index.css           Tailwind CSS entrypoint
+  main.jsx            React entrypoint
 ```
-
-Create a new post or select an existing post to edit its loaded content. The form downloads a `.md` file only. Move the downloaded file into `src/content/`, replace the old file when editing, add any referenced images to `public/images/posts/`, then deploy the site. The editor does not modify the deployed website directly.
 
 ## Deployment
 
-The Vite base path is configured for GitHub Pages:
+Deploy the production build to GitHub Pages:
 
 ```bash
 npm run deploy
 ```
+
+The Vite base path is configured for:
+
+```text
+/my-electronics-blog/
+```
+
+## Security Notes
+
+- The public website is static and does not expose an admin login, database or write API.
+- The local Markdown editor is removed from production builds.
+- A Content Security Policy is defined in `index.html`.
+- Published images are stripped of metadata before deployment.
+- Never commit credentials, API keys, private documents or environment files.

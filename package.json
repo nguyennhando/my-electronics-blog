@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "admin": "vite --open /my-electronics-blog/?admin=1",
     "build": "vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",

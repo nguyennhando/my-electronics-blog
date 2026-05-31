@@ -79,7 +79,7 @@ const parseFrontmatter = (raw) => {
   };
 };
 
-export const POSTS = Object.entries(files)
+const parsedFiles = Object.entries(files)
   .map(([path, raw]) => {
     const { data, content } = parseFrontmatter(raw);
     const slug = data.slug || path.split("/").pop().replace(/\.md$/, "");
@@ -98,7 +98,12 @@ export const POSTS = Object.entries(files)
         ? Number(data.sort_order)
         : 100,
     };
-  })
+  });
+
+export const PERSONAL_WAY = parsedFiles.find((entry) => entry.type === "personal_way");
+
+export const POSTS = parsedFiles
+  .filter((post) => post.type !== "personal_way")
   .filter((post) => post.published !== false)
   .sort((a, b) => {
     const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;

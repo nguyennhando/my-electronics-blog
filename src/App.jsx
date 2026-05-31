@@ -2,13 +2,13 @@ import CookieBanner from "./components/CookieBanner";
 import { createElement, useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { POSTS } from "./lib/posts";
+import { PERSONAL_WAY, POSTS } from "./lib/posts";
 
 import {
   CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X,
   CalendarDays, ArrowRight, ShieldCheck,
   Wrench, Mail, MonitorSmartphone, Workflow, AlertTriangle, ExternalLink,
-  ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock, Download, FileText,
+  ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock, Download, FileText, Pencil, Save,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────
@@ -98,6 +98,16 @@ sort_order: ${Number(post.sort_order) || 100}
 ---
 
 ${post.content.trim()}
+`;
+
+const createPersonalWayFile = (personalWay) => `---
+type: personal_way
+title: ${singleLine(personalWay.title)}
+image_1: ${singleLine(personalWay.image_1)}
+image_2: ${singleLine(personalWay.image_2)}
+---
+
+${personalWay.content.trim()}
 `;
 
 const downloadTextFile = (filename, content) => {
@@ -504,6 +514,10 @@ function MarkdownEditorPage() {
   const [form, setForm] = useState(emptyEditorForm);
   const [selectedSlug, setSelectedSlug] = useState("");
   const [slugEdited, setSlugEdited] = useState(false);
+  const [contentDirectory, setContentDirectory] = useState(null);
+  const [saveMessage, setSaveMessage] = useState("");
+  const [showPersonalWayEditor, setShowPersonalWayEditor] = useState(false);
+  const [personalWayForm, setPersonalWayForm] = useState(PERSONAL_WAY);
 
   const update = (key, value) => {
     setForm((current) => {
@@ -513,11 +527,11 @@ function MarkdownEditorPage() {
     });
   };
 
-  const exportPost = () => {
+  const getMarkdownExport = () => {
     const slug = form.slug || slugify(form.title);
     if (!slug || !form.title.trim() || !form.excerpt.trim() || !form.content.trim()) {
       window.alert("Titel, Slug, Kurzbeschreibung und Inhalt sind Pflichtfelder.");
-      return;
+      return null;
     }
 
     const markdown = createMarkdownFile({
@@ -526,7 +540,64 @@ function MarkdownEditorPage() {
       image_gallery: form.image_gallery.split("\n").map((item) => item.trim()).filter(Boolean),
       tags: form.tags.split(",").map((item) => item.trim()).filter(Boolean),
     });
-    downloadTextFile(`${slug}.md`, markdown);
+    return { filename: `${slug}.md`, markdown };
+  };
+
+  const exportPost = () => {
+    const output = getMarkdownExport();
+    if (!output) return;
+    downloadTextFile(output.filename, output.markdown);
+  };
+
+  const saveMarkdownToDirectory = async (output) => {
+    if (!window.showDirectoryPicker) {
+      window.alert("Direktes Speichern wird von diesem Browser nicht unterstützt. Bitte verwenden Sie MD exportieren.");
+      return;
+    }
+
+    try {
+      const directory = contentDirectory || await window.showDirectoryPicker({ mode: "readwrite" });
+      if (!contentDirectory) setContentDirectory(directory);
+      const file = await directory.getFileHandle(output.filename, { create: true });
+      const writable = await file.createWritable();
+      await writable.write(output.markdown);
+      await writable.close();
+      setSaveMessage(`${output.filename} wurde gespeichert.`);
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        window.alert("Die Datei konnte nicht gespeichert werden. Bitte verwenden Sie MD exportieren.");
+      }
+    }
+  };
+
+  const savePostToDirectory = async () => {
+    const output = getMarkdownExport();
+    if (!output) return;
+    await saveMarkdownToDirectory(output);
+  };
+
+  const getPersonalWayExport = () => {
+    if (!personalWayForm.title.trim() || !personalWayForm.content.trim()) {
+      window.alert("Titel und Inhalt sind Pflichtfelder.");
+      return null;
+    }
+
+    return {
+      filename: "personal-way.md",
+      markdown: createPersonalWayFile(personalWayForm),
+    };
+  };
+
+  const savePersonalWayToDirectory = async () => {
+    const output = getPersonalWayExport();
+    if (!output) return;
+    await saveMarkdownToDirectory(output);
+  };
+
+  const exportPersonalWay = () => {
+    const output = getPersonalWayExport();
+    if (!output) return;
+    downloadTextFile(output.filename, output.markdown);
   };
 
   const selectPost = (slug) => {
@@ -569,6 +640,61 @@ function MarkdownEditorPage() {
 
       <main className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-5 lg:grid-cols-[1.05fr_0.95fr]">
         <section className="space-y-5">
+          <div className="rounded-2xl border border-fuchsia-400/20 bg-fuchsia-400/5 p-5">
+            <button type="button" onClick={() => setShowPersonalWayEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
+              <span>
+                <span className="block text-xs font-bold uppercase text-fuchsia-300">Startseite</span>
+                <span className="mt-1 block font-black">Persönlicher Weg bearbeiten</span>
+              </span>
+              <Pencil className="h-5 w-5 text-fuchsia-300" />
+            </button>
+
+            {showPersonalWayEditor && (
+              <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
+                <div>
+                  <label className={labelClass}>Titel *</label>
+                  <input className={inputClass} value={personalWayForm.title} onChange={(e) => setPersonalWayForm((current) => ({ ...current, title: e.target.value }))} />
+                </div>
+                <div>
+                  <label className={labelClass}>Bild 1</label>
+                  <input className={inputClass} value={personalWayForm.image_1} onChange={(e) => setPersonalWayForm((current) => ({ ...current, image_1: e.target.value }))} />
+                </div>
+                <div>
+                  <label className={labelClass}>Bild 2</label>
+                  <input className={inputClass} value={personalWayForm.image_2} onChange={(e) => setPersonalWayForm((current) => ({ ...current, image_2: e.target.value }))} />
+                </div>
+                <div>
+                  <label className={labelClass}>Markdown-Inhalt *</label>
+                  <textarea className={`${inputClass} min-h-[320px] font-mono leading-6`} value={personalWayForm.content} onChange={(e) => setPersonalWayForm((current) => ({ ...current, content: e.target.value }))} />
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button type="button" onClick={savePersonalWayToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-fuchsia-400 px-4 py-2 text-sm font-black text-black transition hover:bg-fuchsia-300">
+                    <Save className="h-4 w-4" /> In Ordner speichern
+                  </button>
+                  <button type="button" onClick={exportPersonalWay} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
+                    <Download className="h-4 w-4" /> MD exportieren
+                  </button>
+                </div>
+                <div className="border-t border-white/10 pt-5">
+                  <p className="mb-3 text-xs font-bold uppercase text-zinc-500">Vorschau</p>
+                  <div className="grid gap-4 lg:grid-cols-2">
+                    <div className="grid gap-3">
+                      <img src={personalWayForm.image_1} alt="" className="h-40 w-full rounded-xl object-cover" />
+                      <img src={personalWayForm.image_2} alt="" className="h-40 w-full rounded-xl object-cover" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase text-cyan-300">Persönlicher Weg</p>
+                      <h2 className="mt-2 text-xl font-black leading-tight">{personalWayForm.title}</h2>
+                      <div className="prose prose-invert mt-4 max-w-none text-sm leading-6 prose-p:my-3 prose-p:text-zinc-300">
+                        <ReactMarkdown>{personalWayForm.content}</ReactMarkdown>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-5">
             <label className={labelClass}>Beitrag laden oder neu erstellen</label>
             <select className={inputClass} value={selectedSlug} onChange={(e) => selectPost(e.target.value)}>
@@ -640,12 +766,18 @@ function MarkdownEditorPage() {
 
         <aside className="lg:sticky lg:top-[90px] lg:self-start">
           <div className="space-y-5 rounded-2xl border border-white/10 bg-[#07111f]/95 p-5">
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <h2 className="font-black text-cyan-300">Vorschau</h2>
-              <button type="button" onClick={exportPost} className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2 text-sm font-black text-black transition hover:bg-cyan-300">
-                <Download className="h-4 w-4" /> MD exportieren
-              </button>
+              <div className="flex flex-wrap justify-end gap-2">
+                <button type="button" onClick={savePostToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2 text-sm font-black text-black transition hover:bg-cyan-300">
+                  <Save className="h-4 w-4" /> In Ordner speichern
+                </button>
+                <button type="button" onClick={exportPost} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
+                  <Download className="h-4 w-4" /> MD exportieren
+                </button>
+              </div>
             </div>
+            {saveMessage && <p className="text-xs font-bold text-emerald-300">{saveMessage}</p>}
 
             <div>
               <p className="mb-3 text-xs font-bold uppercase text-zinc-500">Blog-Karte</p>
@@ -739,14 +871,6 @@ const paginatedPosts = filteredPosts.slice(
   currentPage * POSTS_PER_PAGE
 );
 
-useEffect(() => {
-  setCurrentPage(1);
-}, [search, category]);
-
-useEffect(() => {
-  setCurrentPage(1);
-}, [search, category]);
-
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#050816] text-white">
       <Background />
@@ -782,48 +906,14 @@ useEffect(() => {
           <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[2rem]" innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl">
             <div className="grid items-stretch gap-6 p-4 sm:p-6 lg:grid-cols-2 lg:gap-8">
               <div className="grid min-h-full gap-4 lg:grid-rows-2">
-                <img src="/my-electronics-blog/images/about-1.webp" alt="Nguyen Nhan Do" className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]" />
-                <img src="/my-electronics-blog/images/about-2.webp" alt="Elektronik" className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]" />
+                <img src={PERSONAL_WAY.image_1} alt="Nguyen Nhan Do" className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]" />
+                <img src={PERSONAL_WAY.image_2} alt="Elektronik" className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]" />
               </div>
               <div className="flex flex-col justify-center">
                 <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">Persönlicher Weg</p>
-                <h2 className="mt-3 text-2xl font-black leading-tight sm:text-4xl">Nguyen Nhan Do – Technik lernen. Erfahrung sammeln. Mich weiterentwickeln.</h2>
-                <div className="mt-5 space-y-4 text-sm leading-7 text-zinc-300 sm:text-base sm:leading-8">
-                  <p>
-                Ich bin 2013 nach Deutschland gekommen – nicht, weil mein Leben in Vietnam schlecht war,
-                sondern weil ich wissen wollte, wie weit ich mich persönlich und beruflich entwickeln kann,
-                wenn ich meine Komfortzone verlasse und in einem völlig neuen Umfeld neu anfange.
-              </p>
-
-              <p className="mt-4">
-                Die ersten Jahre in Deutschland waren für mich vor allem eine Zeit des Ankommens, Lernens
-                und Anpassens. Neben den Sprachkursen habe ich in verschiedenen Bereichen gearbeitet –
-                unter anderem in der Gastronomie, im Management und später auch in der Selbstständigkeit.
-              </p>
-
-              <p className="mt-4">
-                Nach mehreren Jahren unterschiedlicher beruflicher Erfahrungen habe ich mich bewusst
-                entschieden, wieder stärker in die technische Richtung zurückzugehen und mich langfristig im
-                Bereich Elektronik, Messtechnik und Automatisierung weiterzuentwickeln.
-              </p>
-
-              <p className="mt-4">
-                In den letzten Jahren konnte ich praktische Erfahrungen in der Kalibrierung, Fehlersuche,
-                Prüfung und Entwicklung elektronischer Systeme sammeln und gleichzeitig mein technisches
-                Wissen kontinuierlich erweitern.
-              </p>
-
-              <p className="mt-4">
-                Deshalb habe ich zusätzliche Weiterbildungen in SPS-Programmierung, C++/Qt, AutoCAD und
-                EPLAN absolviert, um mein Wissen gezielt auszubauen und neue technische Bereiche besser zu
-                verstehen.
-              </p>
-
-              <p className="mt-4">
-                Dieser Blog ist kein Ort für Motivationstexte oder perfekte Erfolgsgeschichten. Ich möchte
-                hier ehrlich über meinen Weg sprechen – über das Leben und Arbeiten in Deutschland,
-                technische Themen, persönliche Erfahrungen, Herausforderungen und Entwicklung.
-              </p>
+                <h2 className="mt-3 text-2xl font-black leading-tight sm:text-4xl">{PERSONAL_WAY.title}</h2>
+                <div className="prose prose-invert mt-5 max-w-none text-sm leading-7 text-zinc-300 prose-p:my-4 prose-p:text-zinc-300 sm:text-base sm:leading-8">
+                  <ReactMarkdown>{PERSONAL_WAY.content}</ReactMarkdown>
                 </div>
               </div>
             </div>
@@ -882,9 +972,9 @@ useEffect(() => {
             <div className="flex flex-col gap-3 sm:flex-row">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
-                <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Suchen..." className="w-full rounded-2xl border border-white/10 bg-white/[0.05] py-3 pl-11 pr-4 text-sm outline-none ring-cyan-400/30 placeholder:text-zinc-500 focus:ring-4 sm:w-72" />
+                <input value={search} onChange={e => { setSearch(e.target.value); setCurrentPage(1); }} placeholder="Suchen..." className="w-full rounded-2xl border border-white/10 bg-white/[0.05] py-3 pl-11 pr-4 text-sm outline-none ring-cyan-400/30 placeholder:text-zinc-500 focus:ring-4 sm:w-72" />
               </div>
-              <select value={category} onChange={e => setCategory(e.target.value)} className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-3 outline-none ring-cyan-400/30 focus:ring-4">
+              <select value={category} onChange={e => { setCategory(e.target.value); setCurrentPage(1); }} className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-3 outline-none ring-cyan-400/30 focus:ring-4">
                 {categories.map(c => <option key={c}>{c}</option>)}
               </select>
             </div>
@@ -1420,7 +1510,7 @@ function DatenschutzPage({ onBack, onNavigate }) {
 // APP ROOT (routing + state)
 // ─────────────────────────────────────────────
 function App() {
-  const isMarkdownEditor = new URLSearchParams(window.location.search).get("admin") === "1";
+  const isMarkdownEditor = import.meta.env.DEV && new URLSearchParams(window.location.search).get("admin") === "1";
   const [page, setPage] = useState("home"); // "home" | "post" | "impressum" | "datenschutz"
   const [currentPostId, setCurrentPostId] = useState(null);
 
