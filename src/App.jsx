@@ -1081,7 +1081,7 @@ function MarkdownEditorPage() {
                 gradient={previewIsIdea ? "from-zinc-600 via-zinc-500 to-zinc-600" : "from-cyan-400 via-cyan-500 to-cyan-400"}
                 rounded="rounded-[1.4rem] sm:rounded-[2rem]"
                 className="flex"
-                innerClassName="flex flex-1 flex-col overflow-hidden rounded-[1.35rem] sm:min-h-[560px] sm:rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl"
+                innerClassName="flex flex-1 flex-col overflow-hidden rounded-[1.35rem] sm:rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl"
               >
                 <div className="h-44 w-full shrink-0 bg-black/30 sm:h-56">
                   {form.image_url ? (
@@ -1282,7 +1282,7 @@ const paginatedPosts = filteredPosts.slice(
             <div className="py-20 text-center text-zinc-500">Keine Beiträge gefunden.</div>
           )}
 
-          <div className="grid gap-4 min-[620px]:auto-rows-fr min-[620px]:grid-cols-2 xl:grid-cols-3 xl:gap-6">
+          <div className="grid gap-4 min-[620px]:grid-cols-2 xl:grid-cols-3 xl:gap-6">
             {paginatedPosts.map(post => {
               const Icon = getCategoryIcon(post.category);
               const idea = isIdea(post);
@@ -1292,7 +1292,7 @@ const paginatedPosts = filteredPosts.slice(
                     gradient={idea ? "from-zinc-600 via-zinc-500 to-zinc-600" : "from-cyan-400 via-cyan-500 to-cyan-400"}
                     rounded="rounded-[1.4rem] sm:rounded-[2rem]"
                     className="flex flex-1"
-                    innerClassName="flex flex-1 flex-col overflow-hidden rounded-[1.35rem] bg-[#07111f]/95 backdrop-blur-xl sm:min-h-[560px] sm:rounded-[1.95rem]"
+                    innerClassName="flex flex-1 flex-col overflow-hidden rounded-[1.35rem] bg-[#07111f]/95 backdrop-blur-xl sm:rounded-[1.95rem]"
                   >
                     <img src={post.image_url} alt={post.title}
                       onClick={() => setLightbox({ images: [post.image_url, ...normalizeImageList(post.image_gallery)], index: 0 })}
