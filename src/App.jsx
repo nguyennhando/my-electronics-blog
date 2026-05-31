@@ -1282,12 +1282,12 @@ const paginatedPosts = filteredPosts.slice(
             <div className="py-20 text-center text-zinc-500">Keine Beiträge gefunden.</div>
           )}
 
-          <div className="grid auto-rows-fr gap-4 min-[620px]:grid-cols-2 xl:grid-cols-3 xl:gap-6">
+          <div className="grid gap-4 min-[620px]:auto-rows-fr min-[620px]:grid-cols-2 xl:grid-cols-3 xl:gap-6">
             {paginatedPosts.map(post => {
               const Icon = getCategoryIcon(post.category);
               const idea = isIdea(post);
               return (
-                <motion.div whileHover={idea ? undefined : { y: -5 }} key={post.id} className="group flex h-full">
+                <motion.div whileHover={idea ? undefined : { y: -5 }} key={post.id} className="group flex min-[620px]:h-full">
                   <GradientBorder
                     gradient={idea ? "from-zinc-600 via-zinc-500 to-zinc-600" : "from-cyan-400 via-cyan-500 to-cyan-400"}
                     rounded="rounded-[1.4rem] sm:rounded-[2rem]"
@@ -1308,7 +1308,7 @@ const paginatedPosts = filteredPosts.slice(
                       <div className="mt-5 flex flex-wrap gap-2">
                         {(post.tags || []).map(tag => <span key={tag} className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-400">#{tag}</span>)}
                       </div>
-                      <div className="mt-auto flex gap-2 pt-6 sm:gap-3">
+                      <div className="flex gap-2 pt-6 sm:mt-auto sm:gap-3">
                         <button type="button" onClick={() => onOpenPost(post.id)}
                           className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base">
                           Beitrag lesen
