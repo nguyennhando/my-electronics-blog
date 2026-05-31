@@ -272,7 +272,7 @@ function SiteHeader({ onNavigate, currentPage }) {
           {[["blog", "Blog"], ["projekte", "Galerie"], ["kontakt", "Kontakt"]].map(([id, label]) => (
             <button key={id} type="button" onClick={() => scrollTo(id)} className="text-sm text-zinc-300 transition hover:text-cyan-300">{label}</button>
           ))}
-          <button type="button" onClick={goKnowledge} className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-400/10 px-4 py-2 text-sm font-bold text-violet-200 transition hover:border-violet-300/60 hover:bg-violet-400/20">
+          <button type="button" onClick={goKnowledge} className="inline-flex items-center gap-2 rounded-full border border-slate-300/30 bg-slate-300/10 px-4 py-2 text-sm font-bold text-slate-200 transition hover:border-slate-200/60 hover:bg-slate-300/20">
             <BookOpen className="h-4 w-4" /> Wissen & Forschung
           </button>
         </div>
@@ -288,7 +288,7 @@ function SiteHeader({ onNavigate, currentPage }) {
             {[["blog", "Blog"], ["projekte", "Projekte"], ["kontakt", "Kontakt"]].map(([id, label]) => (
               <button key={id} type="button" onClick={() => scrollTo(id)} className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300">{label}</button>
             ))}
-            <button type="button" onClick={goKnowledge} className="mt-2 inline-flex items-center gap-2 rounded-xl border border-violet-400/30 bg-violet-400/10 px-3 py-2 text-left font-bold text-violet-200">
+            <button type="button" onClick={goKnowledge} className="mt-2 inline-flex items-center gap-2 rounded-xl border border-slate-300/30 bg-slate-300/10 px-3 py-2 text-left font-bold text-slate-200">
               <BookOpen className="h-4 w-4" /> Wissen & Forschung
             </button>
           </div>
@@ -551,10 +551,10 @@ function KnowledgePage({ posts, onOpenPost }) {
     <div className="min-h-screen text-white">
       <Background />
       <main className="mx-auto max-w-7xl px-4 pb-20 pt-[120px] sm:px-5">
-        <section className="relative overflow-hidden rounded-[2rem] border border-violet-400/25 bg-[#0b1023]/95 px-5 py-8 shadow-2xl shadow-violet-950/30 sm:px-8 sm:py-10">
-          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-violet-500/20 blur-3xl" />
+        <section className="relative overflow-hidden rounded-[2rem] border border-slate-300/25 bg-[#0b1023]/95 px-5 py-8 shadow-2xl shadow-slate-950/30 sm:px-8 sm:py-10">
+          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-slate-300/15 blur-3xl" />
           <div className="relative max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-400/10 px-3 py-1.5 text-xs font-black uppercase tracking-widest text-violet-200">
+            <div className="inline-flex items-center gap-2 rounded-full border border-slate-300/30 bg-slate-300/10 px-3 py-1.5 text-xs font-black uppercase tracking-widest text-slate-200">
               <Library className="h-4 w-4" /> Wissensbibliothek
             </div>
             <h1 className="mt-5 text-3xl font-black leading-tight sm:text-5xl">Wissen, Lernmaterialien & Forschung</h1>
@@ -562,13 +562,13 @@ function KnowledgePage({ posts, onOpenPost }) {
           </div>
         </section>
 
-        <section className="mt-5 rounded-2xl border border-violet-400/20 bg-violet-400/[0.07] p-5 sm:p-6">
+        <section className="mt-5 rounded-2xl border border-slate-300/20 bg-slate-300/[0.07] p-5 sm:p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-violet-400/25 bg-violet-400/10 text-violet-200">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-slate-300/25 bg-slate-300/10 text-slate-200">
               <BookOpen className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="font-black text-violet-100">Hinweis zur Wissensbibliothek</h2>
+              <h2 className="font-black text-slate-100">Hinweis zur Wissensbibliothek</h2>
               <div className="mt-3 space-y-3 text-sm leading-7 text-zinc-300">
                 <p>Viele Grundlagen und technische Informationen in diesem Bereich sind bereits in Fachbüchern, Dokumentationen oder anderen Quellen verfügbar.</p>
                 <p>Der Schwerpunkt dieser Wissensbibliothek liegt daher nicht nur auf der Sammlung von Lernmaterialien. Ich möchte vor allem Themen genauer analysieren, die aus meiner Sicht an anderen Stellen nicht immer verständlich oder ausreichend nachvollziehbar erklärt werden.</p>
@@ -581,60 +581,60 @@ function KnowledgePage({ posts, onOpenPost }) {
         <section className="mt-8 grid gap-3 rounded-2xl border border-white/10 bg-[#07111f]/90 p-4 sm:grid-cols-[1fr_auto]">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Analyse, Bauteil oder Thema suchen..." className="w-full rounded-xl border border-white/10 bg-black/20 py-3 pl-11 pr-4 text-sm outline-none ring-violet-400/30 placeholder:text-zinc-500 focus:ring-4" />
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Analyse, Bauteil oder Thema suchen..." className="w-full rounded-xl border border-white/10 bg-black/20 py-3 pl-11 pr-4 text-sm outline-none ring-slate-300/30 placeholder:text-zinc-500 focus:ring-4" />
           </div>
-          <select value={category} onChange={(e) => setCategory(e.target.value)} className="rounded-xl border border-white/10 bg-[#050816] px-5 py-3 text-sm outline-none ring-violet-400/30 focus:ring-4">
+          <select value={category} onChange={(e) => setCategory(e.target.value)} className="rounded-xl border border-white/10 bg-[#050816] px-5 py-3 text-sm outline-none ring-slate-300/30 focus:ring-4">
             {categories.map((item) => <option key={item}>{item}</option>)}
           </select>
         </section>
 
         {!featuredPost ? (
-          <section className="mt-8 rounded-2xl border border-dashed border-violet-400/30 bg-violet-400/5 px-5 py-16 text-center">
-            <BookOpen className="mx-auto h-10 w-10 text-violet-300" />
+          <section className="mt-8 rounded-2xl border border-dashed border-slate-300/30 bg-slate-300/5 px-5 py-16 text-center">
+            <BookOpen className="mx-auto h-10 w-10 text-slate-300" />
             <h2 className="mt-4 text-xl font-black">Noch keine passenden Beiträge</h2>
             <p className="mt-2 text-sm text-zinc-400">Neue Lernnotizen und Analysen werden hier nach und nach ergänzt.</p>
           </section>
         ) : (
           <>
             <section className="mt-8">
-              <p className="mb-3 text-xs font-black uppercase tracking-widest text-violet-300">Ausgewählter Beitrag</p>
-              <button type="button" onClick={() => onOpenPost(featuredPost.id)} className="group grid w-full overflow-hidden rounded-[2rem] border border-violet-400/25 bg-[#0b1023]/95 text-left transition hover:border-violet-300/60 lg:grid-cols-[0.42fr_0.58fr]">
-                <div className="h-56 overflow-hidden bg-violet-950/30 lg:h-auto">
-                  {featuredPost.image_url ? <img src={featuredPost.image_url} alt="" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><FlaskConical className="h-14 w-14 text-violet-300/60" /></div>}
+              <p className="mb-3 text-xs font-black uppercase tracking-widest text-slate-300">Ausgewählter Beitrag</p>
+              <button type="button" onClick={() => onOpenPost(featuredPost.id)} className="group grid w-full overflow-hidden rounded-[2rem] border border-slate-300/25 bg-[#0b1023]/95 text-left transition hover:border-slate-200/60 lg:grid-cols-[0.42fr_0.58fr]">
+                <div className="h-56 overflow-hidden bg-slate-950/30 lg:h-auto">
+                  {featuredPost.image_url ? <img src={featuredPost.image_url} alt="" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><FlaskConical className="h-14 w-14 text-slate-300/60" /></div>}
                 </div>
                 <div className="p-5 sm:p-7">
                   <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-400">
-                    <span className="rounded-full bg-violet-400 px-3 py-1 font-black text-black">{featuredPost.category}</span>
+                    <span className="rounded-full bg-slate-200 px-3 py-1 font-black text-slate-950">{featuredPost.category}</span>
                     <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {featuredPost.read_time || "5 Min."}</span>
                   </div>
                   <h2 className="mt-4 text-2xl font-black leading-tight sm:text-3xl">{featuredPost.title}</h2>
                   <p className="mt-3 line-clamp-3 text-sm leading-7 text-zinc-400 sm:text-base">{featuredPost.excerpt}</p>
-                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-black text-violet-300">Beitrag lesen <ArrowRight className="h-4 w-4" /></span>
+                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-black text-slate-200">Beitrag lesen <ArrowRight className="h-4 w-4" /></span>
                 </div>
               </button>
             </section>
 
             {listPosts.length > 0 && <section className="mt-10">
               <div className="mb-4 flex items-end justify-between gap-4">
-                <div><p className="text-xs font-black uppercase tracking-widest text-violet-300">Archiv</p><h2 className="mt-2 text-2xl font-black">Weitere Beiträge</h2></div>
+                <div><p className="text-xs font-black uppercase tracking-widest text-slate-300">Archiv</p><h2 className="mt-2 text-2xl font-black">Weitere Beiträge</h2></div>
                 <span className="text-sm text-zinc-500">{filteredPosts.length} Beiträge</span>
               </div>
               <div className="grid gap-3">
                 {paginatedPosts.map((post) => (
-                  <button key={post.id} type="button" onClick={() => onOpenPost(post.id)} className="group grid gap-4 rounded-2xl border border-white/10 bg-[#07111f]/90 p-4 text-left transition hover:border-violet-400/50 sm:grid-cols-[140px_1fr_auto] sm:items-center">
-                    <div className="hidden h-24 overflow-hidden rounded-xl bg-violet-950/30 sm:block">
-                      {post.image_url ? <img src={post.image_url} alt="" className="h-full w-full object-cover transition group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><GraduationCap className="h-8 w-8 text-violet-300/60" /></div>}
+                  <button key={post.id} type="button" onClick={() => onOpenPost(post.id)} className="group grid gap-4 rounded-2xl border border-white/10 bg-[#07111f]/90 p-4 text-left transition hover:border-slate-300/50 sm:grid-cols-[140px_1fr_auto] sm:items-center">
+                    <div className="hidden h-24 overflow-hidden rounded-xl bg-slate-950/30 sm:block">
+                      {post.image_url ? <img src={post.image_url} alt="" className="h-full w-full object-cover transition group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><GraduationCap className="h-8 w-8 text-slate-300/60" /></div>}
                     </div>
                     <div>
-                      <div className="flex flex-wrap gap-2 text-xs text-zinc-500"><span className="font-bold text-violet-300">{post.category}</span><span>{formatDate(post.created_at)}</span><span>{post.read_time || "5 Min."}</span></div>
-                      <h3 className="mt-2 text-lg font-black leading-tight group-hover:text-violet-200">{post.title}</h3>
+                      <div className="flex flex-wrap gap-2 text-xs text-zinc-500"><span className="font-bold text-slate-300">{post.category}</span><span>{formatDate(post.created_at)}</span><span>{post.read_time || "5 Min."}</span></div>
+                      <h3 className="mt-2 text-lg font-black leading-tight group-hover:text-slate-200">{post.title}</h3>
                       <p className="mt-2 line-clamp-2 text-sm leading-6 text-zinc-400">{post.excerpt}</p>
                     </div>
-                    <ArrowRight className="hidden h-5 w-5 text-violet-300 sm:block" />
+                    <ArrowRight className="hidden h-5 w-5 text-slate-300 sm:block" />
                   </button>
                 ))}
               </div>
-              {totalPages > 1 && <div className="mt-6 flex justify-center gap-2">{Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => <button key={number} type="button" onClick={() => setCurrentPage(number)} className={`h-10 w-10 rounded-xl text-sm font-black ${currentPage === number ? "bg-violet-400 text-black" : "border border-white/10 bg-white/5 text-zinc-300"}`}>{number}</button>)}</div>}
+              {totalPages > 1 && <div className="mt-6 flex justify-center gap-2">{Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => <button key={number} type="button" onClick={() => setCurrentPage(number)} className={`h-10 w-10 rounded-xl text-sm font-black ${currentPage === number ? "bg-slate-200 text-slate-950" : "border border-white/10 bg-white/5 text-zinc-300"}`}>{number}</button>)}</div>}
             </section>}
           </>
         )}
@@ -649,31 +649,31 @@ function KnowledgeDetailPage({ post, onBack }) {
     <div className="min-h-screen text-white">
       <Background />
       <main className="mx-auto max-w-4xl px-4 pb-20 pt-[110px] sm:px-5">
-        <button type="button" onClick={onBack} className="mb-6 inline-flex items-center gap-2 rounded-full border border-violet-400/25 bg-violet-400/10 px-5 py-2.5 text-sm font-bold text-violet-200 transition hover:bg-violet-400/20"><ArrowLeft className="h-4 w-4" /> Zurück zur Wissensbibliothek</button>
-        <article className="overflow-hidden rounded-[2rem] border border-violet-400/20 bg-[#07111f]/95 shadow-2xl shadow-violet-950/20">
+        <button type="button" onClick={onBack} className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-300/25 bg-slate-300/10 px-5 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-slate-300/20"><ArrowLeft className="h-4 w-4" /> Zurück zur Wissensbibliothek</button>
+        <article className="overflow-hidden rounded-[2rem] border border-slate-300/20 bg-[#07111f]/95 shadow-2xl shadow-slate-950/20">
           {post.image_url && <img src={post.image_url} alt={post.title} className="h-56 w-full object-cover sm:h-80" />}
           <div className="p-5 sm:p-8 lg:p-10">
             <div className="flex flex-wrap gap-3 text-xs text-zinc-400">
-              <span className="rounded-full bg-violet-400 px-3 py-1 font-black text-black">{post.category}</span>
+              <span className="rounded-full bg-slate-200 px-3 py-1 font-black text-slate-950">{post.category}</span>
               <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at)}</span>
               <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {post.read_time || "5 Min."}</span>
             </div>
             <h1 className="mt-5 text-3xl font-black leading-tight sm:text-5xl">{post.title}</h1>
-            <p className="mt-5 text-base font-semibold leading-8 text-violet-100/90 sm:text-lg">{post.excerpt}</p>
+            <p className="mt-5 text-base font-semibold leading-8 text-slate-100/90 sm:text-lg">{post.excerpt}</p>
             <div className="mt-7 text-sm leading-8 text-zinc-300 sm:text-base sm:leading-9">
               <ReactMarkdown components={{
                 h1: ({ children }) => <h2 className="mb-4 mt-9 text-2xl font-black text-white sm:text-3xl">{children}</h2>,
-                h2: ({ children }) => <h3 className="mb-3 mt-8 text-xl font-black text-violet-200 sm:text-2xl">{children}</h3>,
+                h2: ({ children }) => <h3 className="mb-3 mt-8 text-xl font-black text-slate-200 sm:text-2xl">{children}</h3>,
                 h3: ({ children }) => <h4 className="mb-2 mt-6 text-lg font-bold text-white">{children}</h4>,
                 p: ({ children }) => <p className="mb-4">{children}</p>,
                 ul: ({ children }) => <ul className="mb-5 ml-6 list-disc space-y-2">{children}</ul>,
                 ol: ({ children }) => <ol className="mb-5 ml-6 list-decimal space-y-2">{children}</ol>,
                 strong: ({ children }) => <strong className="font-black text-white">{children}</strong>,
-                a: ({ children, href }) => <a href={href} target="_blank" rel="noopener noreferrer" className="font-bold text-violet-300 underline underline-offset-4 hover:text-violet-200">{children}</a>,
-                code: ({ children }) => <code className="rounded-md border border-violet-400/20 bg-black/30 px-1.5 py-0.5 text-violet-200">{children}</code>,
+                a: ({ children, href }) => <a href={href} target="_blank" rel="noopener noreferrer" className="font-bold text-slate-300 underline underline-offset-4 hover:text-slate-200">{children}</a>,
+                code: ({ children }) => <code className="rounded-md border border-slate-300/20 bg-black/30 px-1.5 py-0.5 text-slate-200">{children}</code>,
               }}>{post.content}</ReactMarkdown>
             </div>
-            {post.external_link && <a href={post.external_link} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex items-center gap-2 rounded-xl bg-violet-400 px-5 py-3 font-black text-black transition hover:bg-violet-300">Externe Quelle öffnen <ExternalLink className="h-4 w-4" /></a>}
+            {post.external_link && <a href={post.external_link} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex items-center gap-2 rounded-xl bg-slate-200 px-5 py-3 font-black text-slate-950 transition hover:bg-white">Externe Quelle öffnen <ExternalLink className="h-4 w-4" /></a>}
           </div>
         </article>
       </main>
