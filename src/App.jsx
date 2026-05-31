@@ -1183,7 +1183,7 @@ const paginatedPosts = filteredPosts.slice(
                 <div className="rounded-[1.2rem] sm:rounded-[1.95rem] bg-[#050816] p-3 sm:p-8 text-white">
                   <div className="grid gap-5">
                     {[
-                      { icon: Mail, label: "E-Mail", value: "donguyennhan.de@gmail.com" },
+                      {icon: Code2, label: "GitHub", value: "github.com/nguyennhando"},
                       { icon: Globe, label: "Standort", value: "Deutschland" },
                       { icon: CircuitBoard, label: "Schwerpunkt", value: "IoT · Automatisierung" },
                       { icon: Wrench, label: "Tools", value: "SPS · AutoCAD · EPLAN · C++ · Qt" },
