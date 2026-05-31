@@ -103,9 +103,8 @@ const parsedFiles = Object.entries(files)
 export const PERSONAL_WAY = parsedFiles.find((entry) => entry.type === "personal_way");
 export const SITE_SETTINGS = parsedFiles.find((entry) => entry.type === "site_settings");
 
-export const POSTS = parsedFiles
+export const CONTENT_POSTS = parsedFiles
   .filter((post) => !["personal_way", "site_settings"].includes(post.type))
-  .filter((post) => post.published !== false)
   .sort((a, b) => {
     const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
     const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
@@ -114,3 +113,6 @@ export const POSTS = parsedFiles
 
     return new Date(b.created_at || 0) - new Date(a.created_at || 0);
   });
+
+export const KNOWLEDGE_POSTS = CONTENT_POSTS.filter((post) => post.published !== false && post.content_type === "knowledge");
+export const POSTS = CONTENT_POSTS.filter((post) => post.published !== false && post.content_type !== "knowledge");

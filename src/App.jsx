@@ -2,13 +2,14 @@ import CookieBanner from "./components/CookieBanner";
 import { createElement, useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { PERSONAL_WAY, POSTS, SITE_SETTINGS } from "./lib/posts";
+import { CONTENT_POSTS, KNOWLEDGE_POSTS, PERSONAL_WAY, POSTS, SITE_SETTINGS } from "./lib/posts";
 
 import {
   CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X,
   CalendarDays, ArrowRight, ShieldCheck,
   Wrench, Mail, MonitorSmartphone, Workflow, AlertTriangle, ExternalLink,
   ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock, Download, FileText, Image as ImageIcon, Pencil, Save,
+  BookOpen, Library, FlaskConical, GraduationCap,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────
@@ -81,6 +82,7 @@ const markdownList = (items) => items.length
 const createMarkdownFile = (post) => `---
 id: ${singleLine(post.slug)}
 slug: ${singleLine(post.slug)}
+content_type: ${singleLine(post.content_type)}
 title: ${singleLine(post.title)}
 category: ${singleLine(post.category)}
 image_url: ${singleLine(post.image_url)}
@@ -129,6 +131,7 @@ const downloadTextFile = (filename, content) => {
 };
 
 const emptyEditorForm = () => ({
+  content_type: "project",
   title: "",
   slug: "",
   category: "IoT",
@@ -146,6 +149,7 @@ const emptyEditorForm = () => ({
 });
 
 const postToEditorForm = (post) => ({
+  content_type: post.content_type || "project",
   title: post.title || "",
   slug: post.slug || "",
   category: post.category || "IoT",
@@ -249,6 +253,7 @@ function SiteHeader({ onNavigate, currentPage }) {
   };
 
   const goHome = () => { setMenuOpen(false); onNavigate("home"); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const goKnowledge = () => { setMenuOpen(false); onNavigate("knowledge"); window.scrollTo({ top: 0, behavior: "smooth" }); };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
@@ -267,6 +272,9 @@ function SiteHeader({ onNavigate, currentPage }) {
           {[["blog", "Blog"], ["projekte", "Galerie"], ["kontakt", "Kontakt"]].map(([id, label]) => (
             <button key={id} type="button" onClick={() => scrollTo(id)} className="text-sm text-zinc-300 transition hover:text-cyan-300">{label}</button>
           ))}
+          <button type="button" onClick={goKnowledge} className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-400/10 px-4 py-2 text-sm font-bold text-violet-200 transition hover:border-violet-300/60 hover:bg-violet-400/20">
+            <BookOpen className="h-4 w-4" /> Wissen & Forschung
+          </button>
         </div>
 
         <button type="button" className="rounded-xl border border-white/10 p-2 text-white hover:bg-white/10 md:hidden" onClick={() => setMenuOpen(v => !v)}>
@@ -280,6 +288,9 @@ function SiteHeader({ onNavigate, currentPage }) {
             {[["blog", "Blog"], ["projekte", "Projekte"], ["kontakt", "Kontakt"]].map(([id, label]) => (
               <button key={id} type="button" onClick={() => scrollTo(id)} className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300">{label}</button>
             ))}
+            <button type="button" onClick={goKnowledge} className="mt-2 inline-flex items-center gap-2 rounded-xl border border-violet-400/30 bg-violet-400/10 px-3 py-2 text-left font-bold text-violet-200">
+              <BookOpen className="h-4 w-4" /> Wissen & Forschung
+            </button>
           </div>
         </div>
       )}
@@ -517,6 +528,159 @@ function PostDetailPage({ post, onBack }) {
 // ─────────────────────────────────────────────
 // MARKDOWN EDITOR
 // ─────────────────────────────────────────────
+function KnowledgePage({ posts, onOpenPost }) {
+  const POSTS_PER_PAGE = 10;
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("Alle Themen");
+  const [currentPage, setCurrentPage] = useState(1);
+  const categories = useMemo(() => ["Alle Themen", ...new Set(posts.map((post) => post.category))], [posts]);
+  const filteredPosts = useMemo(() => posts.filter((post) => {
+    const matchesCategory = category === "Alle Themen" || post.category === category;
+    const haystack = `${post.title} ${post.excerpt} ${(post.tags || []).join(" ")}`.toLowerCase();
+    return matchesCategory && haystack.includes(search.toLowerCase());
+  }), [posts, search, category]);
+  const featuredPost = filteredPosts[0];
+  const listPosts = filteredPosts.slice(1);
+  const totalPages = Math.max(1, Math.ceil(listPosts.length / POSTS_PER_PAGE));
+  const paginatedPosts = listPosts.slice((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE);
+
+  useEffect(() => { window.scrollTo({ top: 0 }); }, []);
+  useEffect(() => { setCurrentPage(1); }, [search, category]);
+
+  return (
+    <div className="min-h-screen text-white">
+      <Background />
+      <main className="mx-auto max-w-7xl px-4 pb-20 pt-[120px] sm:px-5">
+        <section className="relative overflow-hidden rounded-[2rem] border border-violet-400/25 bg-[#0b1023]/95 px-5 py-8 shadow-2xl shadow-violet-950/30 sm:px-8 sm:py-10">
+          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-violet-500/20 blur-3xl" />
+          <div className="relative max-w-3xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-400/10 px-3 py-1.5 text-xs font-black uppercase tracking-widest text-violet-200">
+              <Library className="h-4 w-4" /> Wissensbibliothek
+            </div>
+            <h1 className="mt-5 text-3xl font-black leading-tight sm:text-5xl">Wissen, Lernmaterialien & Forschung</h1>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-zinc-300 sm:text-base">Technische Notizen, Schaltungsanalysen, Lernunterlagen und eigene Untersuchungen - strukturiert gesammelt und gut durchsuchbar.</p>
+          </div>
+        </section>
+
+        <section className="mt-5 rounded-2xl border border-violet-400/20 bg-violet-400/[0.07] p-5 sm:p-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-violet-400/25 bg-violet-400/10 text-violet-200">
+              <BookOpen className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="font-black text-violet-100">Hinweis zur Wissensbibliothek</h2>
+              <div className="mt-3 space-y-3 text-sm leading-7 text-zinc-300">
+                <p>Viele Grundlagen und technische Informationen in diesem Bereich sind bereits in Fachbüchern, Dokumentationen oder anderen Quellen verfügbar.</p>
+                <p>Der Schwerpunkt dieser Wissensbibliothek liegt daher nicht nur auf der Sammlung von Lernmaterialien. Ich möchte vor allem Themen genauer analysieren, die aus meiner Sicht an anderen Stellen nicht immer verständlich oder ausreichend nachvollziehbar erklärt werden.</p>
+                <p>Die Beiträge spiegeln meinen persönlichen Lernprozess und mein aktuelles technisches Verständnis wider. Sie sollen Zusammenhänge Schritt für Schritt greifbarer machen und zugleich als Grundlage für weitere Untersuchungen dienen.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-8 grid gap-3 rounded-2xl border border-white/10 bg-[#07111f]/90 p-4 sm:grid-cols-[1fr_auto]">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Analyse, Bauteil oder Thema suchen..." className="w-full rounded-xl border border-white/10 bg-black/20 py-3 pl-11 pr-4 text-sm outline-none ring-violet-400/30 placeholder:text-zinc-500 focus:ring-4" />
+          </div>
+          <select value={category} onChange={(e) => setCategory(e.target.value)} className="rounded-xl border border-white/10 bg-[#050816] px-5 py-3 text-sm outline-none ring-violet-400/30 focus:ring-4">
+            {categories.map((item) => <option key={item}>{item}</option>)}
+          </select>
+        </section>
+
+        {!featuredPost ? (
+          <section className="mt-8 rounded-2xl border border-dashed border-violet-400/30 bg-violet-400/5 px-5 py-16 text-center">
+            <BookOpen className="mx-auto h-10 w-10 text-violet-300" />
+            <h2 className="mt-4 text-xl font-black">Noch keine passenden Beiträge</h2>
+            <p className="mt-2 text-sm text-zinc-400">Neue Lernnotizen und Analysen werden hier nach und nach ergänzt.</p>
+          </section>
+        ) : (
+          <>
+            <section className="mt-8">
+              <p className="mb-3 text-xs font-black uppercase tracking-widest text-violet-300">Ausgewählter Beitrag</p>
+              <button type="button" onClick={() => onOpenPost(featuredPost.id)} className="group grid w-full overflow-hidden rounded-[2rem] border border-violet-400/25 bg-[#0b1023]/95 text-left transition hover:border-violet-300/60 lg:grid-cols-[0.42fr_0.58fr]">
+                <div className="h-56 overflow-hidden bg-violet-950/30 lg:h-auto">
+                  {featuredPost.image_url ? <img src={featuredPost.image_url} alt="" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><FlaskConical className="h-14 w-14 text-violet-300/60" /></div>}
+                </div>
+                <div className="p-5 sm:p-7">
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-400">
+                    <span className="rounded-full bg-violet-400 px-3 py-1 font-black text-black">{featuredPost.category}</span>
+                    <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {featuredPost.read_time || "5 Min."}</span>
+                  </div>
+                  <h2 className="mt-4 text-2xl font-black leading-tight sm:text-3xl">{featuredPost.title}</h2>
+                  <p className="mt-3 line-clamp-3 text-sm leading-7 text-zinc-400 sm:text-base">{featuredPost.excerpt}</p>
+                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-black text-violet-300">Beitrag lesen <ArrowRight className="h-4 w-4" /></span>
+                </div>
+              </button>
+            </section>
+
+            {listPosts.length > 0 && <section className="mt-10">
+              <div className="mb-4 flex items-end justify-between gap-4">
+                <div><p className="text-xs font-black uppercase tracking-widest text-violet-300">Archiv</p><h2 className="mt-2 text-2xl font-black">Weitere Beiträge</h2></div>
+                <span className="text-sm text-zinc-500">{filteredPosts.length} Beiträge</span>
+              </div>
+              <div className="grid gap-3">
+                {paginatedPosts.map((post) => (
+                  <button key={post.id} type="button" onClick={() => onOpenPost(post.id)} className="group grid gap-4 rounded-2xl border border-white/10 bg-[#07111f]/90 p-4 text-left transition hover:border-violet-400/50 sm:grid-cols-[140px_1fr_auto] sm:items-center">
+                    <div className="hidden h-24 overflow-hidden rounded-xl bg-violet-950/30 sm:block">
+                      {post.image_url ? <img src={post.image_url} alt="" className="h-full w-full object-cover transition group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><GraduationCap className="h-8 w-8 text-violet-300/60" /></div>}
+                    </div>
+                    <div>
+                      <div className="flex flex-wrap gap-2 text-xs text-zinc-500"><span className="font-bold text-violet-300">{post.category}</span><span>{formatDate(post.created_at)}</span><span>{post.read_time || "5 Min."}</span></div>
+                      <h3 className="mt-2 text-lg font-black leading-tight group-hover:text-violet-200">{post.title}</h3>
+                      <p className="mt-2 line-clamp-2 text-sm leading-6 text-zinc-400">{post.excerpt}</p>
+                    </div>
+                    <ArrowRight className="hidden h-5 w-5 text-violet-300 sm:block" />
+                  </button>
+                ))}
+              </div>
+              {totalPages > 1 && <div className="mt-6 flex justify-center gap-2">{Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => <button key={number} type="button" onClick={() => setCurrentPage(number)} className={`h-10 w-10 rounded-xl text-sm font-black ${currentPage === number ? "bg-violet-400 text-black" : "border border-white/10 bg-white/5 text-zinc-300"}`}>{number}</button>)}</div>}
+            </section>}
+          </>
+        )}
+      </main>
+    </div>
+  );
+}
+
+function KnowledgeDetailPage({ post, onBack }) {
+  useEffect(() => { window.scrollTo({ top: 0 }); }, [post.id]);
+  return (
+    <div className="min-h-screen text-white">
+      <Background />
+      <main className="mx-auto max-w-4xl px-4 pb-20 pt-[110px] sm:px-5">
+        <button type="button" onClick={onBack} className="mb-6 inline-flex items-center gap-2 rounded-full border border-violet-400/25 bg-violet-400/10 px-5 py-2.5 text-sm font-bold text-violet-200 transition hover:bg-violet-400/20"><ArrowLeft className="h-4 w-4" /> Zurück zur Wissensbibliothek</button>
+        <article className="overflow-hidden rounded-[2rem] border border-violet-400/20 bg-[#07111f]/95 shadow-2xl shadow-violet-950/20">
+          {post.image_url && <img src={post.image_url} alt={post.title} className="h-56 w-full object-cover sm:h-80" />}
+          <div className="p-5 sm:p-8 lg:p-10">
+            <div className="flex flex-wrap gap-3 text-xs text-zinc-400">
+              <span className="rounded-full bg-violet-400 px-3 py-1 font-black text-black">{post.category}</span>
+              <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at)}</span>
+              <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {post.read_time || "5 Min."}</span>
+            </div>
+            <h1 className="mt-5 text-3xl font-black leading-tight sm:text-5xl">{post.title}</h1>
+            <p className="mt-5 text-base font-semibold leading-8 text-violet-100/90 sm:text-lg">{post.excerpt}</p>
+            <div className="mt-7 text-sm leading-8 text-zinc-300 sm:text-base sm:leading-9">
+              <ReactMarkdown components={{
+                h1: ({ children }) => <h2 className="mb-4 mt-9 text-2xl font-black text-white sm:text-3xl">{children}</h2>,
+                h2: ({ children }) => <h3 className="mb-3 mt-8 text-xl font-black text-violet-200 sm:text-2xl">{children}</h3>,
+                h3: ({ children }) => <h4 className="mb-2 mt-6 text-lg font-bold text-white">{children}</h4>,
+                p: ({ children }) => <p className="mb-4">{children}</p>,
+                ul: ({ children }) => <ul className="mb-5 ml-6 list-disc space-y-2">{children}</ul>,
+                ol: ({ children }) => <ol className="mb-5 ml-6 list-decimal space-y-2">{children}</ol>,
+                strong: ({ children }) => <strong className="font-black text-white">{children}</strong>,
+                a: ({ children, href }) => <a href={href} target="_blank" rel="noopener noreferrer" className="font-bold text-violet-300 underline underline-offset-4 hover:text-violet-200">{children}</a>,
+                code: ({ children }) => <code className="rounded-md border border-violet-400/20 bg-black/30 px-1.5 py-0.5 text-violet-200">{children}</code>,
+              }}>{post.content}</ReactMarkdown>
+            </div>
+            {post.external_link && <a href={post.external_link} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex items-center gap-2 rounded-xl bg-violet-400 px-5 py-3 font-black text-black transition hover:bg-violet-300">Externe Quelle öffnen <ExternalLink className="h-4 w-4" /></a>}
+          </div>
+        </article>
+      </main>
+    </div>
+  );
+}
+
 function MarkdownEditorPage() {
   const [form, setForm] = useState(emptyEditorForm);
   const [selectedSlug, setSelectedSlug] = useState("");
@@ -631,7 +795,7 @@ function MarkdownEditorPage() {
       return;
     }
 
-    const post = POSTS.find((item) => item.slug === slug);
+    const post = CONTENT_POSTS.find((item) => item.slug === slug);
     if (!post) return;
     setForm(postToEditorForm(post));
     setSlugEdited(true);
@@ -641,7 +805,7 @@ function MarkdownEditorPage() {
   const labelClass = "mb-2 block text-xs font-bold uppercase text-zinc-400";
   const PreviewIcon = getCategoryIcon(form.category);
   const previewTags = form.tags.split(",").map((item) => item.trim()).filter(Boolean);
-  const previewIsIdea = isIdea(form);
+  const previewIsIdea = form.content_type !== "knowledge" && isIdea(form);
 
   return (
     <div className="min-h-screen text-white">
@@ -757,11 +921,18 @@ function MarkdownEditorPage() {
             <label className={labelClass}>Beitrag laden oder neu erstellen</label>
             <select className={inputClass} value={selectedSlug} onChange={(e) => selectPost(e.target.value)}>
               <option value="">Neuer Beitrag</option>
-              {POSTS.map((post) => <option key={post.slug} value={post.slug}>{post.title}</option>)}
+              {CONTENT_POSTS.map((post) => <option key={post.slug} value={post.slug}>{post.content_type === "knowledge" ? "[Wissen]" : "[Projekt]"} {post.title}</option>)}
             </select>
           </div>
 
           <div className="grid gap-4 rounded-2xl border border-white/10 bg-black/20 p-5 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <label className={labelClass}>Inhaltstyp</label>
+              <select className={inputClass} value={form.content_type} onChange={(e) => update("content_type", e.target.value)}>
+                <option value="project">Projektbeitrag für den Blog</option>
+                <option value="knowledge">Wissen, Lernmaterial oder Forschung</option>
+              </select>
+            </div>
             <div className="sm:col-span-2">
               <label className={labelClass}>Titel *</label>
               <input className={inputClass} value={form.title} onChange={(e) => update("title", e.target.value)} placeholder="Titel des Projekts" />
@@ -774,14 +945,14 @@ function MarkdownEditorPage() {
               <label className={labelClass}>Kategorie</label>
               <input className={inputClass} value={form.category} onChange={(e) => update("category", e.target.value)} />
             </div>
-            <div>
+            {form.content_type !== "knowledge" && <div>
               <label className={labelClass}>Status</label>
               <select className={inputClass} value={form.project_status} onChange={(e) => update("project_status", e.target.value)}>
                 <option value="idea">Idee</option>
                 <option value="in_progress">In Arbeit</option>
                 <option value="done">Umgesetzt</option>
               </select>
-            </div>
+            </div>}
             <div>
               <label className={labelClass}>Reihenfolge</label>
               <input className={inputClass} type="number" value={form.sort_order} onChange={(e) => update("sort_order", e.target.value)} />
@@ -807,7 +978,7 @@ function MarkdownEditorPage() {
               <input className={inputClass} value={form.read_time} onChange={(e) => update("read_time", e.target.value)} />
             </div>
             <div className="sm:col-span-2">
-              <label className={labelClass}>Externer Projektlink</label>
+              <label className={labelClass}>{form.content_type === "knowledge" ? "Externe Quelle oder weiterführender Link" : "Externer Projektlink"}</label>
               <input className={inputClass} value={form.external_link} onChange={(e) => update("external_link", e.target.value)} placeholder="https://..." />
             </div>
             <label className="flex items-center gap-3 text-sm font-bold text-zinc-300">
@@ -855,7 +1026,7 @@ function MarkdownEditorPage() {
                 <div className="flex flex-1 flex-col p-4 sm:p-6">
                   <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
                     <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">{createElement(PreviewIcon, { className: "h-3.5 w-3.5" })} {form.category || "Kategorie"}</span>
-                    <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getStatusClasses(form.project_status)}`}>{getStatusLabel(form.project_status)}</span>
+                    {form.content_type !== "knowledge" && <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getStatusClasses(form.project_status)}`}>{getStatusLabel(form.project_status)}</span>}
                     <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(form.created_at)}</span>
                   </div>
                   <h3 className="text-lg font-black leading-tight sm:text-2xl">{form.title || "Titel des Beitrags"}</h3>
@@ -1569,18 +1740,30 @@ function DatenschutzPage({ onBack, onNavigate }) {
 // ─────────────────────────────────────────────
 function App() {
   const isMarkdownEditor = import.meta.env.DEV && new URLSearchParams(window.location.search).get("admin") === "1";
-  const [page, setPage] = useState("home"); // "home" | "post" | "impressum" | "datenschutz"
+  const [page, setPage] = useState("home"); // "home" | "post" | "knowledge" | "knowledge-post" | "impressum" | "datenschutz"
   const [currentPostId, setCurrentPostId] = useState(null);
 
   // ── Data state ──
   const posts = POSTS;
+  const knowledgePosts = KNOWLEDGE_POSTS;
   const galleryImages = DEFAULT_GALLERY;
   const currentPost = useMemo(() => posts.find(p => String(p.id) === String(currentPostId)) || null, [posts, currentPostId]);
+  const currentKnowledgePost = useMemo(() => knowledgePosts.find(p => String(p.id) === String(currentPostId)) || null, [knowledgePosts, currentPostId]);
 
   // ── Navigation ──
   const openPost = useCallback((id) => {
     setCurrentPostId(id);
     setPage("post");
+  }, []);
+
+  const openKnowledgePost = useCallback((id) => {
+    setCurrentPostId(id);
+    setPage("knowledge-post");
+  }, []);
+
+  const navigate = useCallback((nextPage) => {
+    setPage(nextPage);
+    setCurrentPostId(null);
   }, []);
 
   const goHome = useCallback(() => {
@@ -1623,10 +1806,14 @@ if (page === "datenschutz") {
   return (
     <>
      <CookieBanner />
-      <SiteHeader onNavigate={goHome} currentPage={page} />
+      <SiteHeader onNavigate={navigate} currentPage={page} />
 
       {page === "post" && currentPost ? (
         <PostDetailPage post={currentPost} onBack={goHome} />
+      ) : page === "knowledge-post" && currentKnowledgePost ? (
+        <KnowledgeDetailPage post={currentKnowledgePost} onBack={() => navigate("knowledge")} />
+      ) : page === "knowledge" ? (
+        <KnowledgePage posts={knowledgePosts} onOpenPost={openKnowledgePost} />
       ) : (
         <HomePage
           posts={posts}
