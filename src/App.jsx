@@ -18,11 +18,11 @@ import {
 const SLIDE_INTERVAL = 5000;
 
 const DEFAULT_GALLERY_IMAGES = [
-  "/my-electronics-blog/images/posts/Dampfmaschine-main.webp",
-  "/my-electronics-blog/images/posts/finanzmanager-main.webp",
-  "/my-electronics-blog/images/posts/Mischbehälter-main.webp",
-  "/my-electronics-blog/images/posts/Flaschenzug-main.webp",
-  "/my-electronics-blog/images/posts/Tauchanlage-main.webp",
+  "/my-electronics-blog/images/galerie/Dampfmaschine-main.webp",
+  "/my-electronics-blog/images/galerie/finanzmanager-main.webp",
+  "/my-electronics-blog/images/galerie/Mischbehälter-main.webp",
+  "/my-electronics-blog/images/galerie/Flaschenzug-main.webp",
+  "/my-electronics-blog/images/galerie/Tauchanlage-main.webp",
 ];
 
 // ─────────────────────────────────────────────
@@ -901,8 +901,8 @@ function MarkdownEditorPage() {
                 <div className="rounded-xl border border-cyan-400/20 bg-cyan-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
                   <p className="font-black text-cyan-200">So fügen Sie neue Galeriebilder hinzu</p>
                   <ol className="mt-2 ml-5 list-decimal space-y-1">
-                    <li>Kopieren Sie die Bilddatei in den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">public/images/posts</code>.</li>
-                    <li>Tragen Sie den Bildpfad ein, zum Beispiel <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">/my-electronics-blog/images/posts/dateiname.webp</code>.</li>
+                    <li>Kopieren Sie die Bilddatei in den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">public/images/galerie</code>.</li>
+                    <li>Tragen Sie den Bildpfad ein, zum Beispiel <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">/my-electronics-blog/images/galerie/dateiname.webp</code>.</li>
                     <li>Verwenden Sie pro Zeile genau einen Bildpfad.</li>
                     <li>Die erste Zeile ist das große Hauptbild. Die zweite und dritte Zeile sind die kleinen Bilder auf der rechten Seite.</li>
                     <li>Speichern Sie die Datei anschließend im Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content</code>.</li>
