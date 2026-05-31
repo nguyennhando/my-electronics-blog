@@ -518,11 +518,11 @@ function HeroSlideshow({ slides, onDiscover, onOpenPost, language }) {
             {t.discover} <ArrowRight className="h-5 w-5" />
           </button>
         </div>
-        <div className="mt-8 flex flex-wrap gap-4">
-          <a href="https://drive.google.com/drive/folders/1y6MZUhoZJCIou-SL9BHbkA-CjpXxKGz5?usp=sharing" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 rounded-2xl border border-zinc-600/40 bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 px-6 py-4 font-bold text-zinc-100 shadow-xl shadow-black/40 transition hover:border-zinc-400/50">
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:gap-4">
+          <a href="https://drive.google.com/drive/folders/1y6MZUhoZJCIou-SL9BHbkA-CjpXxKGz5?usp=sharing" target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center justify-center gap-2 rounded-2xl border border-zinc-600/40 bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 px-3 py-4 text-center text-sm font-bold text-zinc-100 shadow-xl shadow-black/40 transition hover:border-zinc-400/50 sm:gap-3 sm:px-6 sm:text-base">
             <ExternalLink className="h-5 w-5" /> {t.docs}
           </a>
-          <a href="https://github.com/nguyennhando?tab=repositories" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-6 py-4 font-bold text-black shadow-xl shadow-orange-500/30 transition hover:from-orange-400 hover:to-amber-300">
+          <a href="https://github.com/nguyennhando?tab=repositories" target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-3 py-4 text-center text-sm font-bold text-black shadow-xl shadow-orange-500/30 transition hover:from-orange-400 hover:to-amber-300 sm:gap-3 sm:px-6 sm:text-base">
             <Code2 className="h-5 w-5" /> {t.sourceCode}
           </a>
         </div>
