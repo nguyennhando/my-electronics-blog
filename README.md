@@ -8,9 +8,9 @@ Personal portfolio and technical blog for electronics, automation, embedded syst
 
 ## Overview
 
-ElektronikLab documents practical projects, technical concepts and learning progress in areas such as electronics, measurement technology, industrial automation and software development.
+ElektronikLab documents practical projects, technical concepts and learning progress in areas such as electronics, measurement technology, industrial automation and software development. A dedicated knowledge library collects technical notes, learning material, circuit analyses and personal research.
 
-The website is built as a static React application and deployed through GitHub Pages. Blog posts and homepage content are stored as Markdown files and loaded at build time.
+The website is built as a static React application and deployed through GitHub Pages. Blog posts, knowledge articles and editable homepage content are stored as Markdown files and loaded at build time.
 
 ## Responsive Design
 
@@ -24,6 +24,10 @@ The website is built as a static React application and deployed through GitHub P
 | --- | --- |
 | ![Blog section](docs/github-images/website-blog-section.webp) | ![Feature cards and project notice](docs/github-images/website-features-section.webp) |
 
+| Knowledge library | Free-form project gallery |
+| --- | --- |
+| ![Knowledge library](docs/github-images/wissen&forschung.webp) | ![Project gallery](docs/github-images/projektbilder.webp) |
+
 ## Local Content Editor
 
 ![Local Markdown editor](docs/github-images/website-editor-local.webp)
@@ -32,10 +36,12 @@ The website is built as a static React application and deployed through GitHub P
 
 - Responsive portfolio and technical blog
 - Markdown-based project articles with frontmatter
+- Dedicated knowledge library for technical notes, learning material and research articles
 - Categories, tags, search and project status filters
 - Project image galleries and external project links
+- Editable free-form homepage gallery with split showcase, thumbnails and lightbox
 - Editable homepage card for the personal journey section
-- Local-only Markdown editor for creating and updating content
+- Local-only Markdown editor for creating and updating projects, knowledge articles and homepage content
 - Content Security Policy for the production website
 
 ## Tech Stack
@@ -65,7 +71,7 @@ npm run build
 
 ## Content Management
 
-Blog posts are stored in `src/content/`. Images are stored in `public/images/`.
+Blog posts and knowledge articles are stored in `src/content/`. Article images are stored in `public/images/posts/`. Free-form gallery images are stored separately in `public/images/galerie/`.
 
 Start the local Markdown editor:
 
@@ -78,15 +84,18 @@ The editor is intentionally available only during local development. It is remov
 In Chrome or Edge:
 
 1. Create a new post or select an existing post.
-2. Edit the content and preview the result.
-3. Click `In Ordner speichern`.
-4. Select `src/content/` the first time.
-5. Add referenced images to `public/images/posts/`.
-6. Deploy the updated website.
+2. Choose whether it is a project article or a knowledge article.
+3. Edit the content and preview the result.
+4. Click `In Ordner speichern`.
+5. Select `src/content/` the first time.
+6. Add referenced article images to `public/images/posts/`.
+7. Deploy the updated website.
 
 Use `Persönlicher Weg bearbeiten` in the local editor to update the homepage card. Its content is stored in `src/content/personal-way.md`.
 
 Use `Website-Hintergrund bearbeiten` to update the optional website background image. Its path is stored in `src/content/site-settings.md`. Leave the field empty to keep the default gradient background.
+
+Use `Projektgalerie bearbeiten` to manage the free-form homepage gallery. Add one image path per line in the desired order. Gallery images are stored in `public/images/galerie/`, and the image list is stored in `src/content/gallery-settings.md`.
 
 ## Markdown Format
 
@@ -96,6 +105,7 @@ Each blog post starts with frontmatter:
 ---
 id: esp32-mqtt-gateway
 slug: esp32-mqtt-gateway
+content_type: project
 title: ESP32 als MQTT-Gateway
 category: IoT
 image_url: /my-electronics-blog/images/posts/ESP32-main.webp
@@ -125,13 +135,17 @@ Supported `project_status` values:
 
 Lower `sort_order` values appear first.
 
+Use `content_type: knowledge` for articles that should appear in the `Wissen & Forschung` library instead of the project blog.
+
 ## Project Structure
 
 ```text
 docs/
   github-images/      Images used only by the GitHub README
 public/
-  images/             Static website and project images
+  images/
+    galerie/          Free-form homepage gallery images
+    posts/            Blog and knowledge article images
 src/
   components/         Shared UI components
   content/            Markdown posts and homepage content
@@ -150,6 +164,8 @@ Image naming convention:
 - `website-blog-section.webp`: blog cards, search and category filter
 - `website-features-section.webp`: feature cards and project notice
 - `website-editor-local.webp`: local Markdown editor screenshot
+- `wissen&forschung.webp`: knowledge library screenshot
+- `projektbilder.webp`: free-form project gallery screenshot
 
 ## Deployment
 
