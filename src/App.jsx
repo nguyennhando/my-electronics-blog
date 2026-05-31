@@ -997,20 +997,20 @@ const paginatedPosts = filteredPosts.slice(
         </section>
 
         {/* Warning card */}
-        <section className="mx-auto max-w-7xl px-4 py-8 sm:px-5">
+        <section className="mx-auto max-w-5xl px-4 py-6 sm:px-5">
           <div className="rounded-[2rem] p-[1.5px] bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-400">
             <div className="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl">
-              <div className="grid lg:grid-cols-[0.4fr_0.6fr]">
-                <div className="relative h-48 lg:h-auto">
+              <div className="grid lg:grid-cols-[0.32fr_0.68fr]">
+                <div className="relative h-36 sm:h-40 lg:h-auto">
                   <img src="/my-electronics-blog/images/project-warning.webp" alt="Hinweis" className="h-full w-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
                 </div>
-                <div className="flex flex-col justify-center p-5 sm:p-6 lg:p-7">
-                  <div className="inline-flex w-fit items-center gap-2 rounded-full border border-yellow-400/20 bg-yellow-400/10 px-4 py-2 text-sm font-bold text-yellow-300">
+                <div className="flex flex-col justify-center p-5 sm:p-6">
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border border-yellow-400/20 bg-yellow-400/10 px-3 py-1.5 text-sm font-bold text-yellow-300">
                     <AlertTriangle className="h-4 w-4" /> Wichtiger Hinweis
                   </div>
-                  <h2 className="mt-5 text-2xl font-black text-white sm:text-3xl">Wichtiger Hinweis zu meinen Projekten</h2>
-                  <div className="mt-6 space-y-4 text-sm leading-7 text-zinc-300 sm:text-base">
+                  <h2 className="mt-4 text-2xl font-black text-white sm:text-3xl">Wichtiger Hinweis zu meinen Projekten</h2>
+                  <div className="mt-4 space-y-3 text-sm leading-6 text-zinc-300 sm:text-base sm:leading-7">
                     <p><span className="font-bold text-yellow-300">🚨 Hinweis:</span> Projekte mit der Kennzeichnung <span className="font-semibold text-cyan-300">„Konzept"</span> befinden sich noch in der Ideen- bzw. Konzeptphase und wurden bisher noch nicht praktisch umgesetzt.</p>
                     <p>Alle anderen Projekte können über <span className="font-semibold text-cyan-300">„Beitrag lesen"</span> geöffnet werden. Am Ende der jeweiligen Projektseite befindet sich die Schaltfläche <span className="font-semibold text-cyan-300">„Zum Projekt"</span> mit projektbezogenen Dateien.</p>
                   </div>
