@@ -719,7 +719,7 @@ Das Projekt demonstriert praxisnah die Umsetzung industrieller Automatisierungst
 **Zum Projekte klicken, um die vollständige Dokumentation und Projektdateien im Detail anzusehen.**
 `,"../content/site-settings.md":`---
 type: site_settings
-background_image: ''
+background_image: /my-electronics-blog/images/background.webp
 ---
 `,"../content/technischer-portfolio-blog-mit-react-supabase-und-adminbereich.md":`---
 id: local-post-1779960647159
