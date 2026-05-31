@@ -16,6 +16,46 @@ import {
 // CONSTANTS
 // ─────────────────────────────────────────────
 const SLIDE_INTERVAL = 5000;
+const LANGUAGES = ["de", "en", "vi"];
+const UI_TEXT = {
+  de: {
+    tagline: "Technik · Entwicklung · Lernen", gallery: "Galerie", contact: "Kontakt", knowledge: "Wissen & Forschung",
+    projects: "Projekte", discover: "Projekte entdecken", openProject: "Projekt öffnen", readPost: "Beitrag lesen",
+    search: "Suchen...", all: "Alle", noPosts: "Keine Beiträge gefunden.", technicalBlog: "Technik Blog",
+    blogTitle: "Elektronikprojekte & Dokumentationen", projectImages: "Projektbilder", enlarge: "Vergrößern", image: "Bild",
+    previous: "← Vorherige", next: "Nächste →", page: "Seite", of: "von", location: "Standort", focus: "Schwerpunkt",
+    knowledgeLibrary: "Wissensbibliothek", knowledgeTitle: "Wissen, Lernmaterialien & Forschung",
+    knowledgeIntro: "Technische Notizen, Schaltungsanalysen, Lernunterlagen und eigene Untersuchungen - strukturiert gesammelt und gut durchsuchbar.",
+    knowledgeNotice: "Hinweis zur Wissensbibliothek", knowledgeSearch: "Analyse, Bauteil oder Thema suchen...", allTopics: "Alle Themen",
+    selectedPost: "Ausgewählter Beitrag", archive: "Archiv", morePosts: "Weitere Beiträge", posts: "Beiträge",
+    backKnowledge: "Zurück zur Wissensbibliothek", externalSource: "Externe Quelle öffnen", backBlog: "Zurück zum Blog",
+  },
+  en: {
+    tagline: "Technology · Development · Learning", gallery: "Gallery", contact: "Contact", knowledge: "Knowledge & Research",
+    projects: "Projects", discover: "Explore projects", openProject: "Open project", readPost: "Read article",
+    search: "Search...", all: "All", noPosts: "No articles found.", technicalBlog: "Technical Blog",
+    blogTitle: "Electronics Projects & Documentation", projectImages: "Gallery Images", enlarge: "Enlarge", image: "Image",
+    previous: "← Previous", next: "Next →", page: "Page", of: "of", location: "Location", focus: "Focus",
+    knowledgeLibrary: "Knowledge Library", knowledgeTitle: "Knowledge, Learning Materials & Research",
+    knowledgeIntro: "Technical notes, circuit analyses, learning materials and personal research - structured and easy to search.",
+    knowledgeNotice: "About this knowledge library", knowledgeSearch: "Search for an analysis, component or topic...", allTopics: "All topics",
+    selectedPost: "Featured article", archive: "Archive", morePosts: "More articles", posts: "articles",
+    backKnowledge: "Back to the knowledge library", externalSource: "Open external source", backBlog: "Back to the blog",
+  },
+  vi: {
+    tagline: "Kỹ thuật · Phát triển · Học hỏi", gallery: "Thư viện ảnh", contact: "Liên hệ", knowledge: "Kiến thức & Nghiên cứu",
+    projects: "Dự án", discover: "Khám phá dự án", openProject: "Mở dự án", readPost: "Đọc bài viết",
+    search: "Tìm kiếm...", all: "Tất cả", noPosts: "Không tìm thấy bài viết.", technicalBlog: "Blog Kỹ thuật",
+    blogTitle: "Dự án Điện tử & Tài liệu", projectImages: "Hình ảnh", enlarge: "Phóng to", image: "Ảnh",
+    previous: "← Trước", next: "Tiếp →", page: "Trang", of: "trên", location: "Vị trí", focus: "Trọng tâm",
+    knowledgeLibrary: "Thư viện Kiến thức", knowledgeTitle: "Kiến thức, Tài liệu học tập & Nghiên cứu",
+    knowledgeIntro: "Ghi chú kỹ thuật, phân tích mạch, tài liệu học tập và nghiên cứu cá nhân - được sắp xếp rõ ràng và dễ tìm kiếm.",
+    knowledgeNotice: "Lưu ý về thư viện kiến thức", knowledgeSearch: "Tìm phân tích, linh kiện hoặc chủ đề...", allTopics: "Tất cả chủ đề",
+    selectedPost: "Bài viết nổi bật", archive: "Lưu trữ", morePosts: "Các bài viết khác", posts: "bài viết",
+    backKnowledge: "Quay lại thư viện kiến thức", externalSource: "Mở nguồn bên ngoài", backBlog: "Quay lại blog",
+  },
+};
+const getUiText = (language) => UI_TEXT[language] || UI_TEXT.de;
 
 const DEFAULT_GALLERY_IMAGES = [
   "/my-electronics-blog/images/galerie/Dampfmaschine-main.webp",
@@ -252,8 +292,9 @@ function Lightbox({ images, index, onClose }) {
 // ─────────────────────────────────────────────
 // HEADER
 // ─────────────────────────────────────────────
-function SiteHeader({ onNavigate, currentPage }) {
+function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange = () => {} }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const t = getUiText(language);
 
   const scrollTo = (id) => {
     setMenuOpen(false);
@@ -273,17 +314,20 @@ function SiteHeader({ onNavigate, currentPage }) {
           </div>
           <div>
             <h1 className="text-base font-black text-white sm:text-xl">Nguyen Nhan Do</h1>
-            <p className="text-[10px] leading-tight text-zinc-400 sm:text-xs">Technik • Entwicklung • Lernen</p>
+            <p className="text-[10px] leading-tight text-zinc-400 sm:text-xs">{t.tagline}</p>
           </div>
         </button>
 
         <div className="hidden items-center gap-8 md:flex">
-          {[["blog", "Blog"], ["projekte", "Galerie"], ["kontakt", "Kontakt"]].map(([id, label]) => (
+          {[["blog", "Blog"], ["projekte", t.gallery], ["kontakt", t.contact]].map(([id, label]) => (
             <button key={id} type="button" onClick={() => scrollTo(id)} className="text-sm text-zinc-300 transition hover:text-cyan-300">{label}</button>
           ))}
           <button type="button" onClick={goKnowledge} className="inline-flex items-center gap-2 rounded-full border border-slate-300/30 bg-slate-300/10 px-4 py-2 text-sm font-bold text-slate-200 transition hover:border-slate-200/60 hover:bg-slate-300/20">
-            <BookOpen className="h-4 w-4" /> Wissen & Forschung
+            <BookOpen className="h-4 w-4" /> {t.knowledge}
           </button>
+          <div className="flex rounded-full border border-white/10 bg-white/5 p-1">
+            {LANGUAGES.map((item) => <button key={item} type="button" onClick={() => onLanguageChange(item)} className={`rounded-full px-2 py-1 text-[11px] font-black uppercase transition ${language === item ? "bg-cyan-400 text-black" : "text-zinc-400 hover:text-white"}`}>{item}</button>)}
+          </div>
         </div>
 
         <button type="button" className="rounded-xl border border-white/10 p-2 text-white hover:bg-white/10 md:hidden" onClick={() => setMenuOpen(v => !v)}>
@@ -294,12 +338,15 @@ function SiteHeader({ onNavigate, currentPage }) {
       {menuOpen && (
         <div className="border-t border-white/10 bg-[#050816]/95 px-5 py-4 text-white md:hidden">
           <div className="grid gap-2">
-            {[["blog", "Blog"], ["projekte", "Projekte"], ["kontakt", "Kontakt"]].map(([id, label]) => (
+            {[["blog", "Blog"], ["projekte", t.projects], ["kontakt", t.contact]].map(([id, label]) => (
               <button key={id} type="button" onClick={() => scrollTo(id)} className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300">{label}</button>
             ))}
             <button type="button" onClick={goKnowledge} className="mt-2 inline-flex items-center gap-2 rounded-xl border border-slate-300/30 bg-slate-300/10 px-3 py-2 text-left font-bold text-slate-200">
-              <BookOpen className="h-4 w-4" /> Wissen & Forschung
+              <BookOpen className="h-4 w-4" /> {t.knowledge}
             </button>
+            <div className="mt-2 flex w-fit rounded-xl border border-white/10 bg-white/5 p-1">
+              {LANGUAGES.map((item) => <button key={item} type="button" onClick={() => onLanguageChange(item)} className={`rounded-lg px-3 py-1.5 text-xs font-black uppercase transition ${language === item ? "bg-cyan-400 text-black" : "text-zinc-400"}`}>{item}</button>)}
+            </div>
           </div>
         </div>
       )}
@@ -320,9 +367,10 @@ const cardVariants = {
   hidden: { opacity: 0, x: 48, scale: 0.96 }, visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.15 } }, exit: { opacity: 0, x: -32, scale: 0.97, transition: { duration: 0.28, ease: "easeIn" } },
 };
 
-function HeroSlideshow({ slides, onDiscover, onOpenPost }) {
+function HeroSlideshow({ slides, onDiscover, onOpenPost, language }) {
   const [current, setCurrent] = useState(0);
   const timerRef = useRef(null);
+  const t = getUiText(language);
 
   const startTimer = useCallback(() => {
     clearInterval(timerRef.current);
@@ -349,7 +397,7 @@ function HeroSlideshow({ slides, onDiscover, onOpenPost }) {
         </p>
         <div className="mt-7 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
           <button type="button" onClick={onDiscover} className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-cyan-400 px-5 py-3.5 text-sm font-bold text-black shadow-xl shadow-cyan-500/30 transition hover:bg-cyan-300 sm:w-auto sm:px-7 sm:py-4 sm:text-base">
-            Projekte entdecken <ArrowRight className="h-5 w-5" />
+            {t.discover} <ArrowRight className="h-5 w-5" />
           </button>
         </div>
         <div className="mt-8 flex flex-wrap gap-4">
@@ -388,7 +436,7 @@ function HeroSlideshow({ slides, onDiscover, onOpenPost }) {
                     <motion.div variants={textItemVariants} className="mt-4 flex flex-wrap gap-2">
                       {(slide.tags || []).slice(0, 3).map(tag => <span key={tag} className="rounded-full border border-cyan-400/20 bg-cyan-400/8 px-3 py-1 text-xs text-cyan-300">#{tag}</span>)}
                     </motion.div>
-                    <motion.div variants={textItemVariants} className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-cyan-300">Projekt öffnen <ArrowRight className="h-4 w-4" /></motion.div>
+                    <motion.div variants={textItemVariants} className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-cyan-300">{t.openProject} <ArrowRight className="h-4 w-4" /></motion.div>
                   </motion.div>
                 </AnimatePresence>
               </motion.div>
@@ -417,9 +465,10 @@ function HeroSlideshow({ slides, onDiscover, onOpenPost }) {
 // ─────────────────────────────────────────────
 // POST DETAIL PAGE (trang riêng)
 // ─────────────────────────────────────────────
-function PostDetailPage({ post, onBack }) {
+function PostDetailPage({ post, onBack, language }) {
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const allImages = [post.image_url, ...normalizeImageList(post.image_gallery)];
+  const t = getUiText(language);
 
   useEffect(() => { window.scrollTo({ top: 0 }); }, [post.id]);
 
@@ -431,7 +480,7 @@ function PostDetailPage({ post, onBack }) {
         {/* Back Button */}
         <motion.button initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} type="button" onClick={onBack}
           className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-bold text-zinc-300 transition hover:bg-white/10 hover:text-cyan-300">
-          <ArrowLeft className="h-4 w-4" /> Zurück zum Blog
+          <ArrowLeft className="h-4 w-4" /> {t.backBlog}
         </motion.button>
 
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -519,7 +568,7 @@ function PostDetailPage({ post, onBack }) {
                 )}
                 <button type="button" onClick={onBack}
                   className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-6 py-4 font-bold text-zinc-200 transition hover:bg-white/10">
-                  <ArrowLeft className="h-5 w-5" /> Zurück zum Blog
+                  <ArrowLeft className="h-5 w-5" /> {t.backBlog}
                 </button>
               </div>
             </div>
@@ -537,14 +586,15 @@ function PostDetailPage({ post, onBack }) {
 // ─────────────────────────────────────────────
 // MARKDOWN EDITOR
 // ─────────────────────────────────────────────
-function KnowledgePage({ posts, onOpenPost }) {
+function KnowledgePage({ posts, onOpenPost, language }) {
   const POSTS_PER_PAGE = 10;
+  const t = getUiText(language);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("Alle Themen");
+  const [category, setCategory] = useState("__all__");
   const [currentPage, setCurrentPage] = useState(1);
-  const categories = useMemo(() => ["Alle Themen", ...new Set(posts.map((post) => post.category))], [posts]);
+  const categories = useMemo(() => [...new Set(posts.map((post) => post.category))], [posts]);
   const filteredPosts = useMemo(() => posts.filter((post) => {
-    const matchesCategory = category === "Alle Themen" || post.category === category;
+    const matchesCategory = category === "__all__" || post.category === category;
     const haystack = `${post.title} ${post.excerpt} ${(post.tags || []).join(" ")}`.toLowerCase();
     return matchesCategory && haystack.includes(search.toLowerCase());
   }), [posts, search, category]);
@@ -564,10 +614,10 @@ function KnowledgePage({ posts, onOpenPost }) {
           <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-slate-300/15 blur-3xl" />
           <div className="relative max-w-3xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-slate-300/30 bg-slate-300/10 px-3 py-1.5 text-xs font-black uppercase tracking-widest text-slate-200">
-              <Library className="h-4 w-4" /> Wissensbibliothek
+              <Library className="h-4 w-4" /> {t.knowledgeLibrary}
             </div>
-            <h1 className="mt-5 text-3xl font-black leading-tight sm:text-5xl">Wissen, Lernmaterialien & Forschung</h1>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-zinc-300 sm:text-base">Technische Notizen, Schaltungsanalysen, Lernunterlagen und eigene Untersuchungen - strukturiert gesammelt und gut durchsuchbar.</p>
+            <h1 className="mt-5 text-3xl font-black leading-tight sm:text-5xl">{t.knowledgeTitle}</h1>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-zinc-300 sm:text-base">{t.knowledgeIntro}</p>
           </div>
         </section>
 
@@ -577,7 +627,7 @@ function KnowledgePage({ posts, onOpenPost }) {
               <BookOpen className="h-5 w-5" />
             </div>
             <div>
-              <h2 className="font-black text-slate-100">Hinweis zur Wissensbibliothek</h2>
+              <h2 className="font-black text-slate-100">{t.knowledgeNotice}</h2>
               <div className="mt-3 space-y-3 text-sm leading-7 text-zinc-300">
                 <p>Viele Grundlagen und technische Informationen in diesem Bereich sind bereits in Fachbüchern, Dokumentationen oder anderen Quellen verfügbar.</p>
                 <p>Der Schwerpunkt dieser Wissensbibliothek liegt daher nicht nur auf der Sammlung von Lernmaterialien. Ich möchte vor allem Themen genauer analysieren, die aus meiner Sicht an anderen Stellen nicht immer verständlich oder ausreichend nachvollziehbar erklärt werden.</p>
@@ -590,9 +640,10 @@ function KnowledgePage({ posts, onOpenPost }) {
         <section className="mt-8 grid gap-3 rounded-2xl border border-white/10 bg-[#07111f]/90 p-4 sm:grid-cols-[1fr_auto]">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Analyse, Bauteil oder Thema suchen..." className="w-full rounded-xl border border-white/10 bg-black/20 py-3 pl-11 pr-4 text-sm outline-none ring-slate-300/30 placeholder:text-zinc-500 focus:ring-4" />
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t.knowledgeSearch} className="w-full rounded-xl border border-white/10 bg-black/20 py-3 pl-11 pr-4 text-sm outline-none ring-slate-300/30 placeholder:text-zinc-500 focus:ring-4" />
           </div>
           <select value={category} onChange={(e) => setCategory(e.target.value)} className="rounded-xl border border-white/10 bg-[#050816] px-5 py-3 text-sm outline-none ring-slate-300/30 focus:ring-4">
+            <option value="__all__">{t.allTopics}</option>
             {categories.map((item) => <option key={item}>{item}</option>)}
           </select>
         </section>
@@ -606,7 +657,7 @@ function KnowledgePage({ posts, onOpenPost }) {
         ) : (
           <>
             <section className="mt-8">
-              <p className="mb-3 text-xs font-black uppercase tracking-widest text-slate-300">Ausgewählter Beitrag</p>
+              <p className="mb-3 text-xs font-black uppercase tracking-widest text-slate-300">{t.selectedPost}</p>
               <button type="button" onClick={() => onOpenPost(featuredPost.id)} className="group grid w-full overflow-hidden rounded-[2rem] border border-slate-300/25 bg-[#0b1023]/95 text-left transition hover:border-slate-200/60 lg:grid-cols-[0.42fr_0.58fr]">
                 <div className="h-56 overflow-hidden bg-slate-950/30 lg:h-auto">
                   {featuredPost.image_url ? <img src={featuredPost.image_url} alt="" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><FlaskConical className="h-14 w-14 text-slate-300/60" /></div>}
@@ -618,15 +669,15 @@ function KnowledgePage({ posts, onOpenPost }) {
                   </div>
                   <h2 className="mt-4 text-2xl font-black leading-tight sm:text-3xl">{featuredPost.title}</h2>
                   <p className="mt-3 line-clamp-3 text-sm leading-7 text-zinc-400 sm:text-base">{featuredPost.excerpt}</p>
-                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-black text-slate-200">Beitrag lesen <ArrowRight className="h-4 w-4" /></span>
+                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-black text-slate-200">{t.readPost} <ArrowRight className="h-4 w-4" /></span>
                 </div>
               </button>
             </section>
 
             {listPosts.length > 0 && <section className="mt-10">
               <div className="mb-4 flex items-end justify-between gap-4">
-                <div><p className="text-xs font-black uppercase tracking-widest text-slate-300">Archiv</p><h2 className="mt-2 text-2xl font-black">Weitere Beiträge</h2></div>
-                <span className="text-sm text-zinc-500">{filteredPosts.length} Beiträge</span>
+                <div><p className="text-xs font-black uppercase tracking-widest text-slate-300">{t.archive}</p><h2 className="mt-2 text-2xl font-black">{t.morePosts}</h2></div>
+                <span className="text-sm text-zinc-500">{filteredPosts.length} {t.posts}</span>
               </div>
               <div className="grid gap-3">
                 {paginatedPosts.map((post) => (
@@ -652,13 +703,14 @@ function KnowledgePage({ posts, onOpenPost }) {
   );
 }
 
-function KnowledgeDetailPage({ post, onBack }) {
+function KnowledgeDetailPage({ post, onBack, language }) {
+  const t = getUiText(language);
   useEffect(() => { window.scrollTo({ top: 0 }); }, [post.id]);
   return (
     <div className="min-h-screen text-white">
       <Background />
       <main className="mx-auto max-w-4xl px-4 pb-20 pt-[110px] sm:px-5">
-        <button type="button" onClick={onBack} className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-300/25 bg-slate-300/10 px-5 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-slate-300/20"><ArrowLeft className="h-4 w-4" /> Zurück zur Wissensbibliothek</button>
+        <button type="button" onClick={onBack} className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-300/25 bg-slate-300/10 px-5 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-slate-300/20"><ArrowLeft className="h-4 w-4" /> {t.backKnowledge}</button>
         <article className="overflow-hidden rounded-[2rem] border border-slate-300/20 bg-[#07111f]/95 shadow-2xl shadow-slate-950/20">
           {post.image_url && <img src={post.image_url} alt={post.title} className="h-56 w-full object-cover sm:h-80" />}
           <div className="p-5 sm:p-8 lg:p-10">
@@ -682,7 +734,7 @@ function KnowledgeDetailPage({ post, onBack }) {
                 code: ({ children }) => <code className="rounded-md border border-slate-300/20 bg-black/30 px-1.5 py-0.5 text-slate-200">{children}</code>,
               }}>{post.content}</ReactMarkdown>
             </div>
-            {post.external_link && <a href={post.external_link} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex items-center gap-2 rounded-xl bg-slate-200 px-5 py-3 font-black text-slate-950 transition hover:bg-white">Externe Quelle öffnen <ExternalLink className="h-4 w-4" /></a>}
+            {post.external_link && <a href={post.external_link} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex items-center gap-2 rounded-xl bg-slate-200 px-5 py-3 font-black text-slate-950 transition hover:bg-white">{t.externalSource} <ExternalLink className="h-4 w-4" /></a>}
           </div>
         </article>
       </main>
@@ -1124,11 +1176,12 @@ function MarkdownEditorPage() {
 // ─────────────────────────────────────────────
 // HOME PAGE
 // ─────────────────────────────────────────────
-function HomePage({ posts, galleryImages, onOpenPost, onGoImpressum, onGoDatenschutz }) {
+function HomePage({ posts, galleryImages, onOpenPost, onGoImpressum, onGoDatenschutz, language }) {
   const POSTS_PER_PAGE = 15;
+  const t = getUiText(language);
 
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("Alle");
+  const [category, setCategory] = useState("__all__");
   const [currentPage, setCurrentPage] = useState(1);
   const [lightbox, setLightbox] = useState(null); // { images, index }
   const [galleryLightbox, setGalleryLightbox] = useState(null);
@@ -1144,13 +1197,13 @@ function HomePage({ posts, galleryImages, onOpenPost, onGoImpressum, onGoDatensc
     [posts]
   );
 
-  const categories = useMemo(() => ["Alle", ...new Set(posts.map(p => p.category))], [posts]);
+  const categories = useMemo(() => [...new Set(posts.map(p => p.category))], [posts]);
 
   const filteredPosts = useMemo(() => {
     const q = search.toLowerCase();
     return posts.filter(p => {
       const tags = Array.isArray(p.tags) ? p.tags : [];
-      return (category === "Alle" || p.category === category)
+      return (category === "__all__" || p.category === category)
         && (p.title.toLowerCase().includes(q) || p.excerpt.toLowerCase().includes(q) || p.content.toLowerCase().includes(q) || tags.some(t => t.toLowerCase().includes(q)));
     }).sort((a, b) => {
       const oA = isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
@@ -1174,7 +1227,7 @@ const paginatedPosts = filteredPosts.slice(
       <Background />
       <main className="pt-[90px]">
         {/* Hero */}
-        <HeroSlideshow slides={heroSlides} onDiscover={() => document.getElementById("blog")?.scrollIntoView({ behavior: "smooth" })} onOpenPost={onOpenPost} />
+        <HeroSlideshow slides={heroSlides} onDiscover={() => document.getElementById("blog")?.scrollIntoView({ behavior: "smooth" })} onOpenPost={onOpenPost} language={language} />
 
         {/* Transparency Notice */}
         <section className="mx-auto max-w-7xl px-4 pt-5 pb-2 sm:px-5">
@@ -1264,22 +1317,23 @@ const paginatedPosts = filteredPosts.slice(
         <section id="blog" className="mx-auto max-w-7xl px-4 py-10 sm:px-5 sm:py-16">
           <div className="mb-7 flex flex-col justify-between gap-5 sm:mb-10 lg:flex-row lg:items-end">
             <div>
-              <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">Technik Blog</p>
-              <h2 className="mt-2 text-[1.75rem] font-black leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">Elektronikprojekte & Dokumentationen</h2>
+              <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">{t.technicalBlog}</p>
+              <h2 className="mt-2 text-[1.75rem] font-black leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">{t.blogTitle}</h2>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
-                <input value={search} onChange={e => { setSearch(e.target.value); setCurrentPage(1); }} placeholder="Suchen..." className="w-full rounded-2xl border border-white/10 bg-white/[0.05] py-3 pl-11 pr-4 text-sm outline-none ring-cyan-400/30 placeholder:text-zinc-500 focus:ring-4 sm:w-72" />
+                <input value={search} onChange={e => { setSearch(e.target.value); setCurrentPage(1); }} placeholder={t.search} className="w-full rounded-2xl border border-white/10 bg-white/[0.05] py-3 pl-11 pr-4 text-sm outline-none ring-cyan-400/30 placeholder:text-zinc-500 focus:ring-4 sm:w-72" />
               </div>
               <select value={category} onChange={e => { setCategory(e.target.value); setCurrentPage(1); }} className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-3 outline-none ring-cyan-400/30 focus:ring-4">
+                <option value="__all__">{t.all}</option>
                 {categories.map(c => <option key={c}>{c}</option>)}
               </select>
             </div>
           </div>
 
           {filteredPosts.length === 0 && (
-            <div className="py-20 text-center text-zinc-500">Keine Beiträge gefunden.</div>
+            <div className="py-20 text-center text-zinc-500">{t.noPosts}</div>
           )}
 
           <div className="grid gap-4 min-[620px]:grid-cols-2 xl:grid-cols-3 xl:gap-6">
@@ -1311,7 +1365,7 @@ const paginatedPosts = filteredPosts.slice(
                       <div className="flex gap-2 pt-6 sm:mt-auto sm:gap-3">
                         <button type="button" onClick={() => onOpenPost(post.id)}
                           className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base">
-                          Beitrag lesen
+                          {t.readPost}
                         </button>
                       </div>
                     </div>
@@ -1324,7 +1378,7 @@ const paginatedPosts = filteredPosts.slice(
           {totalPages > 1 && (
   <div className="mt-10 flex flex-col items-center justify-center gap-4">
     <div className="text-sm font-semibold text-zinc-400">
-      Seite {currentPage} von {totalPages}
+      {t.page} {currentPage} {t.of} {totalPages}
     </div>
 
     <div className="flex flex-wrap items-center justify-center gap-2">
@@ -1337,7 +1391,7 @@ const paginatedPosts = filteredPosts.slice(
         }}
         className="rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
       >
-        ← Vorherige
+        {t.previous}
       </button>
 
       {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
@@ -1367,7 +1421,7 @@ const paginatedPosts = filteredPosts.slice(
         }}
         className="rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
       >
-        Nächste →
+        {t.next}
       </button>
     </div>
   </div>
@@ -1378,8 +1432,8 @@ const paginatedPosts = filteredPosts.slice(
         <section id="projekte" className="mx-auto max-w-7xl px-4 py-16 sm:px-5 sm:py-24">
           <div className="mb-10 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">Galerie</p>
-              <h2 className="mt-3 text-4xl font-black sm:text-5xl">Projektbilder</h2>
+              <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">{t.gallery}</p>
+              <h2 className="mt-3 text-4xl font-black sm:text-5xl">{t.projectImages}</h2>
             </div>
           </div>
 
@@ -1389,19 +1443,19 @@ const paginatedPosts = filteredPosts.slice(
                 <button type="button" onClick={() => setGalleryLightbox({ images: galleryImages, index: selectedGalleryIndex })} className="group relative block h-[260px] w-full overflow-hidden rounded-[1.55rem] text-left sm:h-[380px] lg:h-full">
                   <img src={galleryImages[selectedGalleryIndex] || galleryImages[0]} alt="Galeriebild" className="h-full w-full object-cover object-center transition duration-700 group-hover:scale-[1.025] group-hover:brightness-110" />
                   <div className="absolute bottom-4 left-4 flex flex-wrap items-center gap-2 sm:bottom-5 sm:left-5">
-                    <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black uppercase tracking-widest text-black">Galerie</span>
+                    <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black uppercase tracking-widest text-black">{t.gallery}</span>
                     <span className="rounded-full border border-white/15 bg-black/55 px-3 py-1.5 text-xs font-bold text-zinc-200 backdrop-blur">
-                      Bild {selectedGalleryIndex + 1} / {galleryImages.length}
+                      {t.image} {selectedGalleryIndex + 1} / {galleryImages.length}
                     </span>
                   </div>
-                  <span className="absolute bottom-4 right-4 rounded-full border border-white/15 bg-black/55 px-3 py-1.5 text-xs font-bold text-zinc-200 backdrop-blur sm:bottom-5 sm:right-5">Vergrößern</span>
+                  <span className="absolute bottom-4 right-4 rounded-full border border-white/15 bg-black/55 px-3 py-1.5 text-xs font-bold text-zinc-200 backdrop-blur sm:bottom-5 sm:right-5">{t.enlarge}</span>
                 </button>
 
                 <div className="hidden min-h-0 gap-3 lg:grid lg:grid-rows-2">
                   {gallerySideImages.map(({ image, index }) => (
                     <button key={`${image}-${index}`} type="button" onClick={() => setSelectedGalleryIndex(index)} className="group relative min-h-0 overflow-hidden rounded-[1.35rem] border border-white/10 bg-black/30 transition hover:border-cyan-400/50">
                       <img src={image} alt={`Galeriebild ${index + 1}`} className="h-full w-full object-cover transition duration-500 group-hover:scale-105 group-hover:brightness-110" />
-                      <span className="absolute bottom-3 right-3 rounded-full border border-white/15 bg-black/55 px-2.5 py-1 text-xs font-bold text-zinc-200 backdrop-blur">Bild {index + 1}</span>
+                      <span className="absolute bottom-3 right-3 rounded-full border border-white/15 bg-black/55 px-2.5 py-1 text-xs font-bold text-zinc-200 backdrop-blur">{t.image} {index + 1}</span>
                     </button>
                   ))}
                 </div>
@@ -1475,7 +1529,7 @@ const paginatedPosts = filteredPosts.slice(
 // ─────────────────────────────────────────────
 // LEGAL PAGES
 // ─────────────────────────────────────────────
-function LegalPageLayout({ title, children, onBack, onNavigate }) {
+function LegalPageLayout({ title, children, onBack, onNavigate, language, onLanguageChange }) {
   return (
     <div className="min-h-screen overflow-x-hidden text-white">
       <Background />
@@ -1483,6 +1537,8 @@ function LegalPageLayout({ title, children, onBack, onNavigate }) {
       <SiteHeader
         onNavigate={onNavigate}
         currentPage="legal"
+        language={language}
+        onLanguageChange={onLanguageChange}
       />
 
       <main className="mx-auto max-w-5xl px-4 pt-[110px] pb-20 sm:px-5">
@@ -1509,12 +1565,14 @@ function LegalPageLayout({ title, children, onBack, onNavigate }) {
   );
 }
 
-function ImpressumPage({ onBack, onNavigate }) {
+function ImpressumPage({ onBack, onNavigate, language, onLanguageChange }) {
   return (
     <LegalPageLayout
       title="Impressum"
       onBack={onBack}
       onNavigate={onNavigate}
+      language={language}
+      onLanguageChange={onLanguageChange}
     >
       <section>
         <p className="font-bold text-white">Angaben gemäß § 5 DDG</p>
@@ -1602,12 +1660,14 @@ function ImpressumPage({ onBack, onNavigate }) {
   );
 }
 
-function DatenschutzPage({ onBack, onNavigate }) {
+function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
   return (
     <LegalPageLayout
       title="Datenschutz"
       onBack={onBack}
       onNavigate={onNavigate}
+      language={language}
+      onLanguageChange={onLanguageChange}
     >
       <section>
         <p className="font-bold text-white">1. Verantwortlicher</p>
@@ -1820,6 +1880,15 @@ function App() {
   const isMarkdownEditor = import.meta.env.DEV && new URLSearchParams(window.location.search).get("admin") === "1";
   const [page, setPage] = useState("home"); // "home" | "post" | "knowledge" | "knowledge-post" | "impressum" | "datenschutz"
   const [currentPostId, setCurrentPostId] = useState(null);
+  const [language, setLanguage] = useState(() => {
+    const savedLanguage = window.localStorage.getItem("site-language");
+    return LANGUAGES.includes(savedLanguage) ? savedLanguage : "de";
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem("site-language", language);
+    document.documentElement.lang = language;
+  }, [language]);
 
   // ── Data state ──
   const posts = POSTS;
@@ -1868,6 +1937,8 @@ function App() {
     <ImpressumPage
       onBack={goHome}
       onNavigate={setPage}
+      language={language}
+      onLanguageChange={setLanguage}
     />
   );
 }
@@ -1877,6 +1948,8 @@ if (page === "datenschutz") {
     <DatenschutzPage
       onBack={goHome}
       onNavigate={setPage}
+      language={language}
+      onLanguageChange={setLanguage}
     />
   );
 }
@@ -1884,14 +1957,14 @@ if (page === "datenschutz") {
   return (
     <>
      <CookieBanner />
-      <SiteHeader onNavigate={navigate} currentPage={page} />
+      <SiteHeader onNavigate={navigate} currentPage={page} language={language} onLanguageChange={setLanguage} />
 
       {page === "post" && currentPost ? (
-        <PostDetailPage post={currentPost} onBack={goHome} />
+        <PostDetailPage post={currentPost} onBack={goHome} language={language} />
       ) : page === "knowledge-post" && currentKnowledgePost ? (
-        <KnowledgeDetailPage post={currentKnowledgePost} onBack={() => navigate("knowledge")} />
+        <KnowledgeDetailPage post={currentKnowledgePost} onBack={() => navigate("knowledge")} language={language} />
       ) : page === "knowledge" ? (
-        <KnowledgePage posts={knowledgePosts} onOpenPost={openKnowledgePost} />
+        <KnowledgePage posts={knowledgePosts} onOpenPost={openKnowledgePost} language={language} />
       ) : (
         <HomePage
           posts={posts}
@@ -1899,6 +1972,7 @@ if (page === "datenschutz") {
           onOpenPost={openPost}
           onGoImpressum={goImpressum}
           onGoDatenschutz={goDatenschutz}
+          language={language}
         />
       )}
     </>
