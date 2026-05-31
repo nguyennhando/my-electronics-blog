@@ -1386,9 +1386,8 @@ const paginatedPosts = filteredPosts.slice(
           {galleryImages.length > 0 && (
             <div className="rounded-[2rem] border border-white/10 bg-[#07111f]/90 p-3 shadow-2xl shadow-cyan-950/20 sm:p-4">
               <div className="grid gap-3 lg:grid-cols-[1.85fr_1fr]">
-                <button type="button" onClick={() => setGalleryLightbox({ images: galleryImages, index: selectedGalleryIndex })} className="group relative block w-full overflow-hidden rounded-[1.55rem] bg-black/30 text-left">
-                  <img src={galleryImages[selectedGalleryIndex] || galleryImages[0]} alt="Galeriebild" className="h-[260px] w-full object-cover object-top transition duration-700 group-hover:scale-[1.025] group-hover:brightness-110 sm:h-[380px] lg:h-[430px]" />
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10" />
+                <button type="button" onClick={() => setGalleryLightbox({ images: galleryImages, index: selectedGalleryIndex })} className="group relative block w-full overflow-hidden rounded-[1.55rem] text-left">
+                  <img src={galleryImages[selectedGalleryIndex] || galleryImages[0]} alt="Galeriebild" className="h-[260px] w-full object-cover object-center transition duration-700 group-hover:scale-[1.025] group-hover:brightness-110 sm:h-[380px] lg:h-[430px]" />
                   <div className="absolute bottom-4 left-4 flex flex-wrap items-center gap-2 sm:bottom-5 sm:left-5">
                     <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black uppercase tracking-widest text-black">Galerie</span>
                     <span className="rounded-full border border-white/15 bg-black/55 px-3 py-1.5 text-xs font-bold text-zinc-200 backdrop-blur">
