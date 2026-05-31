@@ -187,10 +187,13 @@ function GradientBorder({ children, gradient = "from-cyan-400 via-cyan-500 to-cy
 function Background() {
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden bg-[#07111f]">
-      {SITE_SETTINGS.background_image && <img src={SITE_SETTINGS.background_image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-25" />}
-      <div className="absolute inset-0 bg-black/65" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#050816]/70 via-[#07111f]/80 to-[#050816]/95" />
-      <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
+      <img
+        src={SITE_SETTINGS.background_image}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover opacity-70"
+      />
+
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/50" />
     </div>
   );
 }
