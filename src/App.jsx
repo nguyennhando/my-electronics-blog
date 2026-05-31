@@ -139,6 +139,33 @@ const getCategoryIcon = (cat) => {
   return map[cat] || Cpu;
 };
 
+const getCategoryLabel = (category, language = "de") => ({
+  en: {
+    Elektrotechnik: "Electrical Engineering",
+    Maschinenbau: "Mechanical Engineering",
+    "Über mich": "About Me",
+    Softwareentwicklung: "Software Development",
+    "SPS-Programmierung": "PLC Programming",
+    Grundlagen: "Fundamentals",
+    Robotik: "Robotics",
+    Messtechnik: "Measurement Technology",
+    "Karriere & Weiterbildung": "Career & Continuing Education",
+    "Technische Erfahrungen": "Technical Experience",
+  },
+  vi: {
+    Elektrotechnik: "Kỹ thuật điện",
+    Maschinenbau: "Cơ khí",
+    "Über mich": "Về tôi",
+    Softwareentwicklung: "Phát triển phần mềm",
+    "SPS-Programmierung": "Lập trình PLC",
+    Grundlagen: "Kiến thức nền tảng",
+    Robotik: "Robot",
+    Messtechnik: "Kỹ thuật đo lường",
+    "Karriere & Weiterbildung": "Sự nghiệp & Đào tạo nâng cao",
+    "Technische Erfahrungen": "Kinh nghiệm kỹ thuật",
+  },
+}[language]?.[category] || category);
+
 const slugify = (value) => String(value || "")
   .normalize("NFD")
   .replace(/[\u0300-\u036f]/g, "")
@@ -508,7 +535,7 @@ function HeroSlideshow({ slides, onDiscover, onOpenPost, language }) {
                   <motion.img src={slide.image} alt={slide.title} className="h-full w-full object-cover" initial={{ scale: 1.06 }} animate={{ scale: 1 }} transition={{ duration: 0.7 }} />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#080d1f]/60 via-transparent to-transparent" />
                   <div className="absolute left-4 top-4 flex items-center gap-2">
-                    <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black text-black shadow-lg">{slide.category}</span>
+                    <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black text-black shadow-lg">{getCategoryLabel(slide.category, language)}</span>
                     <span className="rounded-full bg-black/40 px-3 py-1.5 text-xs text-zinc-300 backdrop-blur-sm">{slide.readTime}</span>
                   </div>
                 </div>
@@ -578,7 +605,7 @@ function PostDetailPage({ post, onBack, language }) {
                 className={`h-64 w-full cursor-zoom-in object-cover sm:h-80 lg:h-[420px] ${isIdea(post) ? "grayscale opacity-70" : ""}`} />
               <div className="absolute inset-0 bg-gradient-to-t from-[#07111f]/80 via-transparent to-transparent" />
               <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
-                <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black text-black">{post.category}</span>
+                <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black text-black">{getCategoryLabel(post.category, language)}</span>
                 <span className={`rounded-full border px-3 py-1.5 text-xs font-bold ${getStatusClasses(post.project_status)}`}>{getStatusLabel(post.project_status, language)}</span>
               </div>
             </div>
@@ -725,7 +752,7 @@ function KnowledgePage({ posts, onOpenPost, language }) {
           </div>
           <select value={category} onChange={(e) => setCategory(e.target.value)} className="rounded-xl border border-white/10 bg-[#050816] px-5 py-3 text-sm outline-none ring-slate-300/30 focus:ring-4">
             <option value="__all__">{t.allTopics}</option>
-            {categories.map((item) => <option key={item}>{item}</option>)}
+            {categories.map((item) => <option key={item} value={item}>{getCategoryLabel(item, language)}</option>)}
           </select>
         </section>
 
@@ -745,7 +772,7 @@ function KnowledgePage({ posts, onOpenPost, language }) {
                 </div>
                 <div className="p-5 sm:p-7">
                   <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-400">
-                    <span className="rounded-full bg-slate-200 px-3 py-1 font-black text-slate-950">{featuredPost.category}</span>
+                    <span className="rounded-full bg-slate-200 px-3 py-1 font-black text-slate-950">{getCategoryLabel(featuredPost.category, language)}</span>
                     <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {featuredPost.read_time || "5 Min."}</span>
                   </div>
                   <h2 className="mt-4 text-2xl font-black leading-tight sm:text-3xl">{featuredPost.title}</h2>
@@ -767,7 +794,7 @@ function KnowledgePage({ posts, onOpenPost, language }) {
                       {post.image_url ? <img src={post.image_url} alt="" className="h-full w-full object-cover transition group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><GraduationCap className="h-8 w-8 text-slate-300/60" /></div>}
                     </div>
                     <div>
-                      <div className="flex flex-wrap gap-2 text-xs text-zinc-500"><span className="font-bold text-slate-300">{post.category}</span><span>{formatDate(post.created_at, language)}</span><span>{post.read_time || "5 Min."}</span></div>
+                      <div className="flex flex-wrap gap-2 text-xs text-zinc-500"><span className="font-bold text-slate-300">{getCategoryLabel(post.category, language)}</span><span>{formatDate(post.created_at, language)}</span><span>{post.read_time || "5 Min."}</span></div>
                       <h3 className="mt-2 text-lg font-black leading-tight group-hover:text-slate-200">{post.title}</h3>
                       <p className="mt-2 line-clamp-2 text-sm leading-6 text-zinc-400">{post.excerpt}</p>
                     </div>
@@ -796,7 +823,7 @@ function KnowledgeDetailPage({ post, onBack, language }) {
           {post.image_url && <img src={post.image_url} alt={post.title} className="h-56 w-full object-cover sm:h-80" />}
           <div className="p-5 sm:p-8 lg:p-10">
             <div className="flex flex-wrap gap-3 text-xs text-zinc-400">
-              <span className="rounded-full bg-slate-200 px-3 py-1 font-black text-slate-950">{post.category}</span>
+              <span className="rounded-full bg-slate-200 px-3 py-1 font-black text-slate-950">{getCategoryLabel(post.category, language)}</span>
               <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at, language)}</span>
               <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {post.read_time || "5 Min."}</span>
             </div>
@@ -1409,7 +1436,7 @@ const paginatedPosts = filteredPosts.slice(
               </div>
               <select value={category} onChange={e => { setCategory(e.target.value); setCurrentPage(1); }} className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-3 outline-none ring-cyan-400/30 focus:ring-4">
                 <option value="__all__">{t.all}</option>
-                {categories.map(c => <option key={c}>{c}</option>)}
+                {categories.map(c => <option key={c} value={c}>{getCategoryLabel(c, language)}</option>)}
               </select>
             </div>
           </div>
@@ -1435,7 +1462,7 @@ const paginatedPosts = filteredPosts.slice(
                       className={`h-44 w-full shrink-0 cursor-zoom-in object-cover transition duration-300 hover:brightness-110 sm:h-56 ${idea ? "grayscale opacity-70" : ""}`} />
                     <div className="flex flex-1 flex-col p-4 sm:p-6">
                       <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
-                        <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black"><Icon className="h-3.5 w-3.5" /> {post.category}</span>
+                        <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black"><Icon className="h-3.5 w-3.5" /> {getCategoryLabel(post.category, language)}</span>
                         <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getStatusClasses(post.project_status)}`}>{getStatusLabel(post.project_status, language)}</span>
                         <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at, language)}</span>
                       </div>
