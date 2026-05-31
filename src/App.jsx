@@ -404,7 +404,7 @@ function PostDetailPage({ post, onBack }) {
   useEffect(() => { window.scrollTo({ top: 0 }); }, [post.id]);
 
   return (
-    <div className="min-h-screen text-white bg-[#07111f]"
+    <div className="min-h-screen text-white"
   style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px)", backgroundSize: "60px 60px" }}>
       <Background />
       <main className="mx-auto max-w-5xl px-4 pt-[110px] pb-20 sm:px-5">
@@ -644,7 +644,7 @@ function MarkdownEditorPage() {
   const previewIsIdea = isIdea(form);
 
   return (
-    <div className="min-h-screen bg-[#050816] text-white">
+    <div className="min-h-screen text-white">
       <Background />
       <header className="sticky top-0 z-30 border-b border-white/10 bg-[#050816]/90 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-5">
@@ -930,7 +930,7 @@ const paginatedPosts = filteredPosts.slice(
 );
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#050816] text-white">
+    <div className="min-h-screen overflow-x-hidden text-white">
       <Background />
       <main className="pt-[90px]">
         {/* Hero */}
@@ -1228,7 +1228,7 @@ const paginatedPosts = filteredPosts.slice(
 // ─────────────────────────────────────────────
 function LegalPageLayout({ title, children, onBack, onNavigate }) {
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#050816] text-white">
+    <div className="min-h-screen overflow-x-hidden text-white">
       <Background />
 
       <SiteHeader
