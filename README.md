@@ -4,7 +4,7 @@ Personal portfolio and technical blog for electronics, automation, embedded syst
 
 [![Live Website](https://img.shields.io/badge/Live_Website-Open-22d3ee?style=for-the-badge)](https://nguyennhando.github.io/my-electronics-blog/)
 
-![ElektronikLab workspace](public/images/about-1.webp)
+![ElektronikLab desktop homepage](docs/github-images/website-home-desktop.webp)
 
 ## Overview
 
@@ -12,15 +12,21 @@ ElektronikLab documents practical projects, technical concepts and learning prog
 
 The website is built as a static React application and deployed through GitHub Pages. Blog posts and homepage content are stored as Markdown files and loaded at build time.
 
-## Featured Projects
+## Responsive Design
 
-| Industrial process visualization | PLC-controlled diving system |
+| Desktop homepage | Mobile homepage |
 | --- | --- |
-| ![Industrial mixing process](public/images/posts/Mischbehälter-main.webp) | ![PLC-controlled diving system](public/images/posts/Tauchanlage-main.webp) |
+| ![Desktop homepage](docs/github-images/website-home-desktop.webp) | ![Mobile homepage](docs/github-images/website-home-mobile.webp) |
 
-| Smart Home with ESP32 | AutoCAD steam engine |
+## Website Sections
+
+| Blog with search and filters | Project image gallery |
 | --- | --- |
-| ![ESP32 Smart Home project](public/images/posts/SmartHome-main.webp) | ![AutoCAD steam engine](public/images/posts/Dampfmaschine-main.webp) |
+| ![Blog section](docs/github-images/website-blog-section.webp) | ![Gallery section](docs/github-images/website-gallery-section.webp) |
+
+## Local Content Editor
+
+![Local Markdown editor](docs/github-images/website-editor-local.webp)
 
 ## Features
 
@@ -120,6 +126,8 @@ Lower `sort_order` values appear first.
 ## Project Structure
 
 ```text
+docs/
+  github-images/      Images used only by the GitHub README
 public/
   images/             Static website and project images
 src/
@@ -130,6 +138,16 @@ src/
   index.css           Tailwind CSS entrypoint
   main.jsx            React entrypoint
 ```
+
+To update the GitHub repository preview without changing the website, replace the image files in `docs/github-images/` and keep their filenames unchanged.
+
+Image naming convention:
+
+- `website-home-desktop.webp`: desktop homepage screenshot and README cover
+- `website-home-mobile.webp`: mobile homepage screenshot
+- `website-blog-section.webp`: blog cards, search and category filter
+- `website-gallery-section.webp`: project image gallery
+- `website-editor-local.webp`: local Markdown editor screenshot
 
 ## Deployment
 
