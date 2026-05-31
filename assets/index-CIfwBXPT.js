@@ -664,17 +664,19 @@ image_1: /my-electronics-blog/images/about-1.webp
 image_2: /my-electronics-blog/images/about-2.webp
 ---
 
-Ich bin 2013 nach Deutschland gekommen - nicht, weil mein Leben in Vietnam schlecht war, sondern weil ich wissen wollte, wie weit ich mich persönlich und beruflich entwickeln kann, wenn ich meine Komfortzone verlasse und in einem völlig neuen Umfeld neu anfange.
+Ich bin 2013 nach Deutschland gekommen – nicht, weil mein Leben in Vietnam schlecht war, sondern weil ich herausfinden wollte, wie weit ich mich persönlich und beruflich entwickeln kann, wenn ich meine Komfortzone verlasse und in einem völlig neuen Umfeld noch einmal von vorne beginne.
 
-Die ersten Jahre in Deutschland waren für mich vor allem eine Zeit des Ankommens, Lernens und Anpassens. Neben den Sprachkursen habe ich in verschiedenen Bereichen gearbeitet - unter anderem in der Gastronomie, im Management und später auch in der Selbstständigkeit.
+Die ersten Jahre in Deutschland waren für mich vor allem eine Zeit des Ankommens, Lernens und Anpassens. Neben Sprachkursen habe ich in verschiedenen Bereichen gearbeitet – unter anderem in der Gastronomie, im Management und später auch in der Selbstständigkeit.
 
-Nach mehreren Jahren unterschiedlicher beruflicher Erfahrungen habe ich mich bewusst entschieden, wieder stärker in die technische Richtung zurückzugehen und mich langfristig im Bereich Elektronik, Messtechnik und Automatisierung weiterzuentwickeln.
+Nach mehreren Jahren mit unterschiedlichen beruflichen Erfahrungen habe ich mich bewusst entschieden, wieder stärker in die technische Richtung zurückzukehren und mich langfristig im Bereich Elektronik, Messtechnik und Automatisierung weiterzuentwickeln.
 
-In den letzten Jahren konnte ich praktische Erfahrungen in der Kalibrierung, Fehlersuche, Prüfung und Entwicklung elektronischer Systeme sammeln und gleichzeitig mein technisches Wissen kontinuierlich erweitern.
+In den vergangenen Jahren konnte ich praktische Erfahrungen in der Kalibrierung, Fehlersuche, Prüfung und Entwicklung elektronischer Systeme sammeln und gleichzeitig mein technisches Wissen kontinuierlich erweitern.
 
-Deshalb habe ich zusätzliche Weiterbildungen in SPS-Programmierung, C++/Qt, AutoCAD und EPLAN absolviert, um mein Wissen gezielt auszubauen und neue technische Bereiche besser zu verstehen.
+Darüber hinaus habe ich Weiterbildungen in SPS-Programmierung, C++/Qt, AutoCAD und EPLAN absolviert, um meine Kenntnisse gezielt auszubauen und neue technische Bereiche besser zu verstehen.
 
-Dieser Blog ist kein Ort für Motivationstexte oder perfekte Erfolgsgeschichten. Ich möchte hier ehrlich über meinen Weg sprechen - über das Leben und Arbeiten in Deutschland, technische Themen, persönliche Erfahrungen, Herausforderungen und Entwicklung.
+Dieser Blog dient vor allem dazu, meine technischen Projekte, Erfahrungen und Lernprozesse zu dokumentieren. Hier halte ich Wissen fest, sammle Ideen und dokumentiere meine fachliche Entwicklung im Laufe der Zeit.
+
+Alle Inhalte basieren auf persönlichen Projekten, eigenständigem Lernen und öffentlich zugänglichem Wissen. Vertrauliche Informationen, interne Unterlagen oder Projekte von aktuellen bzw. ehemaligen Arbeitgebern werden selbstverständlich nicht veröffentlicht.
 `,"../content/plc-programmierung-einer-industriellen-tauchanlage.md":`---
 id: demo-3
 title: PLC-Programmierung einer industriellen Tauchanlage
