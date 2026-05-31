@@ -183,6 +183,915 @@ Zusätzlich erweitere ich meine Kenntnisse in:
 Ich arbeite sorgfältig, feinmotorisch und bin sehr lernbereit. Obwohl ich noch nicht über sehr viel Berufserfahrung verfüge, eigne ich mir neue Technologien und technische Themen schnell an und entwickle mich kontinuierlich weiter.
 
 Besonders interessiere ich mich für Prüffeldtechnik, Prototypenentwicklung, hardwarenahe Programmierung sowie die Analyse und Fehlerdiagnose elektronischer Systeme.
+`,"../content/en/3d-flaschenzug-in-autocad.md":`---
+translation_id: local-post-1779960596593
+language: en
+slug: 3d-pulley-block-in-autocad
+title: 3D Pulley Block in AutoCAD
+category: Maschinenbau
+image_url: /my-electronics-blog/images/posts/Flaschenzug-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Flaschenzug-1.webp
+- /my-electronics-blog/images/posts/Flaschenzug-2.webp
+- /my-electronics-blog/images/posts/Flaschenzug-3.webp
+excerpt: A mechanical pulley block was fully designed as a 3D model in AutoCAD, with a focus on precise component modeling and realistic mechanical representation.
+tags:
+- AutoCAD
+- 3D
+- Design
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:29:56.593Z'
+external_link: https://drive.google.com/drive/folders/1fN_hc6jaddMzTqEt0iIS4YxpiPdT8JFR?usp=drive_link
+project_status: done
+sort_order: 70
+---
+
+# 3D Pulley Block in AutoCAD
+
+This project covers the design of a pulley block as a 3D model in AutoCAD. Every mechanical component was modeled individually and then assembled into a complete unit.
+
+The model includes:
+
+- Hook
+- Pulleys
+- Side plates
+- Connecting pins
+- Lever and guide elements
+
+The goal was to improve my 3D CAD design skills and deepen my understanding of mechanical movement and component connections.
+
+Key aspects:
+
+- Precise 3D modeling in AutoCAD
+- Assembly of mechanical components
+- Technical representation of a pulley block
+- Visualization of the mechanism from different perspectives
+- Realistic component design
+
+The finished model can be used for technical presentations, learning purposes or as a basis for further mechanical development.
+`,"../content/en/autocad-2d-kleine-dampfmaschine.md":`---
+translation_id: demo-2
+language: en
+slug: autocad-2d-small-steam-engine
+title: AutoCAD 2D - Small Steam Engine
+category: Maschinenbau
+image_url: /my-electronics-blog/images/posts/Dampfmaschine-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Dampfmaschine-1.webp
+- /my-electronics-blog/images/posts/Dampfmaschine-2.webp
+- /my-electronics-blog/images/posts/Dampfmaschine-3.webp
+- /my-electronics-blog/images/posts/Dampfmaschine-5.webp
+excerpt: Development of technical 2D and 3D CAD models in mechanical engineering with AutoCAD 2026, including a small steam engine.
+tags:
+- AutoCAD 2D
+read_time: 6 Min.
+published: true
+created_at: '2026-05-08T12:00:00Z'
+external_link: https://drive.google.com/drive/folders/1GDWUKT5mLYHnSlSns5oKxpMZrkY9WENy
+project_status: done
+sort_order: 20
+---
+
+# AutoCAD 2D - Small Steam Engine
+
+This project presents the complete 2D design of a small steam engine in the field of mechanical engineering using AutoCAD 2026.
+
+The design includes:
+
+- Base plate
+- Foot and mirror plate
+- Bearing block
+- Piston rod head
+- Crank disc and crankshaft
+- Cylinder and piston
+- Flywheel
+- Pendulum shaft
+- Railing and center bar
+- Standard parts and bill of materials
+
+The technical drawings contain dimensions, sectional views, material specifications, individual component drawings and an assembly drawing.
+
+Materials used:
+
+- Brass
+- Steel alloy
+- Copper
+- Glass
+
+Another project is the design of a mechanical pulley block with a double pulley and safety hook. It was developed as a 3D CAD model for lifting heavy loads with reduced pulling force.
+
+The \`Open project\` button provides access to all project files, including the AutoCAD \`.dwg\` files.
+
+Course period: 19 January 2026 - 13 February 2026  
+Software: AutoCAD 2026  
+Project by: NGUYEN NHAN DO
+`,"../content/en/elektronik-test-reparatur.md":`---
+translation_id: demo-1
+language: en
+slug: electronics-testing-repair
+title: Electronics - Testing - Repair
+category: Über mich
+image_url: /my-electronics-blog/images/posts/Nguyen-main.webp
+image_gallery: []
+excerpt: Electrical engineer with a strong interest in electrical design and software development. Eager to learn, dexterous and motivated to continuously expand my practical experience.
+tags:
+- ESP32
+- MQTT
+- Smart Home
+- Sensors
+read_time: 8 Min.
+published: true
+created_at: '2026-05-14T12:00:00Z'
+external_link: ''
+project_status: done
+sort_order: 10
+---
+
+# Electronics - Testing - Repair
+
+My main areas of focus are:
+
+- Software development
+- Automation technology
+- PLC programming with Siemens S7 and TIA Portal
+- Troubleshooting and repair of electronic assemblies
+
+I am also expanding my knowledge of:
+
+- WinCC
+- C++ and Qt
+- EPLAN
+- AutoCAD 2D and 3D
+
+I work carefully, have good fine motor skills and am very eager to learn. Although I do not yet have extensive professional experience, I quickly familiarize myself with new technologies and technical topics and continue to develop my skills.
+
+I am especially interested in test engineering, prototype development, hardware-oriented programming, and the analysis and diagnosis of electronic systems.
+`,"../content/en/finanzverwaltung-mit-datenanalyse.md":`---
+translation_id: local-post-1779957810945
+language: en
+slug: financial-management-with-data-analysis
+title: Financial Management with Data Analysis
+category: Softwareentwicklung
+image_url: /my-electronics-blog/images/posts/finanzmanager-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/finanzmanager-1.webp
+- /my-electronics-blog/images/posts/finanzmanager-2.webp
+- /my-electronics-blog/images/posts/finanzmanager-3.webp
+excerpt: Personal income and expense management with CSV import and export, real-time data analysis and a modern graphical interface. The complete source code is available through the project link.
+tags:
+- C++
+- Qt 6.9
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T08:43:30.945Z'
+external_link: https://github.com/nguyennhando/finanzmanager
+project_status: done
+sort_order: 30
+---
+
+# Financial Management with Data Analysis
+
+## GeldPilot - Personal Finance Management
+
+GeldPilot is a modern desktop application for managing personal finances, developed with C++, Qt 6 and SQLite. It supports income and expense tracking, CSV import and export, and real-time data analysis through a modern graphical interface.
+
+The \`Open project\` button at the end of the page provides access to the complete source code.
+
+## Overview
+
+GeldPilot is a user-friendly application for managing income and expenses. Its intuitive interface makes it possible to manage transactions, organize categories and create comprehensive financial reports.
+
+## Main Features
+
+- **Transaction management:** Add, edit and delete income and expenses
+- **Categories:** Use predefined and custom categories
+- **Period filters:** Filter flexibly by date and category
+- **Financial overview:** Automatically calculate income, expenses and balance
+- **Visualization:** Display finances with interactive bar charts
+- **Import and export:** Exchange data through CSV files
+- **Printing:** Generate professional reports with a company logo
+
+## System Requirements
+
+### Minimum Requirements
+
+- Operating system: Windows 10 or 11, macOS 10.15+, or Linux Ubuntu 20.04+
+- Memory: 4 GB RAM
+- Disk space: 100 MB
+- Screen resolution: 1024 x 768
+
+### Recommended Requirements
+
+- Memory: 8 GB RAM or more
+- Screen resolution: 1920 x 1080 or higher
+
+## Installation
+
+### Precompiled Windows Version
+
+1. Download the latest version from the Releases page.
+2. Extract the archive to a folder of your choice.
+3. Start \`GeldPilot.exe\`.
+
+### Build from Source
+
+Requirements:
+
+- Qt 6.9 or newer
+- CMake 3.16 or newer
+- A C++17-compatible compiler:
+  - Windows: MinGW-w64 or MSVC 2019+
+  - macOS: Xcode 12+
+  - Linux: GCC 9+ or Clang 10+
+
+Build steps:
+
+\`\`\`bash
+git clone https://github.com/username/geldpilot.git
+cd geldpilot
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . --config Release
+\`\`\`
+
+Start the application:
+
+\`\`\`bash
+# Windows
+./Release/GeldPilot.exe
+
+# Linux or macOS
+./GeldPilot
+\`\`\`
+
+## Getting Started
+
+### Add Your First Transaction
+
+1. Start GeldPilot.
+2. Enter the date, amount and description.
+3. Select a category, such as \`Salary\`.
+4. Select the type: \`Income\` or \`Expense\`.
+5. Click \`New Transaction\`.
+
+### Filter Data
+
+- Use the category dropdown menus.
+- Set a start date and end date for a time-period filter.
+- Click \`Filter\` to update the view.
+
+### Create Reports
+
+- Click \`Chart\` for a visual representation.
+- Use \`Print\` for a professional report.
+- Export data as CSV for further analysis.
+
+## User Guide
+
+### Transaction Management
+
+To add a transaction, fill in all required fields:
+
+- Date: transaction date
+- Amount: monetary amount, always entered as a positive value
+- Description: short description of the transaction
+- Category: assigned category
+- Type: \`Income\` or \`Expense\`
+
+To edit a transaction:
+
+1. Select a row in the table.
+2. The data appears automatically in the input fields.
+3. Make the required changes.
+4. Click \`Save\`.
+
+To delete transactions:
+
+- Single transaction: select a row and click \`Delete\`.
+- Multiple transactions: select several rows with \`Ctrl + Click\` and click \`Delete\`.
+
+### Categories
+
+Predefined categories:
+
+- Leisure
+- Salary
+- Health
+- Groceries
+- Rent
+- Other
+- Transport
+- Insurance
+- Investment
+- Communication
+- Housing
+
+### Filtering and Search
+
+Filter by category:
+
+- Select \`All Categories\` for an unfiltered view.
+- Select a specific category for a filtered view.
+
+Filter by time period:
+
+1. Set the start date and end date.
+2. Click \`Filter\`.
+
+### Import and Export
+
+CSV import:
+
+1. Prepare a CSV file with the columns \`ID\`, \`Date\`, \`Amount\`, \`Description\`, \`Category\` and \`Type\`.
+2. Click \`Import\`.
+3. Select the CSV file.
+
+CSV export:
+
+1. Click \`Export\`.
+2. Select a location and filename.
+3. The current table view is exported.
+
+### Charts and Reports
+
+To display the financial chart, click \`Chart\`. The bar chart shows categories, total income, total expenses and balance with interactive color coding.
+
+To print a report:
+
+1. Open the chart.
+2. Click \`Print\`.
+3. Select the printer and settings.
+4. The application creates a professional printout with a logo.
+
+## Technical Details
+
+### Architecture
+
+- GUI framework: Qt 6.9
+- Database: SQLite local file
+- Charts: Qt Charts
+- Build system: CMake
+- Compiler on Windows: MinGW-w64
+
+### Database Schema
+
+Transactions table:
+
+\`\`\`sql
+CREATE TABLE transaktionen (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    datum DATE NOT NULL,
+    betrag REAL NOT NULL,
+    beschreibung TEXT,
+    kategorie TEXT NOT NULL,
+    typ TEXT NOT NULL CHECK (typ IN ('Einnahme', 'Ausgabe'))
+);
+\`\`\`
+
+Categories table:
+
+\`\`\`sql
+CREATE TABLE kategorien (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL
+);
+\`\`\`
+
+### Project Structure
+
+\`\`\`text
+geldpilot/
+  src/
+    main.cpp                 Application entry point
+    mainwindow.cpp/h         Main window
+    chartwindow.cpp/h        Chart window
+    datenbankmanager.cpp/h   Database logic
+    centerdelegate.h         UI styling
+  ui/
+    mainwindow.ui            Main-window UI
+    chartwindow.ui           Chart UI
+  resources/
+    icons/                   Application icons
+  CMakeLists.txt             Build configuration
+  README.md                  Documentation
+\`\`\`
+
+## Development
+
+Code style:
+
+- C++17 standard
+- Qt conventions
+- Descriptive German variable names
+- Extensive comments
+
+To contribute:
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Make your changes.
+4. Test thoroughly.
+5. Create a pull request.
+
+Known topics:
+
+- Multiple selection for deletion is implemented.
+- Database indexing for performance is implemented.
+- Backup functionality is planned.
+
+## Support
+
+Need help?
+
+- Documentation: read the complete README.
+- Issues: report bugs on GitHub.
+- E-mail: \`support@geldpilot.de\`
+
+Frequently asked questions:
+
+- **The database cannot be opened:** Make sure the application has write permission in the installation directory.
+- **The chart is not displayed:** Check whether Qt Charts is installed.
+- **Import fails:** Check the CSV format. It must be semicolon-separated.
+
+## License
+
+Copyright 2025 Nguyen Nhan Do. All rights reserved.  
+Version: 1.0.0  
+Developer: Nguyen Nhan Do  
+Build: Qt 6.9, MinGW-w64, CMake
+
+Use GeldPilot to keep track of your finances and shape your financial future with confidence.
+`,"../content/en/konzept-eines-pwm-geregelten-dc-netzteils-mit-mess-und-schutzfunktionen.md":`---
+translation_id: local-post-1779960818567
+language: en
+slug: concept-pwm-controlled-dc-power-supply-with-measurement-and-protection
+title: Concept for a PWM-Controlled DC Power Supply with Measurement and Protection Functions
+category: Elektrotechnik
+image_url: /my-electronics-blog/images/posts/DC-Netzteil-main.webp
+image_gallery: []
+excerpt: Learning and concept project for a microcontroller-based DC power supply with PWM control, current limiting and basic protection functions.
+tags:
+- PWM
+- Power supply
+- STM32
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:33:38.567Z'
+external_link: ''
+project_status: idea
+sort_order: 100
+---
+
+# Concept for a PWM-Controlled DC Power Supply with Measurement and Protection Functions
+
+This is a learning and concept project for developing a microcontroller-based DC power supply with PWM control, current limiting and basic protection functions.
+
+The goal is not merely to build a simple DC power supply, but to gain a practical understanding of PWM control, power electronics and electronic protection circuits.
+
+The planned solution regulates output voltage and current through PWM signals and MOSFET control. Basic measurement and protection functions will be integrated to analyze system behavior under different load conditions.
+
+Planned functions:
+
+- Adjustable output voltage
+- Current limiting
+- PWM-based control
+- Voltage and current measurement
+- Temperature monitoring
+- Short-circuit and overcurrent protection
+- Display of important measured values
+
+I am particularly interested in how PWM frequency, load changes and switching behavior affect stability, efficiency and heat generation.
+
+The project is still in the concept and learning phase. Individual functional blocks such as PWM control, current measurement and protection circuits will be tested separately before a complete prototype is built.
+
+With this project, I want to deepen my knowledge of embedded systems, power electronics and practical measurement technology.
+`,"../content/en/konzeptprojekt-energieuberwachung-mit-esp8266-und-stromsensor.md":`---
+translation_id: local-post-1779960876705
+language: en
+slug: concept-energy-monitoring-with-esp8266-and-current-sensor
+title: 'Concept Project: Energy Monitoring with ESP8266 and Current Sensor'
+category: Embedded Systems
+image_url: /my-electronics-blog/images/posts/Energieüberwachung-main.webp
+image_gallery: []
+excerpt: Planned learning project for simple measurement and visualization of power-consumption data using an ESP8266 and a current sensor over Wi-Fi.
+tags:
+- ESP8266
+- Energy monitoring
+- Sensors
+- Embedded Systems
+- IoT
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:34:36.705Z'
+external_link: ''
+project_status: in_progress
+sort_order: 100
+---
+
+# Concept Project: Energy Monitoring with ESP8266 and Current Sensor
+
+This planned learning project explores the simple acquisition and visualization of power-consumption data using an ESP8266 and a current sensor over Wi-Fi.
+
+The project is currently in the concept and learning phase. The planned system uses an ESP8266 with an ACS712 current sensor.
+
+Planned hardware:
+
+- ESP8266 microcontroller
+- ACS712 current sensor
+- OLED display
+- Wi-Fi communication
+
+Planned functions:
+
+- Display of basic measured values
+- Wi-Fi data transmission
+- Dashboard visualization
+- Fundamentals of energy-consumption analysis
+
+The project is intended to deepen my knowledge of embedded systems, sensors and IoT communication.
+
+Current status: concept project, in planning.
+`,"../content/en/konzeptprojekt-esp32-basierte-mqtt-sensoruberwachung-fur-smart-home-anwendungen.md":`---
+translation_id: local-post-1779960913660
+language: en
+slug: concept-esp32-mqtt-sensor-monitoring-for-smart-home-applications
+title: 'Concept Project: ESP32-Based MQTT Sensor Monitoring for Smart Home Applications'
+category: IoT
+image_url: /my-electronics-blog/images/posts/SmartHome-main.webp
+image_gallery: []
+excerpt: Planned learning project for a simple IoT platform based on an ESP32 microcontroller to collect and visualize sensor data over Wi-Fi and MQTT.
+tags:
+- ESP32
+- MQTT
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:35:13.660Z'
+external_link: ''
+project_status: in_progress
+sort_order: 100
+---
+
+# Concept Project: ESP32-Based MQTT Sensor Monitoring for Smart Home Applications
+
+This planned learning project focuses on a simple IoT platform based on an ESP32 microcontroller. Its goal is to collect and visualize various sensor readings over Wi-Fi and MQTT.
+
+The project is currently in the concept and learning phase.
+
+Planned hardware:
+
+- ESP32 development board
+- DHT22 temperature and humidity sensor
+- Relay module for basic switching functions
+- MQTT broker such as Mosquitto
+- Dashboard for data visualization
+
+Planned functions:
+
+- Wi-Fi communication
+- MQTT publish and subscribe
+- Sensor monitoring
+- Dashboard visualization
+- Expansion with additional sensors and actuators
+
+The project is intended to deepen my knowledge of embedded systems, MQTT communication and IoT applications.
+
+Current status: concept project, in planning.
+`,"../content/en/konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485.md":`---
+translation_id: local-post-1779960691288
+language: en
+slug: concept-esp32-420ma-iot-gateway-with-mqtt-and-rs485
+title: 'Concept Project: ESP32-Based 4-20 mA IoT Gateway with MQTT and RS485'
+category: IoT
+image_url: /my-electronics-blog/images/posts/ESP32-main.webp
+image_gallery: []
+excerpt: Planned learning and development project for acquiring 4-20 mA sensor signals with ESP32, ADS1115 and MQTT communication as a simple industrial IoT prototype.
+tags:
+- ESP32
+- MQTT
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:31:31.288Z'
+external_link: ''
+project_status: idea
+sort_order: 90
+---
+
+# Concept Project: ESP32-Based 4-20 mA IoT Gateway with MQTT and RS485
+
+This planned learning and development project focuses on acquiring 4-20 mA sensor signals with an ESP32, ADS1115 and MQTT communication. The goal is to create a simple industrial IoT prototype for sensor monitoring and data visualization through Home Assistant.
+
+The project is currently in the concept and planning phase.
+
+Planned functions:
+
+- Acquisition of 4-20 mA sensor signals through ADS1115
+- MQTT communication for IoT applications
+- RS485 and Modbus RTU support
+- Sensor-data visualization through Home Assistant
+- Power supply for industrial 12-24 VDC environments
+
+The first development phase uses a rapid prototype with ESP32 DevKit, ADS1115 module and MQTT connection. After successful functional testing, a custom PCB version is planned in KiCad.
+
+Planned technologies:
+
+- ESP32-S3
+- ADS1115
+- MQTT
+- RS485 and Modbus RTU
+- Home Assistant
+- KiCad
+
+Current status: concept phase, learning project.
+`,"../content/en/konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt.md":`---
+translation_id: local-post-1779960950659
+language: en
+slug: concept-monitoring-a-dc-switching-power-supply-with-esp32-and-mqtt
+title: 'Concept Project: Monitoring a DC Switching Power Supply with ESP32 and MQTT'
+category: Elektrotechnik
+image_url: /my-electronics-blog/images/posts/Schaltnetzteil-main.webp
+image_gallery: []
+excerpt: Planned learning project for monitoring voltage, current and temperature values of a DC switching power supply using ESP32 and MQTT communication.
+tags:
+- MQTT
+- Switching power supply
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:35:50.659Z'
+external_link: ''
+project_status: idea
+sort_order: 100
+---
+
+# Concept Project: Monitoring a DC Switching Power Supply with ESP32 and MQTT
+
+This planned learning project focuses on monitoring voltage, current and temperature values of a DC switching power supply using an ESP32 and MQTT communication.
+
+The project is currently in the concept and learning phase. The aim is to develop a simple monitoring system based on an ESP32 microcontroller and visualize the measured values over Wi-Fi and MQTT.
+
+Planned hardware:
+
+- ESP32 development board
+- ACS712 or INA219 current sensor
+- Temperature sensor
+- OLED display
+- Wi-Fi and MQTT communication
+
+Planned functions:
+
+- Voltage and current monitoring
+- Temperature monitoring
+- MQTT data transmission
+- Dashboard visualization
+- Basic status and error display
+
+The project is intended to deepen my knowledge of embedded systems, sensors and industrial energy monitoring.
+
+Current status: concept project, in planning.
+`,"../content/en/plc-programmierung-einer-industriellen-tauchanlage.md":`---
+translation_id: demo-3
+language: en
+slug: plc-programming-of-an-industrial-dipping-system
+title: PLC Programming of an Industrial Dipping System
+category: SPS-Programmierung
+image_url: /my-electronics-blog/images/posts/Tauchanlage-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Tauchanlage-1.webp
+- /my-electronics-blog/images/posts/Tauchanlage-2.webp
+excerpt: Automated dipping system controlled by a Siemens S7-300 PLC, with automatic transport and dipping sequences plus manual and automatic operating modes in TIA Portal.
+tags:
+- PLC
+- S7300
+- TIA Portal
+read_time: 5 Min.
+published: true
+created_at: '2026-04-29T12:00:00Z'
+external_link: https://drive.google.com/drive/folders/1WgBLk6R1F-_J_oisAxwNgQyFdcKVzb-m
+project_status: done
+sort_order: 50
+---
+
+# PLC Programming of an Industrial Dipping System
+
+This project covers the development and programming of an automated dipping system for an industrial transport and dipping process using a Siemens S7-300.
+
+The system automatically moves, lifts and lowers a workpiece basket between two dipping baths while respecting defined safety and motion conditions.
+
+The control system was implemented with a Siemens S7-300 CPU in TIA Portal. The project includes a manual mode for controlling individual axes and a fully automatic mode with sequential process control.
+
+In automatic mode, the basket independently moves to each dipping station, performs the configured dipping and drip-off times, and then returns to its starting position. Limit sensors, safety checks, status displays, motor controls and a workpiece counter with timestamp history were also implemented.
+
+The software structure contains several function blocks for operating modes, output control, sequence control, part history and diagnostic functions. Symbolic variables, data blocks and structured data types improve readability.
+
+The project demonstrates the practical implementation of industrial automation with PLCs, sensors, actuators and sequence control in Siemens TIA Portal.
+
+**Click \`Open project\` to view the complete documentation and project files.**
+`,"../content/en/technisches-portfolio-elektronik-blog.md":`---
+translation_id: technisches-portfolio-elektronik-blog
+language: en
+slug: technical-portfolio-electronics-blog
+title: Technical Portfolio & Electronics Blog
+category: Softwareentwicklung
+image_url: /my-electronics-blog/images/posts/Portfolio-Blog-main.webp
+image_gallery: []
+excerpt: Development of a modern personal portfolio and blog platform for documenting technical projects, electronics experiments, embedded systems, automation and professional development.
+tags:
+- React
+- JavaScript
+- Portfolio
+- Blog
+- Embedded Systems
+- Electronics
+- Web Development
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:30:47.159Z'
+external_link: https://github.com/nguyennhando/my-electronics-blog
+project_status: done
+sort_order: 80
+---
+
+# Technical Portfolio & Electronics Blog
+
+## Project Overview
+
+I developed this website from scratch to document technical projects, electronics work, learning progress and professional experience in one place.
+
+The platform is both a personal portfolio and a technical knowledge base for:
+
+- Electronics
+- Embedded systems
+- IoT
+- Automation technology
+- Software development
+- Measurement technology
+- Technical documentation
+
+## Technologies Used
+
+### Frontend
+
+- React
+- JavaScript
+- Framer Motion
+- React Markdown
+- Tailwind CSS
+
+### UI Components
+
+- Lucide React icons
+- Responsive layout
+- Animations
+- Lightbox gallery
+- Markdown editor
+
+## Main Functions
+
+### Blog System
+
+- Technical project reports
+- Markdown-based articles
+- Categories and tags
+- Search
+- Pagination
+
+### Portfolio
+
+- Project overview
+- Status badges
+- Image gallery
+- External project links
+
+### Custom Markdown Editor
+
+The website includes an integrated editor for creating new articles with live preview, automatic slug generation, Markdown export, direct saving and project management.
+
+## User Interface
+
+The design focuses on a modern technical appearance with a dark UI, responsive presentation, fluid animations and mobile optimization.
+
+## Goal and Result
+
+The website presents technical skills professionally and documents my projects and learning progress over the long term. The result is a self-developed portfolio and blog platform that combines technical documentation, project management and modern web development.
+`,"../content/en/visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen.md":`---
+translation_id: local-post-1779960317991
+language: en
+slug: visualization-and-automation-of-an-industrial-mixing-process-with-siemens
+title: Visualization and Automation of an Industrial Mixing Process with Siemens WinCC
+category: SPS-Programmierung
+image_url: /my-electronics-blog/images/posts/Mischbehälter-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Mischbehälter-1.webp
+- /my-electronics-blog/images/posts/Mischbehälter-2.webp
+- /my-electronics-blog/images/posts/Mischbehälter-3.webp
+excerpt: Development of an industrial HMI system for monitoring and controlling a mixing tank with Siemens SIMATIC WinCC Runtime Advanced, including sensors, valves, motors and temperature values in real time.
+tags:
+- PLC
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:25:17.991Z'
+external_link: https://drive.google.com/drive/folders/1Vrz5hK6aTVExshjDZIi92ecTgQaFo_kq
+project_status: done
+sort_order: 40
+---
+
+# Visualization and Automation of an Industrial Mixing Process with Siemens WinCC
+
+This project covers the development of a modern HMI visualization system for monitoring and controlling an industrial mixing tank with Siemens SIMATIC WinCC Runtime Advanced and a Siemens S7-1200 or S7-1500 PLC.
+
+The application visualizes sensors, valves, motors and temperature values in real time and supports automatic and manual operating modes. Its goal is user-friendly, safe and efficient control of industrial mixing processes.
+
+The HMI allows the operator to monitor and control process parameters in real time. The complete mixing process is clearly represented, making material flow, motor activity and valve positions easy to understand. Safety functions such as emergency stop, status messages and alarm displays contribute to secure operation.
+
+In automatic mode, the process runs step by step through defined sequences. Sensor values are processed and actuators are controlled automatically. In manual mode, individual components can be tested and controlled separately, which is especially useful during maintenance and commissioning.
+
+The project includes:
+
+- Real-time communication between PLC and HMI
+- Process visualization and system monitoring
+- Temperature monitoring and status displays
+- Control of valves and motors
+- Automatic and manual operation
+- Error and alarm management
+- User-friendly interface
+
+Combining Siemens PLC technology with WinCC Runtime Advanced creates a powerful HMI system for optimizing production workflows and improving operational safety.
+
+Click \`Open project\` to view the complete documentation and further details.
+`,"../content/en/wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi.md":`---
+translation_id: local-post-1779960469574
+language: en
+slug: wincc-fischertechnik-model-automatic-and-manual-operation-with-hmi
+title: WinCC Fischertechnik Model - Automatic and Manual Operation with HMI
+category: SPS-Programmierung
+image_url: /my-electronics-blog/images/posts/FischerTechnik-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/FischerTechnik-1.webp
+excerpt: PLC and HMI programming for a Fischertechnik press model with Siemens CPU1512C, ET200SP and TP700 Comfort Panel, including automatic operation, manual mode, users, recipes and alarms.
+tags:
+- WinCC
+- PLC
+- HMI
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:27:49.574Z'
+external_link: https://drive.google.com/drive/folders/1XwbZqMA_neR7FqreJCQsHW4ddtIEpOKi?usp=drive_link
+project_status: done
+sort_order: 60
+---
+
+# WinCC Fischertechnik Model - Automatic and Manual Operation with HMI
+
+This project develops a PLC and HMI control system for a Fischertechnik press model using a Siemens CPU1512C, ET200SP and TP700 Comfort Panel.
+
+The implementation includes:
+
+- Automatic operation
+- Manual and setup mode
+- User management
+- Alarm and message system
+- Recipe management
+- HMI visualization with WinCC
+
+Communication takes place over Profinet. The system is currently in the finalization and optimization phase.
+`,"../content/en/wissensbibliothek-technische-notizen-und-analysen.md":`---
+translation_id: wissensbibliothek-technische-notizen-und-analysen
+language: en
+slug: knowledge-library-technical-notes-and-analyses
+content_type: knowledge
+title: 'Knowledge Library: Technical Notes and Analyses'
+category: Grundlagen
+image_url: /my-electronics-blog/images/posts/DC-Netzteil-main.webp
+image_gallery: []
+excerpt: An introduction to my collection of learning materials, circuit analyses and technical research.
+tags:
+- Electronics
+- Learning
+- Analysis
+read_time: 3 Min.
+published: true
+created_at: '2026-05-31T12:00:00.000Z'
+external_link: ''
+project_status: done
+sort_order: 1
+---
+
+# Structuring Technical Knowledge
+
+This section supplements the project overview with more detailed learning notes, technical analyses and personal research. While project articles document concrete implementations, the knowledge library focuses on individual topics and connections.
+
+## Planned Content
+
+- Analyses of electronic circuits
+- Fundamentals of components and measurement methods
+- Learning materials about embedded systems and automation
+- Notes from my own experiments and research
+- Additional external sources
+
+## Article Structure
+
+Articles are structured so that important information remains easy to find. Categories, tags and search make it possible to reach the relevant topic quickly, even as the collection grows.
 `,"../content/finanzverwaltung-mit-datenanalyse.md":`---
 id: local-post-1779957810945
 title: Finanzverwaltung mit Datenanalyse
@@ -854,6 +1763,915 @@ Die Plattform wird kontinuierlich erweitert und dient gleichzeitig als praktisch
 ## Ergebnis
 
 Mit diesem Projekt entstand eine vollständig eigenentwickelte Portfolio- und Blog-Plattform, die technische Dokumentation, Projektmanagement und moderne Webentwicklung miteinander kombiniert.
+`,"../content/vi/3d-flaschenzug-in-autocad.md":`---
+translation_id: local-post-1779960596593
+language: vi
+slug: mo-hinh-3d-ro-roc-trong-autocad
+title: Mô hình 3D ròng rọc trong AutoCAD
+category: Maschinenbau
+image_url: /my-electronics-blog/images/posts/Flaschenzug-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Flaschenzug-1.webp
+- /my-electronics-blog/images/posts/Flaschenzug-2.webp
+- /my-electronics-blog/images/posts/Flaschenzug-3.webp
+excerpt: Một hệ thống ròng rọc cơ khí được thiết kế hoàn chỉnh dưới dạng mô hình 3D trong AutoCAD, tập trung vào độ chính xác của từng chi tiết và cách thể hiện cơ cấu thực tế.
+tags:
+- AutoCAD
+- 3D
+- Thiết kế
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:29:56.593Z'
+external_link: https://drive.google.com/drive/folders/1fN_hc6jaddMzTqEt0iIS4YxpiPdT8JFR?usp=drive_link
+project_status: done
+sort_order: 70
+---
+
+# Mô hình 3D ròng rọc trong AutoCAD
+
+Dự án này trình bày quá trình thiết kế một hệ thống ròng rọc dưới dạng mô hình 3D trong AutoCAD. Từng chi tiết cơ khí được dựng riêng rồi lắp ghép thành một cụm hoàn chỉnh.
+
+Mô hình bao gồm:
+
+- Móc treo
+- Bánh ròng rọc
+- Tấm bên
+- Chốt liên kết
+- Các chi tiết đòn bẩy và dẫn hướng
+
+Mục tiêu của dự án là nâng cao kỹ năng thiết kế CAD 3D, đồng thời hiểu rõ hơn chuyển động cơ khí và cách liên kết các chi tiết.
+
+Các trọng tâm:
+
+- Dựng hình 3D chính xác trong AutoCAD
+- Lắp ghép các chi tiết cơ khí
+- Thể hiện kỹ thuật của hệ thống ròng rọc
+- Quan sát cơ cấu từ nhiều góc nhìn
+- Thiết kế chi tiết sát với thực tế
+
+Mô hình hoàn thiện có thể dùng cho thuyết trình kỹ thuật, học tập hoặc làm nền tảng cho những phát triển cơ khí tiếp theo.
+`,"../content/vi/autocad-2d-kleine-dampfmaschine.md":`---
+translation_id: demo-2
+language: vi
+slug: autocad-2d-dong-co-hoi-nuoc-nho
+title: AutoCAD 2D - Động cơ hơi nước nhỏ
+category: Maschinenbau
+image_url: /my-electronics-blog/images/posts/Dampfmaschine-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Dampfmaschine-1.webp
+- /my-electronics-blog/images/posts/Dampfmaschine-2.webp
+- /my-electronics-blog/images/posts/Dampfmaschine-3.webp
+- /my-electronics-blog/images/posts/Dampfmaschine-5.webp
+excerpt: Phát triển mô hình CAD 2D và 3D trong lĩnh vực cơ khí bằng AutoCAD 2026, bao gồm một động cơ hơi nước nhỏ.
+tags:
+- AutoCAD 2D
+read_time: 6 phút
+published: true
+created_at: '2026-05-08T12:00:00Z'
+external_link: https://drive.google.com/drive/folders/1GDWUKT5mLYHnSlSns5oKxpMZrkY9WENy
+project_status: done
+sort_order: 20
+---
+
+# AutoCAD 2D - Động cơ hơi nước nhỏ
+
+Dự án trình bày bản thiết kế 2D hoàn chỉnh của một động cơ hơi nước nhỏ trong lĩnh vực cơ khí bằng AutoCAD 2026.
+
+Thiết kế bao gồm:
+
+- Tấm đế
+- Chân đỡ và tấm gương
+- Gối đỡ
+- Đầu thanh piston
+- Đĩa quay và trục khuỷu
+- Xi lanh và piston
+- Bánh đà
+- Trục lắc
+- Lan can và thanh giữa
+- Chi tiết tiêu chuẩn và bảng kê vật liệu
+
+Bản vẽ kỹ thuật có kích thước, mặt cắt, thông tin vật liệu, bản vẽ từng chi tiết và bản vẽ lắp.
+
+Vật liệu sử dụng:
+
+- Đồng thau
+- Hợp kim thép
+- Đồng
+- Kính
+
+Một dự án khác là thiết kế hệ thống ròng rọc cơ khí với bánh đôi và móc khóa an toàn. Mô hình CAD 3D này phục vụ việc nâng vật nặng với lực kéo nhỏ hơn.
+
+Nút \`Mở dự án\` dẫn đến toàn bộ tệp dự án, bao gồm các tệp AutoCAD \`.dwg\`.
+
+Thời gian khóa học: 19.01.2026 - 13.02.2026  
+Phần mềm: AutoCAD 2026  
+Người thực hiện: NGUYEN NHAN DO
+`,"../content/vi/elektronik-test-reparatur.md":`---
+translation_id: demo-1
+language: vi
+slug: dien-tu-kiem-thu-sua-chua
+title: Điện tử - Kiểm thử - Sửa chữa
+category: Über mich
+image_url: /my-electronics-blog/images/posts/Nguyen-main.webp
+image_gallery: []
+excerpt: Kỹ sư điện với sự quan tâm lớn đến thiết kế điện và phát triển phần mềm. Ham học hỏi, khéo léo và có động lực liên tục mở rộng kinh nghiệm thực tế.
+tags:
+- ESP32
+- MQTT
+- Smart Home
+- Cảm biến
+read_time: 8 phút
+published: true
+created_at: '2026-05-14T12:00:00Z'
+external_link: ''
+project_status: done
+sort_order: 10
+---
+
+# Điện tử - Kiểm thử - Sửa chữa
+
+Các lĩnh vực tôi tập trung gồm:
+
+- Phát triển phần mềm
+- Kỹ thuật tự động hóa
+- Lập trình PLC với Siemens S7 và TIA Portal
+- Tìm lỗi và sửa chữa bo mạch điện tử
+
+Tôi cũng tiếp tục mở rộng kiến thức về:
+
+- WinCC
+- C++ và Qt
+- EPLAN
+- AutoCAD 2D và 3D
+
+Tôi làm việc cẩn thận, có sự khéo léo trong thao tác và rất sẵn sàng học hỏi. Dù kinh nghiệm nghề nghiệp chưa quá dài, tôi có thể nhanh chóng làm quen với công nghệ mới và liên tục phát triển kỹ năng kỹ thuật.
+
+Tôi đặc biệt quan tâm đến kỹ thuật kiểm thử, phát triển nguyên mẫu, lập trình gần phần cứng, cũng như phân tích và chẩn đoán lỗi trong hệ thống điện tử.
+`,"../content/vi/finanzverwaltung-mit-datenanalyse.md":`---
+translation_id: local-post-1779957810945
+language: vi
+slug: quan-ly-tai-chinh-voi-phan-tich-du-lieu
+title: Quản lý tài chính với phân tích dữ liệu
+category: Softwareentwicklung
+image_url: /my-electronics-blog/images/posts/finanzmanager-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/finanzmanager-1.webp
+- /my-electronics-blog/images/posts/finanzmanager-2.webp
+- /my-electronics-blog/images/posts/finanzmanager-3.webp
+excerpt: Quản lý thu nhập và chi tiêu cá nhân với nhập xuất CSV, phân tích dữ liệu theo thời gian thực và giao diện đồ họa hiện đại. Mã nguồn đầy đủ có trong liên kết dự án.
+tags:
+- C++
+- Qt 6.9
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T08:43:30.945Z'
+external_link: https://github.com/nguyennhando/finanzmanager
+project_status: done
+sort_order: 30
+---
+
+# Quản lý tài chính với phân tích dữ liệu
+
+## GeldPilot - Quản lý tài chính cá nhân
+
+GeldPilot là ứng dụng desktop hiện đại để quản lý tài chính cá nhân, được phát triển bằng C++, Qt 6 và SQLite. Phần mềm hỗ trợ theo dõi thu nhập và chi tiêu, nhập xuất CSV và phân tích dữ liệu theo thời gian thực thông qua giao diện đồ họa hiện đại.
+
+Nút \`Mở dự án\` ở cuối trang dẫn đến toàn bộ mã nguồn.
+
+## Tổng quan
+
+GeldPilot là ứng dụng thân thiện để quản lý thu nhập và chi tiêu. Giao diện trực quan cho phép quản lý giao dịch, tổ chức category và tạo báo cáo tài chính chi tiết.
+
+## Tính năng chính
+
+- **Quản lý giao dịch:** Thêm, sửa và xóa thu nhập hoặc chi tiêu
+- **Phân loại:** Sử dụng category có sẵn và category tự tạo
+- **Bộ lọc thời gian:** Lọc linh hoạt theo ngày và category
+- **Tổng quan tài chính:** Tự động tính thu nhập, chi tiêu và số dư
+- **Trực quan hóa:** Hiển thị tài chính bằng biểu đồ cột tương tác
+- **Nhập và xuất:** Trao đổi dữ liệu bằng tệp CSV
+- **In báo cáo:** Tạo báo cáo chuyên nghiệp với logo công ty
+
+## Yêu cầu hệ thống
+
+### Yêu cầu tối thiểu
+
+- Hệ điều hành: Windows 10 hoặc 11, macOS 10.15+, hoặc Linux Ubuntu 20.04+
+- Bộ nhớ: 4 GB RAM
+- Dung lượng đĩa: 100 MB
+- Độ phân giải màn hình: 1024 x 768
+
+### Khuyến nghị
+
+- Bộ nhớ: 8 GB RAM trở lên
+- Độ phân giải màn hình: 1920 x 1080 trở lên
+
+## Cài đặt
+
+### Phiên bản Windows đã biên dịch
+
+1. Tải phiên bản mới nhất từ trang Releases.
+2. Giải nén vào thư mục mong muốn.
+3. Chạy \`GeldPilot.exe\`.
+
+### Biên dịch từ mã nguồn
+
+Yêu cầu:
+
+- Qt 6.9 trở lên
+- CMake 3.16 trở lên
+- Trình biên dịch tương thích C++17:
+  - Windows: MinGW-w64 hoặc MSVC 2019+
+  - macOS: Xcode 12+
+  - Linux: GCC 9+ hoặc Clang 10+
+
+Các bước biên dịch:
+
+\`\`\`bash
+git clone https://github.com/username/geldpilot.git
+cd geldpilot
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . --config Release
+\`\`\`
+
+Khởi chạy ứng dụng:
+
+\`\`\`bash
+# Windows
+./Release/GeldPilot.exe
+
+# Linux hoặc macOS
+./GeldPilot
+\`\`\`
+
+## Bắt đầu sử dụng
+
+### Thêm giao dịch đầu tiên
+
+1. Khởi động GeldPilot.
+2. Nhập ngày, số tiền và mô tả.
+3. Chọn category, ví dụ \`Lương\`.
+4. Chọn loại: \`Thu nhập\` hoặc \`Chi tiêu\`.
+5. Nhấn \`Giao dịch mới\`.
+
+### Lọc dữ liệu
+
+- Sử dụng menu chọn category.
+- Đặt ngày bắt đầu và ngày kết thúc.
+- Nhấn \`Lọc\` để cập nhật danh sách.
+
+### Tạo báo cáo
+
+- Nhấn \`Biểu đồ\` để xem trực quan.
+- Dùng \`In\` để tạo báo cáo chuyên nghiệp.
+- Xuất dữ liệu CSV để phân tích thêm.
+
+## Hướng dẫn sử dụng
+
+### Quản lý giao dịch
+
+Khi thêm giao dịch, điền đủ các trường bắt buộc:
+
+- Ngày: ngày giao dịch
+- Số tiền: luôn nhập giá trị dương
+- Mô tả: mô tả ngắn
+- Category: nhóm của giao dịch
+- Loại: \`Thu nhập\` hoặc \`Chi tiêu\`
+
+Để sửa giao dịch:
+
+1. Chọn một hàng trong bảng.
+2. Dữ liệu tự động xuất hiện trong ô nhập.
+3. Thực hiện thay đổi.
+4. Nhấn \`Lưu\`.
+
+Để xóa:
+
+- Một giao dịch: chọn hàng rồi nhấn \`Xóa\`.
+- Nhiều giao dịch: chọn nhiều hàng bằng \`Ctrl + Click\` rồi nhấn \`Xóa\`.
+
+### Category
+
+Các category có sẵn:
+
+- Giải trí
+- Lương
+- Sức khỏe
+- Thực phẩm
+- Tiền thuê nhà
+- Khác
+- Giao thông
+- Bảo hiểm
+- Đầu tư
+- Liên lạc
+- Nhà ở
+
+### Lọc và tìm kiếm
+
+Lọc theo category:
+
+- Chọn \`Tất cả category\` để xem toàn bộ.
+- Chọn một category cụ thể để lọc danh sách.
+
+Lọc theo khoảng thời gian:
+
+1. Đặt ngày bắt đầu và ngày kết thúc.
+2. Nhấn \`Lọc\`.
+
+### Nhập và xuất dữ liệu
+
+Nhập CSV:
+
+1. Chuẩn bị tệp CSV với các cột \`ID\`, \`Ngày\`, \`Số tiền\`, \`Mô tả\`, \`Category\` và \`Loại\`.
+2. Nhấn \`Nhập\`.
+3. Chọn tệp CSV.
+
+Xuất CSV:
+
+1. Nhấn \`Xuất\`.
+2. Chọn vị trí lưu và tên tệp.
+3. Danh sách hiện tại trong bảng được xuất ra.
+
+### Biểu đồ và báo cáo
+
+Nhấn \`Biểu đồ\` để xem biểu đồ cột. Biểu đồ hiển thị category, tổng thu nhập, tổng chi tiêu và số dư với mã màu tương tác.
+
+Để in báo cáo:
+
+1. Mở biểu đồ.
+2. Nhấn \`In\`.
+3. Chọn máy in và thiết lập.
+4. Ứng dụng tạo bản in chuyên nghiệp kèm logo.
+
+## Chi tiết kỹ thuật
+
+### Kiến trúc
+
+- Framework GUI: Qt 6.9
+- Cơ sở dữ liệu: tệp SQLite cục bộ
+- Biểu đồ: Qt Charts
+- Hệ thống build: CMake
+- Trình biên dịch trên Windows: MinGW-w64
+
+### Schema cơ sở dữ liệu
+
+Bảng giao dịch:
+
+\`\`\`sql
+CREATE TABLE transaktionen (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    datum DATE NOT NULL,
+    betrag REAL NOT NULL,
+    beschreibung TEXT,
+    kategorie TEXT NOT NULL,
+    typ TEXT NOT NULL CHECK (typ IN ('Einnahme', 'Ausgabe'))
+);
+\`\`\`
+
+Bảng category:
+
+\`\`\`sql
+CREATE TABLE kategorien (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL
+);
+\`\`\`
+
+### Cấu trúc dự án
+
+\`\`\`text
+geldpilot/
+  src/
+    main.cpp                 Điểm khởi đầu
+    mainwindow.cpp/h         Cửa sổ chính
+    chartwindow.cpp/h        Cửa sổ biểu đồ
+    datenbankmanager.cpp/h   Logic cơ sở dữ liệu
+    centerdelegate.h         Định dạng giao diện
+  ui/
+    mainwindow.ui            Giao diện cửa sổ chính
+    chartwindow.ui           Giao diện biểu đồ
+  resources/
+    icons/                   Biểu tượng ứng dụng
+  CMakeLists.txt             Cấu hình build
+  README.md                  Tài liệu
+\`\`\`
+
+## Phát triển
+
+Quy ước code:
+
+- Chuẩn C++17
+- Quy ước Qt
+- Tên biến tiếng Đức có mô tả rõ ràng
+- Chú thích đầy đủ
+
+Để đóng góp:
+
+1. Fork repository.
+2. Tạo feature branch.
+3. Thực hiện thay đổi.
+4. Kiểm thử kỹ.
+5. Tạo pull request.
+
+Các nội dung đã biết:
+
+- Đã triển khai chọn nhiều giao dịch để xóa.
+- Đã lập chỉ mục cơ sở dữ liệu để cải thiện hiệu năng.
+- Chức năng sao lưu đang được lên kế hoạch.
+
+## Hỗ trợ
+
+Khi cần trợ giúp:
+
+- Tài liệu: đọc toàn bộ README.
+- Issues: báo lỗi trên GitHub.
+- E-mail: \`support@geldpilot.de\`
+
+Câu hỏi thường gặp:
+
+- **Không mở được cơ sở dữ liệu:** Kiểm tra quyền ghi trong thư mục cài đặt.
+- **Không hiển thị biểu đồ:** Kiểm tra Qt Charts đã được cài đặt hay chưa.
+- **Nhập dữ liệu thất bại:** Kiểm tra định dạng CSV. Các cột phải được phân tách bằng dấu chấm phẩy.
+
+## Giấy phép
+
+Bản quyền 2025 Nguyen Nhan Do. Bảo lưu mọi quyền.  
+Phiên bản: 1.0.0  
+Nhà phát triển: Nguyen Nhan Do  
+Build: Qt 6.9, MinGW-w64, CMake
+
+Sử dụng GeldPilot để kiểm soát tài chính và chủ động xây dựng tương lai tài chính của bạn.
+`,"../content/vi/konzept-eines-pwm-geregelten-dc-netzteils-mit-mess-und-schutzfunktionen.md":`---
+translation_id: local-post-1779960818567
+language: vi
+slug: y-tuong-bo-nguon-dc-dieu-khien-pwm-co-do-luong-va-bao-ve
+title: Ý tưởng bộ nguồn DC điều khiển PWM với chức năng đo lường và bảo vệ
+category: Elektrotechnik
+image_url: /my-electronics-blog/images/posts/DC-Netzteil-main.webp
+image_gallery: []
+excerpt: Dự án học tập và ý tưởng phát triển bộ nguồn DC dùng vi điều khiển với điều khiển PWM, giới hạn dòng điện và các chức năng bảo vệ cơ bản.
+tags:
+- PWM
+- Bộ nguồn
+- STM32
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:33:38.567Z'
+external_link: ''
+project_status: idea
+sort_order: 100
+---
+
+# Ý tưởng bộ nguồn DC điều khiển PWM với chức năng đo lường và bảo vệ
+
+Đây là dự án học tập và ý tưởng phát triển bộ nguồn DC dùng vi điều khiển với điều khiển PWM, giới hạn dòng điện và các chức năng bảo vệ cơ bản.
+
+Mục tiêu không chỉ là chế tạo một bộ nguồn DC đơn giản, mà còn hiểu thực tế về điều khiển PWM, điện tử công suất và mạch bảo vệ điện tử.
+
+Giải pháp dự kiến điều chỉnh điện áp và dòng điện đầu ra thông qua tín hiệu PWM và điều khiển MOSFET. Các chức năng đo lường và bảo vệ cơ bản sẽ được tích hợp để phân tích hoạt động của hệ thống dưới nhiều điều kiện tải.
+
+Chức năng dự kiến:
+
+- Điều chỉnh điện áp đầu ra
+- Giới hạn dòng điện
+- Điều khiển dựa trên PWM
+- Đo điện áp và dòng điện
+- Giám sát nhiệt độ
+- Bảo vệ ngắn mạch và quá dòng
+- Hiển thị các giá trị đo quan trọng
+
+Tôi đặc biệt quan tâm đến ảnh hưởng của tần số PWM, thay đổi tải và đặc tính đóng cắt đối với độ ổn định, hiệu suất và nhiệt lượng.
+
+Dự án vẫn đang trong giai đoạn ý tưởng và học tập. Các khối chức năng như điều khiển PWM, đo dòng và mạch bảo vệ sẽ được thử riêng trước khi lắp ráp nguyên mẫu hoàn chỉnh.
+
+Qua dự án này, tôi muốn đào sâu kiến thức về hệ thống nhúng, điện tử công suất và kỹ thuật đo lường thực tế.
+`,"../content/vi/konzeptprojekt-energieuberwachung-mit-esp8266-und-stromsensor.md":`---
+translation_id: local-post-1779960876705
+language: vi
+slug: y-tuong-giam-sat-nang-luong-voi-esp8266-va-cam-bien-dong
+title: 'Dự án ý tưởng: Giám sát năng lượng với ESP8266 và cảm biến dòng điện'
+category: Embedded Systems
+image_url: /my-electronics-blog/images/posts/Energieüberwachung-main.webp
+image_gallery: []
+excerpt: Dự án học tập dự kiến nhằm thu thập và trực quan hóa đơn giản dữ liệu tiêu thụ điện bằng ESP8266 và cảm biến dòng điện qua Wi-Fi.
+tags:
+- ESP8266
+- Giám sát năng lượng
+- Cảm biến
+- Embedded Systems
+- IoT
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:34:36.705Z'
+external_link: ''
+project_status: in_progress
+sort_order: 100
+---
+
+# Dự án ý tưởng: Giám sát năng lượng với ESP8266 và cảm biến dòng điện
+
+Đây là dự án học tập dự kiến nhằm thu thập và trực quan hóa đơn giản dữ liệu tiêu thụ điện bằng ESP8266 và cảm biến dòng điện qua Wi-Fi.
+
+Dự án hiện đang trong giai đoạn ý tưởng và học tập. Hệ thống dự kiến sử dụng ESP8266 kết hợp cảm biến dòng ACS712.
+
+Phần cứng dự kiến:
+
+- Vi điều khiển ESP8266
+- Cảm biến dòng ACS712
+- Màn hình OLED
+- Giao tiếp Wi-Fi
+
+Chức năng dự kiến:
+
+- Hiển thị các giá trị đo cơ bản
+- Truyền dữ liệu qua Wi-Fi
+- Trực quan hóa bằng dashboard
+- Tìm hiểu nền tảng phân tích tiêu thụ năng lượng
+
+Dự án giúp tôi đào sâu kiến thức về hệ thống nhúng, cảm biến và giao tiếp IoT.
+
+Trạng thái hiện tại: dự án ý tưởng, đang lên kế hoạch.
+`,"../content/vi/konzeptprojekt-esp32-basierte-mqtt-sensoruberwachung-fur-smart-home-anwendungen.md":`---
+translation_id: local-post-1779960913660
+language: vi
+slug: y-tuong-giam-sat-cam-bien-mqtt-voi-esp32-cho-smart-home
+title: 'Dự án ý tưởng: Giám sát cảm biến MQTT bằng ESP32 cho ứng dụng Smart Home'
+category: IoT
+image_url: /my-electronics-blog/images/posts/SmartHome-main.webp
+image_gallery: []
+excerpt: Dự án học tập dự kiến phát triển nền tảng IoT đơn giản dựa trên ESP32 để thu thập và trực quan hóa dữ liệu cảm biến qua Wi-Fi và MQTT.
+tags:
+- ESP32
+- MQTT
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:35:13.660Z'
+external_link: ''
+project_status: in_progress
+sort_order: 100
+---
+
+# Dự án ý tưởng: Giám sát cảm biến MQTT bằng ESP32 cho ứng dụng Smart Home
+
+Dự án học tập này tập trung vào nền tảng IoT đơn giản dựa trên vi điều khiển ESP32. Mục tiêu là thu thập và trực quan hóa nhiều dữ liệu cảm biến qua Wi-Fi và MQTT.
+
+Dự án hiện đang trong giai đoạn ý tưởng và học tập.
+
+Phần cứng dự kiến:
+
+- Bo mạch phát triển ESP32
+- Cảm biến nhiệt độ và độ ẩm DHT22
+- Mô-đun relay cho chức năng đóng cắt đơn giản
+- MQTT broker như Mosquitto
+- Dashboard hiển thị dữ liệu
+
+Chức năng dự kiến:
+
+- Giao tiếp Wi-Fi
+- MQTT publish và subscribe
+- Giám sát cảm biến
+- Trực quan hóa bằng dashboard
+- Mở rộng thêm cảm biến và cơ cấu chấp hành
+
+Dự án giúp tôi đào sâu kiến thức về hệ thống nhúng, giao tiếp MQTT và ứng dụng IoT.
+
+Trạng thái hiện tại: dự án ý tưởng, đang lên kế hoạch.
+`,"../content/vi/konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485.md":`---
+translation_id: local-post-1779960691288
+language: vi
+slug: y-tuong-iot-gateway-esp32-420ma-voi-mqtt-va-rs485
+title: 'Dự án ý tưởng: IoT Gateway ESP32 cho tín hiệu 4-20 mA với MQTT và RS485'
+category: IoT
+image_url: /my-electronics-blog/images/posts/ESP32-main.webp
+image_gallery: []
+excerpt: Dự án học tập và phát triển nhằm thu nhận tín hiệu cảm biến 4-20 mA bằng ESP32, ADS1115 và MQTT để tạo một nguyên mẫu IoT công nghiệp đơn giản.
+tags:
+- ESP32
+- MQTT
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:31:31.288Z'
+external_link: ''
+project_status: idea
+sort_order: 90
+---
+
+# Dự án ý tưởng: IoT Gateway ESP32 cho tín hiệu 4-20 mA với MQTT và RS485
+
+Dự án học tập và phát triển này tập trung vào việc thu nhận tín hiệu cảm biến 4-20 mA bằng ESP32, ADS1115 và giao tiếp MQTT. Mục tiêu là xây dựng nguyên mẫu IoT công nghiệp đơn giản để giám sát cảm biến và trực quan hóa dữ liệu qua Home Assistant.
+
+Dự án hiện đang trong giai đoạn ý tưởng và lập kế hoạch.
+
+Chức năng dự kiến:
+
+- Thu nhận tín hiệu cảm biến 4-20 mA qua ADS1115
+- Giao tiếp MQTT cho ứng dụng IoT
+- Hỗ trợ RS485 và Modbus RTU
+- Hiển thị dữ liệu cảm biến qua Home Assistant
+- Cấp nguồn cho môi trường công nghiệp 12-24 VDC
+
+Giai đoạn đầu sử dụng nguyên mẫu nhanh với ESP32 DevKit, mô-đun ADS1115 và kết nối MQTT. Sau khi kiểm thử chức năng thành công, tôi dự kiến phát triển phiên bản PCB riêng bằng KiCad.
+
+Công nghệ dự kiến:
+
+- ESP32-S3
+- ADS1115
+- MQTT
+- RS485 và Modbus RTU
+- Home Assistant
+- KiCad
+
+Trạng thái hiện tại: giai đoạn ý tưởng, dự án học tập.
+`,"../content/vi/konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt.md":`---
+translation_id: local-post-1779960950659
+language: vi
+slug: y-tuong-giam-sat-bo-nguon-xung-dc-voi-esp32-va-mqtt
+title: 'Dự án ý tưởng: Giám sát bộ nguồn xung DC với ESP32 và MQTT'
+category: Elektrotechnik
+image_url: /my-electronics-blog/images/posts/Schaltnetzteil-main.webp
+image_gallery: []
+excerpt: Dự án học tập dự kiến nhằm giám sát điện áp, dòng điện và nhiệt độ của bộ nguồn xung DC bằng ESP32 và giao tiếp MQTT.
+tags:
+- MQTT
+- Bộ nguồn xung
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:35:50.659Z'
+external_link: ''
+project_status: idea
+sort_order: 100
+---
+
+# Dự án ý tưởng: Giám sát bộ nguồn xung DC với ESP32 và MQTT
+
+Dự án học tập dự kiến nhằm giám sát điện áp, dòng điện và nhiệt độ của bộ nguồn xung DC bằng ESP32 và giao tiếp MQTT.
+
+Dự án hiện đang trong giai đoạn ý tưởng và học tập. Mục tiêu là phát triển hệ thống giám sát đơn giản dựa trên vi điều khiển ESP32, sau đó trực quan hóa các giá trị đo qua Wi-Fi và MQTT.
+
+Phần cứng dự kiến:
+
+- Bo mạch phát triển ESP32
+- Cảm biến dòng ACS712 hoặc INA219
+- Cảm biến nhiệt độ
+- Màn hình OLED
+- Giao tiếp Wi-Fi và MQTT
+
+Chức năng dự kiến:
+
+- Giám sát điện áp và dòng điện
+- Giám sát nhiệt độ
+- Truyền dữ liệu MQTT
+- Trực quan hóa bằng dashboard
+- Hiển thị trạng thái và lỗi cơ bản
+
+Dự án giúp tôi đào sâu kiến thức về hệ thống nhúng, cảm biến và giám sát năng lượng công nghiệp.
+
+Trạng thái hiện tại: dự án ý tưởng, đang lên kế hoạch.
+`,"../content/vi/plc-programmierung-einer-industriellen-tauchanlage.md":`---
+translation_id: demo-3
+language: vi
+slug: lap-trinh-plc-cho-he-thong-nhung-cong-nghiep
+title: Lập trình PLC cho hệ thống nhúng công nghiệp
+category: SPS-Programmierung
+image_url: /my-electronics-blog/images/posts/Tauchanlage-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Tauchanlage-1.webp
+- /my-electronics-blog/images/posts/Tauchanlage-2.webp
+excerpt: Hệ thống nhúng tự động điều khiển bằng Siemens S7-300, gồm quá trình vận chuyển và nhúng tự động cùng chế độ vận hành thủ công và tự động trong TIA Portal.
+tags:
+- PLC
+- S7300
+- TIA Portal
+read_time: 5 phút
+published: true
+created_at: '2026-04-29T12:00:00Z'
+external_link: https://drive.google.com/drive/folders/1WgBLk6R1F-_J_oisAxwNgQyFdcKVzb-m
+project_status: done
+sort_order: 50
+---
+
+# Lập trình PLC cho hệ thống nhúng công nghiệp
+
+Dự án bao gồm phát triển và lập trình hệ thống nhúng tự động dùng cho quy trình vận chuyển và nhúng trong công nghiệp với Siemens S7-300.
+
+Hệ thống tự động di chuyển, nâng và hạ giỏ chứa sản phẩm giữa hai bể nhúng trong khi tuân thủ các điều kiện an toàn và chuyển động đã xác định.
+
+Bộ điều khiển được triển khai bằng CPU Siemens S7-300 trong TIA Portal. Dự án có chế độ thủ công để điều khiển từng trục và chế độ tự động hoàn toàn với chuỗi quy trình tuần tự.
+
+Trong chế độ tự động, giỏ tự di chuyển đến từng trạm nhúng, thực hiện thời gian nhúng và chờ nhỏ giọt theo cấu hình rồi quay về vị trí ban đầu. Hệ thống cũng tích hợp cảm biến hành trình, kiểm tra an toàn, hiển thị trạng thái, điều khiển động cơ và bộ đếm sản phẩm với lịch sử dấu thời gian.
+
+Cấu trúc phần mềm gồm nhiều khối chức năng cho chế độ vận hành, điều khiển đầu ra, điều khiển chuỗi, lịch sử sản phẩm và chẩn đoán. Biến ký hiệu, khối dữ liệu và kiểu dữ liệu có cấu trúc giúp chương trình rõ ràng hơn.
+
+Dự án thể hiện việc triển khai thực tế tự động hóa công nghiệp với PLC, cảm biến, cơ cấu chấp hành và điều khiển tuần tự trong Siemens TIA Portal.
+
+**Nhấn \`Mở dự án\` để xem tài liệu và tệp dự án đầy đủ.**
+`,"../content/vi/technisches-portfolio-elektronik-blog.md":`---
+translation_id: technisches-portfolio-elektronik-blog
+language: vi
+slug: portfolio-ky-thuat-va-blog-dien-tu
+title: Portfolio kỹ thuật & Blog điện tử
+category: Softwareentwicklung
+image_url: /my-electronics-blog/images/posts/Portfolio-Blog-main.webp
+image_gallery: []
+excerpt: Phát triển nền tảng portfolio và blog cá nhân hiện đại để ghi lại dự án kỹ thuật, thử nghiệm điện tử, hệ thống nhúng, tự động hóa và quá trình phát triển nghề nghiệp.
+tags:
+- React
+- JavaScript
+- Portfolio
+- Blog
+- Embedded Systems
+- Điện tử
+- Phát triển web
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:30:47.159Z'
+external_link: https://github.com/nguyennhando/my-electronics-blog
+project_status: done
+sort_order: 80
+---
+
+# Portfolio kỹ thuật & Blog điện tử
+
+## Tổng quan dự án
+
+Tôi tự phát triển toàn bộ website này để lưu trữ tập trung các dự án kỹ thuật, công việc điện tử, tiến trình học tập và kinh nghiệm nghề nghiệp.
+
+Nền tảng vừa là portfolio cá nhân vừa là cơ sở kiến thức kỹ thuật cho:
+
+- Điện tử
+- Hệ thống nhúng
+- IoT
+- Kỹ thuật tự động hóa
+- Phát triển phần mềm
+- Kỹ thuật đo lường
+- Tài liệu kỹ thuật
+
+## Công nghệ sử dụng
+
+### Frontend
+
+- React
+- JavaScript
+- Framer Motion
+- React Markdown
+- Tailwind CSS
+
+### Thành phần giao diện
+
+- Biểu tượng Lucide React
+- Bố cục responsive
+- Hiệu ứng chuyển động
+- Thư viện ảnh lightbox
+- Trình soạn thảo Markdown
+
+## Chức năng chính
+
+### Hệ thống blog
+
+- Báo cáo dự án kỹ thuật
+- Bài viết dựa trên Markdown
+- Category và tag
+- Tìm kiếm
+- Phân trang
+
+### Khu vực portfolio
+
+- Tổng quan dự án
+- Hiển thị trạng thái
+- Thư viện ảnh
+- Liên kết dự án bên ngoài
+
+### Trình soạn thảo Markdown riêng
+
+Website có trình soạn thảo tích hợp để tạo bài viết mới với xem trước trực tiếp, tạo slug tự động, xuất Markdown, lưu trực tiếp và quản lý dự án.
+
+## Giao diện người dùng
+
+Thiết kế tập trung vào phong cách kỹ thuật hiện đại với giao diện tối, hiển thị responsive, hiệu ứng mượt và tối ưu cho điện thoại.
+
+## Mục tiêu và kết quả
+
+Website giúp trình bày kỹ năng kỹ thuật chuyên nghiệp và ghi lại dự án cũng như tiến trình học tập lâu dài. Kết quả là một nền tảng portfolio và blog tự phát triển, kết hợp tài liệu kỹ thuật, quản lý dự án và phát triển web hiện đại.
+`,"../content/vi/visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen.md":`---
+translation_id: local-post-1779960317991
+language: vi
+slug: truc-quan-hoa-va-tu-dong-hoa-quy-trinh-tron-cong-nghiep-voi-siemens
+title: Trực quan hóa và tự động hóa quy trình trộn công nghiệp với Siemens WinCC
+category: SPS-Programmierung
+image_url: /my-electronics-blog/images/posts/Mischbehälter-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Mischbehälter-1.webp
+- /my-electronics-blog/images/posts/Mischbehälter-2.webp
+- /my-electronics-blog/images/posts/Mischbehälter-3.webp
+excerpt: Phát triển hệ thống HMI công nghiệp để giám sát và điều khiển bồn trộn bằng Siemens SIMATIC WinCC Runtime Advanced, bao gồm cảm biến, van, động cơ và nhiệt độ theo thời gian thực.
+tags:
+- PLC
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:25:17.991Z'
+external_link: https://drive.google.com/drive/folders/1Vrz5hK6aTVExshjDZIi92ecTgQaFo_kq
+project_status: done
+sort_order: 40
+---
+
+# Trực quan hóa và tự động hóa quy trình trộn công nghiệp với Siemens WinCC
+
+Dự án bao gồm phát triển hệ thống trực quan hóa HMI hiện đại để giám sát và điều khiển bồn trộn công nghiệp bằng Siemens SIMATIC WinCC Runtime Advanced và PLC Siemens S7-1200 hoặc S7-1500.
+
+Ứng dụng hiển thị cảm biến, van, động cơ và nhiệt độ theo thời gian thực, đồng thời hỗ trợ chế độ vận hành tự động và thủ công. Mục tiêu là điều khiển quy trình trộn công nghiệp một cách thân thiện, an toàn và hiệu quả.
+
+Giao diện HMI cho phép người vận hành theo dõi và điều khiển các tham số quy trình theo thời gian thực. Toàn bộ quá trình trộn được thể hiện rõ ràng để dễ quan sát dòng vật liệu, hoạt động của động cơ và vị trí van. Các chức năng an toàn như dừng khẩn cấp, thông báo trạng thái và cảnh báo giúp vận hành hệ thống an toàn hơn.
+
+Trong chế độ tự động, quy trình chạy từng bước theo chuỗi đã định nghĩa. Giá trị cảm biến được xử lý và cơ cấu chấp hành được điều khiển tự động. Trong chế độ thủ công, từng thành phần có thể được kiểm tra và điều khiển riêng, đặc biệt hữu ích khi bảo trì và chạy thử.
+
+Dự án bao gồm:
+
+- Giao tiếp thời gian thực giữa PLC và HMI
+- Trực quan hóa quy trình và giám sát hệ thống
+- Giám sát nhiệt độ và hiển thị trạng thái
+- Điều khiển van và động cơ
+- Chế độ tự động và thủ công
+- Quản lý lỗi và cảnh báo
+- Giao diện thân thiện với người dùng
+
+Sự kết hợp giữa công nghệ PLC Siemens và WinCC Runtime Advanced tạo ra hệ thống HMI mạnh mẽ để tối ưu quy trình sản xuất và tăng độ an toàn vận hành.
+
+Nhấn \`Mở dự án\` để xem tài liệu đầy đủ và thông tin chi tiết.
+`,"../content/vi/wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi.md":`---
+translation_id: local-post-1779960469574
+language: vi
+slug: wincc-mo-hinh-fischertechnik-van-hanh-tu-dong-va-thu-cong-voi-hmi
+title: WinCC mô hình Fischertechnik - Vận hành tự động và thủ công với HMI
+category: SPS-Programmierung
+image_url: /my-electronics-blog/images/posts/FischerTechnik-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/FischerTechnik-1.webp
+excerpt: Lập trình PLC và HMI cho mô hình máy ép Fischertechnik với Siemens CPU1512C, ET200SP và TP700 Comfort Panel, bao gồm vận hành tự động, thủ công, người dùng, công thức và cảnh báo.
+tags:
+- WinCC
+- PLC
+- HMI
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:27:49.574Z'
+external_link: https://drive.google.com/drive/folders/1XwbZqMA_neR7FqreJCQsHW4ddtIEpOKi?usp=drive_link
+project_status: done
+sort_order: 60
+---
+
+# WinCC mô hình Fischertechnik - Vận hành tự động và thủ công với HMI
+
+Dự án phát triển hệ thống điều khiển PLC và HMI cho mô hình máy ép Fischertechnik bằng Siemens CPU1512C, ET200SP và TP700 Comfort Panel.
+
+Các chức năng được triển khai:
+
+- Chế độ vận hành tự động
+- Chế độ thủ công và thiết lập
+- Quản lý người dùng
+- Hệ thống cảnh báo và thông báo
+- Quản lý công thức
+- Trực quan hóa HMI bằng WinCC
+
+Giao tiếp được thực hiện qua Profinet. Hệ thống hiện đang trong giai đoạn hoàn thiện và tối ưu.
+`,"../content/vi/wissensbibliothek-technische-notizen-und-analysen.md":`---
+translation_id: wissensbibliothek-technische-notizen-und-analysen
+language: vi
+slug: thu-vien-kien-thuc-ghi-chu-va-phan-tich-ky-thuat
+content_type: knowledge
+title: 'Thư viện kiến thức: Ghi chú và phân tích kỹ thuật'
+category: Grundlagen
+image_url: /my-electronics-blog/images/posts/DC-Netzteil-main.webp
+image_gallery: []
+excerpt: Phần giới thiệu bộ sưu tập tài liệu học tập, phân tích mạch và nghiên cứu kỹ thuật của tôi.
+tags:
+- Điện tử
+- Học tập
+- Phân tích
+read_time: 3 phút
+published: true
+created_at: '2026-05-31T12:00:00.000Z'
+external_link: ''
+project_status: done
+sort_order: 1
+---
+
+# Lưu trữ kiến thức kỹ thuật có hệ thống
+
+Khu vực này bổ sung cho danh sách dự án bằng các ghi chú học tập chi tiết hơn, phân tích kỹ thuật và nghiên cứu cá nhân. Trong khi bài viết dự án ghi lại những triển khai cụ thể, thư viện kiến thức tập trung vào từng chủ đề và mối liên hệ.
+
+## Nội dung dự kiến
+
+- Phân tích mạch điện tử
+- Kiến thức nền tảng về linh kiện và phương pháp đo
+- Tài liệu học tập về hệ thống nhúng và tự động hóa
+- Ghi chú từ thử nghiệm và nghiên cứu cá nhân
+- Nguồn tham khảo bên ngoài
+
+## Cấu trúc bài viết
+
+Bài viết được tổ chức để thông tin quan trọng luôn dễ tìm. Category, tag và chức năng tìm kiếm giúp nhanh chóng đi đến chủ đề phù hợp ngay cả khi thư viện ngày càng lớn.
 `,"../content/visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen.md":`---
 id: local-post-1779960317991
 title: Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens
