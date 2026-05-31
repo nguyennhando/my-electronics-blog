@@ -1,4 +1,4 @@
 ---
 type: site_settings
-background_image: ''
+background_image: /my-electronics-blog/images/background.webp
 ---
