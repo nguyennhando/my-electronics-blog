@@ -29,6 +29,14 @@ const UI_TEXT = {
     knowledgeNotice: "Hinweis zur Wissensbibliothek", knowledgeSearch: "Analyse, Bauteil oder Thema suchen...", allTopics: "Alle Themen",
     selectedPost: "Ausgewählter Beitrag", archive: "Archiv", morePosts: "Weitere Beiträge", posts: "Beiträge",
     backKnowledge: "Zurück zur Wissensbibliothek", externalSource: "Externe Quelle öffnen", backBlog: "Zurück zum Blog",
+    heroTitle: "Technik. Dokumentation. Entwicklung.", heroText: "Diese Website habe ich selbst entwickelt, um technische Projekte, Lernfortschritte und praktische Erfahrungen im Bereich Elektronik, Embedded Systems, Messtechnik und technischer Softwareentwicklung zu dokumentieren.",
+    transparency: "Transparenz", transparencyTitle: "Projektinformationen & Transparenz", transparencyText: "Die auf dieser Website gezeigten Fotos von Laborumgebungen, technischen Arbeitsplätzen und elektronischen Geräten dienen ausschließlich der Veranschaulichung meiner technischen Interessen und praktischen Erfahrungen.", transparencyStrong: "Sie zeigen weder meinen tatsächlichen Arbeitsplatz noch interne Bereiche oder reale Arbeitsumgebungen eines Unternehmens.",
+    personalWay: "Persönlicher Weg", importantNotice: "Wichtiger Hinweis", importantTitle: "Wichtiger Hinweis zu meinen Projekten",
+    warningOne: "Projekte mit der Kennzeichnung „Konzept“ befinden sich noch in der Ideen- bzw. Konzeptphase und wurden bisher noch nicht praktisch umgesetzt.", warningTwo: "Alle anderen Projekte können über „Beitrag lesen“ geöffnet werden. Am Ende der jeweiligen Projektseite befindet sich die Schaltfläche „Zum Projekt“ mit projektbezogenen Dateien.",
+    collaborationTitle: "Zusammenarbeit an modernen Elektronikprojekten.", collaborationText: "Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder individuelle Entwicklungen.", privacy: "Datenschutz", back: "Zurück", country: "Deutschland",
+    knowledgeNoticeParagraphs: ["Viele Grundlagen und technische Informationen in diesem Bereich sind bereits in Fachbüchern, Dokumentationen oder anderen Quellen verfügbar.", "Der Schwerpunkt dieser Wissensbibliothek liegt daher nicht nur auf der Sammlung von Lernmaterialien. Ich möchte vor allem Themen genauer analysieren, die aus meiner Sicht an anderen Stellen nicht immer verständlich oder ausreichend nachvollziehbar erklärt werden.", "Die Beiträge spiegeln meinen persönlichen Lernprozess und mein aktuelles technisches Verständnis wider. Sie sollen Zusammenhänge Schritt für Schritt greifbarer machen und zugleich als Grundlage für weitere Untersuchungen dienen."],
+    noKnowledge: "Noch keine passenden Beiträge", noKnowledgeText: "Neue Lernnotizen und Analysen werden hier nach und nach ergänzt.", footer: "© 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.",
+    conceptProject: "Konzeptprojekt – noch nicht umgesetzt", noProjectLink: "Kein Projektlink hinterlegt",
   },
   en: {
     tagline: "Technology · Development · Learning", gallery: "Gallery", contact: "Contact", knowledge: "Knowledge & Research",
@@ -41,6 +49,14 @@ const UI_TEXT = {
     knowledgeNotice: "About this knowledge library", knowledgeSearch: "Search for an analysis, component or topic...", allTopics: "All topics",
     selectedPost: "Featured article", archive: "Archive", morePosts: "More articles", posts: "articles",
     backKnowledge: "Back to the knowledge library", externalSource: "Open external source", backBlog: "Back to the blog",
+    heroTitle: "Technology. Documentation. Development.", heroText: "I built this website to document technical projects, learning progress and practical experience in electronics, embedded systems, measurement technology and technical software development.",
+    transparency: "Transparency", transparencyTitle: "Project Information & Transparency", transparencyText: "The photos of laboratory environments, technical workspaces and electronic devices shown on this website are solely intended to illustrate my technical interests and practical experience.", transparencyStrong: "They do not show my actual workplace, internal areas or real working environments of any company.",
+    personalWay: "Personal Journey", importantNotice: "Important Notice", importantTitle: "Important notice about my projects",
+    warningOne: "Projects marked as “Concept” are still in the idea or concept phase and have not yet been implemented in practice.", warningTwo: "All other projects can be opened via “Read article”. At the end of each project page, the “Open project” button provides project-related files.",
+    collaborationTitle: "Collaboration on modern electronics projects.", collaborationText: "Are you looking for support with embedded systems, sensors, robotics or industrial automation? Contact me for technical collaboration or individual developments.", privacy: "Privacy", back: "Back", country: "Germany",
+    knowledgeNoticeParagraphs: ["Many fundamentals and technical details in this section are already available in textbooks, documentation or other sources.", "The focus of this knowledge library is therefore not merely collecting learning material. I especially want to analyse topics that, from my perspective, are not always explained clearly or comprehensibly elsewhere.", "The articles reflect my personal learning process and my current technical understanding. They aim to make connections easier to grasp step by step and provide a basis for further investigation."],
+    noKnowledge: "No matching articles yet", noKnowledgeText: "New learning notes and analyses will gradually be added here.", footer: "© 2026 ElektronikLab — Modern electronics and automation projects.",
+    conceptProject: "Concept project – not yet implemented", noProjectLink: "No project link provided",
   },
   vi: {
     tagline: "Kỹ thuật · Phát triển · Học hỏi", gallery: "Thư viện ảnh", contact: "Liên hệ", knowledge: "Kiến thức & Nghiên cứu",
@@ -53,6 +69,14 @@ const UI_TEXT = {
     knowledgeNotice: "Lưu ý về thư viện kiến thức", knowledgeSearch: "Tìm phân tích, linh kiện hoặc chủ đề...", allTopics: "Tất cả chủ đề",
     selectedPost: "Bài viết nổi bật", archive: "Lưu trữ", morePosts: "Các bài viết khác", posts: "bài viết",
     backKnowledge: "Quay lại thư viện kiến thức", externalSource: "Mở nguồn bên ngoài", backBlog: "Quay lại blog",
+    heroTitle: "Kỹ thuật. Tài liệu. Phát triển.", heroText: "Tôi tự xây dựng website này để ghi lại các dự án kỹ thuật, quá trình học tập và kinh nghiệm thực tế trong lĩnh vực điện tử, hệ thống nhúng, đo lường và phát triển phần mềm kỹ thuật.",
+    transparency: "Minh bạch", transparencyTitle: "Thông tin dự án & Minh bạch", transparencyText: "Các hình ảnh về phòng thí nghiệm, không gian làm việc kỹ thuật và thiết bị điện tử trên website này chỉ nhằm minh họa cho sở thích kỹ thuật và kinh nghiệm thực hành của tôi.", transparencyStrong: "Chúng không thể hiện nơi làm việc thực tế, khu vực nội bộ hay môi trường làm việc thật của bất kỳ doanh nghiệp nào.",
+    personalWay: "Hành trình cá nhân", importantNotice: "Lưu ý quan trọng", importantTitle: "Lưu ý quan trọng về các dự án của tôi",
+    warningOne: "Các dự án có nhãn “Ý tưởng” vẫn đang ở giai đoạn ý tưởng hoặc khái niệm và chưa được triển khai thực tế.", warningTwo: "Các dự án khác có thể được mở bằng nút “Đọc bài viết”. Cuối mỗi trang dự án có nút “Mở dự án” với các tệp liên quan.",
+    collaborationTitle: "Hợp tác trong các dự án điện tử hiện đại.", collaborationText: "Bạn cần hỗ trợ về hệ thống nhúng, cảm biến, robot hoặc tự động hóa công nghiệp? Hãy liên hệ với tôi để hợp tác kỹ thuật hoặc phát triển giải pháp riêng.", privacy: "Quyền riêng tư", back: "Quay lại", country: "Đức",
+    knowledgeNoticeParagraphs: ["Nhiều kiến thức nền tảng và thông tin kỹ thuật trong khu vực này đã có trong sách chuyên ngành, tài liệu hoặc các nguồn khác.", "Vì vậy, trọng tâm của thư viện kiến thức không chỉ là tập hợp tài liệu học tập. Tôi muốn phân tích kỹ hơn những chủ đề mà theo góc nhìn của mình chưa được giải thích thật sự rõ ràng hoặc dễ hiểu ở những nơi khác.", "Các bài viết phản ánh quá trình học tập và hiểu biết kỹ thuật hiện tại của tôi. Mục tiêu là làm rõ các mối liên hệ từng bước và tạo nền tảng cho những nghiên cứu tiếp theo."],
+    noKnowledge: "Chưa có bài viết phù hợp", noKnowledgeText: "Các ghi chú học tập và phân tích mới sẽ được bổ sung dần tại đây.", footer: "© 2026 ElektronikLab — Các dự án điện tử và tự động hóa hiện đại.",
+    conceptProject: "Dự án ý tưởng – chưa được triển khai", noProjectLink: "Chưa có liên kết dự án",
   },
 };
 const getUiText = (language) => UI_TEXT[language] || UI_TEXT.de;
@@ -84,7 +108,11 @@ const normalizeImageList = (value) => {
 
 const normalizeStatus = (s) => ["idea", "in_progress", "done"].includes(s) ? s : "done";
 
-const getStatusLabel = (s) => ({ idea: "Idee", in_progress: "In Arbeit", done: "Umgesetzt" }[normalizeStatus(s)]);
+const getStatusLabel = (s, language = "de") => ({
+  de: { idea: "Idee", in_progress: "In Arbeit", done: "Umgesetzt" },
+  en: { idea: "Concept", in_progress: "In progress", done: "Completed" },
+  vi: { idea: "Ý tưởng", in_progress: "Đang thực hiện", done: "Hoàn thành" },
+}[language]?.[normalizeStatus(s)] || normalizeStatus(s));
 
 const getStatusClasses = (s) => ({
   idea: "border-zinc-500/30 bg-zinc-500/15 text-zinc-300",
@@ -94,9 +122,9 @@ const getStatusClasses = (s) => ({
 
 const isIdea = (post) => normalizeStatus(post?.project_status) === "idea";
 
-const formatDate = (date) => {
-  if (!date) return "Kein Datum";
-  return new Intl.DateTimeFormat("de-DE", { day: "2-digit", month: "long", year: "numeric" }).format(new Date(date));
+const formatDate = (date, language = "de") => {
+  if (!date) return { de: "Kein Datum", en: "No date", vi: "Không có ngày" }[language];
+  return new Intl.DateTimeFormat({ de: "de-DE", en: "en-US", vi: "vi-VN" }[language] || "de-DE", { day: "2-digit", month: "long", year: "numeric" }).format(new Date(date));
 };
 
 const getCategoryIcon = (cat) => {
@@ -218,12 +246,26 @@ const postToEditorForm = (post) => ({
 // ─────────────────────────────────────────────
 // DEMO DATA
 // ─────────────────────────────────────────────
-const FEATURES = [
-  { icon: Cpu, title: "Elektronik & Embedded Systems", text: "Eigene Lernprojekte rund um Mikrocontroller, Sensorik und hardwarenahe Entwicklung zur praktischen Erweiterung meines technischen Wissens." },
-  { icon: Workflow, title: "Automatisierung & Steuerung", text: "Praktische Übungen und kleinere Projekte, um industrielle Abläufe, Steuerungstechnik und technische Prozesse besser zu verstehen." },
-  { icon: ShieldCheck, title: "Technisches Lernen", text: "Dokumentation meines Lernwegs, technischer Erfahrungen und neuer Themen, mit denen ich mich kontinuierlich beschäftige." },
-  { icon: MonitorSmartphone, title: "Eigene Entwicklung", text: "Diese Website dient als persönliche Plattform, um Projekte, Ideen und technische Fortschritte übersichtlich festzuhalten." },
-];
+const FEATURES = {
+  de: [
+    { icon: Cpu, title: "Elektronik & Embedded Systems", text: "Eigene Lernprojekte rund um Mikrocontroller, Sensorik und hardwarenahe Entwicklung zur praktischen Erweiterung meines technischen Wissens." },
+    { icon: Workflow, title: "Automatisierung & Steuerung", text: "Praktische Übungen und kleinere Projekte, um industrielle Abläufe, Steuerungstechnik und technische Prozesse besser zu verstehen." },
+    { icon: ShieldCheck, title: "Technisches Lernen", text: "Dokumentation meines Lernwegs, technischer Erfahrungen und neuer Themen, mit denen ich mich kontinuierlich beschäftige." },
+    { icon: MonitorSmartphone, title: "Eigene Entwicklung", text: "Diese Website dient als persönliche Plattform, um Projekte, Ideen und technische Fortschritte übersichtlich festzuhalten." },
+  ],
+  en: [
+    { icon: Cpu, title: "Electronics & Embedded Systems", text: "Personal learning projects involving microcontrollers, sensors and hardware-oriented development to expand my technical knowledge through practice." },
+    { icon: Workflow, title: "Automation & Control", text: "Practical exercises and smaller projects to better understand industrial workflows, control technology and technical processes." },
+    { icon: ShieldCheck, title: "Technical Learning", text: "Documentation of my learning journey, technical experience and new topics that I continuously explore." },
+    { icon: MonitorSmartphone, title: "Personal Development", text: "This website is my personal platform for documenting projects, ideas and technical progress in a clear format." },
+  ],
+  vi: [
+    { icon: Cpu, title: "Điện tử & Hệ thống nhúng", text: "Các dự án học tập cá nhân về vi điều khiển, cảm biến và phát triển gần phần cứng nhằm mở rộng kiến thức kỹ thuật qua thực hành." },
+    { icon: Workflow, title: "Tự động hóa & Điều khiển", text: "Các bài thực hành và dự án nhỏ để hiểu rõ hơn quy trình công nghiệp, kỹ thuật điều khiển và các quá trình kỹ thuật." },
+    { icon: ShieldCheck, title: "Học tập kỹ thuật", text: "Ghi lại hành trình học tập, kinh nghiệm kỹ thuật và những chủ đề mới mà tôi liên tục tìm hiểu." },
+    { icon: MonitorSmartphone, title: "Phát triển cá nhân", text: "Website này là nền tảng cá nhân để lưu lại dự án, ý tưởng và tiến bộ kỹ thuật một cách rõ ràng." },
+  ],
+};
 
 // ─────────────────────────────────────────────
 // REUSABLE COMPONENTS
@@ -391,10 +433,8 @@ function HeroSlideshow({ slides, onDiscover, onOpenPost, language }) {
           <CircuitBoard className="h-4 w-4 text-cyan-400" />
           <span className="text-sm font-medium text-cyan-300">Elektrokonstruktion · Prüftechnik · Software</span>
         </div>
-        <h2 className="max-w-4xl text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">Technik. Dokumentation. Entwicklung.</h2>
-        <p className="mt-5 max-w-2xl text-[15px] leading-7 text-zinc-300 sm:mt-8 sm:text-lg sm:leading-9">
-          Diese Website habe ich selbst entwickelt, um technische Projekte, Lernfortschritte und praktische Erfahrungen im Bereich Elektronik, Embedded Systems, Messtechnik und technischer Softwareentwicklung zu dokumentieren.
-        </p>
+        <h2 className="max-w-4xl text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">{t.heroTitle}</h2>
+        <p className="mt-5 max-w-2xl text-[15px] leading-7 text-zinc-300 sm:mt-8 sm:text-lg sm:leading-9">{t.heroText}</p>
         <div className="mt-7 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
           <button type="button" onClick={onDiscover} className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-cyan-400 px-5 py-3.5 text-sm font-bold text-black shadow-xl shadow-cyan-500/30 transition hover:bg-cyan-300 sm:w-auto sm:px-7 sm:py-4 sm:text-base">
             {t.discover} <ArrowRight className="h-5 w-5" />
@@ -496,14 +536,14 @@ function PostDetailPage({ post, onBack, language }) {
               <div className="absolute inset-0 bg-gradient-to-t from-[#07111f]/80 via-transparent to-transparent" />
               <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
                 <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black text-black">{post.category}</span>
-                <span className={`rounded-full border px-3 py-1.5 text-xs font-bold ${getStatusClasses(post.project_status)}`}>{getStatusLabel(post.project_status)}</span>
+                <span className={`rounded-full border px-3 py-1.5 text-xs font-bold ${getStatusClasses(post.project_status)}`}>{getStatusLabel(post.project_status, language)}</span>
               </div>
             </div>
 
             <div className="p-5 sm:p-8 lg:p-10">
               {/* Meta */}
               <div className="mb-5 flex flex-wrap gap-3 text-xs text-zinc-400">
-                <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" />{formatDate(post.created_at)}</span>
+                <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" />{formatDate(post.created_at, language)}</span>
                 <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{post.read_time || "5 Min."}</span>
               </div>
 
@@ -537,10 +577,10 @@ function PostDetailPage({ post, onBack, language }) {
               {/* Gallery */}
               {normalizeImageList(post.image_gallery).length > 0 && (
                 <div className="mt-8">
-                  <p className="mb-4 text-sm font-bold uppercase tracking-widest text-cyan-300">Projektbilder</p>
+                  <p className="mb-4 text-sm font-bold uppercase tracking-widest text-cyan-300">{t.projectImages}</p>
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                     {normalizeImageList(post.image_gallery).map((url, i) => (
-                      <img key={url} src={url} alt={`Bild ${i + 1}`} onClick={() => setLightboxIndex(i + 1)}
+                      <img key={url} src={url} alt={`${t.image} ${i + 1}`} onClick={() => setLightboxIndex(i + 1)}
                         className="h-36 w-full cursor-zoom-in rounded-2xl object-cover transition hover:brightness-110" />
                     ))}
                   </div>
@@ -559,11 +599,11 @@ function PostDetailPage({ post, onBack, language }) {
                 {post.external_link && !isIdea(post) ? (
                   <a href={post.external_link} target="_blank" rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-6 py-4 font-black text-black transition hover:bg-cyan-300">
-                    Zum Projekt <ExternalLink className="h-5 w-5" />
+                    {t.openProject} <ExternalLink className="h-5 w-5" />
                   </a>
                 ) : (
                   <span className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-6 py-4 font-bold text-zinc-400">
-                    {isIdea(post) ? "Konzeptprojekt – noch nicht umgesetzt" : "Kein Projektlink hinterlegt"}
+                    {isIdea(post) ? t.conceptProject : t.noProjectLink}
                   </span>
                 )}
                 <button type="button" onClick={onBack}
@@ -629,9 +669,7 @@ function KnowledgePage({ posts, onOpenPost, language }) {
             <div>
               <h2 className="font-black text-slate-100">{t.knowledgeNotice}</h2>
               <div className="mt-3 space-y-3 text-sm leading-7 text-zinc-300">
-                <p>Viele Grundlagen und technische Informationen in diesem Bereich sind bereits in Fachbüchern, Dokumentationen oder anderen Quellen verfügbar.</p>
-                <p>Der Schwerpunkt dieser Wissensbibliothek liegt daher nicht nur auf der Sammlung von Lernmaterialien. Ich möchte vor allem Themen genauer analysieren, die aus meiner Sicht an anderen Stellen nicht immer verständlich oder ausreichend nachvollziehbar erklärt werden.</p>
-                <p>Die Beiträge spiegeln meinen persönlichen Lernprozess und mein aktuelles technisches Verständnis wider. Sie sollen Zusammenhänge Schritt für Schritt greifbarer machen und zugleich als Grundlage für weitere Untersuchungen dienen.</p>
+                {t.knowledgeNoticeParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
               </div>
             </div>
           </div>
@@ -651,8 +689,8 @@ function KnowledgePage({ posts, onOpenPost, language }) {
         {!featuredPost ? (
           <section className="mt-8 rounded-2xl border border-dashed border-slate-300/30 bg-slate-300/5 px-5 py-16 text-center">
             <BookOpen className="mx-auto h-10 w-10 text-slate-300" />
-            <h2 className="mt-4 text-xl font-black">Noch keine passenden Beiträge</h2>
-            <p className="mt-2 text-sm text-zinc-400">Neue Lernnotizen und Analysen werden hier nach und nach ergänzt.</p>
+            <h2 className="mt-4 text-xl font-black">{t.noKnowledge}</h2>
+            <p className="mt-2 text-sm text-zinc-400">{t.noKnowledgeText}</p>
           </section>
         ) : (
           <>
@@ -686,7 +724,7 @@ function KnowledgePage({ posts, onOpenPost, language }) {
                       {post.image_url ? <img src={post.image_url} alt="" className="h-full w-full object-cover transition group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><GraduationCap className="h-8 w-8 text-slate-300/60" /></div>}
                     </div>
                     <div>
-                      <div className="flex flex-wrap gap-2 text-xs text-zinc-500"><span className="font-bold text-slate-300">{post.category}</span><span>{formatDate(post.created_at)}</span><span>{post.read_time || "5 Min."}</span></div>
+                      <div className="flex flex-wrap gap-2 text-xs text-zinc-500"><span className="font-bold text-slate-300">{post.category}</span><span>{formatDate(post.created_at, language)}</span><span>{post.read_time || "5 Min."}</span></div>
                       <h3 className="mt-2 text-lg font-black leading-tight group-hover:text-slate-200">{post.title}</h3>
                       <p className="mt-2 line-clamp-2 text-sm leading-6 text-zinc-400">{post.excerpt}</p>
                     </div>
@@ -716,7 +754,7 @@ function KnowledgeDetailPage({ post, onBack, language }) {
           <div className="p-5 sm:p-8 lg:p-10">
             <div className="flex flex-wrap gap-3 text-xs text-zinc-400">
               <span className="rounded-full bg-slate-200 px-3 py-1 font-black text-slate-950">{post.category}</span>
-              <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at)}</span>
+              <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at, language)}</span>
               <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {post.read_time || "5 Min."}</span>
             </div>
             <h1 className="mt-5 text-3xl font-black leading-tight sm:text-5xl">{post.title}</h1>
@@ -1239,12 +1277,12 @@ const paginatedPosts = filteredPosts.slice(
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-3">
-                    <span className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3 py-1 text-xs font-black uppercase tracking-widest text-yellow-300">Transparenz</span>
-                    <h2 className="text-2xl font-black text-white sm:text-3xl">Projektinformationen & Transparenz</h2>
+                    <span className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3 py-1 text-xs font-black uppercase tracking-widest text-yellow-300">{t.transparency}</span>
+                    <h2 className="text-2xl font-black text-white sm:text-3xl">{t.transparencyTitle}</h2>
                   </div>
                   <p className="mt-5 text-sm leading-7 text-zinc-300 sm:text-base">
-                    Die auf dieser Website gezeigten Fotos von Laborumgebungen, technischen Arbeitsplätzen und elektronischen Geräten dienen ausschließlich der Veranschaulichung meiner technischen Interessen und praktischen Erfahrungen.
-                    <span className="mt-4 block font-semibold text-yellow-200">Sie zeigen weder meinen tatsächlichen Arbeitsplatz noch interne Bereiche oder reale Arbeitsumgebungen eines Unternehmens.</span>
+                    {t.transparencyText}
+                    <span className="mt-4 block font-semibold text-yellow-200">{t.transparencyStrong}</span>
                   </p>
                 </div>
               </div>
@@ -1261,7 +1299,7 @@ const paginatedPosts = filteredPosts.slice(
                 <img src={PERSONAL_WAY.image_2} alt="Elektronik" className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]" />
               </div>
               <div className="flex flex-col justify-center">
-                <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">Persönlicher Weg</p>
+                <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">{t.personalWay}</p>
                 <h2 className="mt-3 text-2xl font-black leading-tight sm:text-4xl">{PERSONAL_WAY.title}</h2>
                 <div className="prose prose-invert mt-5 max-w-none text-sm leading-7 text-zinc-300 prose-p:my-4 prose-p:text-zinc-300 sm:text-base sm:leading-8">
                   <ReactMarkdown>{PERSONAL_WAY.content}</ReactMarkdown>
@@ -1274,7 +1312,7 @@ const paginatedPosts = filteredPosts.slice(
         {/* Features */}
         <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5 sm:py-10">
           <div className="grid gap-3 min-[520px]:grid-cols-2 lg:grid-cols-4 lg:gap-5">
-            {FEATURES.map(f => {
+            {FEATURES[language].map(f => {
               const Icon = f.icon;
               return (
                 <motion.div whileHover={{ y: -5 }} key={f.title} className="group flex flex-col">
@@ -1300,12 +1338,12 @@ const paginatedPosts = filteredPosts.slice(
                 </div>
                 <div className="flex flex-col justify-center p-4 sm:p-5">
                   <div className="inline-flex w-fit items-center gap-2 rounded-full border border-yellow-400/20 bg-yellow-400/10 px-3 py-1.5 text-sm font-bold text-yellow-300">
-                    <AlertTriangle className="h-4 w-4" /> Wichtiger Hinweis
+                    <AlertTriangle className="h-4 w-4" /> {t.importantNotice}
                   </div>
-                  <h2 className="mt-3 text-2xl font-black text-white sm:text-3xl">Wichtiger Hinweis zu meinen Projekten</h2>
+                  <h2 className="mt-3 text-2xl font-black text-white sm:text-3xl">{t.importantTitle}</h2>
                   <div className="mt-3 space-y-2 text-sm leading-6 text-zinc-300 sm:text-base sm:leading-6">
-                    <p><span className="font-bold text-yellow-300">🚨 Hinweis:</span> Projekte mit der Kennzeichnung <span className="font-semibold text-cyan-300">„Konzept"</span> befinden sich noch in der Ideen- bzw. Konzeptphase und wurden bisher noch nicht praktisch umgesetzt.</p>
-                    <p>Alle anderen Projekte können über <span className="font-semibold text-cyan-300">„Beitrag lesen"</span> geöffnet werden. Am Ende der jeweiligen Projektseite befindet sich die Schaltfläche <span className="font-semibold text-cyan-300">„Zum Projekt"</span> mit projektbezogenen Dateien.</p>
+                    <p><span className="font-bold text-yellow-300">{t.importantNotice}:</span> {t.warningOne}</p>
+                    <p>{t.warningTwo}</p>
                   </div>
                 </div>
               </div>
@@ -1354,8 +1392,8 @@ const paginatedPosts = filteredPosts.slice(
                     <div className="flex flex-1 flex-col p-4 sm:p-6">
                       <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
                         <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black"><Icon className="h-3.5 w-3.5" /> {post.category}</span>
-                        <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getStatusClasses(post.project_status)}`}>{getStatusLabel(post.project_status)}</span>
-                        <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at)}</span>
+                        <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getStatusClasses(post.project_status)}`}>{getStatusLabel(post.project_status, language)}</span>
+                        <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at, language)}</span>
                       </div>
                       <h3 className="text-lg font-black leading-tight sm:text-2xl">{post.title}</h3>
                       <p className="mt-3 line-clamp-3 text-sm leading-6 text-zinc-400 sm:text-base sm:leading-7">{post.excerpt}</p>
@@ -1478,17 +1516,17 @@ const paginatedPosts = filteredPosts.slice(
           <div className="rounded-[1.5rem] bg-cyan-400 p-4 text-black shadow-2xl shadow-cyan-500/30 sm:rounded-[2.5rem] sm:p-8 lg:p-12">
             <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
               <div>
-                <p className="text-sm font-black uppercase tracking-widest">Kontakt</p>
-                <h2 className="mt-3 text-[1.85rem] font-black leading-tight sm:text-5xl lg:text-6xl">Zusammenarbeit an modernen Elektronikprojekten.</h2>
-                <p className="mt-4 max-w-2xl text-[15px] leading-7 text-black/80 sm:text-lg">Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder individuelle Entwicklungen.</p>
+                <p className="text-sm font-black uppercase tracking-widest">{t.contact}</p>
+                <h2 className="mt-3 text-[1.85rem] font-black leading-tight sm:text-5xl lg:text-6xl">{t.collaborationTitle}</h2>
+                <p className="mt-4 max-w-2xl text-[15px] leading-7 text-black/80 sm:text-lg">{t.collaborationText}</p>
               </div>
               <div className="rounded-[1.25rem] sm:rounded-[2rem] p-[1.5px] bg-gradient-to-br from-cyan-400/60 via-cyan-500/40 to-cyan-400/60">
                 <div className="rounded-[1.2rem] sm:rounded-[1.95rem] bg-[#050816] p-3 sm:p-8 text-white">
                   <div className="grid gap-5">
                     {[
                       {icon: Code2, label: "GitHub", value: "github.com/nguyennhando"},
-                      { icon: Globe, label: "Standort", value: "Deutschland" },
-                      { icon: CircuitBoard, label: "Schwerpunkt", value: "IoT · Automatisierung" },
+                      { icon: Globe, label: t.location, value: t.country },
+                      { icon: CircuitBoard, label: t.focus, value: "IoT · Automatisierung" },
                       { icon: Wrench, label: "Tools", value: "SPS · AutoCAD · EPLAN · C++ · Qt" },
                     ].map(({ icon: Icon, label, value }) => (
                       <div key={label} className="flex items-center gap-3 rounded-2xl border border-white/10 p-3 sm:gap-4 sm:p-4">
@@ -1510,9 +1548,9 @@ const paginatedPosts = filteredPosts.slice(
       <footer className="border-t border-cyan-500/10 bg-black py-10 text-center text-zinc-400">
         <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
           <button type="button" onClick={onGoImpressum} className="transition hover:text-cyan-400">Impressum</button>
-          <button type="button" onClick={onGoDatenschutz} className="transition hover:text-cyan-400">Datenschutz</button>
+          <button type="button" onClick={onGoDatenschutz} className="transition hover:text-cyan-400">{t.privacy}</button>
         </div>
-        <p className="mt-4 text-xs text-zinc-500">© 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.</p>
+        <p className="mt-4 text-xs text-zinc-500">{t.footer}</p>
       </footer>
 
       {/* Lightboxes */}
@@ -1530,6 +1568,7 @@ const paginatedPosts = filteredPosts.slice(
 // LEGAL PAGES
 // ─────────────────────────────────────────────
 function LegalPageLayout({ title, children, onBack, onNavigate, language, onLanguageChange }) {
+  const t = getUiText(language);
   return (
     <div className="min-h-screen overflow-x-hidden text-white">
       <Background />
@@ -1547,7 +1586,7 @@ function LegalPageLayout({ title, children, onBack, onNavigate, language, onLang
           onClick={onBack}
           className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-bold text-zinc-300 transition hover:bg-white/10 hover:text-cyan-300"
         >
-          <ArrowLeft className="h-4 w-4" /> Zurück
+          <ArrowLeft className="h-4 w-4" /> {t.back}
         </button>
 
         <GradientBorder
@@ -1566,6 +1605,32 @@ function LegalPageLayout({ title, children, onBack, onNavigate, language, onLang
 }
 
 function ImpressumPage({ onBack, onNavigate, language, onLanguageChange }) {
+  if (language !== "de") {
+    const copy = language === "vi" ? {
+      title: "Thông tin pháp lý",
+      sections: [
+        ["Thông tin theo § 5 DDG", "Nguyen Nhan Do\nHugo-Sinzheimerstr. 15\n60437 Frankfurt am Main\nĐức"],
+        ["Liên hệ", "E-Mail: donguyennhan.de@gmail.com"],
+        ["Chịu trách nhiệm về nội dung theo § 18 khoản 2 MStV", "Nguyen Nhan Do\nHugo-Sinzheimerstr. 15\n60437 Frankfurt am Main\nĐức"],
+        ["Lưu ý về nội dung", "Website này là portfolio cá nhân và blog kỹ thuật. Nội dung được sử dụng để ghi lại các dự án riêng, thử nghiệm kỹ thuật, nghiên cứu, quá trình học tập và trao đổi chuyên môn. Website không cung cấp hoặc bán hàng hóa hay dịch vụ."],
+        ["Trách nhiệm đối với nội dung", "Nội dung website được xây dựng cẩn thận nhất có thể. Tuy nhiên, tôi không thể đảm bảo tính chính xác, đầy đủ và cập nhật của toàn bộ nội dung."],
+        ["Trách nhiệm đối với liên kết", "Website có chứa liên kết đến các website bên ngoài của bên thứ ba. Tôi không kiểm soát nội dung của các trang đó. Đơn vị vận hành từng website chịu trách nhiệm về nội dung được liên kết."],
+        ["Bản quyền", "Nội dung và tác phẩm được công bố trên website tuân theo luật bản quyền Đức. Mọi hình thức sử dụng ngoài phạm vi luật bản quyền cần có sự đồng ý trước bằng văn bản của tác giả hoặc chủ sở hữu quyền."],
+      ],
+    } : {
+      title: "Legal Notice",
+      sections: [
+        ["Information pursuant to § 5 DDG", "Nguyen Nhan Do\nHugo-Sinzheimerstr. 15\n60437 Frankfurt am Main\nGermany"],
+        ["Contact", "E-Mail: donguyennhan.de@gmail.com"],
+        ["Responsible for content pursuant to § 18 para. 2 MStV", "Nguyen Nhan Do\nHugo-Sinzheimerstr. 15\n60437 Frankfurt am Main\nGermany"],
+        ["Content notice", "This website is a personal portfolio and technical blog. Its content documents private projects, technical experiments, research, continuing education and professional exchange. No goods or services are offered or sold through this website."],
+        ["Liability for content", "The content of this website has been prepared with the greatest possible care. However, no guarantee can be given for its accuracy, completeness or timeliness."],
+        ["Liability for links", "This website contains links to external third-party websites. I have no control over their content. The respective operators are solely responsible for the content of linked pages."],
+        ["Copyright", "The content and works published on this website are subject to German copyright law. Any use beyond the limits of copyright law requires prior written consent from the respective author or rights holder."],
+      ],
+    };
+    return <LegalPageLayout title={copy.title} onBack={onBack} onNavigate={onNavigate} language={language} onLanguageChange={onLanguageChange}>{copy.sections.map(([title, text]) => <section key={title}><p className="font-bold text-white">{title}</p><p className="whitespace-pre-line">{text}</p></section>)}</LegalPageLayout>;
+  }
   return (
     <LegalPageLayout
       title="Impressum"
@@ -1661,6 +1726,32 @@ function ImpressumPage({ onBack, onNavigate, language, onLanguageChange }) {
 }
 
 function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
+  if (language !== "de") {
+    const sections = language === "vi" ? [
+      ["1. Đơn vị chịu trách nhiệm", "Nguyen Nhan Do\nHugo-Sinzheimerstr. 15\n60437 Frankfurt am Main\nĐức\nE-Mail: donguyennhan.de@gmail.com"],
+      ["2. Thông tin chung", "Website này là portfolio cá nhân và blog kỹ thuật. Website không bán hàng hóa hoặc dịch vụ, không có tài khoản người dùng, newsletter hay biểu mẫu liên hệ."],
+      ["3. Hosting qua GitHub Pages", "Website được host bằng GitHub Pages, một dịch vụ của GitHub, Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA. Khi truy cập, GitHub có thể xử lý dữ liệu kỹ thuật như địa chỉ IP, thời gian truy cập, thông tin trình duyệt, hệ điều hành và các trang đã mở. Việc xử lý nhằm cung cấp website ổn định và an toàn theo Điều 6 khoản 1 điểm f GDPR."],
+      ["4. Cookie và lưu trữ cục bộ", "Website không sử dụng cookie theo dõi, quảng cáo hoặc phân tích. localStorage chỉ được dùng để lưu cục bộ các thiết lập kỹ thuật hoặc chức năng, ví dụ lựa chọn thông báo quyền riêng tư và ngôn ngữ. Dữ liệu không được dùng cho quảng cáo hoặc chuyển cho bên thứ ba."],
+      ["5. Không sử dụng công cụ phân tích", "Website không sử dụng Google Analytics, Meta Pixel, Hotjar hoặc các dịch vụ theo dõi tương tự."],
+      ["6. Liên hệ qua e-mail", "Nếu bạn liên hệ qua e-mail, dữ liệu gửi kèm chỉ được xử lý để trả lời yêu cầu. Dữ liệu không được chuyển cho bên thứ ba trừ khi pháp luật yêu cầu."],
+      ["7. Liên kết bên ngoài", "Website chứa liên kết đến GitHub, Google Drive và các tài nguyên kỹ thuật khác. Khi mở liên kết ngoài, bạn rời website này. Nhà cung cấp tương ứng chịu trách nhiệm về việc xử lý dữ liệu trên website của họ."],
+      ["8. Quyền của bạn", "Theo GDPR, bạn có quyền được cung cấp thông tin, chỉnh sửa, xóa, hạn chế xử lý, chuyển dữ liệu và phản đối việc xử lý. Bạn có thể liên hệ qua e-mail: donguyennhan.de@gmail.com."],
+      ["9. Quyền khiếu nại", "Bạn có quyền khiếu nại với cơ quan giám sát bảo vệ dữ liệu nếu cho rằng dữ liệu cá nhân của mình bị xử lý trái với GDPR. Cơ quan phụ trách: Der Hessische Beauftragte für Datenschutz und Informationsfreiheit, Postfach 3163, 65021 Wiesbaden, Đức."],
+      ["10. Cập nhật tuyên bố này", "Tuyên bố quyền riêng tư có thể được điều chỉnh khi website, các dịch vụ được sử dụng hoặc yêu cầu pháp lý thay đổi."],
+    ] : [
+      ["1. Controller", "Nguyen Nhan Do\nHugo-Sinzheimerstr. 15\n60437 Frankfurt am Main\nGermany\nE-Mail: donguyennhan.de@gmail.com"],
+      ["2. General information", "This website is a personal portfolio and technical blog. No goods or services are offered or sold. There are no user accounts, newsletter or contact form."],
+      ["3. Hosting via GitHub Pages", "This website is hosted through GitHub Pages, a service provided by GitHub, Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA. When visiting the website, GitHub may process technical data such as IP address, access time, browser information, operating system information and requested pages. Processing is necessary to provide the website securely and reliably under Art. 6 para. 1 lit. f GDPR."],
+      ["4. Cookies and local storage", "This website does not use tracking, advertising or analytics cookies. localStorage is only used locally for technical or functional settings, such as remembering the privacy notice and selected language. This data is not used for advertising or transferred to third parties."],
+      ["5. No analytics tools", "This website does not use Google Analytics, Meta Pixel, Hotjar or comparable tracking services."],
+      ["6. Contact by e-mail", "If you contact me by e-mail, the transmitted data will only be processed to respond to your request. It will not be passed to third parties unless required by law."],
+      ["7. External links", "This website contains links to GitHub, Google Drive and other technical resources. When opening an external link, you leave this website. The respective provider is responsible for data processing on the linked website."],
+      ["8. Your rights", "Under the GDPR, you have the right to access, rectification, erasure, restriction of processing, data portability and objection. You can contact me by e-mail: donguyennhan.de@gmail.com."],
+      ["9. Right to lodge a complaint", "You have the right to lodge a complaint with a data protection supervisory authority if you believe that your personal data has been processed in breach of the GDPR. Competent authority: Der Hessische Beauftragte für Datenschutz und Informationsfreiheit, Postfach 3163, 65021 Wiesbaden, Germany."],
+      ["10. Updates to this statement", "This privacy statement may be updated if the website, the services used or legal requirements change."],
+    ];
+    return <LegalPageLayout title={language === "vi" ? "Quyền riêng tư" : "Privacy Policy"} onBack={onBack} onNavigate={onNavigate} language={language} onLanguageChange={onLanguageChange}>{sections.map(([title, text]) => <section key={title}><p className="font-bold text-white">{title}</p><p className="whitespace-pre-line">{text}</p></section>)}</LegalPageLayout>;
+  }
   return (
     <LegalPageLayout
       title="Datenschutz"
@@ -1956,7 +2047,7 @@ if (page === "datenschutz") {
 
   return (
     <>
-     <CookieBanner />
+     <CookieBanner language={language} />
       <SiteHeader onNavigate={navigate} currentPage={page} language={language} onLanguageChange={setLanguage} />
 
       {page === "post" && currentPost ? (
