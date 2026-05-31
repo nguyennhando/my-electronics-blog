@@ -2,7 +2,7 @@ import CookieBanner from "./components/CookieBanner";
 import { createElement, useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { CONTENT_POSTS, GALLERY_IMAGES, KNOWLEDGE_POSTS, PERSONAL_WAY, POSTS, SITE_SETTINGS } from "./lib/posts";
+import { CONTENT_POSTS, GALLERY_IMAGES, PERSONAL_WAY, SITE_SETTINGS, getLocalizedContentPosts, getTranslationLanguages } from "./lib/posts";
 
 import {
   CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X,
@@ -37,7 +37,7 @@ const UI_TEXT = {
     knowledgeNoticeParagraphs: ["Viele Grundlagen und technische Informationen in diesem Bereich sind bereits in Fachbüchern, Dokumentationen oder anderen Quellen verfügbar.", "Der Schwerpunkt dieser Wissensbibliothek liegt daher nicht nur auf der Sammlung von Lernmaterialien. Ich möchte vor allem Themen genauer analysieren, die aus meiner Sicht an anderen Stellen nicht immer verständlich oder ausreichend nachvollziehbar erklärt werden.", "Die Beiträge spiegeln meinen persönlichen Lernprozess und mein aktuelles technisches Verständnis wider. Sie sollen Zusammenhänge Schritt für Schritt greifbarer machen und zugleich als Grundlage für weitere Untersuchungen dienen."],
     noKnowledge: "Noch keine passenden Beiträge", noKnowledgeText: "Neue Lernnotizen und Analysen werden hier nach und nach ergänzt.", footer: "© 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.",
     conceptProject: "Konzeptprojekt – noch nicht umgesetzt", noProjectLink: "Kein Projektlink hinterlegt",
-    heroBadge: "Elektrokonstruktion · Prüftechnik · Software", docs: "Dokumente", sourceCode: "Quellcode", focusValue: "IoT · Automatisierung",
+    heroBadge: "Elektrokonstruktion · Prüftechnik · Software", docs: "Dokumente", sourceCode: "Quellcode", focusValue: "IoT · Automatisierung", translationFallbackShort: "Deutsch", translationFallback: "Dieser Beitrag ist noch nicht in der gewählten Sprache verfügbar. Die deutsche Version wird angezeigt.",
   },
   en: {
     tagline: "Technology · Development · Learning", gallery: "Gallery", contact: "Contact", knowledge: "Knowledge & Research",
@@ -58,7 +58,7 @@ const UI_TEXT = {
     knowledgeNoticeParagraphs: ["Many fundamentals and technical details in this section are already available in textbooks, documentation or other sources.", "The focus of this knowledge library is therefore not merely collecting learning material. I especially want to analyse topics that, from my perspective, are not always explained clearly or comprehensibly elsewhere.", "The articles reflect my personal learning process and my current technical understanding. They aim to make connections easier to grasp step by step and provide a basis for further investigation."],
     noKnowledge: "No matching articles yet", noKnowledgeText: "New learning notes and analyses will gradually be added here.", footer: "© 2026 ElektronikLab — Modern electronics and automation projects.",
     conceptProject: "Concept project – not yet implemented", noProjectLink: "No project link provided",
-    heroBadge: "Electrical Design · Testing · Software", docs: "Documents", sourceCode: "Source Code", focusValue: "IoT · Automation",
+    heroBadge: "Electrical Design · Testing · Software", docs: "Documents", sourceCode: "Source Code", focusValue: "IoT · Automation", translationFallbackShort: "German version", translationFallback: "This article is not yet available in the selected language. The German version is shown.",
   },
   vi: {
     tagline: "Kỹ thuật · Phát triển · Học hỏi", gallery: "Thư viện ảnh", contact: "Liên hệ", knowledge: "Kiến thức & Nghiên cứu",
@@ -79,7 +79,7 @@ const UI_TEXT = {
     knowledgeNoticeParagraphs: ["Nhiều kiến thức nền tảng và thông tin kỹ thuật trong khu vực này đã có trong sách chuyên ngành, tài liệu hoặc các nguồn khác.", "Vì vậy, trọng tâm của thư viện kiến thức không chỉ là tập hợp tài liệu học tập. Tôi muốn phân tích kỹ hơn những chủ đề mà theo góc nhìn của mình chưa được giải thích thật sự rõ ràng hoặc dễ hiểu ở những nơi khác.", "Các bài viết phản ánh quá trình học tập và hiểu biết kỹ thuật hiện tại của tôi. Mục tiêu là làm rõ các mối liên hệ từng bước và tạo nền tảng cho những nghiên cứu tiếp theo."],
     noKnowledge: "Chưa có bài viết phù hợp", noKnowledgeText: "Các ghi chú học tập và phân tích mới sẽ được bổ sung dần tại đây.", footer: "© 2026 ElektronikLab — Các dự án điện tử và tự động hóa hiện đại.",
     conceptProject: "Dự án ý tưởng – chưa được triển khai", noProjectLink: "Chưa có liên kết dự án",
-    heroBadge: "Thiết kế điện · Kiểm thử · Phần mềm", docs: "Tài liệu", sourceCode: "Mã nguồn", focusValue: "IoT · Tự động hóa",
+    heroBadge: "Thiết kế điện · Kiểm thử · Phần mềm", docs: "Tài liệu", sourceCode: "Mã nguồn", focusValue: "IoT · Tự động hóa", translationFallbackShort: "Bản tiếng Đức", translationFallback: "Bài viết này chưa có bản dịch theo ngôn ngữ đã chọn. Website đang hiển thị bản tiếng Đức.",
   },
 };
 const getUiText = (language) => UI_TEXT[language] || UI_TEXT.de;
@@ -182,6 +182,8 @@ const markdownList = (items) => items.length
 const createMarkdownFile = (post) => `---
 id: ${singleLine(post.slug)}
 slug: ${singleLine(post.slug)}
+translation_id: ${singleLine(post.translation_id || post.slug)}
+language: ${singleLine(post.language || "de")}
 content_type: ${singleLine(post.content_type)}
 title: ${singleLine(post.title)}
 category: ${singleLine(post.category)}
@@ -238,7 +240,10 @@ const downloadTextFile = (filename, content) => {
 };
 
 const emptyEditorForm = () => ({
+  source_path: "",
   content_type: "project",
+  translation_id: "",
+  language: "de",
   title: "",
   slug: "",
   category: "IoT",
@@ -256,7 +261,10 @@ const emptyEditorForm = () => ({
 });
 
 const postToEditorForm = (post) => ({
+  source_path: post.source_path || "",
   content_type: post.content_type || "project",
+  translation_id: post.translation_id || post.slug || "",
+  language: post.language || "de",
   title: post.title || "",
   slug: post.slug || "",
   category: post.category || "IoT",
@@ -611,6 +619,9 @@ function PostDetailPage({ post, onBack, language }) {
             </div>
 
             <div className="p-5 sm:p-8 lg:p-10">
+              {post.is_translation_fallback && (
+                <p className="mb-5 rounded-xl border border-yellow-400/25 bg-yellow-400/10 px-4 py-3 text-sm leading-6 text-yellow-100">{t.translationFallback}</p>
+              )}
               {/* Meta */}
               <div className="mb-5 flex flex-wrap gap-3 text-xs text-zinc-400">
                 <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" />{formatDate(post.created_at, language)}</span>
@@ -773,6 +784,7 @@ function KnowledgePage({ posts, onOpenPost, language }) {
                 <div className="p-5 sm:p-7">
                   <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-400">
                     <span className="rounded-full bg-slate-200 px-3 py-1 font-black text-slate-950">{getCategoryLabel(featuredPost.category, language)}</span>
+                    {featuredPost.is_translation_fallback && <span className="rounded-full border border-yellow-400/25 bg-yellow-400/10 px-3 py-1 font-bold text-yellow-200">{t.translationFallbackShort}</span>}
                     <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {featuredPost.read_time || "5 Min."}</span>
                   </div>
                   <h2 className="mt-4 text-2xl font-black leading-tight sm:text-3xl">{featuredPost.title}</h2>
@@ -795,6 +807,7 @@ function KnowledgePage({ posts, onOpenPost, language }) {
                     </div>
                     <div>
                       <div className="flex flex-wrap gap-2 text-xs text-zinc-500"><span className="font-bold text-slate-300">{getCategoryLabel(post.category, language)}</span><span>{formatDate(post.created_at, language)}</span><span>{post.read_time || "5 Min."}</span></div>
+                      {post.is_translation_fallback && <span className="mt-2 inline-flex rounded-full border border-yellow-400/25 bg-yellow-400/10 px-2.5 py-1 text-xs font-bold text-yellow-200">{t.translationFallbackShort}</span>}
                       <h3 className="mt-2 text-lg font-black leading-tight group-hover:text-slate-200">{post.title}</h3>
                       <p className="mt-2 line-clamp-2 text-sm leading-6 text-zinc-400">{post.excerpt}</p>
                     </div>
@@ -822,6 +835,9 @@ function KnowledgeDetailPage({ post, onBack, language }) {
         <article className="overflow-hidden rounded-[2rem] border border-slate-300/20 bg-[#07111f]/95 shadow-2xl shadow-slate-950/20">
           {post.image_url && <img src={post.image_url} alt={post.title} className="h-56 w-full object-cover sm:h-80" />}
           <div className="p-5 sm:p-8 lg:p-10">
+            {post.is_translation_fallback && (
+              <p className="mb-5 rounded-xl border border-yellow-400/25 bg-yellow-400/10 px-4 py-3 text-sm leading-6 text-yellow-100">{t.translationFallback}</p>
+            )}
             <div className="flex flex-wrap gap-3 text-xs text-zinc-400">
               <span className="rounded-full bg-slate-200 px-3 py-1 font-black text-slate-950">{getCategoryLabel(post.category, language)}</span>
               <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at, language)}</span>
@@ -881,10 +897,12 @@ function MarkdownEditorPage() {
     const markdown = createMarkdownFile({
       ...form,
       slug,
+      translation_id: form.translation_id || slug,
       image_gallery: form.image_gallery.split("\n").map((item) => item.trim()).filter(Boolean),
       tags: form.tags.split(",").map((item) => item.trim()).filter(Boolean),
     });
-    return { filename: `${slug}.md`, markdown };
+    const isLegacyGermanPost = form.language === "de" && form.source_path && !form.source_path.includes("/");
+    return { filename: `${slug}.md`, directory: isLegacyGermanPost ? null : form.language, markdown };
   };
 
   const exportPost = () => {
@@ -902,11 +920,14 @@ function MarkdownEditorPage() {
     try {
       const directory = contentDirectory || await window.showDirectoryPicker({ mode: "readwrite" });
       if (!contentDirectory) setContentDirectory(directory);
-      const file = await directory.getFileHandle(output.filename, { create: true });
+      const targetDirectory = output.directory
+        ? await directory.getDirectoryHandle(output.directory, { create: true })
+        : directory;
+      const file = await targetDirectory.getFileHandle(output.filename, { create: true });
       const writable = await file.createWritable();
       await writable.write(output.markdown);
       await writable.close();
-      setSaveMessage(`${output.filename} wurde gespeichert.`);
+      setSaveMessage(`${output.directory ? `${output.directory}/` : ""}${output.filename} wurde gespeichert.`);
     } catch (error) {
       if (error.name !== "AbortError") {
         window.alert("Die Datei konnte nicht gespeichert werden. Bitte verwenden Sie MD exportieren.");
@@ -972,15 +993,15 @@ function MarkdownEditorPage() {
     downloadTextFile(output.filename, output.markdown);
   };
 
-  const selectPost = (slug) => {
-    setSelectedSlug(slug);
-    if (!slug) {
+  const selectPost = (sourcePath) => {
+    setSelectedSlug(sourcePath);
+    if (!sourcePath) {
       setForm(emptyEditorForm());
       setSlugEdited(false);
       return;
     }
 
-    const post = CONTENT_POSTS.find((item) => item.slug === slug);
+    const post = CONTENT_POSTS.find((item) => item.source_path === sourcePath);
     if (!post) return;
     setForm(postToEditorForm(post));
     setSlugEdited(true);
@@ -991,6 +1012,7 @@ function MarkdownEditorPage() {
   const PreviewIcon = getCategoryIcon(form.category);
   const previewTags = form.tags.split(",").map((item) => item.trim()).filter(Boolean);
   const previewIsIdea = form.content_type !== "knowledge" && isIdea(form);
+  const translationLanguages = getTranslationLanguages(form.translation_id || form.slug);
 
   return (
     <div className="min-h-screen text-white">
@@ -1148,17 +1170,34 @@ function MarkdownEditorPage() {
             <label className={labelClass}>Beitrag laden oder neu erstellen</label>
             <select className={inputClass} value={selectedSlug} onChange={(e) => selectPost(e.target.value)}>
               <option value="">Neuer Beitrag</option>
-              {CONTENT_POSTS.map((post) => <option key={post.slug} value={post.slug}>{post.content_type === "knowledge" ? "[Wissen]" : "[Projekt]"} {post.title}</option>)}
+              {CONTENT_POSTS.map((post) => <option key={post.source_path} value={post.source_path}>[{post.language.toUpperCase()}] {post.content_type === "knowledge" ? "[Wissen]" : "[Projekt]"} {post.title}</option>)}
             </select>
           </div>
 
           <div className="grid gap-4 rounded-2xl border border-white/10 bg-black/20 p-5 sm:grid-cols-2">
+            <div className="sm:col-span-2 rounded-xl border border-cyan-400/20 bg-cyan-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
+              <p className="font-black text-cyan-200">Mehrsprachige BeitrÃ¤ge speichern</p>
+              <p className="mt-2">Verwenden Sie fÃ¼r alle Sprachversionen desselben Beitrags dieselbe <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">translation_id</code>. Beim Speichern legt der Editor die Datei automatisch im Unterordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">de</code>, <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">en</code> oder <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">vi</code> innerhalb von <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content</code> ab.</p>
+            </div>
             <div className="sm:col-span-2">
               <label className={labelClass}>Inhaltstyp</label>
               <select className={inputClass} value={form.content_type} onChange={(e) => update("content_type", e.target.value)}>
                 <option value="project">Projektbeitrag für den Blog</option>
                 <option value="knowledge">Wissen, Lernmaterial oder Forschung</option>
               </select>
+            </div>
+            <div>
+              <label className={labelClass}>Sprache</label>
+              <select className={inputClass} value={form.language} onChange={(e) => update("language", e.target.value)}>
+                <option value="de">DE - Deutsch</option>
+                <option value="en">EN - English</option>
+                <option value="vi">VI - Tiáº¿ng Viá»‡t</option>
+              </select>
+            </div>
+            <div>
+              <label className={labelClass}>Translation ID</label>
+              <input className={inputClass} value={form.translation_id} onChange={(e) => update("translation_id", slugify(e.target.value))} placeholder="gemeinsame-beitrags-id" />
+              <p className="mt-2 text-xs leading-5 text-zinc-500">Vorhanden: {translationLanguages.length ? translationLanguages.map((item) => item.toUpperCase()).join(", ") : "noch keine Sprachversion"}</p>
             </div>
             <div className="sm:col-span-2">
               <label className={labelClass}>Titel *</label>
@@ -1464,6 +1503,7 @@ const paginatedPosts = filteredPosts.slice(
                       <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
                         <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black"><Icon className="h-3.5 w-3.5" /> {getCategoryLabel(post.category, language)}</span>
                         <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getStatusClasses(post.project_status)}`}>{getStatusLabel(post.project_status, language)}</span>
+                        {post.is_translation_fallback && <span className="inline-flex rounded-full border border-yellow-400/25 bg-yellow-400/10 px-3 py-1 font-bold text-yellow-200">{t.translationFallbackShort}</span>}
                         <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at, language)}</span>
                       </div>
                       <h3 className="text-lg font-black leading-tight sm:text-2xl">{post.title}</h3>
@@ -2053,8 +2093,9 @@ function App() {
   }, [language]);
 
   // ── Data state ──
-  const posts = POSTS;
-  const knowledgePosts = KNOWLEDGE_POSTS;
+  const localizedContentPosts = useMemo(() => getLocalizedContentPosts(language), [language]);
+  const posts = useMemo(() => localizedContentPosts.filter((post) => post.content_type !== "knowledge"), [localizedContentPosts]);
+  const knowledgePosts = useMemo(() => localizedContentPosts.filter((post) => post.content_type === "knowledge"), [localizedContentPosts]);
   const galleryImages = GALLERY_IMAGES.length ? GALLERY_IMAGES : DEFAULT_GALLERY_IMAGES;
   const currentPost = useMemo(() => posts.find(p => String(p.id) === String(currentPostId)) || null, [posts, currentPostId]);
   const currentKnowledgePost = useMemo(() => knowledgePosts.find(p => String(p.id) === String(currentPostId)) || null, [knowledgePosts, currentPostId]);

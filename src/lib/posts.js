@@ -1,4 +1,4 @@
-const files = import.meta.glob("../content/*.md", {
+const files = import.meta.glob("../content/**/*.md", {
   eager: true,
   query: "?raw",
   import: "default",
@@ -83,11 +83,17 @@ const parsedFiles = Object.entries(files)
   .map(([path, raw]) => {
     const { data, content } = parseFrontmatter(raw);
     const slug = data.slug || path.split("/").pop().replace(/\.md$/, "");
+    const directoryLanguage = path.match(/\/content\/(de|en|vi)\//)?.[1];
+    const language = data.language || directoryLanguage || "de";
+    const translationId = data.translation_id || data.id || slug;
 
     return {
       ...data,
-      id: data.id || slug,
+      id: translationId,
       slug,
+      language,
+      translation_id: translationId,
+      source_path: path.replace("../content/", ""),
       content,
       image_gallery: toArray(data.image_gallery),
       tags: toArray(data.tags),
@@ -126,5 +132,39 @@ export const CONTENT_POSTS = parsedFiles
     return new Date(b.created_at || 0) - new Date(a.created_at || 0);
   });
 
-export const KNOWLEDGE_POSTS = CONTENT_POSTS.filter((post) => post.published !== false && post.content_type === "knowledge");
-export const POSTS = CONTENT_POSTS.filter((post) => post.published !== false && post.content_type !== "knowledge");
+const getAvailableLanguages = (posts, translationId) => [...new Set(posts
+  .filter((post) => post.translation_id === translationId)
+  .map((post) => post.language))];
+
+export const getLocalizedContentPosts = (language = "de") => {
+  const publishedPosts = CONTENT_POSTS.filter((post) => post.published !== false);
+  const translationIds = [...new Set(publishedPosts.map((post) => post.translation_id))];
+
+  return translationIds
+    .map((translationId) => {
+      const variants = publishedPosts.filter((post) => post.translation_id === translationId);
+      const selectedPost = variants.find((post) => post.language === language)
+        || variants.find((post) => post.language === "de")
+        || variants[0];
+
+      return {
+        ...selectedPost,
+        id: translationId,
+        available_languages: getAvailableLanguages(publishedPosts, translationId),
+        requested_language: language,
+        is_translation_fallback: selectedPost.language !== language,
+      };
+    })
+    .sort((a, b) => {
+      const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
+      const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
+
+      if (orderA !== orderB) return orderA - orderB;
+
+      return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+    });
+};
+
+export const getTranslationLanguages = (translationId) => getAvailableLanguages(CONTENT_POSTS, translationId);
+export const KNOWLEDGE_POSTS = getLocalizedContentPosts("de").filter((post) => post.content_type === "knowledge");
+export const POSTS = getLocalizedContentPosts("de").filter((post) => post.content_type !== "knowledge");

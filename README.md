@@ -35,7 +35,7 @@ The website is built as a static React application and deployed through GitHub P
 ## Features
 
 - Responsive portfolio and technical blog
-- Markdown-based project articles with frontmatter
+- Multilingual Markdown-based project articles with German fallback
 - Dedicated knowledge library for technical notes, learning material and research articles
 - Categories, tags, search and project status filters
 - Project image galleries and external project links
@@ -71,7 +71,7 @@ npm run build
 
 ## Content Management
 
-Blog posts and knowledge articles are stored in `src/content/`. Article images are stored in `public/images/posts/`. Free-form gallery images are stored separately in `public/images/galerie/`.
+Blog posts and knowledge articles are stored in `src/content/`. Multilingual article files can be organized in `src/content/de/`, `src/content/en/` and `src/content/vi/`. Article images are stored in `public/images/posts/`. Free-form gallery images are stored separately in `public/images/galerie/`.
 
 Start the local Markdown editor:
 
@@ -87,7 +87,7 @@ In Chrome or Edge:
 2. Choose whether it is a project article or a knowledge article.
 3. Edit the content and preview the result.
 4. Click `In Ordner speichern`.
-5. Select `src/content/` the first time.
+5. Select `src/content/` the first time. The editor creates or uses the language subfolder automatically for multilingual articles.
 6. Add referenced article images to `public/images/posts/`.
 7. Deploy the updated website.
 
@@ -105,6 +105,8 @@ Each blog post starts with frontmatter:
 ---
 id: esp32-mqtt-gateway
 slug: esp32-mqtt-gateway
+translation_id: esp32-mqtt-gateway
+language: de
 content_type: project
 title: ESP32 als MQTT-Gateway
 category: IoT
@@ -137,6 +139,29 @@ Lower `sort_order` values appear first.
 
 Use `content_type: knowledge` for articles that should appear in the `Wissen & Forschung` library instead of the project blog.
 
+## Multilingual Articles
+
+Use one Markdown file per language and store translated files in the corresponding subfolder:
+
+```text
+src/content/de/esp32-mqtt-gateway.md
+src/content/en/esp32-mqtt-gateway.md
+src/content/vi/esp32-mqtt-gateway.md
+```
+
+All language versions of an article must use the same `translation_id`. The `slug`, title, excerpt and Markdown body can be translated independently:
+
+```md
+---
+translation_id: esp32-mqtt-gateway
+language: vi
+slug: giam-sat-cam-bien-esp32-mqtt
+title: Giám sát cảm biến bằng ESP32 và MQTT
+---
+```
+
+Existing Markdown articles directly inside `src/content/` continue to work and are treated as German articles automatically. If a translation is missing, the website displays the German article with a fallback notice.
+
 ## Project Structure
 
 ```text
@@ -149,6 +174,9 @@ public/
 src/
   components/         Shared UI components
   content/            Markdown posts and homepage content
+    de/               German article translations
+    en/               English article translations
+    vi/               Vietnamese article translations
   lib/posts.js        Markdown loading and frontmatter parsing
   App.jsx             Application UI
   index.css           Tailwind CSS entrypoint
