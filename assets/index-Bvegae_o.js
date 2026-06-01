@@ -2650,7 +2650,7 @@ Trạng thái hiện tại: dự án ý tưởng, đang lên kế hoạch.
 `,"../content/vi/personal-way.md":`---
 type: personal_way
 language: vi
-title: Nguyen Nhan Do - Học kỹ thuật. Tích lũy kinh nghiệm. Không ngừng phát triển.
+title: Đỗ Nguyễn Nhân - Học kỹ thuật. Tích lũy kinh nghiệm. Không ngừng phát triển.
 image_1: /my-electronics-blog/images/about-1.webp
 image_2: /my-electronics-blog/images/about-2.webp
 ---
@@ -2793,71 +2793,6 @@ Thiết kế tập trung vào phong cách kỹ thuật hiện đại với giao 
 ## Mục tiêu và kết quả
 
 Website giúp trình bày kỹ năng kỹ thuật chuyên nghiệp và ghi lại dự án cũng như tiến trình học tập lâu dài. Kết quả là một nền tảng portfolio và blog tự phát triển, kết hợp tài liệu kỹ thuật, quản lý dự án và phát triển web hiện đại.
-`,"../content/vi/vi/home-content.md":`---
-type: home_content
-language: vi
-hero_badge: Thiết kế điện · Kiểm thử · Phần mềm
-hero_title: Kỹ thuật. Tài liệu. Phát triển.
-hero_text: Tôi tự xây dựng website này để ghi lại các dự án kỹ thuật, quá trình học tập và kinh nghiệm thực tế trong lĩnh vực điện tử, hệ thống nhúng, đo lường và phát triển phần mềm kỹ thuật.
-transparency_title: Thông tin dự án & Minh bạch
-transparency_text: Các hình ảnh về phòng thí nghiệm, không gian làm việc kỹ thuật và thiết bị điện tử trên website này chỉ nhằm minh họa cho sở thích kỹ thuật và kinh nghiệm thực hành của tôi.
-transparency_strong: Chúng không thể hiện nơi làm việc thực tế, khu vực nội bộ hay môi trường làm việc thật của bất kỳ doanh nghiệp nào.
-feature_1_title: Điện tử & Hệ thống nhúng
-feature_1_text: Các dự án học tập cá nhân về vi điều khiển, cảm biến và phát triển phần cứng nhằm mở rộng kiến thức kỹ thuật qua thực hành.
-feature_2_title: Tự động hóa & Điều khiển
-feature_2_text: Các bài thực hành và dự án nhỏ để hiểu rõ hơn quy trình công nghiệp, kỹ thuật điều khiển và các quá trình kỹ thuật.
-feature_3_title: Học tập kỹ thuật
-feature_3_text: Ghi lại hành trình học tập, kinh nghiệm kỹ thuật và những chủ đề mới mà tôi liên tục tìm hiểu.
-feature_4_title: Phát triển cá nhân
-feature_4_text: Website này là nền tảng cá nhân để lưu lại dự án, ý tưởng và tiến bộ kỹ thuật một cách rõ ràng.
-warning_one: Các dự án có nhãn “Ý tưởng” vẫn đang ở giai đoạn ý tưởng hoặc khái niệm và chưa được triển khai thực tế.
-warning_two: Các dự án khác có thể được mở bằng nút “Đọc bài viết”. Cuối mỗi trang dự án có nút “Mở dự án” với các tệp liên quan.
-collaboration_title: Hợp tác trong các dự án điện tử hiện đại.
-collaboration_text: Bạn cần hỗ trợ về hệ thống nhúng, cảm biến, robot hoặc tự động hóa công nghiệp? Hãy liên hệ với tôi để hợp tác kỹ thuật hoặc phát triển giải pháp riêng.
----
-`,"../content/vi/vi/personal-way.md":`---
-type: personal_way
-language: vi
-title: Đỗ Nguyễn Nhân - Học kỹ thuật. Tích lũy kinh nghiệm. Không ngừng phát triển.
-image_1: /my-electronics-blog/images/about-1.webp
-image_2: /my-electronics-blog/images/about-2.webp
----
-
-Tôi đến Đức vào năm 2013 - không phải vì cuộc sống ở Việt Nam không tốt, mà vì tôi muốn tìm hiểu mình có thể phát triển xa đến đâu về mặt cá nhân và nghề nghiệp khi rời khỏi vùng an toàn và bắt đầu lại trong một môi trường hoàn toàn mới.
-
-Những năm đầu tại Đức chủ yếu là khoảng thời gian làm quen, học hỏi và thích nghi. Bên cạnh các khóa học ngôn ngữ, tôi đã làm việc trong nhiều lĩnh vực khác nhau, bao gồm nhà hàng, quản lý và sau đó là tự kinh doanh.
-
-Sau nhiều năm tích lũy kinh nghiệm nghề nghiệp đa dạng, tôi chủ động quyết định quay trở lại định hướng kỹ thuật rõ ràng hơn và phát triển lâu dài trong lĩnh vực điện tử, đo lường và tự động hóa.
-
-Trong những năm gần đây, tôi đã tích lũy kinh nghiệm thực tế về hiệu chuẩn, tìm lỗi, kiểm thử và phát triển hệ thống điện tử, đồng thời liên tục mở rộng kiến thức kỹ thuật.
-
-Tôi cũng đã hoàn thành các khóa đào tạo về lập trình PLC, C++/Qt, AutoCAD và EPLAN để nâng cao kiến thức và hiểu rõ hơn các lĩnh vực kỹ thuật mới.
-
-Blog này chủ yếu dùng để ghi lại các dự án kỹ thuật, kinh nghiệm và quá trình học tập của tôi. Tại đây, tôi lưu giữ kiến thức, tập hợp ý tưởng và ghi lại sự phát triển chuyên môn theo thời gian.
-
-Tất cả nội dung đều dựa trên dự án cá nhân, quá trình tự học và kiến thức công khai. Thông tin bảo mật, tài liệu nội bộ hoặc dự án của công ty hiện tại hay trước đây tất nhiên không được công bố.
-`,"../content/vi/vi/vi/home-content.md":`---
-type: home_content
-language: vi
-hero_badge: Thiết kế điện · Kiểm thử · Phần mềm
-hero_title: Kỹ thuật. Tài liệu. Phát triển.
-hero_text: Tôi tự xây dựng website này để ghi lại các dự án kỹ thuật, quá trình học tập và kinh nghiệm thực tế trong lĩnh vực điện tử, hệ thống nhúng, đo lường và phát triển phần mềm kỹ thuật.
-transparency_title: Thông tin dự án & Minh bạch
-transparency_text: Các hình ảnh về phòng thí nghiệm, không gian làm việc kỹ thuật và thiết bị điện tử trên website này chỉ nhằm minh họa cho sở thích kỹ thuật và kinh nghiệm thực hành của tôi.
-transparency_strong: Chúng không thể hiện nơi làm việc thực tế, khu vực nội bộ hay môi trường làm việc thật của bất kỳ doanh nghiệp nào.
-feature_1_title: Điện tử & Hệ thống nhúng
-feature_1_text: Các dự án học tập cá nhân về vi điều khiển, cảm biến và phát triển phần cứng nhằm mở rộng kiến thức kỹ thuật qua thực hành.
-feature_2_title: Tự động hóa & Điều khiển
-feature_2_text: Các bài thực hành và dự án nhỏ để hiểu rõ hơn quy trình công nghiệp, kỹ thuật điều khiển và các quá trình kỹ thuật.
-feature_3_title: Học tập kỹ thuật
-feature_3_text: Ghi lại hành trình học tập, kinh nghiệm kỹ thuật và những chủ đề mới mà tôi liên tục tìm hiểu.
-feature_4_title: Phát triển cá nhân
-feature_4_text: Website này là nền tảng cá nhân để lưu lại dự án, ý tưởng và tiến bộ kỹ thuật một cách rõ ràng.
-warning_one: Các dự án có nhãn “Ý tưởng” vẫn đang ở giai đoạn ý tưởng hoặc khái niệm và chưa được triển khai thực tế.
-warning_two: Các dự án khác có thể được mở bằng nút “Đọc bài viết”. Cuối mỗi trang dự án có nút “Mở dự án” với các tệp liên quan.
-collaboration_title: Hợp tác trong các dự án điện tử hiện đại.
-collaboration_text: Bạn cần hỗ trợ về hệ thống nhúng, cảm biến, robot hoặc tự động hóa công nghiệp? Hãy liên hệ với tôi để hợp tác kỹ thuật hoặc phát triển giải pháp riêng.
----
 `,"../content/vi/visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen.md":`---
 translation_id: local-post-1779960317991
 language: vi
