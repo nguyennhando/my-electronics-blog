@@ -2,7 +2,7 @@ import CookieBanner from "./components/CookieBanner";
 import { createElement, useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { CONTENT_POSTS, GALLERY_IMAGES, PERSONAL_WAY, SITE_SETTINGS, getLocalizedContentPosts, getTranslationLanguages } from "./lib/posts";
+import { CONTENT_POSTS, GALLERY_IMAGES, HOME_CONTENTS, PERSONAL_WAY, PERSONAL_WAYS, SITE_SETTINGS, getLocalizedContentPosts, getLocalizedHomeContent, getLocalizedPersonalWay, getTranslationLanguages } from "./lib/posts";
 
 import {
   CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X,
@@ -82,7 +82,26 @@ const UI_TEXT = {
     heroBadge: "Thiết kế điện · Kiểm thử · Phần mềm", docs: "Tài liệu", sourceCode: "Mã nguồn", focusValue: "IoT · Tự động hóa", tools: "Công cụ", toolsValue: "PLC · AutoCAD · EPLAN · C++ · Qt", translationFallbackShort: "Bản tiếng Đức", translationFallback: "Bài viết này chưa có bản dịch theo ngôn ngữ đã chọn. Website đang hiển thị bản tiếng Đức.",
   },
 };
-const getUiText = (language) => UI_TEXT[language] || UI_TEXT.de;
+const getUiText = (language) => {
+  const uiText = UI_TEXT[language] || UI_TEXT.de;
+  const homeContent = getLocalizedHomeContent(language);
+
+  if (!homeContent) return uiText;
+
+  return {
+    ...uiText,
+    heroBadge: homeContent.hero_badge,
+    heroTitle: homeContent.hero_title,
+    heroText: homeContent.hero_text,
+    transparencyTitle: homeContent.transparency_title,
+    transparencyText: homeContent.transparency_text,
+    transparencyStrong: homeContent.transparency_strong,
+    warningOne: homeContent.warning_one,
+    warningTwo: homeContent.warning_two,
+    collaborationTitle: homeContent.collaboration_title,
+    collaborationText: homeContent.collaboration_text,
+  };
+};
 
 const DEFAULT_GALLERY_IMAGES = [
   "/my-electronics-blog/images/galerie/Dampfmaschine-main.webp",
@@ -206,12 +225,41 @@ ${post.content.trim()}
 
 const createPersonalWayFile = (personalWay) => `---
 type: personal_way
+language: ${singleLine(personalWay.language || "de")}
 title: ${singleLine(personalWay.title)}
 image_1: ${singleLine(personalWay.image_1)}
 image_2: ${singleLine(personalWay.image_2)}
 ---
 
 ${personalWay.content.trim()}
+`;
+
+const HOME_CONTENT_FIELDS = [
+  ["hero_badge", "Hero: Badge"],
+  ["hero_title", "Hero: Titel"],
+  ["hero_text", "Hero: Text"],
+  ["transparency_title", "Transparenz: Titel"],
+  ["transparency_text", "Transparenz: Text"],
+  ["transparency_strong", "Transparenz: Hervorgehobener Text"],
+  ["feature_1_title", "Karte 1: Titel"],
+  ["feature_1_text", "Karte 1: Text"],
+  ["feature_2_title", "Karte 2: Titel"],
+  ["feature_2_text", "Karte 2: Text"],
+  ["feature_3_title", "Karte 3: Titel"],
+  ["feature_3_text", "Karte 3: Text"],
+  ["feature_4_title", "Karte 4: Titel"],
+  ["feature_4_text", "Karte 4: Text"],
+  ["warning_one", "Projekt-Hinweis: Absatz 1"],
+  ["warning_two", "Projekt-Hinweis: Absatz 2"],
+  ["collaboration_title", "Zusammenarbeit: Titel"],
+  ["collaboration_text", "Zusammenarbeit: Text"],
+];
+
+const createHomeContentFile = (homeContent) => `---
+type: home_content
+language: ${singleLine(homeContent.language || "de")}
+${HOME_CONTENT_FIELDS.map(([key]) => `${key}: ${singleLine(homeContent[key])}`).join("\n")}
+---
 `;
 
 const createSiteSettingsFile = (siteSettings) => `---
@@ -340,10 +388,24 @@ Tất cả nội dung đều dựa trên dự án cá nhân, quá trình tự h�
   },
 };
 
-const getPersonalWay = (language) => ({
+const getPersonalWay = (language) => getLocalizedPersonalWay(language) || {
   ...PERSONAL_WAY,
   ...(PERSONAL_WAY_TRANSLATIONS[language] || {}),
-});
+};
+
+const FEATURE_ICONS = [Cpu, Workflow, ShieldCheck, MonitorSmartphone];
+
+const getFeatures = (language) => {
+  const homeContent = getLocalizedHomeContent(language);
+
+  if (!homeContent) return FEATURES[language] || FEATURES.de;
+
+  return FEATURE_ICONS.map((icon, index) => ({
+    icon,
+    title: homeContent[`feature_${index + 1}_title`],
+    text: homeContent[`feature_${index + 1}_text`],
+  }));
+};
 
 // ─────────────────────────────────────────────
 // REUSABLE COMPONENTS
@@ -872,6 +934,8 @@ function MarkdownEditorPage() {
   const [slugEdited, setSlugEdited] = useState(false);
   const [contentDirectory, setContentDirectory] = useState(null);
   const [saveMessage, setSaveMessage] = useState("");
+  const [showHomeContentEditor, setShowHomeContentEditor] = useState(false);
+  const [homeContentForm, setHomeContentForm] = useState(() => getLocalizedHomeContent("de"));
   const [showPersonalWayEditor, setShowPersonalWayEditor] = useState(false);
   const [personalWayForm, setPersonalWayForm] = useState(PERSONAL_WAY);
   const [showSiteSettingsEditor, setShowSiteSettingsEditor] = useState(false);
@@ -941,6 +1005,33 @@ function MarkdownEditorPage() {
     await saveMarkdownToDirectory(output);
   };
 
+  const selectHomeContentLanguage = (language) => {
+    const localizedContent = HOME_CONTENTS.find((entry) => entry.language === language)
+      || getLocalizedHomeContent(language);
+    setHomeContentForm({ ...localizedContent, language });
+  };
+
+  const getHomeContentExport = () => ({
+    filename: "home-content.md",
+    directory: homeContentForm.language === "de" ? null : homeContentForm.language,
+    markdown: createHomeContentFile(homeContentForm),
+  });
+
+  const saveHomeContentToDirectory = async () => {
+    await saveMarkdownToDirectory(getHomeContentExport());
+  };
+
+  const exportHomeContent = () => {
+    const output = getHomeContentExport();
+    downloadTextFile(output.filename, output.markdown);
+  };
+
+  const selectPersonalWayLanguage = (language) => {
+    const localizedPersonalWay = PERSONAL_WAYS.find((entry) => entry.language === language)
+      || getLocalizedPersonalWay(language);
+    setPersonalWayForm({ ...localizedPersonalWay, language });
+  };
+
   const getPersonalWayExport = () => {
     if (!personalWayForm.title.trim() || !personalWayForm.content.trim()) {
       window.alert("Titel und Inhalt sind Pflichtfelder.");
@@ -949,6 +1040,7 @@ function MarkdownEditorPage() {
 
     return {
       filename: "personal-way.md",
+      directory: personalWayForm.language === "de" ? null : personalWayForm.language,
       markdown: createPersonalWayFile(personalWayForm),
     };
   };
@@ -1111,6 +1203,43 @@ function MarkdownEditorPage() {
             )}
           </div>
 
+          <div className="rounded-2xl border border-blue-400/20 bg-blue-400/5 p-5">
+            <button type="button" onClick={() => setShowHomeContentEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
+              <span>
+                <span className="block text-xs font-bold uppercase text-blue-300">Startseite</span>
+                <span className="mt-1 block font-black">Startseiten-Inhalte bearbeiten</span>
+              </span>
+              <Pencil className="h-5 w-5 text-blue-300" />
+            </button>
+
+            {showHomeContentEditor && (
+              <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
+                <div>
+                  <label className={labelClass}>Sprache</label>
+                  <select className={inputClass} value={homeContentForm.language} onChange={(e) => selectHomeContentLanguage(e.target.value)}>
+                    <option value="de">DE - Deutsch</option>
+                    <option value="en">EN - English</option>
+                    <option value="vi">VI - Tiếng Việt</option>
+                  </select>
+                </div>
+                {HOME_CONTENT_FIELDS.map(([key, label]) => (
+                  <div key={key}>
+                    <label className={labelClass}>{label}</label>
+                    <textarea className={`${inputClass} min-h-[88px] leading-6`} value={homeContentForm[key] || ""} onChange={(e) => setHomeContentForm((current) => ({ ...current, [key]: e.target.value }))} />
+                  </div>
+                ))}
+                <div className="flex flex-wrap gap-2">
+                  <button type="button" onClick={saveHomeContentToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-blue-400 px-4 py-2 text-sm font-black text-black transition hover:bg-blue-300">
+                    <Save className="h-4 w-4" /> In Ordner speichern
+                  </button>
+                  <button type="button" onClick={exportHomeContent} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
+                    <Download className="h-4 w-4" /> MD exportieren
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="rounded-2xl border border-fuchsia-400/20 bg-fuchsia-400/5 p-5">
             <button type="button" onClick={() => setShowPersonalWayEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
               <span>
@@ -1122,6 +1251,14 @@ function MarkdownEditorPage() {
 
             {showPersonalWayEditor && (
               <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
+                <div>
+                  <label className={labelClass}>Sprache</label>
+                  <select className={inputClass} value={personalWayForm.language || "de"} onChange={(e) => selectPersonalWayLanguage(e.target.value)}>
+                    <option value="de">DE - Deutsch</option>
+                    <option value="en">EN - English</option>
+                    <option value="vi">VI - Tiếng Việt</option>
+                  </select>
+                </div>
                 <div>
                   <label className={labelClass}>Titel *</label>
                   <input className={inputClass} value={personalWayForm.title} onChange={(e) => setPersonalWayForm((current) => ({ ...current, title: e.target.value }))} />
@@ -1405,8 +1542,8 @@ const paginatedPosts = filteredPosts.slice(
           <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[2rem]" innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl">
             <div className="grid items-stretch gap-6 p-4 sm:p-6 lg:grid-cols-2 lg:gap-8">
               <div className="grid min-h-full gap-4 lg:grid-rows-2">
-                <img src={PERSONAL_WAY.image_1} alt="Nguyen Nhan Do" className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]" />
-                <img src={PERSONAL_WAY.image_2} alt="Elektronik" className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]" />
+                <img src={personalWay.image_1} alt="Nguyen Nhan Do" className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]" />
+                <img src={personalWay.image_2} alt="Elektronik" className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]" />
               </div>
               <div className="flex flex-col justify-center">
                 <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">{t.personalWay}</p>
@@ -1422,7 +1559,7 @@ const paginatedPosts = filteredPosts.slice(
         {/* Features */}
         <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5 sm:py-10">
           <div className="grid gap-3 min-[520px]:grid-cols-2 lg:grid-cols-4 lg:gap-5">
-            {FEATURES[language].map(f => {
+            {getFeatures(language).map(f => {
               const Icon = f.icon;
               return (
                 <motion.div whileHover={{ y: -5 }} key={f.title} className="group flex flex-col">

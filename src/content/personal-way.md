@@ -1,5 +1,6 @@
 ---
 type: personal_way
+language: de
 title: Nguyen Nhan Do - Technik lernen. Erfahrung sammeln. Mich weiterentwickeln.
 image_1: /my-electronics-blog/images/about-1.webp
 image_2: /my-electronics-blog/images/about-2.webp
