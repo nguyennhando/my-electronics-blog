@@ -9,7 +9,7 @@ import {
   CalendarDays, ArrowRight, ShieldCheck,
   Wrench, Mail, MonitorSmartphone, Workflow, AlertTriangle, ExternalLink,
   ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock, Download, FileText, Image as ImageIcon, Pencil, Save,
-  BookOpen, Library, FlaskConical, GraduationCap,
+  BookOpen, Library, FlaskConical, GraduationCap, ChevronUp, ChevronDown,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────
@@ -942,6 +942,11 @@ function MarkdownEditorPage() {
   const [siteSettingsForm, setSiteSettingsForm] = useState(SITE_SETTINGS);
   const [showGalleryEditor, setShowGalleryEditor] = useState(false);
   const [galleryImagesForm, setGalleryImagesForm] = useState((GALLERY_IMAGES.length ? GALLERY_IMAGES : DEFAULT_GALLERY_IMAGES).join("\n"));
+  const [showProjectOrderEditor, setShowProjectOrderEditor] = useState(false);
+  const [projectOrderLanguage, setProjectOrderLanguage] = useState("de");
+  const [projectOrderIds, setProjectOrderIds] = useState(() => getLocalizedContentPosts("de")
+    .filter((post) => post.content_type !== "knowledge")
+    .map((post) => post.translation_id));
 
   const update = (key, value) => {
     setForm((current) => {
@@ -974,31 +979,75 @@ function MarkdownEditorPage() {
     downloadTextFile(output.filename, output.markdown);
   };
 
-  const saveMarkdownToDirectory = async (output) => {
+  const getContentDirectory = async () => {
     if (!window.showDirectoryPicker) {
       window.alert("Direktes Speichern wird von diesem Browser nicht unterstützt. Bitte verwenden Sie MD exportieren.");
-      return;
+      return null;
     }
 
-    try {
-      const directory = contentDirectory || await window.showDirectoryPicker({ mode: "readwrite" });
-      if (directory.name !== "content") {
-        setContentDirectory(null);
-        window.alert("Bitte wählen Sie genau den Ordner src/content aus, nicht einen Sprachordner wie de, en oder vi.");
-        return;
-      }
-      if (!contentDirectory) setContentDirectory(directory);
-      const targetDirectory = output.directory
-        ? await directory.getDirectoryHandle(output.directory, { create: true })
-        : directory;
+    const directory = contentDirectory || await window.showDirectoryPicker({ mode: "readwrite" });
+    if (directory.name !== "content") {
+      setContentDirectory(null);
+      window.alert("Bitte wählen Sie genau den Ordner src/content aus, nicht einen Sprachordner wie de, en oder vi.");
+      return null;
+    }
+    if (!contentDirectory) setContentDirectory(directory);
+    return directory;
+  };
+
+  const writeMarkdownToDirectory = async (directory, output) => {
+    const targetDirectory = output.directory
+      ? await directory.getDirectoryHandle(output.directory, { create: true })
+      : directory;
       const file = await targetDirectory.getFileHandle(output.filename, { create: true });
       const writable = await file.createWritable();
       await writable.write(output.markdown);
       await writable.close();
+  };
+
+  const saveMarkdownToDirectory = async (output) => {
+    try {
+      const directory = await getContentDirectory();
+      if (!directory) return;
+      await writeMarkdownToDirectory(directory, output);
       setSaveMessage(`${output.directory ? `${output.directory}/` : ""}${output.filename} wurde gespeichert.`);
     } catch (error) {
       if (error.name !== "AbortError") {
         window.alert("Die Datei konnte nicht gespeichert werden. Bitte verwenden Sie MD exportieren.");
+      }
+    }
+  };
+
+  const moveProjectOrder = (translationId, direction) => {
+    setProjectOrderIds((current) => {
+      const index = current.indexOf(translationId);
+      const targetIndex = index + direction;
+      if (index < 0 || targetIndex < 0 || targetIndex >= current.length) return current;
+      const next = [...current];
+      [next[index], next[targetIndex]] = [next[targetIndex], next[index]];
+      return next;
+    });
+  };
+
+  const saveProjectOrderToDirectory = async () => {
+    try {
+      const directory = await getContentDirectory();
+      if (!directory) return;
+      const orderByTranslationId = new Map(projectOrderIds.map((translationId, index) => [translationId, (index + 1) * 10]));
+      const projectVariants = CONTENT_POSTS.filter((post) => post.content_type !== "knowledge" && orderByTranslationId.has(post.translation_id));
+
+      for (const post of projectVariants) {
+        await writeMarkdownToDirectory(directory, {
+          filename: `${post.slug}.md`,
+          directory: post.language,
+          markdown: createMarkdownFile({ ...post, sort_order: orderByTranslationId.get(post.translation_id) }),
+        });
+      }
+
+      setSaveMessage(`Die Reihenfolge von ${projectOrderIds.length} Projektkarten wurde für alle Sprachen gespeichert.`);
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        window.alert("Die Reihenfolge konnte nicht gespeichert werden.");
       }
     }
   };
@@ -1109,6 +1158,12 @@ function MarkdownEditorPage() {
   const previewTags = form.tags.split(",").map((item) => item.trim()).filter(Boolean);
   const previewIsIdea = form.content_type !== "knowledge" && isIdea(form);
   const translationLanguages = getTranslationLanguages(form.translation_id || form.slug);
+  const projectOrderPosts = projectOrderIds.map((translationId) => {
+    const variants = CONTENT_POSTS.filter((post) => post.translation_id === translationId && post.content_type !== "knowledge");
+    return variants.find((post) => post.language === projectOrderLanguage)
+      || variants.find((post) => post.language === "de")
+      || variants[0];
+  }).filter(Boolean);
 
   return (
     <div className="min-h-screen text-white">
@@ -1203,6 +1258,58 @@ function MarkdownEditorPage() {
                     <Download className="h-4 w-4" /> MD exportieren
                   </button>
                 </div>
+              </div>
+            )}
+          </div>
+
+          <div className="rounded-2xl border border-orange-400/20 bg-orange-400/5 p-5">
+            <button type="button" onClick={() => setShowProjectOrderEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
+              <span>
+                <span className="block text-xs font-bold uppercase text-orange-300">Blog</span>
+                <span className="mt-1 block font-black">Reihenfolge der Projektkarten bearbeiten</span>
+              </span>
+              <ChevronUp className="h-5 w-5 text-orange-300" />
+            </button>
+
+            {showProjectOrderEditor && (
+              <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
+                <div className="rounded-xl border border-orange-400/20 bg-orange-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
+                  <p className="font-black text-orange-200">Projektkarten visuell sortieren</p>
+                  <p className="mt-2">Verschieben Sie Karten mit den Pfeilen nach oben oder unten. Beim Speichern wird die Reihenfolge automatisch für alle Sprachversionen übernommen.</p>
+                  <p className="mt-2 text-xs text-zinc-400">Wählen Sie genau den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-orange-100">src/content</code>, nicht einen Sprachordner.</p>
+                </div>
+                <div>
+                  <label className={labelClass}>Vorschau-Sprache</label>
+                  <select className={inputClass} value={projectOrderLanguage} onChange={(e) => setProjectOrderLanguage(e.target.value)}>
+                    <option value="de">DE - Deutsch</option>
+                    <option value="en">EN - English</option>
+                    <option value="vi">VI - Tiếng Việt</option>
+                  </select>
+                </div>
+                <div className="grid gap-3">
+                  {projectOrderPosts.map((post, index) => (
+                    <div key={post.translation_id} className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#07111f]/95 p-3">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-400/10 text-sm font-black text-orange-200">{index + 1}</span>
+                      {post.image_url && <img src={post.image_url} alt="" className="h-14 w-20 shrink-0 rounded-lg object-cover" />}
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate font-black text-white">{post.title}</p>
+                        <p className="mt-1 text-xs text-zinc-500">{getCategoryLabel(post.category, projectOrderLanguage)} · {getStatusLabel(post.project_status, projectOrderLanguage)}</p>
+                      </div>
+                      <div className="flex shrink-0 flex-col gap-1">
+                        <button type="button" disabled={index === 0} onClick={() => moveProjectOrder(post.translation_id, -1)} className="rounded-lg border border-white/10 p-1.5 text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30" aria-label="Nach oben verschieben">
+                          <ChevronUp className="h-4 w-4" />
+                        </button>
+                        <button type="button" disabled={index === projectOrderPosts.length - 1} onClick={() => moveProjectOrder(post.translation_id, 1)} className="rounded-lg border border-white/10 p-1.5 text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30" aria-label="Nach unten verschieben">
+                          <ChevronDown className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <button type="button" onClick={saveProjectOrderToDirectory} className="inline-flex w-fit items-center gap-2 rounded-xl bg-orange-400 px-4 py-2 text-sm font-black text-black transition hover:bg-orange-300">
+                  <Save className="h-4 w-4" /> Reihenfolge speichern
+                </button>
+                {saveMessage && <p className="text-xs font-bold text-emerald-300">{saveMessage}</p>}
               </div>
             )}
           </div>

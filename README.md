@@ -93,6 +93,8 @@ In Chrome or Edge:
 
 Use `Startseiten-Inhalte bearbeiten` and `Persönlicher Weg bearbeiten` in the local editor to update localized homepage content. The editor stores each file in the selected language subfolder, for example `src/content/de/home-content.md` and `src/content/de/personal-way.md`.
 
+Use `Reihenfolge der Projektkarten bearbeiten` to reorder blog cards visually. Saving the order updates the `sort_order` value consistently across all available language versions.
+
 Use `Website-Hintergrund bearbeiten` to update the optional website background image. Its path is stored in `src/content/site-settings.md`. Leave the field empty to keep the default gradient background.
 
 Use `Projektgalerie bearbeiten` to manage the free-form homepage gallery. Add one image path per line in the desired order. Gallery images are stored in `public/images/galerie/`, and the image list is stored in `src/content/gallery-settings.md`.
