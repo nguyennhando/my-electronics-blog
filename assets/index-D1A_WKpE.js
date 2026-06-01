@@ -28,7 +28,11 @@ Error generating stack: `+e.message+`
 `}),n.push(e[r]);return t&&e.length>0&&n.push({type:`text`,value:`
 `}),n}function gg(e){let t=0,n=e.charCodeAt(t);for(;n===9||n===32;)t++,n=e.charCodeAt(t);return e.slice(t)}function _g(e,t){let n=dg(e,t),r=n.one(e,void 0),i=Xh(n),a=Array.isArray(r)?{type:`root`,children:r}:r||{type:`root`,children:[]};return i&&(`children`in a,a.children.push({type:`text`,value:`
 `},i)),a}function vg(e,t){return e&&`run`in e?async function(n,r){let i=_g(n,{file:r,...t});await e.run(i,r)}:function(n,r){return _g(n,{file:r,...e||t})}}function yg(e){if(e)throw e}var bg=s(((e,t)=>{var n=Object.prototype.hasOwnProperty,r=Object.prototype.toString,i=Object.defineProperty,a=Object.getOwnPropertyDescriptor,o=function(e){return typeof Array.isArray==`function`?Array.isArray(e):r.call(e)===`[object Array]`},s=function(e){if(!e||r.call(e)!==`[object Object]`)return!1;var t=n.call(e,`constructor`),i=e.constructor&&e.constructor.prototype&&n.call(e.constructor.prototype,`isPrototypeOf`);if(e.constructor&&!t&&!i)return!1;for(var a in e);return a===void 0||n.call(e,a)},c=function(e,t){i&&t.name===`__proto__`?i(e,t.name,{enumerable:!0,configurable:!0,value:t.newValue,writable:!0}):e[t.name]=t.newValue},l=function(e,t){if(t===`__proto__`){if(!n.call(e,t))return;if(a)return a(e,t).value}return e[t]};t.exports=function e(){var t,n,r,i,a,u,d=arguments[0],f=1,p=arguments.length,m=!1;for(typeof d==`boolean`&&(m=d,d=arguments[1]||{},f=2),(d==null||typeof d!=`object`&&typeof d!=`function`)&&(d={});f<p;++f)if(t=arguments[f],t!=null)for(n in t)r=l(d,n),i=l(t,n),d!==i&&(m&&i&&(s(i)||(a=o(i)))?(a?(a=!1,u=r&&o(r)?r:[]):u=r&&s(r)?r:{},c(d,{name:n,newValue:e(m,u,i)})):i!==void 0&&c(d,{name:n,newValue:i}));return d}}));function xg(e){if(typeof e!=`object`||!e)return!1;let t=Object.getPrototypeOf(e);return(t===null||t===Object.prototype||Object.getPrototypeOf(t)===null)&&!(Symbol.toStringTag in e)&&!(Symbol.iterator in e)}function Sg(){let e=[],t={run:n,use:r};return t;function n(...t){let n=-1,r=t.pop();if(typeof r!=`function`)throw TypeError(`Expected function as last argument, not `+r);i(null,...t);function i(a,...o){let s=e[++n],c=-1;if(a){r(a);return}for(;++c<t.length;)(o[c]===null||o[c]===void 0)&&(o[c]=t[c]);t=o,s?Cg(s,i)(...o):r(null,...o)}}function r(n){if(typeof n!=`function`)throw TypeError("Expected `middelware` to be a function, not "+n);return e.push(n),t}}function Cg(e,t){let n;return r;function r(...t){let r=e.length>t.length,o;r&&t.push(i);try{o=e.apply(this,t)}catch(e){let t=e;if(r&&n)throw t;return i(t)}r||(o&&o.then&&typeof o.then==`function`?o.then(a,i):o instanceof Error?i(o):a(o))}function i(e,...r){n||(n=!0,t(e,...r))}function a(e){i(null,e)}}var wg={basename:Tg,dirname:Eg,extname:Dg,join:Og,sep:`/`};function Tg(e,t){if(t!==void 0&&typeof t!=`string`)throw TypeError(`"ext" argument must be a string`);jg(e);let n=0,r=-1,i=e.length,a;if(t===void 0||t.length===0||t.length>e.length){for(;i--;)if(e.codePointAt(i)===47){if(a){n=i+1;break}}else r<0&&(a=!0,r=i+1);return r<0?``:e.slice(n,r)}if(t===e)return``;let o=-1,s=t.length-1;for(;i--;)if(e.codePointAt(i)===47){if(a){n=i+1;break}}else o<0&&(a=!0,o=i+1),s>-1&&(e.codePointAt(i)===t.codePointAt(s--)?s<0&&(r=i):(s=-1,r=o));return n===r?r=o:r<0&&(r=e.length),e.slice(n,r)}function Eg(e){if(jg(e),e.length===0)return`.`;let t=-1,n=e.length,r;for(;--n;)if(e.codePointAt(n)===47){if(r){t=n;break}}else r||=!0;return t<0?e.codePointAt(0)===47?`/`:`.`:t===1&&e.codePointAt(0)===47?`//`:e.slice(0,t)}function Dg(e){jg(e);let t=e.length,n=-1,r=0,i=-1,a=0,o;for(;t--;){let s=e.codePointAt(t);if(s===47){if(o){r=t+1;break}continue}n<0&&(o=!0,n=t+1),s===46?i<0?i=t:a!==1&&(a=1):i>-1&&(a=-1)}return i<0||n<0||a===0||a===1&&i===n-1&&i===r+1?``:e.slice(i,n)}function Og(...e){let t=-1,n;for(;++t<e.length;)jg(e[t]),e[t]&&(n=n===void 0?e[t]:n+`/`+e[t]);return n===void 0?`.`:kg(n)}function kg(e){jg(e);let t=e.codePointAt(0)===47,n=Ag(e,!t);return n.length===0&&!t&&(n=`.`),n.length>0&&e.codePointAt(e.length-1)===47&&(n+=`/`),t?`/`+n:n}function Ag(e,t){let n=``,r=0,i=-1,a=0,o=-1,s,c;for(;++o<=e.length;){if(o<e.length)s=e.codePointAt(o);else if(s===47)break;else s=47;if(s===47){if(!(i===o-1||a===1))if(i!==o-1&&a===2){if(n.length<2||r!==2||n.codePointAt(n.length-1)!==46||n.codePointAt(n.length-2)!==46){if(n.length>2){if(c=n.lastIndexOf(`/`),c!==n.length-1){c<0?(n=``,r=0):(n=n.slice(0,c),r=n.length-1-n.lastIndexOf(`/`)),i=o,a=0;continue}}else if(n.length>0){n=``,r=0,i=o,a=0;continue}}t&&(n=n.length>0?n+`/..`:`..`,r=2)}else n.length>0?n+=`/`+e.slice(i+1,o):n=e.slice(i+1,o),r=o-i-1;i=o,a=0}else s===46&&a>-1?a++:a=-1}return n}function jg(e){if(typeof e!=`string`)throw TypeError(`Path must be a string. Received `+JSON.stringify(e))}var Mg={cwd:Ng};function Ng(){return`/`}function Pg(e){return!!(typeof e==`object`&&e&&`href`in e&&e.href&&`protocol`in e&&e.protocol&&e.auth===void 0)}function Fg(e){if(typeof e==`string`)e=new URL(e);else if(!Pg(e)){let t=TypeError('The "path" argument must be of type string or an instance of URL. Received `'+e+"`");throw t.code=`ERR_INVALID_ARG_TYPE`,t}if(e.protocol!==`file:`){let e=TypeError(`The URL must be of scheme file`);throw e.code=`ERR_INVALID_URL_SCHEME`,e}return Ig(e)}function Ig(e){if(e.hostname!==``){let e=TypeError(`File URL host must be "localhost" or empty on darwin`);throw e.code=`ERR_INVALID_FILE_URL_HOST`,e}let t=e.pathname,n=-1;for(;++n<t.length;)if(t.codePointAt(n)===37&&t.codePointAt(n+1)===50){let e=t.codePointAt(n+2);if(e===70||e===102){let e=TypeError(`File URL path must not include encoded / characters`);throw e.code=`ERR_INVALID_FILE_URL_PATH`,e}}return decodeURIComponent(t)}var Lg=[`history`,`path`,`basename`,`stem`,`extname`,`dirname`],Rg=class{constructor(e){let t;t=e?Pg(e)?{path:e}:typeof e==`string`||Hg(e)?{value:e}:e:{},this.cwd=`cwd`in t?``:Mg.cwd(),this.data={},this.history=[],this.messages=[],this.value,this.map,this.result,this.stored;let n=-1;for(;++n<Lg.length;){let e=Lg[n];e in t&&t[e]!==void 0&&t[e]!==null&&(this[e]=e===`history`?[...t[e]]:t[e])}let r;for(r in t)Lg.includes(r)||(this[r]=t[r])}get basename(){return typeof this.path==`string`?wg.basename(this.path):void 0}set basename(e){Bg(e,`basename`),zg(e,`basename`),this.path=wg.join(this.dirname||``,e)}get dirname(){return typeof this.path==`string`?wg.dirname(this.path):void 0}set dirname(e){Vg(this.basename,`dirname`),this.path=wg.join(e||``,this.basename)}get extname(){return typeof this.path==`string`?wg.extname(this.path):void 0}set extname(e){if(zg(e,`extname`),Vg(this.dirname,`extname`),e){if(e.codePointAt(0)!==46)throw Error("`extname` must start with `.`");if(e.includes(`.`,1))throw Error("`extname` cannot contain multiple dots")}this.path=wg.join(this.dirname,this.stem+(e||``))}get path(){return this.history[this.history.length-1]}set path(e){Pg(e)&&(e=Fg(e)),Bg(e,`path`),this.path!==e&&this.history.push(e)}get stem(){return typeof this.path==`string`?wg.basename(this.path,this.extname):void 0}set stem(e){Bg(e,`stem`),zg(e,`stem`),this.path=wg.join(this.dirname||``,e+(this.extname||``))}fail(e,t,n){let r=this.message(e,t,n);throw r.fatal=!0,r}info(e,t,n){let r=this.message(e,t,n);return r.fatal=void 0,r}message(e,t,n){let r=new Od(e,t,n);return this.path&&(r.name=this.path+`:`+r.name,r.file=this.path),r.fatal=!1,this.messages.push(r),r}toString(e){return this.value===void 0?``:typeof this.value==`string`?this.value:new TextDecoder(e||void 0).decode(this.value)}};function zg(e,t){if(e&&e.includes(wg.sep))throw Error("`"+t+"` cannot be a path: did not expect `"+wg.sep+"`")}function Bg(e,t){if(!e)throw Error("`"+t+"` cannot be empty")}function Vg(e,t){if(!e)throw Error("Setting `"+t+"` requires `path` to be set too")}function Hg(e){return!!(e&&typeof e==`object`&&`byteLength`in e&&`byteOffset`in e)}var Ug=(function(e){let t=this.constructor.prototype,n=t[e],r=function(){return n.apply(r,arguments)};return Object.setPrototypeOf(r,t),r}),Wg=u(bg(),1),Gg={}.hasOwnProperty,Kg=new class e extends Ug{constructor(){super(`copy`),this.Compiler=void 0,this.Parser=void 0,this.attachers=[],this.compiler=void 0,this.freezeIndex=-1,this.frozen=void 0,this.namespace={},this.parser=void 0,this.transformers=Sg()}copy(){let t=new e,n=-1;for(;++n<this.attachers.length;){let e=this.attachers[n];t.use(...e)}return t.data((0,Wg.default)(!0,{},this.namespace)),t}data(e,t){return typeof e==`string`?arguments.length===2?(Yg(`data`,this.frozen),this.namespace[e]=t,this):Gg.call(this.namespace,e)&&this.namespace[e]||void 0:e?(Yg(`data`,this.frozen),this.namespace=e,this):this.namespace}freeze(){if(this.frozen)return this;let e=this;for(;++this.freezeIndex<this.attachers.length;){let[t,...n]=this.attachers[this.freezeIndex];if(n[0]===!1)continue;n[0]===!0&&(n[0]=void 0);let r=t.call(e,...n);typeof r==`function`&&this.transformers.use(r)}return this.frozen=!0,this.freezeIndex=1/0,this}parse(e){this.freeze();let t=Qg(e),n=this.parser||this.Parser;return qg(`parse`,n),n(String(t),t)}process(e,t){let n=this;return this.freeze(),qg(`process`,this.parser||this.Parser),Jg(`process`,this.compiler||this.Compiler),t?r(void 0,t):new Promise(r);function r(r,i){let a=Qg(e),o=n.parse(a);n.run(o,a,function(e,t,r){if(e||!t||!r)return s(e);let i=t,a=n.stringify(i,r);e_(a)?r.value=a:r.result=a,s(e,r)});function s(e,n){e||!n?i(e):r?r(n):t(void 0,n)}}}processSync(e){let t=!1,n;return this.freeze(),qg(`processSync`,this.parser||this.Parser),Jg(`processSync`,this.compiler||this.Compiler),this.process(e,r),Zg(`processSync`,`process`,t),n;function r(e,r){t=!0,yg(e),n=r}}run(e,t,n){Xg(e),this.freeze();let r=this.transformers;return!n&&typeof t==`function`&&(n=t,t=void 0),n?i(void 0,n):new Promise(i);function i(i,a){let o=Qg(t);r.run(e,o,s);function s(t,r,o){let s=r||e;t?a(t):i?i(s):n(void 0,s,o)}}}runSync(e,t){let n=!1,r;return this.run(e,t,i),Zg(`runSync`,`run`,n),r;function i(e,t){yg(e),r=t,n=!0}}stringify(e,t){this.freeze();let n=Qg(t),r=this.compiler||this.Compiler;return Jg(`stringify`,r),Xg(e),r(e,n)}use(e,...t){let n=this.attachers,r=this.namespace;if(Yg(`use`,this.frozen),e!=null)if(typeof e==`function`)s(e,t);else if(typeof e==`object`)Array.isArray(e)?o(e):a(e);else throw TypeError("Expected usable value, not `"+e+"`");return this;function i(e){if(typeof e==`function`)s(e,[]);else if(typeof e==`object`)if(Array.isArray(e)){let[t,...n]=e;s(t,n)}else a(e);else throw TypeError("Expected usable value, not `"+e+"`")}function a(e){if(!(`plugins`in e)&&!(`settings`in e))throw Error("Expected usable value but received an empty preset, which is probably a mistake: presets typically come with `plugins` and sometimes with `settings`, but this has neither");o(e.plugins),e.settings&&(r.settings=(0,Wg.default)(!0,r.settings,e.settings))}function o(e){let t=-1;if(e!=null)if(Array.isArray(e))for(;++t<e.length;){let n=e[t];i(n)}else throw TypeError("Expected a list of plugins, not `"+e+"`")}function s(e,t){let r=-1,i=-1;for(;++r<n.length;)if(n[r][0]===e){i=r;break}if(i===-1)n.push([e,...t]);else if(t.length>0){let[r,...a]=t,o=n[i][1];xg(o)&&xg(r)&&(r=(0,Wg.default)(!0,o,r)),n[i]=[e,r,...a]}}}}().freeze();function qg(e,t){if(typeof t!=`function`)throw TypeError("Cannot `"+e+"` without `parser`")}function Jg(e,t){if(typeof t!=`function`)throw TypeError("Cannot `"+e+"` without `compiler`")}function Yg(e,t){if(t)throw Error("Cannot call `"+e+"` on a frozen processor.\nCreate a new processor first, by calling it: use `processor()` instead of `processor`.")}function Xg(e){if(!xg(e)||typeof e.type!=`string`)throw TypeError("Expected node, got `"+e+"`")}function Zg(e,t,n){if(!n)throw Error("`"+e+"` finished async. Use `"+t+"` instead")}function Qg(e){return $g(e)?e:new Rg(e)}function $g(e){return!!(e&&typeof e==`object`&&`message`in e&&`messages`in e)}function e_(e){return typeof e==`string`||t_(e)}function t_(e){return!!(e&&typeof e==`object`&&`byteLength`in e&&`byteOffset`in e)}var n_=[],r_={allowDangerousHtml:!0},i_=/^(https?|ircs?|mailto|xmpp)$/i,a_=[{from:`astPlugins`,id:`remove-buggy-html-in-markdown-parser`},{from:`allowDangerousHtml`,id:`remove-buggy-html-in-markdown-parser`},{from:`allowNode`,id:`replace-allownode-allowedtypes-and-disallowedtypes`,to:`allowElement`},{from:`allowedTypes`,id:`replace-allownode-allowedtypes-and-disallowedtypes`,to:`allowedElements`},{from:`className`,id:`remove-classname`},{from:`disallowedTypes`,id:`replace-allownode-allowedtypes-and-disallowedtypes`,to:`disallowedElements`},{from:`escapeHtml`,id:`remove-buggy-html-in-markdown-parser`},{from:`includeElementIndex`,id:`#remove-includeelementindex`},{from:`includeNodeIndex`,id:`change-includenodeindex-to-includeelementindex`},{from:`linkTarget`,id:`remove-linktarget`},{from:`plugins`,id:`change-plugins-to-remarkplugins`,to:`remarkPlugins`},{from:`rawSourcePos`,id:`#remove-rawsourcepos`},{from:`renderers`,id:`change-renderers-to-components`,to:`components`},{from:`source`,id:`change-source-to-children`,to:`children`},{from:`sourcePos`,id:`#remove-sourcepos`},{from:`transformImageUri`,id:`#add-urltransform`,to:`urlTransform`},{from:`transformLinkUri`,id:`#add-urltransform`,to:`urlTransform`}];function o_(e){let t=s_(e),n=c_(e);return l_(t.runSync(t.parse(n),n),e)}function s_(e){let t=e.rehypePlugins||n_,n=e.remarkPlugins||n_,r=e.remarkRehypeOptions?{...e.remarkRehypeOptions,...r_}:r_;return Kg().use(rh).use(n).use(vg,r).use(t)}function c_(e){let t=e.children||``,n=new Rg;return typeof t==`string`?n.value=t:``+t,n}function l_(e,t){let n=t.allowedElements,r=t.allowElement,i=t.components,a=t.disallowedElements,o=t.skipHtml,s=t.unwrapDisallowed,c=t.urlTransform||u_;for(let e of a_)Object.hasOwn(t,e.from)&&``+e.from+(e.to?"use `"+e.to+"` instead":`remove it`)+e.id;return cg(e,l),X(e,{Fragment:w.Fragment,components:i,ignoreInvalidStyle:!0,jsx:w.jsx,jsxs:w.jsxs,passKeys:!0,passNode:!0});function l(e,t,i){if(e.type===`raw`&&i&&typeof t==`number`)return o?i.children.splice(t,1):i.children[t]={type:`text`,value:e.value},t;if(e.type===`element`){let t;for(t in rf)if(Object.hasOwn(rf,t)&&Object.hasOwn(e.properties,t)){let n=e.properties[t],r=rf[t];(r===null||r.includes(e.tagName))&&(e.properties[t]=c(String(n||``),t,e))}}if(e.type===`element`){let o=n?!n.includes(e.tagName):a?a.includes(e.tagName):!1;if(!o&&r&&typeof t==`number`&&(o=!r(e,t,i)),o&&i&&typeof t==`number`)return s&&e.children?i.children.splice(t,1,...e.children):i.children.splice(t,1),t}}}function u_(e){let t=e.indexOf(`:`),n=e.indexOf(`?`),r=e.indexOf(`#`),i=e.indexOf(`/`);return t===-1||i!==-1&&t>i||n!==-1&&t>n||r!==-1&&t>r||i_.test(e.slice(0,t))?e:``}var d_=Object.assign({"../content/de/3d-flaschenzug-in-autocad.md":`---
-id: local-post-1779960596593
+id: 3d-flaschenzug-in-autocad
+slug: 3d-flaschenzug-in-autocad
+translation_id: local-post-1779960596593
+language: de
+content_type: 
 title: 3D-Flaschenzug in AutoCAD
 category: Maschinenbau
 image_url: /my-electronics-blog/images/posts/Flaschenzug-main.webp
@@ -36,9 +40,7 @@ image_gallery:
 - /my-electronics-blog/images/posts/Flaschenzug-1.webp
 - /my-electronics-blog/images/posts/Flaschenzug-2.webp
 - /my-electronics-blog/images/posts/Flaschenzug-3.webp
-excerpt: In diesem Projekt wurde ein mechanischer Flaschenzug vollständig als 3D-Modell
-  in AutoCAD konstruiert. Der Fokus lag auf der präzisen Modellierung der einzelnen
-  Bauteile sowie der realistischen mechanischen Darstellung des Systems.
+excerpt: In diesem Projekt wurde ein mechanischer Flaschenzug vollständig als 3D-Modell in AutoCAD konstruiert. Der Fokus lag auf der präzisen Modellierung der einzelnen Bauteile sowie der realistischen mechanischen Darstellung des Systems.
 tags:
 - AutoCAD
 - 3D
@@ -49,7 +51,6 @@ created_at: '2026-05-28T09:29:56.593Z'
 external_link: https://drive.google.com/drive/folders/1fN_hc6jaddMzTqEt0iIS4YxpiPdT8JFR?usp=drive_link
 project_status: done
 sort_order: 70
-slug: 3d-flaschenzug-in-autocad
 ---
 
 # 3D-Flaschenzug in AutoCAD
@@ -76,7 +77,11 @@ Realistische Konstruktion der Bauteile
 
 Das fertige Modell kann für technische Präsentationen, Lernzwecke oder als Grundlage für weitere mechanische Entwicklungen verwendet werden.
 `,"../content/de/autocad-2d-kleine-dampfmaschine.md":`---
-id: demo-2
+id: autocad-2d-kleine-dampfmaschine
+slug: autocad-2d-kleine-dampfmaschine
+translation_id: demo-2
+language: de
+content_type: 
 title: AutoCAD 2D – Kleine Dampfmaschine
 category: Maschinenbau
 image_url: /my-electronics-blog/images/posts/Dampfmaschine-main.webp
@@ -85,8 +90,7 @@ image_gallery:
 - /my-electronics-blog/images/posts/Dampfmaschine-2.webp
 - /my-electronics-blog/images/posts/Dampfmaschine-3.webp
 - /my-electronics-blog/images/posts/Dampfmaschine-5.webp
-excerpt: Entwicklung technischer 2D- und 3D-CAD-Modelle im Maschinenbau mit AutoCAD
-  2026, einschließlich einer Dampfmaschine.
+excerpt: Entwicklung technischer 2D- und 3D-CAD-Modelle im Maschinenbau mit AutoCAD 2026, einschließlich einer Dampfmaschine.
 tags:
 - Autocad 2D
 read_time: 6 Min.
@@ -94,8 +98,7 @@ published: true
 created_at: '2026-05-08T12:00:00Z'
 external_link: https://drive.google.com/drive/folders/1GDWUKT5mLYHnSlSns5oKxpMZrkY9WENy
 project_status: done
-sort_order: 20
-slug: autocad-2d-kleine-dampfmaschine
+sort_order: 80
 ---
 
 # AutoCAD 2D – Kleine Dampfmaschine
@@ -144,14 +147,17 @@ AutoCAD 2026
 Projekt von:
 NGUYEN NHAN DO
 `,"../content/de/elektronik-test-reparatur.md":`---
-id: demo-1
+id: elektronik-test-reparatur
+slug: elektronik-test-reparatur
+translation_id: demo-1
+language: de
+content_type: 
 title: Elektronik • Test • Reparatur
 category: Über mich
 image_url: /my-electronics-blog/images/posts/Nguyen-main.webp
-image_gallery: []
-excerpt: Elektroingenieur mit großem Interesse an Elektrokonstruktion und Softwareentwicklung.
-  Lernbereit, feinmotorisch und motiviert, meine praktischen Erfahrungen kontinuierlich
-  zu erweitern.
+image_gallery:
+[]
+excerpt: Elektroingenieur mit großem Interesse an Elektrokonstruktion und Softwareentwicklung. Lernbereit, feinmotorisch und motiviert, meine praktischen Erfahrungen kontinuierlich zu erweitern.
 tags:
 - ESP32
 - MQTT
@@ -160,10 +166,9 @@ tags:
 read_time: 8 Min.
 published: true
 created_at: '2026-05-14T12:00:00Z'
-external_link: ''
+external_link: 
 project_status: done
 sort_order: 10
-slug: elektronik-test-reparatur
 ---
 
 # Elektronik • Test • Reparatur
@@ -184,7 +189,11 @@ Ich arbeite sorgfältig, feinmotorisch und bin sehr lernbereit. Obwohl ich noch 
 
 Besonders interessiere ich mich für Prüffeldtechnik, Prototypenentwicklung, hardwarenahe Programmierung sowie die Analyse und Fehlerdiagnose elektronischer Systeme.
 `,"../content/de/finanzverwaltung-mit-datenanalyse.md":`---
-id: local-post-1779957810945
+id: finanzverwaltung-mit-datenanalyse
+slug: finanzverwaltung-mit-datenanalyse
+translation_id: local-post-1779957810945
+language: de
+content_type: 
 title: Finanzverwaltung mit Datenanalyse
 category: Softwareentwicklung
 image_url: /my-electronics-blog/images/posts/finanzmanager-main.webp
@@ -192,12 +201,7 @@ image_gallery:
 - /my-electronics-blog/images/posts/finanzmanager-1.webp
 - /my-electronics-blog/images/posts/finanzmanager-2.webp
 - /my-electronics-blog/images/posts/finanzmanager-3.webp
-excerpt: 'Die Software ermöglicht die Verwaltung persönlicher Einnahmen und Ausgaben,
-  unterstützt CSV-Import und -Export sowie Echtzeit-Datenanalysen über eine moderne
-  grafische Benutzeroberfläche.
-
-  Über den Button „Zum Projekt“ am Ende der Seite erhalten Sie Zugriff auf den vollständigen
-  Quellcode des Projekts „Finanzmanager“.'
+excerpt: Die Software ermöglicht die Verwaltung persönlicher Einnahmen und Ausgaben, unterstützt CSV-Import und -Export sowie Echtzeit-Datenanalysen über eine moderne grafische Benutzeroberfläche. Über den Button „Zum Projekt“ am Ende der Seite erhalten Sie Zugriff auf den vollständigen Quellcode des Projekts „Finanzmanager“.
 tags:
 - C++
 - Qt 6.9
@@ -207,7 +211,6 @@ created_at: '2026-05-28T08:43:30.945Z'
 external_link: https://github.com/nguyennhando/finanzmanager
 project_status: done
 sort_order: 30
-slug: finanzverwaltung-mit-datenanalyse
 ---
 
 # Finanzverwaltung mit Datenanalyse
@@ -445,13 +448,17 @@ collaboration_title: Zusammenarbeit an modernen Elektronikprojekten.
 collaboration_text: Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder individuelle Entwicklungen.
 ---
 `,"../content/de/konzept-eines-pwm-geregelten-dc-netzteils-mit-mess-und-schutzfunktionen.md":`---
-id: local-post-1779960818567
+id: konzept-eines-pwm-geregelten-dc-netzteils-mit-mess-und-schutzfunktionen
+slug: konzept-eines-pwm-geregelten-dc-netzteils-mit-mess-und-schutzfunktionen
+translation_id: local-post-1779960818567
+language: de
+content_type: 
 title: Konzept eines PWM-geregelten DC-Netzteils mit Mess- und Schutzfunktionen
 category: Elektrotechnik
 image_url: /my-electronics-blog/images/posts/DC-Netzteil-main.webp
-image_gallery: []
-excerpt: Lern- und Konzeptprojekt zur Entwicklung eines mikrocontrollerbasierten DC-Netzteils
-  mit PWM-Regelung, Strombegrenzung und grundlegenden Schutzfunktionen.
+image_gallery:
+[]
+excerpt: Lern- und Konzeptprojekt zur Entwicklung eines mikrocontrollerbasierten DC-Netzteils mit PWM-Regelung, Strombegrenzung und grundlegenden Schutzfunktionen.
 tags:
 - PWM
 - Netzteil
@@ -459,10 +466,9 @@ tags:
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:33:38.567Z'
-external_link: ''
+external_link: 
 project_status: idea
-sort_order: 100
-slug: konzept-eines-pwm-geregelten-dc-netzteils-mit-mess-und-schutzfunktionen
+sort_order: 130
 ---
 
 # Konzept eines PWM-geregelten DC-Netzteils mit Mess- und Schutzfunktionen
@@ -489,13 +495,17 @@ Das Projekt befindet sich derzeit noch in der Konzept- und Lernphase. Zunächst 
 
 Mit diesem Projekt möchte ich mein Wissen in Embedded-Systemen, Leistungselektronik und praktischer Messtechnik weiter vertiefen.
 `,"../content/de/konzeptprojekt-energieuberwachung-mit-esp8266-und-stromsensor.md":`---
-id: local-post-1779960876705
-title: 'Konzeptprojekt: Energieüberwachung mit ESP8266 und Stromsensor'
+id: konzeptprojekt-energieuberwachung-mit-esp8266-und-stromsensor
+slug: konzeptprojekt-energieuberwachung-mit-esp8266-und-stromsensor
+translation_id: local-post-1779960876705
+language: de
+content_type: 
+title: Konzeptprojekt: Energieüberwachung mit ESP8266 und Stromsensor
 category: Embedded Systems
 image_url: /my-electronics-blog/images/posts/Energieüberwachung-main.webp
-image_gallery: []
-excerpt: Geplantes Lernprojekt zur einfachen Erfassung und Visualisierung von Stromverbrauchsdaten
-  mit ESP8266 und Stromsensor über WLAN.
+image_gallery:
+[]
+excerpt: Geplantes Lernprojekt zur einfachen Erfassung und Visualisierung von Stromverbrauchsdaten mit ESP8266 und Stromsensor über WLAN.
 tags:
 - ESP8266
 - Energieüberwachung
@@ -505,10 +515,9 @@ tags:
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:34:36.705Z'
-external_link: ''
+external_link: 
 project_status: in_progress
-sort_order: 100
-slug: konzeptprojekt-energieuberwachung-mit-esp8266-und-stromsensor
+sort_order: 120
 ---
 
 # Konzeptprojekt: Energieüberwachung mit ESP8266 und Stromsensor
@@ -536,24 +545,26 @@ Das Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, 
 Aktueller Status:
 Konzeptprojekt / in Planung
 `,"../content/de/konzeptprojekt-esp32-basierte-mqtt-sensoruberwachung-fur-smart-home-anwendungen.md":`---
-id: local-post-1779960913660
-title: 'Konzeptprojekt: ESP32-basierte MQTT-Sensorüberwachung für Smart-Home-Anwendungen'
+id: konzeptprojekt-esp32-basierte-mqtt-sensoruberwachung-fur-smart-home-anwendungen
+slug: konzeptprojekt-esp32-basierte-mqtt-sensoruberwachung-fur-smart-home-anwendungen
+translation_id: local-post-1779960913660
+language: de
+content_type: 
+title: Konzeptprojekt: ESP32-basierte MQTT-Sensorüberwachung für Smart-Home-Anwendungen
 category: IoT
 image_url: /my-electronics-blog/images/posts/SmartHome-main.webp
-image_gallery: []
-excerpt: Geplantes Lernprojekt zur Entwicklung einer einfachen IoT-Plattform auf Basis
-  eines ESP32-Mikrocontrollers. Ziel des Projekts ist die Erfassung und Visualisierung
-  verschiedener Sensordaten über WLAN und MQTT.
+image_gallery:
+[]
+excerpt: Geplantes Lernprojekt zur Entwicklung einer einfachen IoT-Plattform auf Basis eines ESP32-Mikrocontrollers. Ziel des Projekts ist die Erfassung und Visualisierung verschiedener Sensordaten über WLAN und MQTT.
 tags:
 - ESP32
 - MQTT
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:35:13.660Z'
-external_link: ''
+external_link: 
 project_status: in_progress
-sort_order: 100
-slug: konzeptprojekt-esp32-basierte-mqtt-sensoruberwachung-fur-smart-home-anwendungen
+sort_order: 110
 ---
 
 # Konzeptprojekt: ESP32-basierte MQTT-Sensorüberwachung für Smart-Home-Anwendungen
@@ -583,25 +594,26 @@ Das Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, 
 Aktueller Status:
 Konzeptprojekt / in Planung
 `,"../content/de/konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485.md":`---
-id: local-post-1779960691288
-title: 'Konzeptprojekt: ESP32-basiertes 4–20mA IoT-Gateway mit MQTT und RS485'
+id: konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485
+slug: konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485
+translation_id: local-post-1779960691288
+language: de
+content_type: 
+title: Konzeptprojekt: ESP32-basiertes 4–20mA IoT-Gateway mit MQTT und RS485
 category: IoT
 image_url: /my-electronics-blog/images/posts/ESP32-main.webp
-image_gallery: []
-excerpt: Geplantes Lern- und Entwicklungsprojekt zur Erfassung von 4–20mA-Sensorsignalen
-  mit ESP32, ADS1115 und MQTT-Kommunikation. Ziel des Projekts ist die Entwicklung
-  eines einfachen industriellen IoT-Prototyps zur Sensorüberwachung und Datenvisualisierung
-  über Home Assistant.
+image_gallery:
+[]
+excerpt: Geplantes Lern- und Entwicklungsprojekt zur Erfassung von 4–20mA-Sensorsignalen mit ESP32, ADS1115 und MQTT-Kommunikation. Ziel des Projekts ist die Entwicklung eines einfachen industriellen IoT-Prototyps zur Sensorüberwachung und Datenvisualisierung über Home Assistant.
 tags:
 - ESP32
 - MQTT
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:31:31.288Z'
-external_link: ''
+external_link: 
 project_status: idea
 sort_order: 90
-slug: konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485
 ---
 
 # Konzeptprojekt: ESP32-basiertes 4–20mA IoT-Gateway mit MQTT und RS485
@@ -632,23 +644,26 @@ Geplante Technologien:
 Aktueller Status:
 Konzeptphase / Lernprojekt
 `,"../content/de/konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt.md":`---
-id: local-post-1779960950659
-title: 'Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT'
+id: konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt
+slug: konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt
+translation_id: local-post-1779960950659
+language: de
+content_type: 
+title: Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT
 category: Elektrotechnik
 image_url: /my-electronics-blog/images/posts/Schaltnetzteil-main.webp
-image_gallery: []
-excerpt: Geplantes Lernprojekt zur Überwachung von Spannungs-, Strom- und Temperaturwerten
-  eines DC-Schaltnetzteils mit ESP32 und MQTT-Kommunikation.
+image_gallery:
+[]
+excerpt: Geplantes Lernprojekt zur Überwachung von Spannungs-, Strom- und Temperaturwerten eines DC-Schaltnetzteils mit ESP32 und MQTT-Kommunikation.
 tags:
 - MQTT
 - Schaltnetzteil
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:35:50.659Z'
-external_link: ''
+external_link: 
 project_status: idea
 sort_order: 100
-slug: konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt
 ---
 
 # Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT
@@ -701,15 +716,18 @@ Dieser Blog dient vor allem dazu, meine technischen Projekte, Erfahrungen und Le
 
 Alle Inhalte basieren auf persönlichen Projekten, eigenständigem Lernen und öffentlich zugänglichem Wissen. Vertrauliche Informationen, interne Unterlagen oder Projekte von aktuellen bzw. ehemaligen Arbeitgebern werden selbstverständlich nicht veröffentlicht.
 `,"../content/de/plc-programmierung-einer-industriellen-tauchanlage.md":`---
-id: demo-3
+id: plc-programmierung-einer-industriellen-tauchanlage
+slug: plc-programmierung-einer-industriellen-tauchanlage
+translation_id: demo-3
+language: de
+content_type: 
 title: PLC-Programmierung einer industriellen Tauchanlage
 category: SPS-Programmierung
 image_url: /my-electronics-blog/images/posts/Tauchanlage-main.webp
 image_gallery:
 - /my-electronics-blog/images/posts/Tauchanlage-1.webp
 - /my-electronics-blog/images/posts/Tauchanlage-2.webp
-excerpt: Automatisierte Tauchanlage mit SPS-Steuerung. Automatischer Transport und
-  Tauchprozess mit Siemens S7-300. Hand- und Automatikbetrieb im TIA Portal realisiert.
+excerpt: Automatisierte Tauchanlage mit SPS-Steuerung. Automatischer Transport und Tauchprozess mit Siemens S7-300. Hand- und Automatikbetrieb im TIA Portal realisiert.
 tags:
 - SPS
 - S7300
@@ -720,7 +738,6 @@ created_at: '2026-04-29T12:00:00Z'
 external_link: https://drive.google.com/drive/folders/1WgBLk6R1F-_J_oisAxwNgQyFdcKVzb-m
 project_status: done
 sort_order: 50
-slug: plc-programmierung-einer-industriellen-tauchanlage
 ---
 
 # PLC-Programmierung einer industriellen Tauchanlage
@@ -745,6 +762,9 @@ Das Projekt demonstriert praxisnah die Umsetzung industrieller Automatisierungst
 `,"../content/de/technisches-portfolio-elektronik-blog.md":`---
 id: technisches-portfolio-elektronik-blog
 slug: technisches-portfolio-elektronik-blog
+translation_id: technisches-portfolio-elektronik-blog
+language: de
+content_type: 
 title: Technisches Portfolio & Elektronik-Blog
 category: Softwareentwicklung
 image_url: /my-electronics-blog/images/posts/Portfolio-Blog-main.webp
@@ -764,7 +784,7 @@ published: true
 created_at: '2026-05-28T09:30:47.159Z'
 external_link: https://github.com/nguyennhando/my-electronics-blog
 project_status: done
-sort_order: 80
+sort_order: 20
 ---
 
 # Technisches Portfolio & Elektronik-Blog
@@ -860,23 +880,19 @@ Die Plattform wird kontinuierlich erweitert und dient gleichzeitig als praktisch
 
 Mit diesem Projekt entstand eine vollständig eigenentwickelte Portfolio- und Blog-Plattform, die technische Dokumentation, Projektmanagement und moderne Webentwicklung miteinander kombiniert.
 `,"../content/de/visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen.md":`---
-id: local-post-1779960317991
-title: Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens
-  WinCC
+id: visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen
+slug: visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen
+translation_id: local-post-1779960317991
+language: de
+content_type: 
+title: Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens WinCC
 category: SPS-Programmierung
 image_url: /my-electronics-blog/images/posts/Mischbehälter-main.webp
 image_gallery:
 - /my-electronics-blog/images/posts/Mischbehälter-1.webp
 - /my-electronics-blog/images/posts/Mischbehälter-2.webp
 - /my-electronics-blog/images/posts/Mischbehälter-3.webp
-excerpt: 'Dieses Projekt beschreibt die Entwicklung eines industriellen HMI-Systems
-  zur Überwachung und Steuerung eines Mischbehälters mit Siemens SIMATIC WinCC Runtime
-  Advanced.
-
-  Die Anwendung ermöglicht die Visualisierung von Sensoren, Ventilen, Motoren und
-  Temperaturwerten in Echtzeit sowie die Bedienung im Automatik- und Handbetrieb.
-  Ziel des Projekts ist eine benutzerfreundliche, sichere und effiziente Prozesssteuerung
-  für industrielle Mischprozesse.'
+excerpt: Dieses Projekt beschreibt die Entwicklung eines industriellen HMI-Systems zur Überwachung und Steuerung eines Mischbehälters mit Siemens SIMATIC WinCC Runtime Advanced. Die Anwendung ermöglicht die Visualisierung von Sensoren, Ventilen, Motoren und Temperaturwerten in Echtzeit sowie die Bedienung im Automatik- und Handbetrieb. Ziel des Projekts ist eine benutzerfreundliche, sichere und effiziente Prozesssteuerung für industrielle Mischprozesse.
 tags:
 - SPS
 read_time: 5 Min.
@@ -885,7 +901,6 @@ created_at: '2026-05-28T09:25:17.991Z'
 external_link: https://drive.google.com/drive/folders/1Vrz5hK6aTVExshjDZIi92ecTgQaFo_kq
 project_status: done
 sort_order: 40
-slug: visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen
 ---
 
 # Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens WinCC
@@ -914,15 +929,17 @@ Ziel des Projekts ist die Entwicklung einer zuverlässigen und effizienten Lösu
 
 Klicken Sie auf die Schaltfläche „Zum Projekt“, um die vollständige Projektdokumentation und weitere Details zum HMI-System anzuzeigen.
 `,"../content/de/wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi.md":`---
-id: local-post-1779960469574
+id: wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi
+slug: wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi
+translation_id: local-post-1779960469574
+language: de
+content_type: 
 title: WinCC Fischertechnikmodell – Automatik- und Handbetrieb mit HMI
 category: SPS-Programmierung
 image_url: /my-electronics-blog/images/posts/FischerTechnik-main.webp
 image_gallery:
 - /my-electronics-blog/images/posts/FischerTechnik-1.webp
-excerpt: Programmierung eines Fischertechnik-Pressenmodells mit Siemens CPU1512C,
-  ET200SP und TP700 Comfort Panel. Implementiert werden Automatikbetrieb, Handbetrieb,
-  Benutzerverwaltung, Rezepturverwaltung, Alarmmeldungen sowie eine vollständige HMI-Bedienoberfläche.
+excerpt: Programmierung eines Fischertechnik-Pressenmodells mit Siemens CPU1512C, ET200SP und TP700 Comfort Panel. Implementiert werden Automatikbetrieb, Handbetrieb, Benutzerverwaltung, Rezepturverwaltung, Alarmmeldungen sowie eine vollständige HMI-Bedienoberfläche.
 tags:
 - WinCC
 - SPS
@@ -933,7 +950,6 @@ created_at: '2026-05-28T09:27:49.574Z'
 external_link: https://drive.google.com/drive/folders/1XwbZqMA_neR7FqreJCQsHW4ddtIEpOKi?usp=drive_link
 project_status: done
 sort_order: 60
-slug: wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi
 ---
 
 # WinCC Fischertechnikmodell – Automatik- und Handbetrieb mit HMI
@@ -1036,6 +1052,55 @@ Key aspects:
 - Realistic component design
 
 The finished model can be used for technical presentations, learning purposes or as a basis for further mechanical development.
+`,"../content/en/3d-pulley-block-in-autocad.md":`---
+id: 3d-pulley-block-in-autocad
+slug: 3d-pulley-block-in-autocad
+translation_id: local-post-1779960596593
+language: en
+content_type: 
+title: 3D Pulley Block in AutoCAD
+category: Maschinenbau
+image_url: /my-electronics-blog/images/posts/Flaschenzug-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Flaschenzug-1.webp
+- /my-electronics-blog/images/posts/Flaschenzug-2.webp
+- /my-electronics-blog/images/posts/Flaschenzug-3.webp
+excerpt: A mechanical pulley block was fully designed as a 3D model in AutoCAD, with a focus on precise component modeling and realistic mechanical representation.
+tags:
+- AutoCAD
+- 3D
+- Design
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:29:56.593Z'
+external_link: https://drive.google.com/drive/folders/1fN_hc6jaddMzTqEt0iIS4YxpiPdT8JFR?usp=drive_link
+project_status: done
+sort_order: 70
+---
+
+# 3D Pulley Block in AutoCAD
+
+This project covers the design of a pulley block as a 3D model in AutoCAD. Every mechanical component was modeled individually and then assembled into a complete unit.
+
+The model includes:
+
+- Hook
+- Pulleys
+- Side plates
+- Connecting pins
+- Lever and guide elements
+
+The goal was to improve my 3D CAD design skills and deepen my understanding of mechanical movement and component connections.
+
+Key aspects:
+
+- Precise 3D modeling in AutoCAD
+- Assembly of mechanical components
+- Technical representation of a pulley block
+- Visualization of the mechanism from different perspectives
+- Realistic component design
+
+The finished model can be used for technical presentations, learning purposes or as a basis for further mechanical development.
 `,"../content/en/autocad-2d-kleine-dampfmaschine.md":`---
 translation_id: demo-2
 language: en
@@ -1092,6 +1157,349 @@ The \`Open project\` button provides access to all project files, including the 
 Course period: 19 January 2026 - 13 February 2026  
 Software: AutoCAD 2026  
 Project by: NGUYEN NHAN DO
+`,"../content/en/autocad-2d-small-steam-engine.md":`---
+id: autocad-2d-small-steam-engine
+slug: autocad-2d-small-steam-engine
+translation_id: demo-2
+language: en
+content_type: 
+title: AutoCAD 2D - Small Steam Engine
+category: Maschinenbau
+image_url: /my-electronics-blog/images/posts/Dampfmaschine-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Dampfmaschine-1.webp
+- /my-electronics-blog/images/posts/Dampfmaschine-2.webp
+- /my-electronics-blog/images/posts/Dampfmaschine-3.webp
+- /my-electronics-blog/images/posts/Dampfmaschine-5.webp
+excerpt: Development of technical 2D and 3D CAD models in mechanical engineering with AutoCAD 2026, including a small steam engine.
+tags:
+- AutoCAD 2D
+read_time: 6 Min.
+published: true
+created_at: '2026-05-08T12:00:00Z'
+external_link: https://drive.google.com/drive/folders/1GDWUKT5mLYHnSlSns5oKxpMZrkY9WENy
+project_status: done
+sort_order: 80
+---
+
+# AutoCAD 2D - Small Steam Engine
+
+This project presents the complete 2D design of a small steam engine in the field of mechanical engineering using AutoCAD 2026.
+
+The design includes:
+
+- Base plate
+- Foot and mirror plate
+- Bearing block
+- Piston rod head
+- Crank disc and crankshaft
+- Cylinder and piston
+- Flywheel
+- Pendulum shaft
+- Railing and center bar
+- Standard parts and bill of materials
+
+The technical drawings contain dimensions, sectional views, material specifications, individual component drawings and an assembly drawing.
+
+Materials used:
+
+- Brass
+- Steel alloy
+- Copper
+- Glass
+
+Another project is the design of a mechanical pulley block with a double pulley and safety hook. It was developed as a 3D CAD model for lifting heavy loads with reduced pulling force.
+
+The \`Open project\` button provides access to all project files, including the AutoCAD \`.dwg\` files.
+
+Course period: 19 January 2026 - 13 February 2026  
+Software: AutoCAD 2026  
+Project by: NGUYEN NHAN DO
+`,"../content/en/concept-energy-monitoring-with-esp8266-and-current-sensor.md":`---
+id: concept-energy-monitoring-with-esp8266-and-current-sensor
+slug: concept-energy-monitoring-with-esp8266-and-current-sensor
+translation_id: local-post-1779960876705
+language: en
+content_type: 
+title: Concept Project: Energy Monitoring with ESP8266 and Current Sensor
+category: Embedded Systems
+image_url: /my-electronics-blog/images/posts/Energieüberwachung-main.webp
+image_gallery:
+[]
+excerpt: Planned learning project for simple measurement and visualization of power-consumption data using an ESP8266 and a current sensor over Wi-Fi.
+tags:
+- ESP8266
+- Energy monitoring
+- Sensors
+- Embedded Systems
+- IoT
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:34:36.705Z'
+external_link: 
+project_status: in_progress
+sort_order: 120
+---
+
+# Concept Project: Energy Monitoring with ESP8266 and Current Sensor
+
+This planned learning project explores the simple acquisition and visualization of power-consumption data using an ESP8266 and a current sensor over Wi-Fi.
+
+The project is currently in the concept and learning phase. The planned system uses an ESP8266 with an ACS712 current sensor.
+
+Planned hardware:
+
+- ESP8266 microcontroller
+- ACS712 current sensor
+- OLED display
+- Wi-Fi communication
+
+Planned functions:
+
+- Display of basic measured values
+- Wi-Fi data transmission
+- Dashboard visualization
+- Fundamentals of energy-consumption analysis
+
+The project is intended to deepen my knowledge of embedded systems, sensors and IoT communication.
+
+Current status: concept project, in planning.
+`,"../content/en/concept-esp32-420ma-iot-gateway-with-mqtt-and-rs485.md":`---
+id: concept-esp32-420ma-iot-gateway-with-mqtt-and-rs485
+slug: concept-esp32-420ma-iot-gateway-with-mqtt-and-rs485
+translation_id: local-post-1779960691288
+language: en
+content_type: 
+title: Concept Project: ESP32-Based 4-20 mA IoT Gateway with MQTT and RS485
+category: IoT
+image_url: /my-electronics-blog/images/posts/ESP32-main.webp
+image_gallery:
+[]
+excerpt: Planned learning and development project for acquiring 4-20 mA sensor signals with ESP32, ADS1115 and MQTT communication as a simple industrial IoT prototype.
+tags:
+- ESP32
+- MQTT
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:31:31.288Z'
+external_link: 
+project_status: idea
+sort_order: 90
+---
+
+# Concept Project: ESP32-Based 4-20 mA IoT Gateway with MQTT and RS485
+
+This planned learning and development project focuses on acquiring 4-20 mA sensor signals with an ESP32, ADS1115 and MQTT communication. The goal is to create a simple industrial IoT prototype for sensor monitoring and data visualization through Home Assistant.
+
+The project is currently in the concept and planning phase.
+
+Planned functions:
+
+- Acquisition of 4-20 mA sensor signals through ADS1115
+- MQTT communication for IoT applications
+- RS485 and Modbus RTU support
+- Sensor-data visualization through Home Assistant
+- Power supply for industrial 12-24 VDC environments
+
+The first development phase uses a rapid prototype with ESP32 DevKit, ADS1115 module and MQTT connection. After successful functional testing, a custom PCB version is planned in KiCad.
+
+Planned technologies:
+
+- ESP32-S3
+- ADS1115
+- MQTT
+- RS485 and Modbus RTU
+- Home Assistant
+- KiCad
+
+Current status: concept phase, learning project.
+`,"../content/en/concept-esp32-mqtt-sensor-monitoring-for-smart-home-applications.md":`---
+id: concept-esp32-mqtt-sensor-monitoring-for-smart-home-applications
+slug: concept-esp32-mqtt-sensor-monitoring-for-smart-home-applications
+translation_id: local-post-1779960913660
+language: en
+content_type: 
+title: Concept Project: ESP32-Based MQTT Sensor Monitoring for Smart Home Applications
+category: IoT
+image_url: /my-electronics-blog/images/posts/SmartHome-main.webp
+image_gallery:
+[]
+excerpt: Planned learning project for a simple IoT platform based on an ESP32 microcontroller to collect and visualize sensor data over Wi-Fi and MQTT.
+tags:
+- ESP32
+- MQTT
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:35:13.660Z'
+external_link: 
+project_status: in_progress
+sort_order: 110
+---
+
+# Concept Project: ESP32-Based MQTT Sensor Monitoring for Smart Home Applications
+
+This planned learning project focuses on a simple IoT platform based on an ESP32 microcontroller. Its goal is to collect and visualize various sensor readings over Wi-Fi and MQTT.
+
+The project is currently in the concept and learning phase.
+
+Planned hardware:
+
+- ESP32 development board
+- DHT22 temperature and humidity sensor
+- Relay module for basic switching functions
+- MQTT broker such as Mosquitto
+- Dashboard for data visualization
+
+Planned functions:
+
+- Wi-Fi communication
+- MQTT publish and subscribe
+- Sensor monitoring
+- Dashboard visualization
+- Expansion with additional sensors and actuators
+
+The project is intended to deepen my knowledge of embedded systems, MQTT communication and IoT applications.
+
+Current status: concept project, in planning.
+`,"../content/en/concept-monitoring-a-dc-switching-power-supply-with-esp32-and-mqtt.md":`---
+id: concept-monitoring-a-dc-switching-power-supply-with-esp32-and-mqtt
+slug: concept-monitoring-a-dc-switching-power-supply-with-esp32-and-mqtt
+translation_id: local-post-1779960950659
+language: en
+content_type: 
+title: Concept Project: Monitoring a DC Switching Power Supply with ESP32 and MQTT
+category: Elektrotechnik
+image_url: /my-electronics-blog/images/posts/Schaltnetzteil-main.webp
+image_gallery:
+[]
+excerpt: Planned learning project for monitoring voltage, current and temperature values of a DC switching power supply using ESP32 and MQTT communication.
+tags:
+- MQTT
+- Switching power supply
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:35:50.659Z'
+external_link: 
+project_status: idea
+sort_order: 100
+---
+
+# Concept Project: Monitoring a DC Switching Power Supply with ESP32 and MQTT
+
+This planned learning project focuses on monitoring voltage, current and temperature values of a DC switching power supply using an ESP32 and MQTT communication.
+
+The project is currently in the concept and learning phase. The aim is to develop a simple monitoring system based on an ESP32 microcontroller and visualize the measured values over Wi-Fi and MQTT.
+
+Planned hardware:
+
+- ESP32 development board
+- ACS712 or INA219 current sensor
+- Temperature sensor
+- OLED display
+- Wi-Fi and MQTT communication
+
+Planned functions:
+
+- Voltage and current monitoring
+- Temperature monitoring
+- MQTT data transmission
+- Dashboard visualization
+- Basic status and error display
+
+The project is intended to deepen my knowledge of embedded systems, sensors and industrial energy monitoring.
+
+Current status: concept project, in planning.
+`,"../content/en/concept-pwm-controlled-dc-power-supply-with-measurement-and-protection.md":`---
+id: concept-pwm-controlled-dc-power-supply-with-measurement-and-protection
+slug: concept-pwm-controlled-dc-power-supply-with-measurement-and-protection
+translation_id: local-post-1779960818567
+language: en
+content_type: 
+title: Concept for a PWM-Controlled DC Power Supply with Measurement and Protection Functions
+category: Elektrotechnik
+image_url: /my-electronics-blog/images/posts/DC-Netzteil-main.webp
+image_gallery:
+[]
+excerpt: Learning and concept project for a microcontroller-based DC power supply with PWM control, current limiting and basic protection functions.
+tags:
+- PWM
+- Power supply
+- STM32
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:33:38.567Z'
+external_link: 
+project_status: idea
+sort_order: 130
+---
+
+# Concept for a PWM-Controlled DC Power Supply with Measurement and Protection Functions
+
+This is a learning and concept project for developing a microcontroller-based DC power supply with PWM control, current limiting and basic protection functions.
+
+The goal is not merely to build a simple DC power supply, but to gain a practical understanding of PWM control, power electronics and electronic protection circuits.
+
+The planned solution regulates output voltage and current through PWM signals and MOSFET control. Basic measurement and protection functions will be integrated to analyze system behavior under different load conditions.
+
+Planned functions:
+
+- Adjustable output voltage
+- Current limiting
+- PWM-based control
+- Voltage and current measurement
+- Temperature monitoring
+- Short-circuit and overcurrent protection
+- Display of important measured values
+
+I am particularly interested in how PWM frequency, load changes and switching behavior affect stability, efficiency and heat generation.
+
+The project is still in the concept and learning phase. Individual functional blocks such as PWM control, current measurement and protection circuits will be tested separately before a complete prototype is built.
+
+With this project, I want to deepen my knowledge of embedded systems, power electronics and practical measurement technology.
+`,"../content/en/electronics-testing-repair.md":`---
+id: electronics-testing-repair
+slug: electronics-testing-repair
+translation_id: demo-1
+language: en
+content_type: 
+title: Electronics - Testing - Repair
+category: Über mich
+image_url: /my-electronics-blog/images/posts/Nguyen-main.webp
+image_gallery:
+[]
+excerpt: Electrical engineer with a strong interest in electrical design and software development. Eager to learn, dexterous and motivated to continuously expand my practical experience.
+tags:
+- ESP32
+- MQTT
+- Smart Home
+- Sensors
+read_time: 8 Min.
+published: true
+created_at: '2026-05-14T12:00:00Z'
+external_link: 
+project_status: done
+sort_order: 10
+---
+
+# Electronics - Testing - Repair
+
+My main areas of focus are:
+
+- Software development
+- Automation technology
+- PLC programming with Siemens S7 and TIA Portal
+- Troubleshooting and repair of electronic assemblies
+
+I am also expanding my knowledge of:
+
+- WinCC
+- C++ and Qt
+- EPLAN
+- AutoCAD 2D and 3D
+
+I work carefully, have good fine motor skills and am very eager to learn. Although I do not yet have extensive professional experience, I quickly familiarize myself with new technologies and technical topics and continue to develop my skills.
+
+I am especially interested in test engineering, prototype development, hardware-oriented programming, and the analysis and diagnosis of electronic systems.
 `,"../content/en/elektronik-test-reparatur.md":`---
 translation_id: demo-1
 language: en
@@ -1133,6 +1541,304 @@ I am also expanding my knowledge of:
 I work carefully, have good fine motor skills and am very eager to learn. Although I do not yet have extensive professional experience, I quickly familiarize myself with new technologies and technical topics and continue to develop my skills.
 
 I am especially interested in test engineering, prototype development, hardware-oriented programming, and the analysis and diagnosis of electronic systems.
+`,"../content/en/financial-management-with-data-analysis.md":`---
+id: financial-management-with-data-analysis
+slug: financial-management-with-data-analysis
+translation_id: local-post-1779957810945
+language: en
+content_type: 
+title: Financial Management with Data Analysis
+category: Softwareentwicklung
+image_url: /my-electronics-blog/images/posts/finanzmanager-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/finanzmanager-1.webp
+- /my-electronics-blog/images/posts/finanzmanager-2.webp
+- /my-electronics-blog/images/posts/finanzmanager-3.webp
+excerpt: Personal income and expense management with CSV import and export, real-time data analysis and a modern graphical interface. The complete source code is available through the project link.
+tags:
+- C++
+- Qt 6.9
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T08:43:30.945Z'
+external_link: https://github.com/nguyennhando/finanzmanager
+project_status: done
+sort_order: 30
+---
+
+# Financial Management with Data Analysis
+
+## GeldPilot - Personal Finance Management
+
+GeldPilot is a modern desktop application for managing personal finances, developed with C++, Qt 6 and SQLite. It supports income and expense tracking, CSV import and export, and real-time data analysis through a modern graphical interface.
+
+The \`Open project\` button at the end of the page provides access to the complete source code.
+
+## Overview
+
+GeldPilot is a user-friendly application for managing income and expenses. Its intuitive interface makes it possible to manage transactions, organize categories and create comprehensive financial reports.
+
+## Main Features
+
+- **Transaction management:** Add, edit and delete income and expenses
+- **Categories:** Use predefined and custom categories
+- **Period filters:** Filter flexibly by date and category
+- **Financial overview:** Automatically calculate income, expenses and balance
+- **Visualization:** Display finances with interactive bar charts
+- **Import and export:** Exchange data through CSV files
+- **Printing:** Generate professional reports with a company logo
+
+## System Requirements
+
+### Minimum Requirements
+
+- Operating system: Windows 10 or 11, macOS 10.15+, or Linux Ubuntu 20.04+
+- Memory: 4 GB RAM
+- Disk space: 100 MB
+- Screen resolution: 1024 x 768
+
+### Recommended Requirements
+
+- Memory: 8 GB RAM or more
+- Screen resolution: 1920 x 1080 or higher
+
+## Installation
+
+### Precompiled Windows Version
+
+1. Download the latest version from the Releases page.
+2. Extract the archive to a folder of your choice.
+3. Start \`GeldPilot.exe\`.
+
+### Build from Source
+
+Requirements:
+
+- Qt 6.9 or newer
+- CMake 3.16 or newer
+- A C++17-compatible compiler:
+  - Windows: MinGW-w64 or MSVC 2019+
+  - macOS: Xcode 12+
+  - Linux: GCC 9+ or Clang 10+
+
+Build steps:
+
+\`\`\`bash
+git clone https://github.com/username/geldpilot.git
+cd geldpilot
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . --config Release
+\`\`\`
+
+Start the application:
+
+\`\`\`bash
+# Windows
+./Release/GeldPilot.exe
+
+# Linux or macOS
+./GeldPilot
+\`\`\`
+
+## Getting Started
+
+### Add Your First Transaction
+
+1. Start GeldPilot.
+2. Enter the date, amount and description.
+3. Select a category, such as \`Salary\`.
+4. Select the type: \`Income\` or \`Expense\`.
+5. Click \`New Transaction\`.
+
+### Filter Data
+
+- Use the category dropdown menus.
+- Set a start date and end date for a time-period filter.
+- Click \`Filter\` to update the view.
+
+### Create Reports
+
+- Click \`Chart\` for a visual representation.
+- Use \`Print\` for a professional report.
+- Export data as CSV for further analysis.
+
+## User Guide
+
+### Transaction Management
+
+To add a transaction, fill in all required fields:
+
+- Date: transaction date
+- Amount: monetary amount, always entered as a positive value
+- Description: short description of the transaction
+- Category: assigned category
+- Type: \`Income\` or \`Expense\`
+
+To edit a transaction:
+
+1. Select a row in the table.
+2. The data appears automatically in the input fields.
+3. Make the required changes.
+4. Click \`Save\`.
+
+To delete transactions:
+
+- Single transaction: select a row and click \`Delete\`.
+- Multiple transactions: select several rows with \`Ctrl + Click\` and click \`Delete\`.
+
+### Categories
+
+Predefined categories:
+
+- Leisure
+- Salary
+- Health
+- Groceries
+- Rent
+- Other
+- Transport
+- Insurance
+- Investment
+- Communication
+- Housing
+
+### Filtering and Search
+
+Filter by category:
+
+- Select \`All Categories\` for an unfiltered view.
+- Select a specific category for a filtered view.
+
+Filter by time period:
+
+1. Set the start date and end date.
+2. Click \`Filter\`.
+
+### Import and Export
+
+CSV import:
+
+1. Prepare a CSV file with the columns \`ID\`, \`Date\`, \`Amount\`, \`Description\`, \`Category\` and \`Type\`.
+2. Click \`Import\`.
+3. Select the CSV file.
+
+CSV export:
+
+1. Click \`Export\`.
+2. Select a location and filename.
+3. The current table view is exported.
+
+### Charts and Reports
+
+To display the financial chart, click \`Chart\`. The bar chart shows categories, total income, total expenses and balance with interactive color coding.
+
+To print a report:
+
+1. Open the chart.
+2. Click \`Print\`.
+3. Select the printer and settings.
+4. The application creates a professional printout with a logo.
+
+## Technical Details
+
+### Architecture
+
+- GUI framework: Qt 6.9
+- Database: SQLite local file
+- Charts: Qt Charts
+- Build system: CMake
+- Compiler on Windows: MinGW-w64
+
+### Database Schema
+
+Transactions table:
+
+\`\`\`sql
+CREATE TABLE transaktionen (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    datum DATE NOT NULL,
+    betrag REAL NOT NULL,
+    beschreibung TEXT,
+    kategorie TEXT NOT NULL,
+    typ TEXT NOT NULL CHECK (typ IN ('Einnahme', 'Ausgabe'))
+);
+\`\`\`
+
+Categories table:
+
+\`\`\`sql
+CREATE TABLE kategorien (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL
+);
+\`\`\`
+
+### Project Structure
+
+\`\`\`text
+geldpilot/
+  src/
+    main.cpp                 Application entry point
+    mainwindow.cpp/h         Main window
+    chartwindow.cpp/h        Chart window
+    datenbankmanager.cpp/h   Database logic
+    centerdelegate.h         UI styling
+  ui/
+    mainwindow.ui            Main-window UI
+    chartwindow.ui           Chart UI
+  resources/
+    icons/                   Application icons
+  CMakeLists.txt             Build configuration
+  README.md                  Documentation
+\`\`\`
+
+## Development
+
+Code style:
+
+- C++17 standard
+- Qt conventions
+- Descriptive German variable names
+- Extensive comments
+
+To contribute:
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Make your changes.
+4. Test thoroughly.
+5. Create a pull request.
+
+Known topics:
+
+- Multiple selection for deletion is implemented.
+- Database indexing for performance is implemented.
+- Backup functionality is planned.
+
+## Support
+
+Need help?
+
+- Documentation: read the complete README.
+- Issues: report bugs on GitHub.
+- E-mail: \`support@geldpilot.de\`
+
+Frequently asked questions:
+
+- **The database cannot be opened:** Make sure the application has write permission in the installation directory.
+- **The chart is not displayed:** Check whether Qt Charts is installed.
+- **Import fails:** Check the CSV format. It must be semicolon-separated.
+
+## License
+
+Copyright 2025 Nguyen Nhan Do. All rights reserved.  
+Version: 1.0.0  
+Developer: Nguyen Nhan Do  
+Build: Qt 6.9, MinGW-w64, CMake
+
+Use GeldPilot to keep track of your finances and shape your financial future with confidence.
 `,"../content/en/finanzverwaltung-mit-datenanalyse.md":`---
 translation_id: local-post-1779957810945
 language: en
@@ -1736,6 +2442,136 @@ The software structure contains several function blocks for operating modes, out
 The project demonstrates the practical implementation of industrial automation with PLCs, sensors, actuators and sequence control in Siemens TIA Portal.
 
 **Click \`Open project\` to view the complete documentation and project files.**
+`,"../content/en/plc-programming-of-an-industrial-dipping-system.md":`---
+id: plc-programming-of-an-industrial-dipping-system
+slug: plc-programming-of-an-industrial-dipping-system
+translation_id: demo-3
+language: en
+content_type: 
+title: PLC Programming of an Industrial Dipping System
+category: SPS-Programmierung
+image_url: /my-electronics-blog/images/posts/Tauchanlage-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Tauchanlage-1.webp
+- /my-electronics-blog/images/posts/Tauchanlage-2.webp
+excerpt: Automated dipping system controlled by a Siemens S7-300 PLC, with automatic transport and dipping sequences plus manual and automatic operating modes in TIA Portal.
+tags:
+- PLC
+- S7300
+- TIA Portal
+read_time: 5 Min.
+published: true
+created_at: '2026-04-29T12:00:00Z'
+external_link: https://drive.google.com/drive/folders/1WgBLk6R1F-_J_oisAxwNgQyFdcKVzb-m
+project_status: done
+sort_order: 50
+---
+
+# PLC Programming of an Industrial Dipping System
+
+This project covers the development and programming of an automated dipping system for an industrial transport and dipping process using a Siemens S7-300.
+
+The system automatically moves, lifts and lowers a workpiece basket between two dipping baths while respecting defined safety and motion conditions.
+
+The control system was implemented with a Siemens S7-300 CPU in TIA Portal. The project includes a manual mode for controlling individual axes and a fully automatic mode with sequential process control.
+
+In automatic mode, the basket independently moves to each dipping station, performs the configured dipping and drip-off times, and then returns to its starting position. Limit sensors, safety checks, status displays, motor controls and a workpiece counter with timestamp history were also implemented.
+
+The software structure contains several function blocks for operating modes, output control, sequence control, part history and diagnostic functions. Symbolic variables, data blocks and structured data types improve readability.
+
+The project demonstrates the practical implementation of industrial automation with PLCs, sensors, actuators and sequence control in Siemens TIA Portal.
+
+**Click \`Open project\` to view the complete documentation and project files.**
+`,"../content/en/technical-portfolio-electronics-blog.md":`---
+id: technical-portfolio-electronics-blog
+slug: technical-portfolio-electronics-blog
+translation_id: technisches-portfolio-elektronik-blog
+language: en
+content_type: 
+title: Technical Portfolio & Electronics Blog
+category: Softwareentwicklung
+image_url: /my-electronics-blog/images/posts/Portfolio-Blog-main.webp
+image_gallery:
+[]
+excerpt: Development of a modern personal portfolio and blog platform for documenting technical projects, electronics experiments, embedded systems, automation and professional development.
+tags:
+- React
+- JavaScript
+- Portfolio
+- Blog
+- Embedded Systems
+- Electronics
+- Web Development
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:30:47.159Z'
+external_link: https://github.com/nguyennhando/my-electronics-blog
+project_status: done
+sort_order: 20
+---
+
+# Technical Portfolio & Electronics Blog
+
+## Project Overview
+
+I developed this website from scratch to document technical projects, electronics work, learning progress and professional experience in one place.
+
+The platform is both a personal portfolio and a technical knowledge base for:
+
+- Electronics
+- Embedded systems
+- IoT
+- Automation technology
+- Software development
+- Measurement technology
+- Technical documentation
+
+## Technologies Used
+
+### Frontend
+
+- React
+- JavaScript
+- Framer Motion
+- React Markdown
+- Tailwind CSS
+
+### UI Components
+
+- Lucide React icons
+- Responsive layout
+- Animations
+- Lightbox gallery
+- Markdown editor
+
+## Main Functions
+
+### Blog System
+
+- Technical project reports
+- Markdown-based articles
+- Categories and tags
+- Search
+- Pagination
+
+### Portfolio
+
+- Project overview
+- Status badges
+- Image gallery
+- External project links
+
+### Custom Markdown Editor
+
+The website includes an integrated editor for creating new articles with live preview, automatic slug generation, Markdown export, direct saving and project management.
+
+## User Interface
+
+The design focuses on a modern technical appearance with a dark UI, responsive presentation, fluid animations and mobile optimization.
+
+## Goal and Result
+
+The website presents technical skills professionally and documents my projects and learning progress over the long term. The result is a self-developed portfolio and blog platform that combines technical documentation, project management and modern web development.
 `,"../content/en/technisches-portfolio-elektronik-blog.md":`---
 translation_id: technisches-portfolio-elektronik-blog
 language: en
@@ -1868,6 +2704,91 @@ The project includes:
 Combining Siemens PLC technology with WinCC Runtime Advanced creates a powerful HMI system for optimizing production workflows and improving operational safety.
 
 Click \`Open project\` to view the complete documentation and further details.
+`,"../content/en/visualization-and-automation-of-an-industrial-mixing-process-with-siemens.md":`---
+id: visualization-and-automation-of-an-industrial-mixing-process-with-siemens
+slug: visualization-and-automation-of-an-industrial-mixing-process-with-siemens
+translation_id: local-post-1779960317991
+language: en
+content_type: 
+title: Visualization and Automation of an Industrial Mixing Process with Siemens WinCC
+category: SPS-Programmierung
+image_url: /my-electronics-blog/images/posts/Mischbehälter-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Mischbehälter-1.webp
+- /my-electronics-blog/images/posts/Mischbehälter-2.webp
+- /my-electronics-blog/images/posts/Mischbehälter-3.webp
+excerpt: Development of an industrial HMI system for monitoring and controlling a mixing tank with Siemens SIMATIC WinCC Runtime Advanced, including sensors, valves, motors and temperature values in real time.
+tags:
+- PLC
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:25:17.991Z'
+external_link: https://drive.google.com/drive/folders/1Vrz5hK6aTVExshjDZIi92ecTgQaFo_kq
+project_status: done
+sort_order: 40
+---
+
+# Visualization and Automation of an Industrial Mixing Process with Siemens WinCC
+
+This project covers the development of a modern HMI visualization system for monitoring and controlling an industrial mixing tank with Siemens SIMATIC WinCC Runtime Advanced and a Siemens S7-1200 or S7-1500 PLC.
+
+The application visualizes sensors, valves, motors and temperature values in real time and supports automatic and manual operating modes. Its goal is user-friendly, safe and efficient control of industrial mixing processes.
+
+The HMI allows the operator to monitor and control process parameters in real time. The complete mixing process is clearly represented, making material flow, motor activity and valve positions easy to understand. Safety functions such as emergency stop, status messages and alarm displays contribute to secure operation.
+
+In automatic mode, the process runs step by step through defined sequences. Sensor values are processed and actuators are controlled automatically. In manual mode, individual components can be tested and controlled separately, which is especially useful during maintenance and commissioning.
+
+The project includes:
+
+- Real-time communication between PLC and HMI
+- Process visualization and system monitoring
+- Temperature monitoring and status displays
+- Control of valves and motors
+- Automatic and manual operation
+- Error and alarm management
+- User-friendly interface
+
+Combining Siemens PLC technology with WinCC Runtime Advanced creates a powerful HMI system for optimizing production workflows and improving operational safety.
+
+Click \`Open project\` to view the complete documentation and further details.
+`,"../content/en/wincc-fischertechnik-model-automatic-and-manual-operation-with-hmi.md":`---
+id: wincc-fischertechnik-model-automatic-and-manual-operation-with-hmi
+slug: wincc-fischertechnik-model-automatic-and-manual-operation-with-hmi
+translation_id: local-post-1779960469574
+language: en
+content_type: 
+title: WinCC Fischertechnik Model - Automatic and Manual Operation with HMI
+category: SPS-Programmierung
+image_url: /my-electronics-blog/images/posts/FischerTechnik-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/FischerTechnik-1.webp
+excerpt: PLC and HMI programming for a Fischertechnik press model with Siemens CPU1512C, ET200SP and TP700 Comfort Panel, including automatic operation, manual mode, users, recipes and alarms.
+tags:
+- WinCC
+- PLC
+- HMI
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:27:49.574Z'
+external_link: https://drive.google.com/drive/folders/1XwbZqMA_neR7FqreJCQsHW4ddtIEpOKi?usp=drive_link
+project_status: done
+sort_order: 60
+---
+
+# WinCC Fischertechnik Model - Automatic and Manual Operation with HMI
+
+This project develops a PLC and HMI control system for a Fischertechnik press model using a Siemens CPU1512C, ET200SP and TP700 Comfort Panel.
+
+The implementation includes:
+
+- Automatic operation
+- Manual and setup mode
+- User management
+- Alarm and message system
+- Recipe management
+- HMI visualization with WinCC
+
+Communication takes place over Profinet. The system is currently in the finalization and optimization phase.
 `,"../content/en/wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi.md":`---
 translation_id: local-post-1779960469574
 language: en
@@ -2006,6 +2927,64 @@ Các trọng tâm:
 - Thiết kế chi tiết sát với thực tế
 
 Mô hình hoàn thiện có thể dùng cho thuyết trình kỹ thuật, học tập hoặc làm nền tảng cho những phát triển cơ khí tiếp theo.
+`,"../content/vi/autocad-2d-dong-co-hoi-nuoc-nho.md":`---
+id: autocad-2d-dong-co-hoi-nuoc-nho
+slug: autocad-2d-dong-co-hoi-nuoc-nho
+translation_id: demo-2
+language: vi
+content_type: 
+title: AutoCAD 2D - Động cơ hơi nước nhỏ
+category: Maschinenbau
+image_url: /my-electronics-blog/images/posts/Dampfmaschine-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Dampfmaschine-1.webp
+- /my-electronics-blog/images/posts/Dampfmaschine-2.webp
+- /my-electronics-blog/images/posts/Dampfmaschine-3.webp
+- /my-electronics-blog/images/posts/Dampfmaschine-5.webp
+excerpt: Phát triển mô hình CAD 2D và 3D trong lĩnh vực cơ khí bằng AutoCAD 2026, bao gồm một động cơ hơi nước nhỏ.
+tags:
+- AutoCAD 2D
+read_time: 6 phút
+published: true
+created_at: '2026-05-08T12:00:00Z'
+external_link: https://drive.google.com/drive/folders/1GDWUKT5mLYHnSlSns5oKxpMZrkY9WENy
+project_status: done
+sort_order: 80
+---
+
+# AutoCAD 2D - Động cơ hơi nước nhỏ
+
+Dự án trình bày bản thiết kế 2D hoàn chỉnh của một động cơ hơi nước nhỏ trong lĩnh vực cơ khí bằng AutoCAD 2026.
+
+Thiết kế bao gồm:
+
+- Tấm đế
+- Chân đỡ và tấm gương
+- Gối đỡ
+- Đầu thanh piston
+- Đĩa quay và trục khuỷu
+- Xi lanh và piston
+- Bánh đà
+- Trục lắc
+- Lan can và thanh giữa
+- Chi tiết tiêu chuẩn và bảng kê vật liệu
+
+Bản vẽ kỹ thuật có kích thước, mặt cắt, thông tin vật liệu, bản vẽ từng chi tiết và bản vẽ lắp.
+
+Vật liệu sử dụng:
+
+- Đồng thau
+- Hợp kim thép
+- Đồng
+- Kính
+
+Một dự án khác là thiết kế hệ thống ròng rọc cơ khí với bánh đôi và móc khóa an toàn. Mô hình CAD 3D này phục vụ việc nâng vật nặng với lực kéo nhỏ hơn.
+
+Nút \`Mở dự án\` dẫn đến toàn bộ tệp dự án, bao gồm các tệp AutoCAD \`.dwg\`.
+
+Thời gian khóa học: 19.01.2026 - 13.02.2026  
+Phần mềm: AutoCAD 2026  
+Người thực hiện: NGUYEN NHAN DO
 `,"../content/vi/autocad-2d-kleine-dampfmaschine.md":`---
 translation_id: demo-2
 language: vi
@@ -2062,6 +3041,50 @@ Nút \`Mở dự án\` dẫn đến toàn bộ tệp dự án, bao gồm các t�
 Thời gian khóa học: 19.01.2026 - 13.02.2026  
 Phần mềm: AutoCAD 2026  
 Người thực hiện: NGUYEN NHAN DO
+`,"../content/vi/dien-tu-kiem-thu-sua-chua.md":`---
+id: dien-tu-kiem-thu-sua-chua
+slug: dien-tu-kiem-thu-sua-chua
+translation_id: demo-1
+language: vi
+content_type: 
+title: Điện tử - Kiểm thử - Sửa chữa
+category: Über mich
+image_url: /my-electronics-blog/images/posts/Nguyen-main.webp
+image_gallery:
+[]
+excerpt: Kỹ sư điện với sự quan tâm lớn đến thiết kế điện và phát triển phần mềm. Ham học hỏi, khéo léo và có động lực liên tục mở rộng kinh nghiệm thực tế.
+tags:
+- ESP32
+- MQTT
+- Smart Home
+- Cảm biến
+read_time: 8 phút
+published: true
+created_at: '2026-05-14T12:00:00Z'
+external_link: 
+project_status: done
+sort_order: 10
+---
+
+# Điện tử - Kiểm thử - Sửa chữa
+
+Các lĩnh vực tôi tập trung gồm:
+
+- Phát triển phần mềm
+- Kỹ thuật tự động hóa
+- Lập trình PLC với Siemens S7 và TIA Portal
+- Tìm lỗi và sửa chữa bo mạch điện tử
+
+Tôi cũng tiếp tục mở rộng kiến thức về:
+
+- WinCC
+- C++ và Qt
+- EPLAN
+- AutoCAD 2D và 3D
+
+Tôi làm việc cẩn thận, có sự khéo léo trong thao tác và rất sẵn sàng học hỏi. Dù kinh nghiệm nghề nghiệp chưa quá dài, tôi có thể nhanh chóng làm quen với công nghệ mới và liên tục phát triển kỹ năng kỹ thuật.
+
+Tôi đặc biệt quan tâm đến kỹ thuật kiểm thử, phát triển nguyên mẫu, lập trình gần phần cứng, cũng như phân tích và chẩn đoán lỗi trong hệ thống điện tử.
 `,"../content/vi/elektronik-test-reparatur.md":`---
 translation_id: demo-1
 language: vi
@@ -2647,6 +3670,95 @@ Chức năng dự kiến:
 Dự án giúp tôi đào sâu kiến thức về hệ thống nhúng, cảm biến và giám sát năng lượng công nghiệp.
 
 Trạng thái hiện tại: dự án ý tưởng, đang lên kế hoạch.
+`,"../content/vi/lap-trinh-plc-cho-he-thong-nhung-cong-nghiep.md":`---
+id: lap-trinh-plc-cho-he-thong-nhung-cong-nghiep
+slug: lap-trinh-plc-cho-he-thong-nhung-cong-nghiep
+translation_id: demo-3
+language: vi
+content_type: 
+title: Lập trình PLC cho hệ thống nhúng công nghiệp
+category: SPS-Programmierung
+image_url: /my-electronics-blog/images/posts/Tauchanlage-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Tauchanlage-1.webp
+- /my-electronics-blog/images/posts/Tauchanlage-2.webp
+excerpt: Hệ thống nhúng tự động điều khiển bằng Siemens S7-300, gồm quá trình vận chuyển và nhúng tự động cùng chế độ vận hành thủ công và tự động trong TIA Portal.
+tags:
+- PLC
+- S7300
+- TIA Portal
+read_time: 5 phút
+published: true
+created_at: '2026-04-29T12:00:00Z'
+external_link: https://drive.google.com/drive/folders/1WgBLk6R1F-_J_oisAxwNgQyFdcKVzb-m
+project_status: done
+sort_order: 50
+---
+
+# Lập trình PLC cho hệ thống nhúng công nghiệp
+
+Dự án bao gồm phát triển và lập trình hệ thống nhúng tự động dùng cho quy trình vận chuyển và nhúng trong công nghiệp với Siemens S7-300.
+
+Hệ thống tự động di chuyển, nâng và hạ giỏ chứa sản phẩm giữa hai bể nhúng trong khi tuân thủ các điều kiện an toàn và chuyển động đã xác định.
+
+Bộ điều khiển được triển khai bằng CPU Siemens S7-300 trong TIA Portal. Dự án có chế độ thủ công để điều khiển từng trục và chế độ tự động hoàn toàn với chuỗi quy trình tuần tự.
+
+Trong chế độ tự động, giỏ tự di chuyển đến từng trạm nhúng, thực hiện thời gian nhúng và chờ nhỏ giọt theo cấu hình rồi quay về vị trí ban đầu. Hệ thống cũng tích hợp cảm biến hành trình, kiểm tra an toàn, hiển thị trạng thái, điều khiển động cơ và bộ đếm sản phẩm với lịch sử dấu thời gian.
+
+Cấu trúc phần mềm gồm nhiều khối chức năng cho chế độ vận hành, điều khiển đầu ra, điều khiển chuỗi, lịch sử sản phẩm và chẩn đoán. Biến ký hiệu, khối dữ liệu và kiểu dữ liệu có cấu trúc giúp chương trình rõ ràng hơn.
+
+Dự án thể hiện việc triển khai thực tế tự động hóa công nghiệp với PLC, cảm biến, cơ cấu chấp hành và điều khiển tuần tự trong Siemens TIA Portal.
+
+**Nhấn \`Mở dự án\` để xem tài liệu và tệp dự án đầy đủ.**
+`,"../content/vi/mo-hinh-3d-ro-roc-trong-autocad.md":`---
+id: mo-hinh-3d-ro-roc-trong-autocad
+slug: mo-hinh-3d-ro-roc-trong-autocad
+translation_id: local-post-1779960596593
+language: vi
+content_type: 
+title: Mô hình 3D ròng rọc trong AutoCAD
+category: Maschinenbau
+image_url: /my-electronics-blog/images/posts/Flaschenzug-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Flaschenzug-1.webp
+- /my-electronics-blog/images/posts/Flaschenzug-2.webp
+- /my-electronics-blog/images/posts/Flaschenzug-3.webp
+excerpt: Một hệ thống ròng rọc cơ khí được thiết kế hoàn chỉnh dưới dạng mô hình 3D trong AutoCAD, tập trung vào độ chính xác của từng chi tiết và cách thể hiện cơ cấu thực tế.
+tags:
+- AutoCAD
+- 3D
+- Thiết kế
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:29:56.593Z'
+external_link: https://drive.google.com/drive/folders/1fN_hc6jaddMzTqEt0iIS4YxpiPdT8JFR?usp=drive_link
+project_status: done
+sort_order: 70
+---
+
+# Mô hình 3D ròng rọc trong AutoCAD
+
+Dự án này trình bày quá trình thiết kế một hệ thống ròng rọc dưới dạng mô hình 3D trong AutoCAD. Từng chi tiết cơ khí được dựng riêng rồi lắp ghép thành một cụm hoàn chỉnh.
+
+Mô hình bao gồm:
+
+- Móc treo
+- Bánh ròng rọc
+- Tấm bên
+- Chốt liên kết
+- Các chi tiết đòn bẩy và dẫn hướng
+
+Mục tiêu của dự án là nâng cao kỹ năng thiết kế CAD 3D, đồng thời hiểu rõ hơn chuyển động cơ khí và cách liên kết các chi tiết.
+
+Các trọng tâm:
+
+- Dựng hình 3D chính xác trong AutoCAD
+- Lắp ghép các chi tiết cơ khí
+- Thể hiện kỹ thuật của hệ thống ròng rọc
+- Quan sát cơ cấu từ nhiều góc nhìn
+- Thiết kế chi tiết sát với thực tế
+
+Mô hình hoàn thiện có thể dùng cho thuyết trình kỹ thuật, học tập hoặc làm nền tảng cho những phát triển cơ khí tiếp theo.
 `,"../content/vi/personal-way.md":`---
 type: personal_way
 language: vi
@@ -2706,6 +3818,394 @@ Cấu trúc phần mềm gồm nhiều khối chức năng cho chế độ vận
 Dự án thể hiện việc triển khai thực tế tự động hóa công nghiệp với PLC, cảm biến, cơ cấu chấp hành và điều khiển tuần tự trong Siemens TIA Portal.
 
 **Nhấn \`Mở dự án\` để xem tài liệu và tệp dự án đầy đủ.**
+`,"../content/vi/portfolio-ky-thuat-va-blog-dien-tu.md":`---
+id: portfolio-ky-thuat-va-blog-dien-tu
+slug: portfolio-ky-thuat-va-blog-dien-tu
+translation_id: technisches-portfolio-elektronik-blog
+language: vi
+content_type: 
+title: Portfolio kỹ thuật & Blog điện tử
+category: Softwareentwicklung
+image_url: /my-electronics-blog/images/posts/Portfolio-Blog-main.webp
+image_gallery:
+[]
+excerpt: Phát triển nền tảng portfolio và blog cá nhân hiện đại để ghi lại dự án kỹ thuật, thử nghiệm điện tử, hệ thống nhúng, tự động hóa và quá trình phát triển nghề nghiệp.
+tags:
+- React
+- JavaScript
+- Portfolio
+- Blog
+- Embedded Systems
+- Điện tử
+- Phát triển web
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:30:47.159Z'
+external_link: https://github.com/nguyennhando/my-electronics-blog
+project_status: done
+sort_order: 20
+---
+
+# Portfolio kỹ thuật & Blog điện tử
+
+## Tổng quan dự án
+
+Tôi tự phát triển toàn bộ website này để lưu trữ tập trung các dự án kỹ thuật, công việc điện tử, tiến trình học tập và kinh nghiệm nghề nghiệp.
+
+Nền tảng vừa là portfolio cá nhân vừa là cơ sở kiến thức kỹ thuật cho:
+
+- Điện tử
+- Hệ thống nhúng
+- IoT
+- Kỹ thuật tự động hóa
+- Phát triển phần mềm
+- Kỹ thuật đo lường
+- Tài liệu kỹ thuật
+
+## Công nghệ sử dụng
+
+### Frontend
+
+- React
+- JavaScript
+- Framer Motion
+- React Markdown
+- Tailwind CSS
+
+### Thành phần giao diện
+
+- Biểu tượng Lucide React
+- Bố cục responsive
+- Hiệu ứng chuyển động
+- Thư viện ảnh lightbox
+- Trình soạn thảo Markdown
+
+## Chức năng chính
+
+### Hệ thống blog
+
+- Báo cáo dự án kỹ thuật
+- Bài viết dựa trên Markdown
+- Category và tag
+- Tìm kiếm
+- Phân trang
+
+### Khu vực portfolio
+
+- Tổng quan dự án
+- Hiển thị trạng thái
+- Thư viện ảnh
+- Liên kết dự án bên ngoài
+
+### Trình soạn thảo Markdown riêng
+
+Website có trình soạn thảo tích hợp để tạo bài viết mới với xem trước trực tiếp, tạo slug tự động, xuất Markdown, lưu trực tiếp và quản lý dự án.
+
+## Giao diện người dùng
+
+Thiết kế tập trung vào phong cách kỹ thuật hiện đại với giao diện tối, hiển thị responsive, hiệu ứng mượt và tối ưu cho điện thoại.
+
+## Mục tiêu và kết quả
+
+Website giúp trình bày kỹ năng kỹ thuật chuyên nghiệp và ghi lại dự án cũng như tiến trình học tập lâu dài. Kết quả là một nền tảng portfolio và blog tự phát triển, kết hợp tài liệu kỹ thuật, quản lý dự án và phát triển web hiện đại.
+`,"../content/vi/quan-ly-tai-chinh-voi-phan-tich-du-lieu.md":`---
+id: quan-ly-tai-chinh-voi-phan-tich-du-lieu
+slug: quan-ly-tai-chinh-voi-phan-tich-du-lieu
+translation_id: local-post-1779957810945
+language: vi
+content_type: 
+title: Quản lý tài chính với phân tích dữ liệu
+category: Softwareentwicklung
+image_url: /my-electronics-blog/images/posts/finanzmanager-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/finanzmanager-1.webp
+- /my-electronics-blog/images/posts/finanzmanager-2.webp
+- /my-electronics-blog/images/posts/finanzmanager-3.webp
+excerpt: Quản lý thu nhập và chi tiêu cá nhân với nhập xuất CSV, phân tích dữ liệu theo thời gian thực và giao diện đồ họa hiện đại. Mã nguồn đầy đủ có trong liên kết dự án.
+tags:
+- C++
+- Qt 6.9
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T08:43:30.945Z'
+external_link: https://github.com/nguyennhando/finanzmanager
+project_status: done
+sort_order: 30
+---
+
+# Quản lý tài chính với phân tích dữ liệu
+
+## GeldPilot - Quản lý tài chính cá nhân
+
+GeldPilot là ứng dụng desktop hiện đại để quản lý tài chính cá nhân, được phát triển bằng C++, Qt 6 và SQLite. Phần mềm hỗ trợ theo dõi thu nhập và chi tiêu, nhập xuất CSV và phân tích dữ liệu theo thời gian thực thông qua giao diện đồ họa hiện đại.
+
+Nút \`Mở dự án\` ở cuối trang dẫn đến toàn bộ mã nguồn.
+
+## Tổng quan
+
+GeldPilot là ứng dụng thân thiện để quản lý thu nhập và chi tiêu. Giao diện trực quan cho phép quản lý giao dịch, tổ chức category và tạo báo cáo tài chính chi tiết.
+
+## Tính năng chính
+
+- **Quản lý giao dịch:** Thêm, sửa và xóa thu nhập hoặc chi tiêu
+- **Phân loại:** Sử dụng category có sẵn và category tự tạo
+- **Bộ lọc thời gian:** Lọc linh hoạt theo ngày và category
+- **Tổng quan tài chính:** Tự động tính thu nhập, chi tiêu và số dư
+- **Trực quan hóa:** Hiển thị tài chính bằng biểu đồ cột tương tác
+- **Nhập và xuất:** Trao đổi dữ liệu bằng tệp CSV
+- **In báo cáo:** Tạo báo cáo chuyên nghiệp với logo công ty
+
+## Yêu cầu hệ thống
+
+### Yêu cầu tối thiểu
+
+- Hệ điều hành: Windows 10 hoặc 11, macOS 10.15+, hoặc Linux Ubuntu 20.04+
+- Bộ nhớ: 4 GB RAM
+- Dung lượng đĩa: 100 MB
+- Độ phân giải màn hình: 1024 x 768
+
+### Khuyến nghị
+
+- Bộ nhớ: 8 GB RAM trở lên
+- Độ phân giải màn hình: 1920 x 1080 trở lên
+
+## Cài đặt
+
+### Phiên bản Windows đã biên dịch
+
+1. Tải phiên bản mới nhất từ trang Releases.
+2. Giải nén vào thư mục mong muốn.
+3. Chạy \`GeldPilot.exe\`.
+
+### Biên dịch từ mã nguồn
+
+Yêu cầu:
+
+- Qt 6.9 trở lên
+- CMake 3.16 trở lên
+- Trình biên dịch tương thích C++17:
+  - Windows: MinGW-w64 hoặc MSVC 2019+
+  - macOS: Xcode 12+
+  - Linux: GCC 9+ hoặc Clang 10+
+
+Các bước biên dịch:
+
+\`\`\`bash
+git clone https://github.com/username/geldpilot.git
+cd geldpilot
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . --config Release
+\`\`\`
+
+Khởi chạy ứng dụng:
+
+\`\`\`bash
+# Windows
+./Release/GeldPilot.exe
+
+# Linux hoặc macOS
+./GeldPilot
+\`\`\`
+
+## Bắt đầu sử dụng
+
+### Thêm giao dịch đầu tiên
+
+1. Khởi động GeldPilot.
+2. Nhập ngày, số tiền và mô tả.
+3. Chọn category, ví dụ \`Lương\`.
+4. Chọn loại: \`Thu nhập\` hoặc \`Chi tiêu\`.
+5. Nhấn \`Giao dịch mới\`.
+
+### Lọc dữ liệu
+
+- Sử dụng menu chọn category.
+- Đặt ngày bắt đầu và ngày kết thúc.
+- Nhấn \`Lọc\` để cập nhật danh sách.
+
+### Tạo báo cáo
+
+- Nhấn \`Biểu đồ\` để xem trực quan.
+- Dùng \`In\` để tạo báo cáo chuyên nghiệp.
+- Xuất dữ liệu CSV để phân tích thêm.
+
+## Hướng dẫn sử dụng
+
+### Quản lý giao dịch
+
+Khi thêm giao dịch, điền đủ các trường bắt buộc:
+
+- Ngày: ngày giao dịch
+- Số tiền: luôn nhập giá trị dương
+- Mô tả: mô tả ngắn
+- Category: nhóm của giao dịch
+- Loại: \`Thu nhập\` hoặc \`Chi tiêu\`
+
+Để sửa giao dịch:
+
+1. Chọn một hàng trong bảng.
+2. Dữ liệu tự động xuất hiện trong ô nhập.
+3. Thực hiện thay đổi.
+4. Nhấn \`Lưu\`.
+
+Để xóa:
+
+- Một giao dịch: chọn hàng rồi nhấn \`Xóa\`.
+- Nhiều giao dịch: chọn nhiều hàng bằng \`Ctrl + Click\` rồi nhấn \`Xóa\`.
+
+### Category
+
+Các category có sẵn:
+
+- Giải trí
+- Lương
+- Sức khỏe
+- Thực phẩm
+- Tiền thuê nhà
+- Khác
+- Giao thông
+- Bảo hiểm
+- Đầu tư
+- Liên lạc
+- Nhà ở
+
+### Lọc và tìm kiếm
+
+Lọc theo category:
+
+- Chọn \`Tất cả category\` để xem toàn bộ.
+- Chọn một category cụ thể để lọc danh sách.
+
+Lọc theo khoảng thời gian:
+
+1. Đặt ngày bắt đầu và ngày kết thúc.
+2. Nhấn \`Lọc\`.
+
+### Nhập và xuất dữ liệu
+
+Nhập CSV:
+
+1. Chuẩn bị tệp CSV với các cột \`ID\`, \`Ngày\`, \`Số tiền\`, \`Mô tả\`, \`Category\` và \`Loại\`.
+2. Nhấn \`Nhập\`.
+3. Chọn tệp CSV.
+
+Xuất CSV:
+
+1. Nhấn \`Xuất\`.
+2. Chọn vị trí lưu và tên tệp.
+3. Danh sách hiện tại trong bảng được xuất ra.
+
+### Biểu đồ và báo cáo
+
+Nhấn \`Biểu đồ\` để xem biểu đồ cột. Biểu đồ hiển thị category, tổng thu nhập, tổng chi tiêu và số dư với mã màu tương tác.
+
+Để in báo cáo:
+
+1. Mở biểu đồ.
+2. Nhấn \`In\`.
+3. Chọn máy in và thiết lập.
+4. Ứng dụng tạo bản in chuyên nghiệp kèm logo.
+
+## Chi tiết kỹ thuật
+
+### Kiến trúc
+
+- Framework GUI: Qt 6.9
+- Cơ sở dữ liệu: tệp SQLite cục bộ
+- Biểu đồ: Qt Charts
+- Hệ thống build: CMake
+- Trình biên dịch trên Windows: MinGW-w64
+
+### Schema cơ sở dữ liệu
+
+Bảng giao dịch:
+
+\`\`\`sql
+CREATE TABLE transaktionen (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    datum DATE NOT NULL,
+    betrag REAL NOT NULL,
+    beschreibung TEXT,
+    kategorie TEXT NOT NULL,
+    typ TEXT NOT NULL CHECK (typ IN ('Einnahme', 'Ausgabe'))
+);
+\`\`\`
+
+Bảng category:
+
+\`\`\`sql
+CREATE TABLE kategorien (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL
+);
+\`\`\`
+
+### Cấu trúc dự án
+
+\`\`\`text
+geldpilot/
+  src/
+    main.cpp                 Điểm khởi đầu
+    mainwindow.cpp/h         Cửa sổ chính
+    chartwindow.cpp/h        Cửa sổ biểu đồ
+    datenbankmanager.cpp/h   Logic cơ sở dữ liệu
+    centerdelegate.h         Định dạng giao diện
+  ui/
+    mainwindow.ui            Giao diện cửa sổ chính
+    chartwindow.ui           Giao diện biểu đồ
+  resources/
+    icons/                   Biểu tượng ứng dụng
+  CMakeLists.txt             Cấu hình build
+  README.md                  Tài liệu
+\`\`\`
+
+## Phát triển
+
+Quy ước code:
+
+- Chuẩn C++17
+- Quy ước Qt
+- Tên biến tiếng Đức có mô tả rõ ràng
+- Chú thích đầy đủ
+
+Để đóng góp:
+
+1. Fork repository.
+2. Tạo feature branch.
+3. Thực hiện thay đổi.
+4. Kiểm thử kỹ.
+5. Tạo pull request.
+
+Các nội dung đã biết:
+
+- Đã triển khai chọn nhiều giao dịch để xóa.
+- Đã lập chỉ mục cơ sở dữ liệu để cải thiện hiệu năng.
+- Chức năng sao lưu đang được lên kế hoạch.
+
+## Hỗ trợ
+
+Khi cần trợ giúp:
+
+- Tài liệu: đọc toàn bộ README.
+- Issues: báo lỗi trên GitHub.
+- E-mail: \`support@geldpilot.de\`
+
+Câu hỏi thường gặp:
+
+- **Không mở được cơ sở dữ liệu:** Kiểm tra quyền ghi trong thư mục cài đặt.
+- **Không hiển thị biểu đồ:** Kiểm tra Qt Charts đã được cài đặt hay chưa.
+- **Nhập dữ liệu thất bại:** Kiểm tra định dạng CSV. Các cột phải được phân tách bằng dấu chấm phẩy.
+
+## Giấy phép
+
+Bản quyền 2025 Nguyen Nhan Do. Bảo lưu mọi quyền.  
+Phiên bản: 1.0.0  
+Nhà phát triển: Nguyen Nhan Do  
+Build: Qt 6.9, MinGW-w64, CMake
+
+Sử dụng GeldPilot để kiểm soát tài chính và chủ động xây dựng tương lai tài chính của bạn.
 `,"../content/vi/technisches-portfolio-elektronik-blog.md":`---
 translation_id: technisches-portfolio-elektronik-blog
 language: vi
@@ -2793,6 +4293,53 @@ Thiết kế tập trung vào phong cách kỹ thuật hiện đại với giao 
 ## Mục tiêu và kết quả
 
 Website giúp trình bày kỹ năng kỹ thuật chuyên nghiệp và ghi lại dự án cũng như tiến trình học tập lâu dài. Kết quả là một nền tảng portfolio và blog tự phát triển, kết hợp tài liệu kỹ thuật, quản lý dự án và phát triển web hiện đại.
+`,"../content/vi/truc-quan-hoa-va-tu-dong-hoa-quy-trinh-tron-cong-nghiep-voi-siemens.md":`---
+id: truc-quan-hoa-va-tu-dong-hoa-quy-trinh-tron-cong-nghiep-voi-siemens
+slug: truc-quan-hoa-va-tu-dong-hoa-quy-trinh-tron-cong-nghiep-voi-siemens
+translation_id: local-post-1779960317991
+language: vi
+content_type: 
+title: Trực quan hóa và tự động hóa quy trình trộn công nghiệp với Siemens WinCC
+category: SPS-Programmierung
+image_url: /my-electronics-blog/images/posts/Mischbehälter-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Mischbehälter-1.webp
+- /my-electronics-blog/images/posts/Mischbehälter-2.webp
+- /my-electronics-blog/images/posts/Mischbehälter-3.webp
+excerpt: Phát triển hệ thống HMI công nghiệp để giám sát và điều khiển bồn trộn bằng Siemens SIMATIC WinCC Runtime Advanced, bao gồm cảm biến, van, động cơ và nhiệt độ theo thời gian thực.
+tags:
+- PLC
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:25:17.991Z'
+external_link: https://drive.google.com/drive/folders/1Vrz5hK6aTVExshjDZIi92ecTgQaFo_kq
+project_status: done
+sort_order: 40
+---
+
+# Trực quan hóa và tự động hóa quy trình trộn công nghiệp với Siemens WinCC
+
+Dự án bao gồm phát triển hệ thống trực quan hóa HMI hiện đại để giám sát và điều khiển bồn trộn công nghiệp bằng Siemens SIMATIC WinCC Runtime Advanced và PLC Siemens S7-1200 hoặc S7-1500.
+
+Ứng dụng hiển thị cảm biến, van, động cơ và nhiệt độ theo thời gian thực, đồng thời hỗ trợ chế độ vận hành tự động và thủ công. Mục tiêu là điều khiển quy trình trộn công nghiệp một cách thân thiện, an toàn và hiệu quả.
+
+Giao diện HMI cho phép người vận hành theo dõi và điều khiển các tham số quy trình theo thời gian thực. Toàn bộ quá trình trộn được thể hiện rõ ràng để dễ quan sát dòng vật liệu, hoạt động của động cơ và vị trí van. Các chức năng an toàn như dừng khẩn cấp, thông báo trạng thái và cảnh báo giúp vận hành hệ thống an toàn hơn.
+
+Trong chế độ tự động, quy trình chạy từng bước theo chuỗi đã định nghĩa. Giá trị cảm biến được xử lý và cơ cấu chấp hành được điều khiển tự động. Trong chế độ thủ công, từng thành phần có thể được kiểm tra và điều khiển riêng, đặc biệt hữu ích khi bảo trì và chạy thử.
+
+Dự án bao gồm:
+
+- Giao tiếp thời gian thực giữa PLC và HMI
+- Trực quan hóa quy trình và giám sát hệ thống
+- Giám sát nhiệt độ và hiển thị trạng thái
+- Điều khiển van và động cơ
+- Chế độ tự động và thủ công
+- Quản lý lỗi và cảnh báo
+- Giao diện thân thiện với người dùng
+
+Sự kết hợp giữa công nghệ PLC Siemens và WinCC Runtime Advanced tạo ra hệ thống HMI mạnh mẽ để tối ưu quy trình sản xuất và tăng độ an toàn vận hành.
+
+Nhấn \`Mở dự án\` để xem tài liệu đầy đủ và thông tin chi tiết.
 `,"../content/vi/visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen.md":`---
 translation_id: local-post-1779960317991
 language: vi
@@ -2874,6 +4421,44 @@ Các chức năng được triển khai:
 - Trực quan hóa HMI bằng WinCC
 
 Giao tiếp được thực hiện qua Profinet. Hệ thống hiện đang trong giai đoạn hoàn thiện và tối ưu.
+`,"../content/vi/wincc-mo-hinh-fischertechnik-van-hanh-tu-dong-va-thu-cong-voi-hmi.md":`---
+id: wincc-mo-hinh-fischertechnik-van-hanh-tu-dong-va-thu-cong-voi-hmi
+slug: wincc-mo-hinh-fischertechnik-van-hanh-tu-dong-va-thu-cong-voi-hmi
+translation_id: local-post-1779960469574
+language: vi
+content_type: 
+title: WinCC mô hình Fischertechnik - Vận hành tự động và thủ công với HMI
+category: SPS-Programmierung
+image_url: /my-electronics-blog/images/posts/FischerTechnik-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/FischerTechnik-1.webp
+excerpt: Lập trình PLC và HMI cho mô hình máy ép Fischertechnik với Siemens CPU1512C, ET200SP và TP700 Comfort Panel, bao gồm vận hành tự động, thủ công, người dùng, công thức và cảnh báo.
+tags:
+- WinCC
+- PLC
+- HMI
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:27:49.574Z'
+external_link: https://drive.google.com/drive/folders/1XwbZqMA_neR7FqreJCQsHW4ddtIEpOKi?usp=drive_link
+project_status: done
+sort_order: 60
+---
+
+# WinCC mô hình Fischertechnik - Vận hành tự động và thủ công với HMI
+
+Dự án phát triển hệ thống điều khiển PLC và HMI cho mô hình máy ép Fischertechnik bằng Siemens CPU1512C, ET200SP và TP700 Comfort Panel.
+
+Các chức năng được triển khai:
+
+- Chế độ vận hành tự động
+- Chế độ thủ công và thiết lập
+- Quản lý người dùng
+- Hệ thống cảnh báo và thông báo
+- Quản lý công thức
+- Trực quan hóa HMI bằng WinCC
+
+Giao tiếp được thực hiện qua Profinet. Hệ thống hiện đang trong giai đoạn hoàn thiện và tối ưu.
 `,"../content/vi/wissensbibliothek-technische-notizen-und-analysen.md":`---
 translation_id: wissensbibliothek-technische-notizen-und-analysen
 language: vi
@@ -2911,6 +4496,247 @@ Khu vực này bổ sung cho danh sách dự án bằng các ghi chú học tậ
 ## Cấu trúc bài viết
 
 Bài viết được tổ chức để thông tin quan trọng luôn dễ tìm. Category, tag và chức năng tìm kiếm giúp nhanh chóng đi đến chủ đề phù hợp ngay cả khi thư viện ngày càng lớn.
+`,"../content/vi/y-tuong-bo-nguon-dc-dieu-khien-pwm-co-do-luong-va-bao-ve.md":`---
+id: y-tuong-bo-nguon-dc-dieu-khien-pwm-co-do-luong-va-bao-ve
+slug: y-tuong-bo-nguon-dc-dieu-khien-pwm-co-do-luong-va-bao-ve
+translation_id: local-post-1779960818567
+language: vi
+content_type: 
+title: Ý tưởng bộ nguồn DC điều khiển PWM với chức năng đo lường và bảo vệ
+category: Elektrotechnik
+image_url: /my-electronics-blog/images/posts/DC-Netzteil-main.webp
+image_gallery:
+[]
+excerpt: Dự án học tập và ý tưởng phát triển bộ nguồn DC dùng vi điều khiển với điều khiển PWM, giới hạn dòng điện và các chức năng bảo vệ cơ bản.
+tags:
+- PWM
+- Bộ nguồn
+- STM32
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:33:38.567Z'
+external_link: 
+project_status: idea
+sort_order: 130
+---
+
+# Ý tưởng bộ nguồn DC điều khiển PWM với chức năng đo lường và bảo vệ
+
+Đây là dự án học tập và ý tưởng phát triển bộ nguồn DC dùng vi điều khiển với điều khiển PWM, giới hạn dòng điện và các chức năng bảo vệ cơ bản.
+
+Mục tiêu không chỉ là chế tạo một bộ nguồn DC đơn giản, mà còn hiểu thực tế về điều khiển PWM, điện tử công suất và mạch bảo vệ điện tử.
+
+Giải pháp dự kiến điều chỉnh điện áp và dòng điện đầu ra thông qua tín hiệu PWM và điều khiển MOSFET. Các chức năng đo lường và bảo vệ cơ bản sẽ được tích hợp để phân tích hoạt động của hệ thống dưới nhiều điều kiện tải.
+
+Chức năng dự kiến:
+
+- Điều chỉnh điện áp đầu ra
+- Giới hạn dòng điện
+- Điều khiển dựa trên PWM
+- Đo điện áp và dòng điện
+- Giám sát nhiệt độ
+- Bảo vệ ngắn mạch và quá dòng
+- Hiển thị các giá trị đo quan trọng
+
+Tôi đặc biệt quan tâm đến ảnh hưởng của tần số PWM, thay đổi tải và đặc tính đóng cắt đối với độ ổn định, hiệu suất và nhiệt lượng.
+
+Dự án vẫn đang trong giai đoạn ý tưởng và học tập. Các khối chức năng như điều khiển PWM, đo dòng và mạch bảo vệ sẽ được thử riêng trước khi lắp ráp nguyên mẫu hoàn chỉnh.
+
+Qua dự án này, tôi muốn đào sâu kiến thức về hệ thống nhúng, điện tử công suất và kỹ thuật đo lường thực tế.
+`,"../content/vi/y-tuong-giam-sat-bo-nguon-xung-dc-voi-esp32-va-mqtt.md":`---
+id: y-tuong-giam-sat-bo-nguon-xung-dc-voi-esp32-va-mqtt
+slug: y-tuong-giam-sat-bo-nguon-xung-dc-voi-esp32-va-mqtt
+translation_id: local-post-1779960950659
+language: vi
+content_type: 
+title: Dự án ý tưởng: Giám sát bộ nguồn xung DC với ESP32 và MQTT
+category: Elektrotechnik
+image_url: /my-electronics-blog/images/posts/Schaltnetzteil-main.webp
+image_gallery:
+[]
+excerpt: Dự án học tập dự kiến nhằm giám sát điện áp, dòng điện và nhiệt độ của bộ nguồn xung DC bằng ESP32 và giao tiếp MQTT.
+tags:
+- MQTT
+- Bộ nguồn xung
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:35:50.659Z'
+external_link: 
+project_status: idea
+sort_order: 100
+---
+
+# Dự án ý tưởng: Giám sát bộ nguồn xung DC với ESP32 và MQTT
+
+Dự án học tập dự kiến nhằm giám sát điện áp, dòng điện và nhiệt độ của bộ nguồn xung DC bằng ESP32 và giao tiếp MQTT.
+
+Dự án hiện đang trong giai đoạn ý tưởng và học tập. Mục tiêu là phát triển hệ thống giám sát đơn giản dựa trên vi điều khiển ESP32, sau đó trực quan hóa các giá trị đo qua Wi-Fi và MQTT.
+
+Phần cứng dự kiến:
+
+- Bo mạch phát triển ESP32
+- Cảm biến dòng ACS712 hoặc INA219
+- Cảm biến nhiệt độ
+- Màn hình OLED
+- Giao tiếp Wi-Fi và MQTT
+
+Chức năng dự kiến:
+
+- Giám sát điện áp và dòng điện
+- Giám sát nhiệt độ
+- Truyền dữ liệu MQTT
+- Trực quan hóa bằng dashboard
+- Hiển thị trạng thái và lỗi cơ bản
+
+Dự án giúp tôi đào sâu kiến thức về hệ thống nhúng, cảm biến và giám sát năng lượng công nghiệp.
+
+Trạng thái hiện tại: dự án ý tưởng, đang lên kế hoạch.
+`,"../content/vi/y-tuong-giam-sat-cam-bien-mqtt-voi-esp32-cho-smart-home.md":`---
+id: y-tuong-giam-sat-cam-bien-mqtt-voi-esp32-cho-smart-home
+slug: y-tuong-giam-sat-cam-bien-mqtt-voi-esp32-cho-smart-home
+translation_id: local-post-1779960913660
+language: vi
+content_type: 
+title: Dự án ý tưởng: Giám sát cảm biến MQTT bằng ESP32 cho ứng dụng Smart Home
+category: IoT
+image_url: /my-electronics-blog/images/posts/SmartHome-main.webp
+image_gallery:
+[]
+excerpt: Dự án học tập dự kiến phát triển nền tảng IoT đơn giản dựa trên ESP32 để thu thập và trực quan hóa dữ liệu cảm biến qua Wi-Fi và MQTT.
+tags:
+- ESP32
+- MQTT
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:35:13.660Z'
+external_link: 
+project_status: in_progress
+sort_order: 110
+---
+
+# Dự án ý tưởng: Giám sát cảm biến MQTT bằng ESP32 cho ứng dụng Smart Home
+
+Dự án học tập này tập trung vào nền tảng IoT đơn giản dựa trên vi điều khiển ESP32. Mục tiêu là thu thập và trực quan hóa nhiều dữ liệu cảm biến qua Wi-Fi và MQTT.
+
+Dự án hiện đang trong giai đoạn ý tưởng và học tập.
+
+Phần cứng dự kiến:
+
+- Bo mạch phát triển ESP32
+- Cảm biến nhiệt độ và độ ẩm DHT22
+- Mô-đun relay cho chức năng đóng cắt đơn giản
+- MQTT broker như Mosquitto
+- Dashboard hiển thị dữ liệu
+
+Chức năng dự kiến:
+
+- Giao tiếp Wi-Fi
+- MQTT publish và subscribe
+- Giám sát cảm biến
+- Trực quan hóa bằng dashboard
+- Mở rộng thêm cảm biến và cơ cấu chấp hành
+
+Dự án giúp tôi đào sâu kiến thức về hệ thống nhúng, giao tiếp MQTT và ứng dụng IoT.
+
+Trạng thái hiện tại: dự án ý tưởng, đang lên kế hoạch.
+`,"../content/vi/y-tuong-giam-sat-nang-luong-voi-esp8266-va-cam-bien-dong.md":`---
+id: y-tuong-giam-sat-nang-luong-voi-esp8266-va-cam-bien-dong
+slug: y-tuong-giam-sat-nang-luong-voi-esp8266-va-cam-bien-dong
+translation_id: local-post-1779960876705
+language: vi
+content_type: 
+title: Dự án ý tưởng: Giám sát năng lượng với ESP8266 và cảm biến dòng điện
+category: Embedded Systems
+image_url: /my-electronics-blog/images/posts/Energieüberwachung-main.webp
+image_gallery:
+[]
+excerpt: Dự án học tập dự kiến nhằm thu thập và trực quan hóa đơn giản dữ liệu tiêu thụ điện bằng ESP8266 và cảm biến dòng điện qua Wi-Fi.
+tags:
+- ESP8266
+- Giám sát năng lượng
+- Cảm biến
+- Embedded Systems
+- IoT
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:34:36.705Z'
+external_link: 
+project_status: in_progress
+sort_order: 120
+---
+
+# Dự án ý tưởng: Giám sát năng lượng với ESP8266 và cảm biến dòng điện
+
+Đây là dự án học tập dự kiến nhằm thu thập và trực quan hóa đơn giản dữ liệu tiêu thụ điện bằng ESP8266 và cảm biến dòng điện qua Wi-Fi.
+
+Dự án hiện đang trong giai đoạn ý tưởng và học tập. Hệ thống dự kiến sử dụng ESP8266 kết hợp cảm biến dòng ACS712.
+
+Phần cứng dự kiến:
+
+- Vi điều khiển ESP8266
+- Cảm biến dòng ACS712
+- Màn hình OLED
+- Giao tiếp Wi-Fi
+
+Chức năng dự kiến:
+
+- Hiển thị các giá trị đo cơ bản
+- Truyền dữ liệu qua Wi-Fi
+- Trực quan hóa bằng dashboard
+- Tìm hiểu nền tảng phân tích tiêu thụ năng lượng
+
+Dự án giúp tôi đào sâu kiến thức về hệ thống nhúng, cảm biến và giao tiếp IoT.
+
+Trạng thái hiện tại: dự án ý tưởng, đang lên kế hoạch.
+`,"../content/vi/y-tuong-iot-gateway-esp32-420ma-voi-mqtt-va-rs485.md":`---
+id: y-tuong-iot-gateway-esp32-420ma-voi-mqtt-va-rs485
+slug: y-tuong-iot-gateway-esp32-420ma-voi-mqtt-va-rs485
+translation_id: local-post-1779960691288
+language: vi
+content_type: 
+title: Dự án ý tưởng: IoT Gateway ESP32 cho tín hiệu 4-20 mA với MQTT và RS485
+category: IoT
+image_url: /my-electronics-blog/images/posts/ESP32-main.webp
+image_gallery:
+[]
+excerpt: Dự án học tập và phát triển nhằm thu nhận tín hiệu cảm biến 4-20 mA bằng ESP32, ADS1115 và MQTT để tạo một nguyên mẫu IoT công nghiệp đơn giản.
+tags:
+- ESP32
+- MQTT
+read_time: 5 phút
+published: true
+created_at: '2026-05-28T09:31:31.288Z'
+external_link: 
+project_status: idea
+sort_order: 90
+---
+
+# Dự án ý tưởng: IoT Gateway ESP32 cho tín hiệu 4-20 mA với MQTT và RS485
+
+Dự án học tập và phát triển này tập trung vào việc thu nhận tín hiệu cảm biến 4-20 mA bằng ESP32, ADS1115 và giao tiếp MQTT. Mục tiêu là xây dựng nguyên mẫu IoT công nghiệp đơn giản để giám sát cảm biến và trực quan hóa dữ liệu qua Home Assistant.
+
+Dự án hiện đang trong giai đoạn ý tưởng và lập kế hoạch.
+
+Chức năng dự kiến:
+
+- Thu nhận tín hiệu cảm biến 4-20 mA qua ADS1115
+- Giao tiếp MQTT cho ứng dụng IoT
+- Hỗ trợ RS485 và Modbus RTU
+- Hiển thị dữ liệu cảm biến qua Home Assistant
+- Cấp nguồn cho môi trường công nghiệp 12-24 VDC
+
+Giai đoạn đầu sử dụng nguyên mẫu nhanh với ESP32 DevKit, mô-đun ADS1115 và kết nối MQTT. Sau khi kiểm thử chức năng thành công, tôi dự kiến phát triển phiên bản PCB riêng bằng KiCad.
+
+Công nghệ dự kiến:
+
+- ESP32-S3
+- ADS1115
+- MQTT
+- RS485 và Modbus RTU
+- Home Assistant
+- KiCad
+
+Trạng thái hiện tại: giai đoạn ý tưởng, dự án học tập.
 `}),f_=e=>Array.isArray(e)?e:e?String(e).split(`,`).map(e=>e.trim()).filter(Boolean):[],p_=e=>{let t=String(e||``).trim();return t===`true`?!0:t===`false`?!1:t===`null`?null:t===``?``:t.replace(/^["']|["']$/g,``)},m_=e=>{let t=e.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);if(!t)return{data:{},content:e};let n={},r=t[1].split(/\r?\n/),i=null;for(let e of r){if(!e.trim())continue;let t=e.match(/^\s*-\s+(.*)$/);if(t&&i){Array.isArray(n[i])||(n[i]=[]),n[i].push(p_(t[1]));continue}if(/^\s+/.test(e)&&i&&!Array.isArray(n[i])){n[i]=`${n[i]||``} ${p_(e)}`.trim();continue}let r=e.indexOf(`:`);if(r===-1)continue;let a=e.slice(0,r).trim(),o=e.slice(r+1).trim();i=a,o===``?n[a]=``:o===`[]`?n[a]=[]:n[a]=p_(o)}return{data:n,content:t[2].trim()}},h_=Object.entries(d_).map(([e,t])=>{let{data:n,content:r}=m_(t),i=n.slug||e.split(`/`).pop().replace(/\.md$/,``),a=e.match(/\/content\/(de|en|vi)\//)?.[1],o=n.language||a||`de`,s=n.translation_id||n.id||i;return{...n,id:s,slug:i,language:o,translation_id:s,source_path:e.replace(`../content/`,``),content:r,image_gallery:f_(n.image_gallery),tags:f_(n.tags),published:n.published!==!1,external_link:n.external_link||null,created_at:n.created_at||new Date().toISOString(),sort_order:Number.isFinite(Number(n.sort_order))?Number(n.sort_order):100}}),g_=h_.filter(e=>e.type===`personal_way`),__=g_.find(e=>e.language===`de`)||g_[0],v_=h_.filter(e=>e.type===`home_content`),y_=h_.find(e=>e.type===`site_settings`),b_=h_.find(e=>e.type===`gallery_settings`),x_=(e,t=`de`)=>e.find(e=>e.language===t)||e.find(e=>e.language===`de`)||e[0],S_=(e=`de`)=>x_(g_,e),C_=(e=`de`)=>x_(v_,e),w_=(()=>{if(!b_?.content)return[];try{let e=JSON.parse(b_.content);return Array.isArray(e)?e.filter(e=>typeof e==`string`&&e.trim()):[]}catch{return[]}})(),T_=h_.filter(e=>![`personal_way`,`home_content`,`site_settings`,`gallery_settings`].includes(e.type)).sort((e,t)=>{let n=Number.isFinite(Number(e.sort_order))?Number(e.sort_order):100,r=Number.isFinite(Number(t.sort_order))?Number(t.sort_order):100;return n===r?new Date(t.created_at||0)-new Date(e.created_at||0):n-r}),E_=(e,t)=>[...new Set(e.filter(e=>e.translation_id===t).map(e=>e.language))],D_=(e=`de`)=>{let t=T_.filter(e=>e.published!==!1);return[...new Set(t.map(e=>e.translation_id))].map(n=>{let r=t.filter(e=>e.translation_id===n),i=r.find(t=>t.language===e)||r.find(e=>e.language===`de`)||r[0];return{...i,id:n,available_languages:E_(t,n),requested_language:e,is_translation_fallback:i.language!==e}}).sort((e,t)=>{let n=Number.isFinite(Number(e.sort_order))?Number(e.sort_order):100,r=Number.isFinite(Number(t.sort_order))?Number(t.sort_order):100;return n===r?new Date(t.created_at||0)-new Date(e.created_at||0):n-r})};D_(`de`).filter(e=>e.content_type===`knowledge`),D_(`de`).filter(e=>e.content_type!==`knowledge`);var O_=(...e)=>e.filter((e,t,n)=>!!e&&e.trim()!==``&&n.indexOf(e)===t).join(` `).trim(),k_=e=>e.replace(/([a-z0-9])([A-Z])/g,`$1-$2`).toLowerCase(),A_=e=>e.replace(/^([A-Z])|[\s-_]+(\w)/g,(e,t,n)=>n?n.toUpperCase():t.toLowerCase()),j_=e=>{let t=A_(e);return t.charAt(0).toUpperCase()+t.slice(1)},M_={xmlns:`http://www.w3.org/2000/svg`,width:24,height:24,viewBox:`0 0 24 24`,fill:`none`,stroke:`currentColor`,strokeWidth:2,strokeLinecap:`round`,strokeLinejoin:`round`},N_=e=>{for(let t in e)if(t.startsWith(`aria-`)||t===`role`||t===`title`)return!0;return!1},P_=(0,C.createContext)({}),F_=()=>(0,C.useContext)(P_),I_=(0,C.forwardRef)(({color:e,size:t,strokeWidth:n,absoluteStrokeWidth:r,className:i=``,children:a,iconNode:o,...s},c)=>{let{size:l=24,strokeWidth:u=2,absoluteStrokeWidth:d=!1,color:f=`currentColor`,className:p=``}=F_()??{},m=r??d?Number(n??u)*24/Number(t??l):n??u;return(0,C.createElement)(`svg`,{ref:c,...M_,width:t??l??M_.width,height:t??l??M_.height,stroke:e??f,strokeWidth:m,className:O_(`lucide`,p,i),...!a&&!N_(s)&&{"aria-hidden":`true`},...s},[...o.map(([e,t])=>(0,C.createElement)(e,t)),...Array.isArray(a)?a:[a]])}),L_=(e,t)=>{let n=(0,C.forwardRef)(({className:n,...r},i)=>(0,C.createElement)(I_,{ref:i,iconNode:t,className:O_(`lucide-${k_(j_(e))}`,`lucide-${e}`,n),...r}));return n.displayName=j_(e),n},R_=L_(`arrow-left`,[[`path`,{d:`m12 19-7-7 7-7`,key:`1l729n`}],[`path`,{d:`M19 12H5`,key:`x3x0zl`}]]),z_=L_(`arrow-right`,[[`path`,{d:`M5 12h14`,key:`1ays0h`}],[`path`,{d:`m12 5 7 7-7 7`,key:`xquz4c`}]]),B_=L_(`book-open`,[[`path`,{d:`M12 7v14`,key:`1akyts`}],[`path`,{d:`M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z`,key:`ruj8y`}]]),V_=L_(`bot`,[[`path`,{d:`M12 8V4H8`,key:`hb8ula`}],[`rect`,{width:`16`,height:`12`,x:`4`,y:`8`,rx:`2`,key:`enze0r`}],[`path`,{d:`M2 14h2`,key:`vft8re`}],[`path`,{d:`M20 14h2`,key:`4cs60a`}],[`path`,{d:`M15 13v2`,key:`1xurst`}],[`path`,{d:`M9 13v2`,key:`rq6x2g`}]]),H_=L_(`calendar-days`,[[`path`,{d:`M8 2v4`,key:`1cmpym`}],[`path`,{d:`M16 2v4`,key:`4m81vk`}],[`rect`,{width:`18`,height:`18`,x:`3`,y:`4`,rx:`2`,key:`1hopcy`}],[`path`,{d:`M3 10h18`,key:`8toen8`}],[`path`,{d:`M8 14h.01`,key:`6423bh`}],[`path`,{d:`M12 14h.01`,key:`1etili`}],[`path`,{d:`M16 14h.01`,key:`1gbofw`}],[`path`,{d:`M8 18h.01`,key:`lrp35t`}],[`path`,{d:`M12 18h.01`,key:`mhygvu`}],[`path`,{d:`M16 18h.01`,key:`kzsmim`}]]),U_=L_(`chevron-left`,[[`path`,{d:`m15 18-6-6 6-6`,key:`1wnfg3`}]]),W_=L_(`chevron-right`,[[`path`,{d:`m9 18 6-6-6-6`,key:`mthhwq`}]]),G_=L_(`circuit-board`,[[`rect`,{width:`18`,height:`18`,x:`3`,y:`3`,rx:`2`,key:`afitv7`}],[`path`,{d:`M11 9h4a2 2 0 0 0 2-2V3`,key:`1ve2rv`}],[`circle`,{cx:`9`,cy:`9`,r:`2`,key:`af1f0g`}],[`path`,{d:`M7 21v-4a2 2 0 0 1 2-2h4`,key:`1fwkro`}],[`circle`,{cx:`15`,cy:`15`,r:`2`,key:`3i40o0`}]]),K_=L_(`clock`,[[`circle`,{cx:`12`,cy:`12`,r:`10`,key:`1mglay`}],[`path`,{d:`M12 6v6l4 2`,key:`mmk7yg`}]]),q_=L_(`code-xml`,[[`path`,{d:`m18 16 4-4-4-4`,key:`1inbqp`}],[`path`,{d:`m6 8-4 4 4 4`,key:`15zrgr`}],[`path`,{d:`m14.5 4-5 16`,key:`e7oirm`}]]),J_=L_(`cpu`,[[`path`,{d:`M12 20v2`,key:`1lh1kg`}],[`path`,{d:`M12 2v2`,key:`tus03m`}],[`path`,{d:`M17 20v2`,key:`1rnc9c`}],[`path`,{d:`M17 2v2`,key:`11trls`}],[`path`,{d:`M2 12h2`,key:`1t8f8n`}],[`path`,{d:`M2 17h2`,key:`7oei6x`}],[`path`,{d:`M2 7h2`,key:`asdhe0`}],[`path`,{d:`M20 12h2`,key:`1q8mjw`}],[`path`,{d:`M20 17h2`,key:`1fpfkl`}],[`path`,{d:`M20 7h2`,key:`1o8tra`}],[`path`,{d:`M7 20v2`,key:`4gnj0m`}],[`path`,{d:`M7 2v2`,key:`1i4yhu`}],[`rect`,{x:`4`,y:`4`,width:`16`,height:`16`,rx:`2`,key:`1vbyd7`}],[`rect`,{x:`8`,y:`8`,width:`8`,height:`8`,rx:`1`,key:`z9xiuo`}]]),Y_=L_(`external-link`,[[`path`,{d:`M15 3h6v6`,key:`1q9fwt`}],[`path`,{d:`M10 14 21 3`,key:`gplh6r`}],[`path`,{d:`M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6`,key:`a6xqqp`}]]),X_=L_(`flask-conical`,[[`path`,{d:`M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2`,key:`18mbvz`}],[`path`,{d:`M6.453 15h11.094`,key:`3shlmq`}],[`path`,{d:`M8.5 2h7`,key:`csnxdl`}]]),Z_=L_(`gauge`,[[`path`,{d:`m12 14 4-4`,key:`9kzdfg`}],[`path`,{d:`M3.34 19a10 10 0 1 1 17.32 0`,key:`19p75a`}]]),Q_=L_(`globe`,[[`circle`,{cx:`12`,cy:`12`,r:`10`,key:`1mglay`}],[`path`,{d:`M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20`,key:`13o1zl`}],[`path`,{d:`M2 12h20`,key:`9i4pu4`}]]),$_=L_(`graduation-cap`,[[`path`,{d:`M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z`,key:`j76jl0`}],[`path`,{d:`M22 10v6`,key:`1lu8f3`}],[`path`,{d:`M6 12.5V16a6 3 0 0 0 12 0v-3.5`,key:`1r8lef`}]]),ev=L_(`library`,[[`path`,{d:`m16 6 4 14`,key:`ji33uf`}],[`path`,{d:`M12 6v14`,key:`1n7gus`}],[`path`,{d:`M8 8v12`,key:`1gg7y9`}],[`path`,{d:`M4 4v16`,key:`6qkkli`}]]),tv=L_(`menu`,[[`path`,{d:`M4 5h16`,key:`1tepv9`}],[`path`,{d:`M4 12h16`,key:`1lakjw`}],[`path`,{d:`M4 19h16`,key:`1djgab`}]]),nv=L_(`monitor-smartphone`,[[`path`,{d:`M18 8V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h8`,key:`10dyio`}],[`path`,{d:`M10 19v-3.96 3.15`,key:`1irgej`}],[`path`,{d:`M7 19h5`,key:`qswx4l`}],[`rect`,{width:`6`,height:`10`,x:`16`,y:`12`,rx:`2`,key:`1egngj`}]]),rv=L_(`radio-tower`,[[`path`,{d:`M4.9 16.1C1 12.2 1 5.8 4.9 1.9`,key:`s0qx1y`}],[`path`,{d:`M7.8 4.7a6.14 6.14 0 0 0-.8 7.5`,key:`1idnkw`}],[`circle`,{cx:`12`,cy:`9`,r:`2`,key:`1092wv`}],[`path`,{d:`M16.2 4.8c2 2 2.26 5.11.8 7.47`,key:`ojru2q`}],[`path`,{d:`M19.1 1.9a9.96 9.96 0 0 1 0 14.1`,key:`rhi7fg`}],[`path`,{d:`M9.5 18h5`,key:`mfy3pd`}],[`path`,{d:`m8 22 4-11 4 11`,key:`25yftu`}]]),iv=L_(`search`,[[`path`,{d:`m21 21-4.34-4.34`,key:`14j7rj`}],[`circle`,{cx:`11`,cy:`11`,r:`8`,key:`4ej97u`}]]),av=L_(`shield-check`,[[`path`,{d:`M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z`,key:`oel41y`}],[`path`,{d:`m9 12 2 2 4-4`,key:`dzmm74`}]]),ov=L_(`triangle-alert`,[[`path`,{d:`m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3`,key:`wmoenq`}],[`path`,{d:`M12 9v4`,key:`juzpu7`}],[`path`,{d:`M12 17h.01`,key:`p32p05`}]]),sv=L_(`workflow`,[[`rect`,{width:`8`,height:`8`,x:`3`,y:`3`,rx:`2`,key:`by2w9f`}],[`path`,{d:`M7 11v4a2 2 0 0 0 2 2h4`,key:`xkn7yn`}],[`rect`,{width:`8`,height:`8`,x:`13`,y:`13`,rx:`2`,key:`1cgmvn`}]]),cv=L_(`wrench`,[[`path`,{d:`M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z`,key:`1ngwbx`}]]),lv=L_(`x`,[[`path`,{d:`M18 6 6 18`,key:`1bl5f8`}],[`path`,{d:`m6 6 12 12`,key:`d8bk6v`}]]),uv=5e3,dv=[`de`,`en`,`vi`],fv={de:{tagline:`Technik · Entwicklung · Lernen`,gallery:`Galerie`,contact:`Kontakt`,knowledge:`Wissen & Forschung`,projects:`Projekte`,discover:`Projekte entdecken`,openProject:`Projekt öffnen`,readPost:`Beitrag lesen`,search:`Suchen...`,all:`Alle`,noPosts:`Keine Beiträge gefunden.`,technicalBlog:`Technik Blog`,blogTitle:`Elektronikprojekte & Dokumentationen`,projectImages:`Projektbilder`,enlarge:`Vergrößern`,image:`Bild`,previous:`← Vorherige`,next:`Nächste →`,page:`Seite`,of:`von`,location:`Standort`,focus:`Schwerpunkt`,knowledgeLibrary:`Wissensbibliothek`,knowledgeTitle:`Wissen, Lernmaterialien & Forschung`,knowledgeIntro:`Technische Notizen, Schaltungsanalysen, Lernunterlagen und eigene Untersuchungen - strukturiert gesammelt und gut durchsuchbar.`,knowledgeNotice:`Hinweis zur Wissensbibliothek`,knowledgeSearch:`Analyse, Bauteil oder Thema suchen...`,allTopics:`Alle Themen`,selectedPost:`Ausgewählter Beitrag`,archive:`Archiv`,morePosts:`Weitere Beiträge`,posts:`Beiträge`,backKnowledge:`Zurück zur Wissensbibliothek`,externalSource:`Externe Quelle öffnen`,backBlog:`Zurück zum Blog`,heroTitle:`Technik. Dokumentation. Entwicklung.`,heroText:`Diese Website habe ich selbst entwickelt, um technische Projekte, Lernfortschritte und praktische Erfahrungen im Bereich Elektronik, Embedded Systems, Messtechnik und technischer Softwareentwicklung zu dokumentieren.`,transparency:`Transparenz`,transparencyTitle:`Projektinformationen & Transparenz`,transparencyText:`Die auf dieser Website gezeigten Fotos von Laborumgebungen, technischen Arbeitsplätzen und elektronischen Geräten dienen ausschließlich der Veranschaulichung meiner technischen Interessen und praktischen Erfahrungen.`,transparencyStrong:`Sie zeigen weder meinen tatsächlichen Arbeitsplatz noch interne Bereiche oder reale Arbeitsumgebungen eines Unternehmens.`,personalWay:`Persönlicher Weg`,importantNotice:`Wichtiger Hinweis`,importantTitle:`Wichtiger Hinweis zu meinen Projekten`,warningOne:`Projekte mit der Kennzeichnung „Konzept“ befinden sich noch in der Ideen- bzw. Konzeptphase und wurden bisher noch nicht praktisch umgesetzt.`,warningTwo:`Alle anderen Projekte können über „Beitrag lesen“ geöffnet werden. Am Ende der jeweiligen Projektseite befindet sich die Schaltfläche „Zum Projekt“ mit projektbezogenen Dateien.`,collaborationTitle:`Zusammenarbeit an modernen Elektronikprojekten.`,collaborationText:`Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder individuelle Entwicklungen.`,privacy:`Datenschutz`,legalNotice:`Impressum`,back:`Zurück`,country:`Deutschland`,knowledgeNoticeParagraphs:[`Viele Grundlagen und technische Informationen in diesem Bereich sind bereits in Fachbüchern, Dokumentationen oder anderen Quellen verfügbar.`,`Der Schwerpunkt dieser Wissensbibliothek liegt daher nicht nur auf der Sammlung von Lernmaterialien. Ich möchte vor allem Themen genauer analysieren, die aus meiner Sicht an anderen Stellen nicht immer verständlich oder ausreichend nachvollziehbar erklärt werden.`,`Die Beiträge spiegeln meinen persönlichen Lernprozess und mein aktuelles technisches Verständnis wider. Sie sollen Zusammenhänge Schritt für Schritt greifbarer machen und zugleich als Grundlage für weitere Untersuchungen dienen.`],noKnowledge:`Noch keine passenden Beiträge`,noKnowledgeText:`Neue Lernnotizen und Analysen werden hier nach und nach ergänzt.`,footer:`© 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.`,conceptProject:`Konzeptprojekt – noch nicht umgesetzt`,noProjectLink:`Kein Projektlink hinterlegt`,heroBadge:`Elektrokonstruktion · Prüftechnik · Software`,docs:`Dokumente`,sourceCode:`Quellcode`,focusValue:`IoT · Automatisierung`,tools:`Werkzeuge`,toolsValue:`SPS · AutoCAD · EPLAN · C++ · Qt`,translationFallbackShort:`Deutsch`,translationFallback:`Dieser Beitrag ist noch nicht in der gewählten Sprache verfügbar. Die deutsche Version wird angezeigt.`},en:{tagline:`Technology · Development · Learning`,gallery:`Gallery`,contact:`Contact`,knowledge:`Knowledge & Research`,projects:`Projects`,discover:`Explore projects`,openProject:`Open project`,readPost:`Read article`,search:`Search...`,all:`All`,noPosts:`No articles found.`,technicalBlog:`Technical Blog`,blogTitle:`Electronics Projects & Documentation`,projectImages:`Gallery Images`,enlarge:`Enlarge`,image:`Image`,previous:`← Previous`,next:`Next →`,page:`Page`,of:`of`,location:`Location`,focus:`Focus`,knowledgeLibrary:`Knowledge Library`,knowledgeTitle:`Knowledge, Learning Materials & Research`,knowledgeIntro:`Technical notes, circuit analyses, learning materials and personal research - structured and easy to search.`,knowledgeNotice:`About this knowledge library`,knowledgeSearch:`Search for an analysis, component or topic...`,allTopics:`All topics`,selectedPost:`Featured article`,archive:`Archive`,morePosts:`More articles`,posts:`articles`,backKnowledge:`Back to the knowledge library`,externalSource:`Open external source`,backBlog:`Back to the blog`,heroTitle:`Technology. Documentation. Development.`,heroText:`I built this website to document technical projects, learning progress and practical experience in electronics, embedded systems, measurement technology and technical software development.`,transparency:`Transparency`,transparencyTitle:`Project Information & Transparency`,transparencyText:`The photos of laboratory environments, technical workspaces and electronic devices shown on this website are solely intended to illustrate my technical interests and practical experience.`,transparencyStrong:`They do not show my actual workplace, internal areas or real working environments of any company.`,personalWay:`Personal Journey`,importantNotice:`Important Notice`,importantTitle:`Important notice about my projects`,warningOne:`Projects marked as “Concept” are still in the idea or concept phase and have not yet been implemented in practice.`,warningTwo:`All other projects can be opened via “Read article”. At the end of each project page, the “Open project” button provides project-related files.`,collaborationTitle:`Collaboration on modern electronics projects.`,collaborationText:`Are you looking for support with embedded systems, sensors, robotics or industrial automation? Contact me for technical collaboration or individual developments.`,privacy:`Privacy`,legalNotice:`Legal Notice`,back:`Back`,country:`Germany`,knowledgeNoticeParagraphs:[`Many fundamentals and technical details in this section are already available in textbooks, documentation or other sources.`,`The focus of this knowledge library is therefore not merely collecting learning material. I especially want to analyse topics that, from my perspective, are not always explained clearly or comprehensibly elsewhere.`,`The articles reflect my personal learning process and my current technical understanding. They aim to make connections easier to grasp step by step and provide a basis for further investigation.`],noKnowledge:`No matching articles yet`,noKnowledgeText:`New learning notes and analyses will gradually be added here.`,footer:`© 2026 ElektronikLab — Modern electronics and automation projects.`,conceptProject:`Concept project – not yet implemented`,noProjectLink:`No project link provided`,heroBadge:`Electrical Design · Testing · Software`,docs:`Documents`,sourceCode:`Source Code`,focusValue:`IoT · Automation`,tools:`Tools`,toolsValue:`PLC · AutoCAD · EPLAN · C++ · Qt`,translationFallbackShort:`German version`,translationFallback:`This article is not yet available in the selected language. The German version is shown.`},vi:{tagline:`Kỹ thuật · Phát triển · Học hỏi`,gallery:`Thư viện ảnh`,contact:`Liên hệ`,knowledge:`Kiến thức & Nghiên cứu`,projects:`Dự án`,discover:`Khám phá dự án`,openProject:`Mở dự án`,readPost:`Đọc bài viết`,search:`Tìm kiếm...`,all:`Tất cả`,noPosts:`Không tìm thấy bài viết.`,technicalBlog:`Blog Kỹ thuật`,blogTitle:`Dự án Điện tử & Tài liệu`,projectImages:`Hình ảnh`,enlarge:`Phóng to`,image:`Ảnh`,previous:`← Trước`,next:`Tiếp →`,page:`Trang`,of:`trên`,location:`Vị trí`,focus:`Trọng tâm`,knowledgeLibrary:`Thư viện Kiến thức`,knowledgeTitle:`Kiến thức, Tài liệu học tập & Nghiên cứu`,knowledgeIntro:`Ghi chú kỹ thuật, phân tích mạch, tài liệu học tập và nghiên cứu cá nhân - được sắp xếp rõ ràng và dễ tìm kiếm.`,knowledgeNotice:`Lưu ý về thư viện kiến thức`,knowledgeSearch:`Tìm phân tích, linh kiện hoặc chủ đề...`,allTopics:`Tất cả chủ đề`,selectedPost:`Bài viết nổi bật`,archive:`Lưu trữ`,morePosts:`Các bài viết khác`,posts:`bài viết`,backKnowledge:`Quay lại thư viện kiến thức`,externalSource:`Mở nguồn bên ngoài`,backBlog:`Quay lại blog`,heroTitle:`Kỹ thuật. Tài liệu. Phát triển.`,heroText:`Tôi tự xây dựng website này để ghi lại các dự án kỹ thuật, quá trình học tập và kinh nghiệm thực tế trong lĩnh vực điện tử, hệ thống nhúng, đo lường và phát triển phần mềm kỹ thuật.`,transparency:`Minh bạch`,transparencyTitle:`Thông tin dự án & Minh bạch`,transparencyText:`Các hình ảnh về phòng thí nghiệm, không gian làm việc kỹ thuật và thiết bị điện tử trên website này chỉ nhằm minh họa cho sở thích kỹ thuật và kinh nghiệm thực hành của tôi.`,transparencyStrong:`Chúng không thể hiện nơi làm việc thực tế, khu vực nội bộ hay môi trường làm việc thật của bất kỳ doanh nghiệp nào.`,personalWay:`Hành trình cá nhân`,importantNotice:`Lưu ý quan trọng`,importantTitle:`Lưu ý quan trọng về các dự án của tôi`,warningOne:`Các dự án có nhãn “Ý tưởng” vẫn đang ở giai đoạn ý tưởng hoặc khái niệm và chưa được triển khai thực tế.`,warningTwo:`Các dự án khác có thể được mở bằng nút “Đọc bài viết”. Cuối mỗi trang dự án có nút “Mở dự án” với các tệp liên quan.`,collaborationTitle:`Hợp tác trong các dự án điện tử hiện đại.`,collaborationText:`Bạn cần hỗ trợ về hệ thống nhúng, cảm biến, robot hoặc tự động hóa công nghiệp? Hãy liên hệ với tôi để hợp tác kỹ thuật hoặc phát triển giải pháp riêng.`,privacy:`Quyền riêng tư`,legalNotice:`Thông tin pháp lý`,back:`Quay lại`,country:`Đức`,knowledgeNoticeParagraphs:[`Nhiều kiến thức nền tảng và thông tin kỹ thuật trong khu vực này đã có trong sách chuyên ngành, tài liệu hoặc các nguồn khác.`,`Vì vậy, trọng tâm của thư viện kiến thức không chỉ là tập hợp tài liệu học tập. Tôi muốn phân tích kỹ hơn những chủ đề mà theo góc nhìn của mình chưa được giải thích thật sự rõ ràng hoặc dễ hiểu ở những nơi khác.`,`Các bài viết phản ánh quá trình học tập và hiểu biết kỹ thuật hiện tại của tôi. Mục tiêu là làm rõ các mối liên hệ từng bước và tạo nền tảng cho những nghiên cứu tiếp theo.`],noKnowledge:`Chưa có bài viết phù hợp`,noKnowledgeText:`Các ghi chú học tập và phân tích mới sẽ được bổ sung dần tại đây.`,footer:`© 2026 ElektronikLab — Các dự án điện tử và tự động hóa hiện đại.`,conceptProject:`Dự án ý tưởng – chưa được triển khai`,noProjectLink:`Chưa có liên kết dự án`,heroBadge:`Thiết kế điện · Kiểm thử · Phần mềm`,docs:`Tài liệu`,sourceCode:`Mã nguồn`,focusValue:`IoT · Tự động hóa`,tools:`Công cụ`,toolsValue:`PLC · AutoCAD · EPLAN · C++ · Qt`,translationFallbackShort:`Bản tiếng Đức`,translationFallback:`Bài viết này chưa có bản dịch theo ngôn ngữ đã chọn. Website đang hiển thị bản tiếng Đức.`}},pv=e=>{let t=fv[e]||fv.de,n=C_(e);return n?{...t,heroBadge:n.hero_badge,heroTitle:n.hero_title,heroText:n.hero_text,transparencyTitle:n.transparency_title,transparencyText:n.transparency_text,transparencyStrong:n.transparency_strong,warningOne:n.warning_one,warningTwo:n.warning_two,collaborationTitle:n.collaboration_title,collaborationText:n.collaboration_text}:t},mv=[`/my-electronics-blog/images/galerie/Dampfmaschine-main.webp`,`/my-electronics-blog/images/galerie/finanzmanager-main.webp`,`/my-electronics-blog/images/galerie/Mischbehälter-main.webp`,`/my-electronics-blog/images/galerie/Flaschenzug-main.webp`,`/my-electronics-blog/images/galerie/Tauchanlage-main.webp`],hv=e=>{if(!e)return[];if(Array.isArray(e))return e.filter(Boolean);if(typeof e==`string`)try{let t=JSON.parse(e);return Array.isArray(t)?t.filter(Boolean):[]}catch{return e.split(`
 `).map(e=>e.trim()).filter(Boolean)}return[]},gv=e=>[`idea`,`in_progress`,`done`].includes(e)?e:`done`,_v=(e,t=`de`)=>({de:{idea:`Idee`,in_progress:`In Arbeit`,done:`Umgesetzt`},en:{idea:`Concept`,in_progress:`In progress`,done:`Completed`},vi:{idea:`Ý tưởng`,in_progress:`Đang thực hiện`,done:`Hoàn thành`}})[t]?.[gv(e)]||gv(e),vv=e=>({idea:`border-zinc-500/30 bg-zinc-500/15 text-zinc-300`,in_progress:`border-yellow-400/30 bg-yellow-400/10 text-yellow-300`,done:`border-emerald-400/30 bg-emerald-400/10 text-emerald-300`})[gv(e)],yv=e=>gv(e?.project_status)===`idea`,bv=(e,t=`de`)=>e?new Intl.DateTimeFormat({de:`de-DE`,en:`en-US`,vi:`vi-VN`}[t]||`de-DE`,{day:`2-digit`,month:`long`,year:`numeric`}).format(new Date(e)):{de:`Kein Datum`,en:`No date`,vi:`Không có ngày`}[t],xv=e=>({IoT:rv,Robotik:V_,Messtechnik:Z_,"Über mich":Q_,"Karriere & Weiterbildung":av,"WinCC & HMI":nv,"Technische Erfahrungen":cv})[e]||J_,Sv=(e,t=`de`)=>({en:{Elektrotechnik:`Electrical Engineering`,Maschinenbau:`Mechanical Engineering`,"Über mich":`About Me`,Softwareentwicklung:`Software Development`,"SPS-Programmierung":`PLC Programming`,Grundlagen:`Fundamentals`,Robotik:`Robotics`,Messtechnik:`Measurement Technology`,"Karriere & Weiterbildung":`Career & Continuing Education`,"Technische Erfahrungen":`Technical Experience`},vi:{Elektrotechnik:`Kỹ thuật điện`,Maschinenbau:`Cơ khí`,"Über mich":`Về tôi`,Softwareentwicklung:`Phát triển phần mềm`,"SPS-Programmierung":`Lập trình PLC`,Grundlagen:`Kiến thức nền tảng`,Robotik:`Robot`,Messtechnik:`Kỹ thuật đo lường`,"Karriere & Weiterbildung":`Sự nghiệp & Đào tạo nâng cao`,"Technische Erfahrungen":`Kinh nghiệm kỹ thuật`}})[t]?.[e]||e,Cv={de:[{icon:J_,title:`Elektronik & Embedded Systems`,text:`Eigene Lernprojekte rund um Mikrocontroller, Sensorik und hardwarenahe Entwicklung zur praktischen Erweiterung meines technischen Wissens.`},{icon:sv,title:`Automatisierung & Steuerung`,text:`Praktische Übungen und kleinere Projekte, um industrielle Abläufe, Steuerungstechnik und technische Prozesse besser zu verstehen.`},{icon:av,title:`Technisches Lernen`,text:`Dokumentation meines Lernwegs, technischer Erfahrungen und neuer Themen, mit denen ich mich kontinuierlich beschäftige.`},{icon:nv,title:`Eigene Entwicklung`,text:`Diese Website dient als persönliche Plattform, um Projekte, Ideen und technische Fortschritte übersichtlich festzuhalten.`}],en:[{icon:J_,title:`Electronics & Embedded Systems`,text:`Personal learning projects involving microcontrollers, sensors and hardware-oriented development to expand my technical knowledge through practice.`},{icon:sv,title:`Automation & Control`,text:`Practical exercises and smaller projects to better understand industrial workflows, control technology and technical processes.`},{icon:av,title:`Technical Learning`,text:`Documentation of my learning journey, technical experience and new topics that I continuously explore.`},{icon:nv,title:`Personal Development`,text:`This website is my personal platform for documenting projects, ideas and technical progress in a clear format.`}],vi:[{icon:J_,title:`Điện tử & Hệ thống nhúng`,text:`Các dự án học tập cá nhân về vi điều khiển, cảm biến và phát triển gần phần cứng nhằm mở rộng kiến thức kỹ thuật qua thực hành.`},{icon:sv,title:`Tự động hóa & Điều khiển`,text:`Các bài thực hành và dự án nhỏ để hiểu rõ hơn quy trình công nghiệp, kỹ thuật điều khiển và các quá trình kỹ thuật.`},{icon:av,title:`Học tập kỹ thuật`,text:`Ghi lại hành trình học tập, kinh nghiệm kỹ thuật và những chủ đề mới mà tôi liên tục tìm hiểu.`},{icon:nv,title:`Phát triển cá nhân`,text:`Website này là nền tảng cá nhân để lưu lại dự án, ý tưởng và tiến bộ kỹ thuật một cách rõ ràng.`}]},wv={en:{title:`Nguyen Nhan Do - Learning technology. Gaining experience. Continuing to grow.`,content:`I came to Germany in 2013 - not because my life in Vietnam was bad, but because I wanted to discover how far I could develop personally and professionally by leaving my comfort zone and starting again in a completely new environment.
 
