@@ -1251,6 +1251,16 @@ function MarkdownEditorPage() {
 
             {showPersonalWayEditor && (
               <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
+                <div className="rounded-xl border border-fuchsia-400/20 bg-fuchsia-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
+                  <p className="font-black text-fuchsia-200">Speicherort der Markdown-Datei</p>
+                  <p className="mt-2">Speichern Sie die Datei abhängig von der ausgewählten Sprache unter:</p>
+                  <ul className="mt-2 ml-5 list-disc space-y-1">
+                    <li>Deutsch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/personal-way.md</code></li>
+                    <li>Englisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/en/personal-way.md</code></li>
+                    <li>Vietnamesisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/vi/personal-way.md</code></li>
+                  </ul>
+                  <p className="mt-3 text-xs text-zinc-400">Wenn Sie „In Ordner speichern“ verwenden, wählen Sie den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content</code>. Der Editor legt englische und vietnamesische Dateien automatisch im passenden Unterordner ab.</p>
+                </div>
                 <div>
                   <label className={labelClass}>Sprache</label>
                   <select className={inputClass} value={personalWayForm.language || "de"} onChange={(e) => selectPersonalWayLanguage(e.target.value)}>
@@ -1313,8 +1323,8 @@ function MarkdownEditorPage() {
 
           <div className="grid gap-4 rounded-2xl border border-white/10 bg-black/20 p-5 sm:grid-cols-2">
             <div className="sm:col-span-2 rounded-xl border border-cyan-400/20 bg-cyan-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
-              <p className="font-black text-cyan-200">Mehrsprachige BeitrÃ¤ge speichern</p>
-              <p className="mt-2">Verwenden Sie fÃ¼r alle Sprachversionen desselben Beitrags dieselbe <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">translation_id</code>. Beim Speichern legt der Editor die Datei automatisch im Unterordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">de</code>, <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">en</code> oder <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">vi</code> innerhalb von <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content</code> ab.</p>
+              <p className="font-black text-cyan-200">Mehrsprachige Beiträge speichern</p>
+              <p className="mt-2">Verwenden Sie für alle Sprachversionen desselben Beitrags dieselbe <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">translation_id</code>. Beim Speichern legt der Editor die Datei automatisch im Unterordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">de</code>, <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">en</code> oder <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">vi</code> innerhalb von <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content</code> ab.</p>
             </div>
             <div className="sm:col-span-2">
               <label className={labelClass}>Inhaltstyp</label>
@@ -1328,7 +1338,7 @@ function MarkdownEditorPage() {
               <select className={inputClass} value={form.language} onChange={(e) => update("language", e.target.value)}>
                 <option value="de">DE - Deutsch</option>
                 <option value="en">EN - English</option>
-                <option value="vi">VI - Tiáº¿ng Viá»‡t</option>
+                <option value="vi">VI - Tiếng Việt</option>
               </select>
             </div>
             <div>
