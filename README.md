@@ -71,7 +71,7 @@ npm run build
 
 ## Content Management
 
-Blog posts and knowledge articles are stored in `src/content/`. Multilingual article files can be organized in `src/content/de/`, `src/content/en/` and `src/content/vi/`. Article images are stored in `public/images/posts/`. Free-form gallery images are stored separately in `public/images/galerie/`.
+Blog posts, knowledge articles and localized homepage content are stored in `src/content/de/`, `src/content/en/` and `src/content/vi/`. Article images are stored in `public/images/posts/`. Free-form gallery images are stored separately in `public/images/galerie/`.
 
 Start the local Markdown editor:
 
@@ -87,11 +87,11 @@ In Chrome or Edge:
 2. Choose whether it is a project article or a knowledge article.
 3. Edit the content and preview the result.
 4. Click `In Ordner speichern`.
-5. Select `src/content/` the first time. The editor creates or uses the language subfolder automatically for multilingual articles.
+5. Select `src/content/` the first time. The editor creates or uses the selected language subfolder automatically.
 6. Add referenced article images to `public/images/posts/`.
 7. Deploy the updated website.
 
-Use `Persönlicher Weg bearbeiten` in the local editor to update the homepage card. Its content is stored in `src/content/personal-way.md`.
+Use `Startseiten-Inhalte bearbeiten` and `Persönlicher Weg bearbeiten` in the local editor to update localized homepage content. The editor stores each file in the selected language subfolder, for example `src/content/de/home-content.md` and `src/content/de/personal-way.md`.
 
 Use `Website-Hintergrund bearbeiten` to update the optional website background image. Its path is stored in `src/content/site-settings.md`. Leave the field empty to keep the default gradient background.
 
@@ -160,7 +160,7 @@ title: Giám sát cảm biến bằng ESP32 và MQTT
 ---
 ```
 
-Existing Markdown articles directly inside `src/content/` continue to work and are treated as German articles automatically. If a translation is missing, the website displays the German article with a fallback notice.
+If a translation is missing, the website displays the German article with a fallback notice.
 
 ## Project Structure
 
@@ -173,10 +173,12 @@ public/
     posts/            Blog and knowledge article images
 src/
   components/         Shared UI components
-  content/            Markdown posts and homepage content
-    de/               German article translations
-    en/               English article translations
-    vi/               Vietnamese article translations
+  content/            Markdown content and shared settings
+    de/               German posts and homepage content
+    en/               English posts and homepage content
+    vi/               Vietnamese posts and homepage content
+    gallery-settings.md
+    site-settings.md
   lib/posts.js        Markdown loading and frontmatter parsing
   App.jsx             Application UI
   index.css           Tailwind CSS entrypoint

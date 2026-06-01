@@ -965,8 +965,7 @@ function MarkdownEditorPage() {
       image_gallery: form.image_gallery.split("\n").map((item) => item.trim()).filter(Boolean),
       tags: form.tags.split(",").map((item) => item.trim()).filter(Boolean),
     });
-    const isLegacyGermanPost = form.language === "de" && form.source_path && !form.source_path.includes("/");
-    return { filename: `${slug}.md`, directory: isLegacyGermanPost ? null : form.language, markdown };
+    return { filename: `${slug}.md`, directory: form.language, markdown };
   };
 
   const exportPost = () => {
@@ -1013,7 +1012,7 @@ function MarkdownEditorPage() {
 
   const getHomeContentExport = () => ({
     filename: "home-content.md",
-    directory: homeContentForm.language === "de" ? null : homeContentForm.language,
+    directory: homeContentForm.language,
     markdown: createHomeContentFile(homeContentForm),
   });
 
@@ -1040,7 +1039,7 @@ function MarkdownEditorPage() {
 
     return {
       filename: "personal-way.md",
-      directory: personalWayForm.language === "de" ? null : personalWayForm.language,
+      directory: personalWayForm.language,
       markdown: createPersonalWayFile(personalWayForm),
     };
   };
@@ -1218,7 +1217,7 @@ function MarkdownEditorPage() {
                   <p className="font-black text-blue-200">Speicherort der Markdown-Datei</p>
                   <p className="mt-2">Speichern Sie die Datei abhängig von der ausgewählten Sprache unter:</p>
                   <ul className="mt-2 ml-5 list-disc space-y-1">
-                    <li>Deutsch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/home-content.md</code></li>
+                    <li>Deutsch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/de/home-content.md</code></li>
                     <li>Englisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/en/home-content.md</code></li>
                     <li>Vietnamesisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/vi/home-content.md</code></li>
                   </ul>
@@ -1299,7 +1298,7 @@ function MarkdownEditorPage() {
                   <p className="font-black text-fuchsia-200">Speicherort der Markdown-Datei</p>
                   <p className="mt-2">Speichern Sie die Datei abhängig von der ausgewählten Sprache unter:</p>
                   <ul className="mt-2 ml-5 list-disc space-y-1">
-                    <li>Deutsch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/personal-way.md</code></li>
+                    <li>Deutsch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/de/personal-way.md</code></li>
                     <li>Englisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/en/personal-way.md</code></li>
                     <li>Vietnamesisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/vi/personal-way.md</code></li>
                   </ul>

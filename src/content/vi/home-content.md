@@ -8,7 +8,7 @@ transparency_title: Thông tin dự án & Minh bạch
 transparency_text: Các hình ảnh về phòng thí nghiệm, không gian làm việc kỹ thuật và thiết bị điện tử trên website này chỉ nhằm minh họa cho sở thích kỹ thuật và kinh nghiệm thực hành của tôi.
 transparency_strong: Chúng không thể hiện nơi làm việc thực tế, khu vực nội bộ hay môi trường làm việc thật của bất kỳ doanh nghiệp nào.
 feature_1_title: Điện tử & Hệ thống nhúng
-feature_1_text: Các dự án học tập cá nhân về vi điều khiển, cảm biến và phát triển gần phần cứng nhằm mở rộng kiến thức kỹ thuật qua thực hành.
+feature_1_text: Các dự án học tập cá nhân về vi điều khiển, cảm biến và phát triển phần cứng nhằm mở rộng kiến thức kỹ thuật qua thực hành.
 feature_2_title: Tự động hóa & Điều khiển
 feature_2_text: Các bài thực hành và dự án nhỏ để hiểu rõ hơn quy trình công nghiệp, kỹ thuật điều khiển và các quá trình kỹ thuật.
 feature_3_title: Học tập kỹ thuật
