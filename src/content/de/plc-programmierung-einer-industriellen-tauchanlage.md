@@ -1,13 +1,16 @@
 ---
-id: demo-3
+id: plc-programmierung-einer-industriellen-tauchanlage
+slug: plc-programmierung-einer-industriellen-tauchanlage
+translation_id: demo-3
+language: de
+content_type: 
 title: PLC-Programmierung einer industriellen Tauchanlage
 category: SPS-Programmierung
 image_url: /my-electronics-blog/images/posts/Tauchanlage-main.webp
 image_gallery:
 - /my-electronics-blog/images/posts/Tauchanlage-1.webp
 - /my-electronics-blog/images/posts/Tauchanlage-2.webp
-excerpt: Automatisierte Tauchanlage mit SPS-Steuerung. Automatischer Transport und
-  Tauchprozess mit Siemens S7-300. Hand- und Automatikbetrieb im TIA Portal realisiert.
+excerpt: Automatisierte Tauchanlage mit SPS-Steuerung. Automatischer Transport und Tauchprozess mit Siemens S7-300. Hand- und Automatikbetrieb im TIA Portal realisiert.
 tags:
 - SPS
 - S7300
@@ -18,7 +21,6 @@ created_at: '2026-04-29T12:00:00Z'
 external_link: https://drive.google.com/drive/folders/1WgBLk6R1F-_J_oisAxwNgQyFdcKVzb-m
 project_status: done
 sort_order: 50
-slug: plc-programmierung-einer-industriellen-tauchanlage
 ---
 
 # PLC-Programmierung einer industriellen Tauchanlage

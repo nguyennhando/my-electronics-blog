@@ -1,5 +1,9 @@
 ---
-id: local-post-1779957810945
+id: finanzverwaltung-mit-datenanalyse
+slug: finanzverwaltung-mit-datenanalyse
+translation_id: local-post-1779957810945
+language: de
+content_type: 
 title: Finanzverwaltung mit Datenanalyse
 category: Softwareentwicklung
 image_url: /my-electronics-blog/images/posts/finanzmanager-main.webp
@@ -7,12 +11,7 @@ image_gallery:
 - /my-electronics-blog/images/posts/finanzmanager-1.webp
 - /my-electronics-blog/images/posts/finanzmanager-2.webp
 - /my-electronics-blog/images/posts/finanzmanager-3.webp
-excerpt: 'Die Software ermöglicht die Verwaltung persönlicher Einnahmen und Ausgaben,
-  unterstützt CSV-Import und -Export sowie Echtzeit-Datenanalysen über eine moderne
-  grafische Benutzeroberfläche.
-
-  Über den Button „Zum Projekt“ am Ende der Seite erhalten Sie Zugriff auf den vollständigen
-  Quellcode des Projekts „Finanzmanager“.'
+excerpt: Die Software ermöglicht die Verwaltung persönlicher Einnahmen und Ausgaben, unterstützt CSV-Import und -Export sowie Echtzeit-Datenanalysen über eine moderne grafische Benutzeroberfläche. Über den Button „Zum Projekt“ am Ende der Seite erhalten Sie Zugriff auf den vollständigen Quellcode des Projekts „Finanzmanager“.
 tags:
 - C++
 - Qt 6.9
@@ -22,7 +21,6 @@ created_at: '2026-05-28T08:43:30.945Z'
 external_link: https://github.com/nguyennhando/finanzmanager
 project_status: done
 sort_order: 30
-slug: finanzverwaltung-mit-datenanalyse
 ---
 
 # Finanzverwaltung mit Datenanalyse

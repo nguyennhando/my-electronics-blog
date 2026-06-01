@@ -1,12 +1,15 @@
 ---
-id: demo-1
+id: elektronik-test-reparatur
+slug: elektronik-test-reparatur
+translation_id: demo-1
+language: de
+content_type: 
 title: Elektronik • Test • Reparatur
 category: Über mich
 image_url: /my-electronics-blog/images/posts/Nguyen-main.webp
-image_gallery: []
-excerpt: Elektroingenieur mit großem Interesse an Elektrokonstruktion und Softwareentwicklung.
-  Lernbereit, feinmotorisch und motiviert, meine praktischen Erfahrungen kontinuierlich
-  zu erweitern.
+image_gallery:
+[]
+excerpt: Elektroingenieur mit großem Interesse an Elektrokonstruktion und Softwareentwicklung. Lernbereit, feinmotorisch und motiviert, meine praktischen Erfahrungen kontinuierlich zu erweitern.
 tags:
 - ESP32
 - MQTT
@@ -15,10 +18,9 @@ tags:
 read_time: 8 Min.
 published: true
 created_at: '2026-05-14T12:00:00Z'
-external_link: ''
+external_link: 
 project_status: done
 sort_order: 10
-slug: elektronik-test-reparatur
 ---
 
 # Elektronik • Test • Reparatur

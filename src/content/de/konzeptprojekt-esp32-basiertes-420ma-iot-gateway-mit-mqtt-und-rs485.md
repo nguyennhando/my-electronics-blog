@@ -1,23 +1,24 @@
 ---
-id: local-post-1779960691288
-title: 'Konzeptprojekt: ESP32-basiertes 4–20mA IoT-Gateway mit MQTT und RS485'
+id: konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485
+slug: konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485
+translation_id: local-post-1779960691288
+language: de
+content_type: 
+title: Konzeptprojekt: ESP32-basiertes 4–20mA IoT-Gateway mit MQTT und RS485
 category: IoT
 image_url: /my-electronics-blog/images/posts/ESP32-main.webp
-image_gallery: []
-excerpt: Geplantes Lern- und Entwicklungsprojekt zur Erfassung von 4–20mA-Sensorsignalen
-  mit ESP32, ADS1115 und MQTT-Kommunikation. Ziel des Projekts ist die Entwicklung
-  eines einfachen industriellen IoT-Prototyps zur Sensorüberwachung und Datenvisualisierung
-  über Home Assistant.
+image_gallery:
+[]
+excerpt: Geplantes Lern- und Entwicklungsprojekt zur Erfassung von 4–20mA-Sensorsignalen mit ESP32, ADS1115 und MQTT-Kommunikation. Ziel des Projekts ist die Entwicklung eines einfachen industriellen IoT-Prototyps zur Sensorüberwachung und Datenvisualisierung über Home Assistant.
 tags:
 - ESP32
 - MQTT
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:31:31.288Z'
-external_link: ''
+external_link: 
 project_status: idea
 sort_order: 90
-slug: konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485
 ---
 
 # Konzeptprojekt: ESP32-basiertes 4–20mA IoT-Gateway mit MQTT und RS485

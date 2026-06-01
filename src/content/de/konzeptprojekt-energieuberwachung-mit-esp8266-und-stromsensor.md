@@ -1,11 +1,15 @@
 ---
-id: local-post-1779960876705
-title: 'Konzeptprojekt: Energieüberwachung mit ESP8266 und Stromsensor'
+id: konzeptprojekt-energieuberwachung-mit-esp8266-und-stromsensor
+slug: konzeptprojekt-energieuberwachung-mit-esp8266-und-stromsensor
+translation_id: local-post-1779960876705
+language: de
+content_type: 
+title: Konzeptprojekt: Energieüberwachung mit ESP8266 und Stromsensor
 category: Embedded Systems
 image_url: /my-electronics-blog/images/posts/Energieüberwachung-main.webp
-image_gallery: []
-excerpt: Geplantes Lernprojekt zur einfachen Erfassung und Visualisierung von Stromverbrauchsdaten
-  mit ESP8266 und Stromsensor über WLAN.
+image_gallery:
+[]
+excerpt: Geplantes Lernprojekt zur einfachen Erfassung und Visualisierung von Stromverbrauchsdaten mit ESP8266 und Stromsensor über WLAN.
 tags:
 - ESP8266
 - Energieüberwachung
@@ -15,10 +19,9 @@ tags:
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:34:36.705Z'
-external_link: ''
+external_link: 
 project_status: in_progress
-sort_order: 100
-slug: konzeptprojekt-energieuberwachung-mit-esp8266-und-stromsensor
+sort_order: 120
 ---
 
 # Konzeptprojekt: Energieüberwachung mit ESP8266 und Stromsensor

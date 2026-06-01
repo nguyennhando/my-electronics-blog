@@ -1,11 +1,15 @@
 ---
-id: local-post-1779960818567
+id: konzept-eines-pwm-geregelten-dc-netzteils-mit-mess-und-schutzfunktionen
+slug: konzept-eines-pwm-geregelten-dc-netzteils-mit-mess-und-schutzfunktionen
+translation_id: local-post-1779960818567
+language: de
+content_type: 
 title: Konzept eines PWM-geregelten DC-Netzteils mit Mess- und Schutzfunktionen
 category: Elektrotechnik
 image_url: /my-electronics-blog/images/posts/DC-Netzteil-main.webp
-image_gallery: []
-excerpt: Lern- und Konzeptprojekt zur Entwicklung eines mikrocontrollerbasierten DC-Netzteils
-  mit PWM-Regelung, Strombegrenzung und grundlegenden Schutzfunktionen.
+image_gallery:
+[]
+excerpt: Lern- und Konzeptprojekt zur Entwicklung eines mikrocontrollerbasierten DC-Netzteils mit PWM-Regelung, Strombegrenzung und grundlegenden Schutzfunktionen.
 tags:
 - PWM
 - Netzteil
@@ -13,10 +17,9 @@ tags:
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:33:38.567Z'
-external_link: ''
+external_link: 
 project_status: idea
-sort_order: 100
-slug: konzept-eines-pwm-geregelten-dc-netzteils-mit-mess-und-schutzfunktionen
+sort_order: 130
 ---
 
 # Konzept eines PWM-geregelten DC-Netzteils mit Mess- und Schutzfunktionen

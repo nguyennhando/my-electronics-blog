@@ -1,21 +1,24 @@
 ---
-id: local-post-1779960950659
-title: 'Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT'
+id: konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt
+slug: konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt
+translation_id: local-post-1779960950659
+language: de
+content_type: 
+title: Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT
 category: Elektrotechnik
 image_url: /my-electronics-blog/images/posts/Schaltnetzteil-main.webp
-image_gallery: []
-excerpt: Geplantes Lernprojekt zur Überwachung von Spannungs-, Strom- und Temperaturwerten
-  eines DC-Schaltnetzteils mit ESP32 und MQTT-Kommunikation.
+image_gallery:
+[]
+excerpt: Geplantes Lernprojekt zur Überwachung von Spannungs-, Strom- und Temperaturwerten eines DC-Schaltnetzteils mit ESP32 und MQTT-Kommunikation.
 tags:
 - MQTT
 - Schaltnetzteil
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:35:50.659Z'
-external_link: ''
+external_link: 
 project_status: idea
 sort_order: 100
-slug: konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt
 ---
 
 # Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT

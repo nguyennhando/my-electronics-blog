@@ -1,13 +1,15 @@
 ---
-id: local-post-1779960469574
+id: wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi
+slug: wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi
+translation_id: local-post-1779960469574
+language: de
+content_type: 
 title: WinCC Fischertechnikmodell – Automatik- und Handbetrieb mit HMI
 category: SPS-Programmierung
 image_url: /my-electronics-blog/images/posts/FischerTechnik-main.webp
 image_gallery:
 - /my-electronics-blog/images/posts/FischerTechnik-1.webp
-excerpt: Programmierung eines Fischertechnik-Pressenmodells mit Siemens CPU1512C,
-  ET200SP und TP700 Comfort Panel. Implementiert werden Automatikbetrieb, Handbetrieb,
-  Benutzerverwaltung, Rezepturverwaltung, Alarmmeldungen sowie eine vollständige HMI-Bedienoberfläche.
+excerpt: Programmierung eines Fischertechnik-Pressenmodells mit Siemens CPU1512C, ET200SP und TP700 Comfort Panel. Implementiert werden Automatikbetrieb, Handbetrieb, Benutzerverwaltung, Rezepturverwaltung, Alarmmeldungen sowie eine vollständige HMI-Bedienoberfläche.
 tags:
 - WinCC
 - SPS
@@ -18,7 +20,6 @@ created_at: '2026-05-28T09:27:49.574Z'
 external_link: https://drive.google.com/drive/folders/1XwbZqMA_neR7FqreJCQsHW4ddtIEpOKi?usp=drive_link
 project_status: done
 sort_order: 60
-slug: wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi
 ---
 
 # WinCC Fischertechnikmodell – Automatik- und Handbetrieb mit HMI

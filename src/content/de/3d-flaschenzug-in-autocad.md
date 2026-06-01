@@ -1,5 +1,9 @@
 ---
-id: local-post-1779960596593
+id: 3d-flaschenzug-in-autocad
+slug: 3d-flaschenzug-in-autocad
+translation_id: local-post-1779960596593
+language: de
+content_type: 
 title: 3D-Flaschenzug in AutoCAD
 category: Maschinenbau
 image_url: /my-electronics-blog/images/posts/Flaschenzug-main.webp
@@ -7,9 +11,7 @@ image_gallery:
 - /my-electronics-blog/images/posts/Flaschenzug-1.webp
 - /my-electronics-blog/images/posts/Flaschenzug-2.webp
 - /my-electronics-blog/images/posts/Flaschenzug-3.webp
-excerpt: In diesem Projekt wurde ein mechanischer Flaschenzug vollständig als 3D-Modell
-  in AutoCAD konstruiert. Der Fokus lag auf der präzisen Modellierung der einzelnen
-  Bauteile sowie der realistischen mechanischen Darstellung des Systems.
+excerpt: In diesem Projekt wurde ein mechanischer Flaschenzug vollständig als 3D-Modell in AutoCAD konstruiert. Der Fokus lag auf der präzisen Modellierung der einzelnen Bauteile sowie der realistischen mechanischen Darstellung des Systems.
 tags:
 - AutoCAD
 - 3D
@@ -20,7 +22,6 @@ created_at: '2026-05-28T09:29:56.593Z'
 external_link: https://drive.google.com/drive/folders/1fN_hc6jaddMzTqEt0iIS4YxpiPdT8JFR?usp=drive_link
 project_status: done
 sort_order: 70
-slug: 3d-flaschenzug-in-autocad
 ---
 
 # 3D-Flaschenzug in AutoCAD

@@ -1,6 +1,9 @@
 ---
 id: technisches-portfolio-elektronik-blog
 slug: technisches-portfolio-elektronik-blog
+translation_id: technisches-portfolio-elektronik-blog
+language: de
+content_type: 
 title: Technisches Portfolio & Elektronik-Blog
 category: Softwareentwicklung
 image_url: /my-electronics-blog/images/posts/Portfolio-Blog-main.webp
@@ -20,7 +23,7 @@ published: true
 created_at: '2026-05-28T09:30:47.159Z'
 external_link: https://github.com/nguyennhando/my-electronics-blog
 project_status: done
-sort_order: 80
+sort_order: 20
 ---
 
 # Technisches Portfolio & Elektronik-Blog

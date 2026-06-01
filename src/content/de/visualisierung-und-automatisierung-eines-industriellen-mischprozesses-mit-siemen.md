@@ -1,21 +1,17 @@
 ---
-id: local-post-1779960317991
-title: Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens
-  WinCC
+id: visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen
+slug: visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen
+translation_id: local-post-1779960317991
+language: de
+content_type: 
+title: Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens WinCC
 category: SPS-Programmierung
 image_url: /my-electronics-blog/images/posts/Mischbehälter-main.webp
 image_gallery:
 - /my-electronics-blog/images/posts/Mischbehälter-1.webp
 - /my-electronics-blog/images/posts/Mischbehälter-2.webp
 - /my-electronics-blog/images/posts/Mischbehälter-3.webp
-excerpt: 'Dieses Projekt beschreibt die Entwicklung eines industriellen HMI-Systems
-  zur Überwachung und Steuerung eines Mischbehälters mit Siemens SIMATIC WinCC Runtime
-  Advanced.
-
-  Die Anwendung ermöglicht die Visualisierung von Sensoren, Ventilen, Motoren und
-  Temperaturwerten in Echtzeit sowie die Bedienung im Automatik- und Handbetrieb.
-  Ziel des Projekts ist eine benutzerfreundliche, sichere und effiziente Prozesssteuerung
-  für industrielle Mischprozesse.'
+excerpt: Dieses Projekt beschreibt die Entwicklung eines industriellen HMI-Systems zur Überwachung und Steuerung eines Mischbehälters mit Siemens SIMATIC WinCC Runtime Advanced. Die Anwendung ermöglicht die Visualisierung von Sensoren, Ventilen, Motoren und Temperaturwerten in Echtzeit sowie die Bedienung im Automatik- und Handbetrieb. Ziel des Projekts ist eine benutzerfreundliche, sichere und effiziente Prozesssteuerung für industrielle Mischprozesse.
 tags:
 - SPS
 read_time: 5 Min.
@@ -24,7 +20,6 @@ created_at: '2026-05-28T09:25:17.991Z'
 external_link: https://drive.google.com/drive/folders/1Vrz5hK6aTVExshjDZIi92ecTgQaFo_kq
 project_status: done
 sort_order: 40
-slug: visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen
 ---
 
 # Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens WinCC
