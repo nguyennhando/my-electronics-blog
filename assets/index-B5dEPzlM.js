@@ -27,7 +27,7 @@ Error generating stack: `+e.message+`
 `});++r<e.length;)r&&n.push({type:`text`,value:`
 `}),n.push(e[r]);return t&&e.length>0&&n.push({type:`text`,value:`
 `}),n}function gg(e){let t=0,n=e.charCodeAt(t);for(;n===9||n===32;)t++,n=e.charCodeAt(t);return e.slice(t)}function _g(e,t){let n=dg(e,t),r=n.one(e,void 0),i=Xh(n),a=Array.isArray(r)?{type:`root`,children:r}:r||{type:`root`,children:[]};return i&&(`children`in a,a.children.push({type:`text`,value:`
-`},i)),a}function vg(e,t){return e&&`run`in e?async function(n,r){let i=_g(n,{file:r,...t});await e.run(i,r)}:function(n,r){return _g(n,{file:r,...e||t})}}function yg(e){if(e)throw e}var bg=s(((e,t)=>{var n=Object.prototype.hasOwnProperty,r=Object.prototype.toString,i=Object.defineProperty,a=Object.getOwnPropertyDescriptor,o=function(e){return typeof Array.isArray==`function`?Array.isArray(e):r.call(e)===`[object Array]`},s=function(e){if(!e||r.call(e)!==`[object Object]`)return!1;var t=n.call(e,`constructor`),i=e.constructor&&e.constructor.prototype&&n.call(e.constructor.prototype,`isPrototypeOf`);if(e.constructor&&!t&&!i)return!1;for(var a in e);return a===void 0||n.call(e,a)},c=function(e,t){i&&t.name===`__proto__`?i(e,t.name,{enumerable:!0,configurable:!0,value:t.newValue,writable:!0}):e[t.name]=t.newValue},l=function(e,t){if(t===`__proto__`){if(!n.call(e,t))return;if(a)return a(e,t).value}return e[t]};t.exports=function e(){var t,n,r,i,a,u,d=arguments[0],f=1,p=arguments.length,m=!1;for(typeof d==`boolean`&&(m=d,d=arguments[1]||{},f=2),(d==null||typeof d!=`object`&&typeof d!=`function`)&&(d={});f<p;++f)if(t=arguments[f],t!=null)for(n in t)r=l(d,n),i=l(t,n),d!==i&&(m&&i&&(s(i)||(a=o(i)))?(a?(a=!1,u=r&&o(r)?r:[]):u=r&&s(r)?r:{},c(d,{name:n,newValue:e(m,u,i)})):i!==void 0&&c(d,{name:n,newValue:i}));return d}}));function xg(e){if(typeof e!=`object`||!e)return!1;let t=Object.getPrototypeOf(e);return(t===null||t===Object.prototype||Object.getPrototypeOf(t)===null)&&!(Symbol.toStringTag in e)&&!(Symbol.iterator in e)}function Sg(){let e=[],t={run:n,use:r};return t;function n(...t){let n=-1,r=t.pop();if(typeof r!=`function`)throw TypeError(`Expected function as last argument, not `+r);i(null,...t);function i(a,...o){let s=e[++n],c=-1;if(a){r(a);return}for(;++c<t.length;)(o[c]===null||o[c]===void 0)&&(o[c]=t[c]);t=o,s?Cg(s,i)(...o):r(null,...o)}}function r(n){if(typeof n!=`function`)throw TypeError("Expected `middelware` to be a function, not "+n);return e.push(n),t}}function Cg(e,t){let n;return r;function r(...t){let r=e.length>t.length,o;r&&t.push(i);try{o=e.apply(this,t)}catch(e){let t=e;if(r&&n)throw t;return i(t)}r||(o&&o.then&&typeof o.then==`function`?o.then(a,i):o instanceof Error?i(o):a(o))}function i(e,...r){n||(n=!0,t(e,...r))}function a(e){i(null,e)}}var wg={basename:Tg,dirname:Eg,extname:Dg,join:Og,sep:`/`};function Tg(e,t){if(t!==void 0&&typeof t!=`string`)throw TypeError(`"ext" argument must be a string`);jg(e);let n=0,r=-1,i=e.length,a;if(t===void 0||t.length===0||t.length>e.length){for(;i--;)if(e.codePointAt(i)===47){if(a){n=i+1;break}}else r<0&&(a=!0,r=i+1);return r<0?``:e.slice(n,r)}if(t===e)return``;let o=-1,s=t.length-1;for(;i--;)if(e.codePointAt(i)===47){if(a){n=i+1;break}}else o<0&&(a=!0,o=i+1),s>-1&&(e.codePointAt(i)===t.codePointAt(s--)?s<0&&(r=i):(s=-1,r=o));return n===r?r=o:r<0&&(r=e.length),e.slice(n,r)}function Eg(e){if(jg(e),e.length===0)return`.`;let t=-1,n=e.length,r;for(;--n;)if(e.codePointAt(n)===47){if(r){t=n;break}}else r||=!0;return t<0?e.codePointAt(0)===47?`/`:`.`:t===1&&e.codePointAt(0)===47?`//`:e.slice(0,t)}function Dg(e){jg(e);let t=e.length,n=-1,r=0,i=-1,a=0,o;for(;t--;){let s=e.codePointAt(t);if(s===47){if(o){r=t+1;break}continue}n<0&&(o=!0,n=t+1),s===46?i<0?i=t:a!==1&&(a=1):i>-1&&(a=-1)}return i<0||n<0||a===0||a===1&&i===n-1&&i===r+1?``:e.slice(i,n)}function Og(...e){let t=-1,n;for(;++t<e.length;)jg(e[t]),e[t]&&(n=n===void 0?e[t]:n+`/`+e[t]);return n===void 0?`.`:kg(n)}function kg(e){jg(e);let t=e.codePointAt(0)===47,n=Ag(e,!t);return n.length===0&&!t&&(n=`.`),n.length>0&&e.codePointAt(e.length-1)===47&&(n+=`/`),t?`/`+n:n}function Ag(e,t){let n=``,r=0,i=-1,a=0,o=-1,s,c;for(;++o<=e.length;){if(o<e.length)s=e.codePointAt(o);else if(s===47)break;else s=47;if(s===47){if(!(i===o-1||a===1))if(i!==o-1&&a===2){if(n.length<2||r!==2||n.codePointAt(n.length-1)!==46||n.codePointAt(n.length-2)!==46){if(n.length>2){if(c=n.lastIndexOf(`/`),c!==n.length-1){c<0?(n=``,r=0):(n=n.slice(0,c),r=n.length-1-n.lastIndexOf(`/`)),i=o,a=0;continue}}else if(n.length>0){n=``,r=0,i=o,a=0;continue}}t&&(n=n.length>0?n+`/..`:`..`,r=2)}else n.length>0?n+=`/`+e.slice(i+1,o):n=e.slice(i+1,o),r=o-i-1;i=o,a=0}else s===46&&a>-1?a++:a=-1}return n}function jg(e){if(typeof e!=`string`)throw TypeError(`Path must be a string. Received `+JSON.stringify(e))}var Mg={cwd:Ng};function Ng(){return`/`}function Pg(e){return!!(typeof e==`object`&&e&&`href`in e&&e.href&&`protocol`in e&&e.protocol&&e.auth===void 0)}function Fg(e){if(typeof e==`string`)e=new URL(e);else if(!Pg(e)){let t=TypeError('The "path" argument must be of type string or an instance of URL. Received `'+e+"`");throw t.code=`ERR_INVALID_ARG_TYPE`,t}if(e.protocol!==`file:`){let e=TypeError(`The URL must be of scheme file`);throw e.code=`ERR_INVALID_URL_SCHEME`,e}return Ig(e)}function Ig(e){if(e.hostname!==``){let e=TypeError(`File URL host must be "localhost" or empty on darwin`);throw e.code=`ERR_INVALID_FILE_URL_HOST`,e}let t=e.pathname,n=-1;for(;++n<t.length;)if(t.codePointAt(n)===37&&t.codePointAt(n+1)===50){let e=t.codePointAt(n+2);if(e===70||e===102){let e=TypeError(`File URL path must not include encoded / characters`);throw e.code=`ERR_INVALID_FILE_URL_PATH`,e}}return decodeURIComponent(t)}var Lg=[`history`,`path`,`basename`,`stem`,`extname`,`dirname`],Rg=class{constructor(e){let t;t=e?Pg(e)?{path:e}:typeof e==`string`||Hg(e)?{value:e}:e:{},this.cwd=`cwd`in t?``:Mg.cwd(),this.data={},this.history=[],this.messages=[],this.value,this.map,this.result,this.stored;let n=-1;for(;++n<Lg.length;){let e=Lg[n];e in t&&t[e]!==void 0&&t[e]!==null&&(this[e]=e===`history`?[...t[e]]:t[e])}let r;for(r in t)Lg.includes(r)||(this[r]=t[r])}get basename(){return typeof this.path==`string`?wg.basename(this.path):void 0}set basename(e){Bg(e,`basename`),zg(e,`basename`),this.path=wg.join(this.dirname||``,e)}get dirname(){return typeof this.path==`string`?wg.dirname(this.path):void 0}set dirname(e){Vg(this.basename,`dirname`),this.path=wg.join(e||``,this.basename)}get extname(){return typeof this.path==`string`?wg.extname(this.path):void 0}set extname(e){if(zg(e,`extname`),Vg(this.dirname,`extname`),e){if(e.codePointAt(0)!==46)throw Error("`extname` must start with `.`");if(e.includes(`.`,1))throw Error("`extname` cannot contain multiple dots")}this.path=wg.join(this.dirname,this.stem+(e||``))}get path(){return this.history[this.history.length-1]}set path(e){Pg(e)&&(e=Fg(e)),Bg(e,`path`),this.path!==e&&this.history.push(e)}get stem(){return typeof this.path==`string`?wg.basename(this.path,this.extname):void 0}set stem(e){Bg(e,`stem`),zg(e,`stem`),this.path=wg.join(this.dirname||``,e+(this.extname||``))}fail(e,t,n){let r=this.message(e,t,n);throw r.fatal=!0,r}info(e,t,n){let r=this.message(e,t,n);return r.fatal=void 0,r}message(e,t,n){let r=new Od(e,t,n);return this.path&&(r.name=this.path+`:`+r.name,r.file=this.path),r.fatal=!1,this.messages.push(r),r}toString(e){return this.value===void 0?``:typeof this.value==`string`?this.value:new TextDecoder(e||void 0).decode(this.value)}};function zg(e,t){if(e&&e.includes(wg.sep))throw Error("`"+t+"` cannot be a path: did not expect `"+wg.sep+"`")}function Bg(e,t){if(!e)throw Error("`"+t+"` cannot be empty")}function Vg(e,t){if(!e)throw Error("Setting `"+t+"` requires `path` to be set too")}function Hg(e){return!!(e&&typeof e==`object`&&`byteLength`in e&&`byteOffset`in e)}var Ug=(function(e){let t=this.constructor.prototype,n=t[e],r=function(){return n.apply(r,arguments)};return Object.setPrototypeOf(r,t),r}),Wg=u(bg(),1),Gg={}.hasOwnProperty,Kg=new class e extends Ug{constructor(){super(`copy`),this.Compiler=void 0,this.Parser=void 0,this.attachers=[],this.compiler=void 0,this.freezeIndex=-1,this.frozen=void 0,this.namespace={},this.parser=void 0,this.transformers=Sg()}copy(){let t=new e,n=-1;for(;++n<this.attachers.length;){let e=this.attachers[n];t.use(...e)}return t.data((0,Wg.default)(!0,{},this.namespace)),t}data(e,t){return typeof e==`string`?arguments.length===2?(Yg(`data`,this.frozen),this.namespace[e]=t,this):Gg.call(this.namespace,e)&&this.namespace[e]||void 0:e?(Yg(`data`,this.frozen),this.namespace=e,this):this.namespace}freeze(){if(this.frozen)return this;let e=this;for(;++this.freezeIndex<this.attachers.length;){let[t,...n]=this.attachers[this.freezeIndex];if(n[0]===!1)continue;n[0]===!0&&(n[0]=void 0);let r=t.call(e,...n);typeof r==`function`&&this.transformers.use(r)}return this.frozen=!0,this.freezeIndex=1/0,this}parse(e){this.freeze();let t=Qg(e),n=this.parser||this.Parser;return qg(`parse`,n),n(String(t),t)}process(e,t){let n=this;return this.freeze(),qg(`process`,this.parser||this.Parser),Jg(`process`,this.compiler||this.Compiler),t?r(void 0,t):new Promise(r);function r(r,i){let a=Qg(e),o=n.parse(a);n.run(o,a,function(e,t,r){if(e||!t||!r)return s(e);let i=t,a=n.stringify(i,r);e_(a)?r.value=a:r.result=a,s(e,r)});function s(e,n){e||!n?i(e):r?r(n):t(void 0,n)}}}processSync(e){let t=!1,n;return this.freeze(),qg(`processSync`,this.parser||this.Parser),Jg(`processSync`,this.compiler||this.Compiler),this.process(e,r),Zg(`processSync`,`process`,t),n;function r(e,r){t=!0,yg(e),n=r}}run(e,t,n){Xg(e),this.freeze();let r=this.transformers;return!n&&typeof t==`function`&&(n=t,t=void 0),n?i(void 0,n):new Promise(i);function i(i,a){let o=Qg(t);r.run(e,o,s);function s(t,r,o){let s=r||e;t?a(t):i?i(s):n(void 0,s,o)}}}runSync(e,t){let n=!1,r;return this.run(e,t,i),Zg(`runSync`,`run`,n),r;function i(e,t){yg(e),r=t,n=!0}}stringify(e,t){this.freeze();let n=Qg(t),r=this.compiler||this.Compiler;return Jg(`stringify`,r),Xg(e),r(e,n)}use(e,...t){let n=this.attachers,r=this.namespace;if(Yg(`use`,this.frozen),e!=null)if(typeof e==`function`)s(e,t);else if(typeof e==`object`)Array.isArray(e)?o(e):a(e);else throw TypeError("Expected usable value, not `"+e+"`");return this;function i(e){if(typeof e==`function`)s(e,[]);else if(typeof e==`object`)if(Array.isArray(e)){let[t,...n]=e;s(t,n)}else a(e);else throw TypeError("Expected usable value, not `"+e+"`")}function a(e){if(!(`plugins`in e)&&!(`settings`in e))throw Error("Expected usable value but received an empty preset, which is probably a mistake: presets typically come with `plugins` and sometimes with `settings`, but this has neither");o(e.plugins),e.settings&&(r.settings=(0,Wg.default)(!0,r.settings,e.settings))}function o(e){let t=-1;if(e!=null)if(Array.isArray(e))for(;++t<e.length;){let n=e[t];i(n)}else throw TypeError("Expected a list of plugins, not `"+e+"`")}function s(e,t){let r=-1,i=-1;for(;++r<n.length;)if(n[r][0]===e){i=r;break}if(i===-1)n.push([e,...t]);else if(t.length>0){let[r,...a]=t,o=n[i][1];xg(o)&&xg(r)&&(r=(0,Wg.default)(!0,o,r)),n[i]=[e,r,...a]}}}}().freeze();function qg(e,t){if(typeof t!=`function`)throw TypeError("Cannot `"+e+"` without `parser`")}function Jg(e,t){if(typeof t!=`function`)throw TypeError("Cannot `"+e+"` without `compiler`")}function Yg(e,t){if(t)throw Error("Cannot call `"+e+"` on a frozen processor.\nCreate a new processor first, by calling it: use `processor()` instead of `processor`.")}function Xg(e){if(!xg(e)||typeof e.type!=`string`)throw TypeError("Expected node, got `"+e+"`")}function Zg(e,t,n){if(!n)throw Error("`"+e+"` finished async. Use `"+t+"` instead")}function Qg(e){return $g(e)?e:new Rg(e)}function $g(e){return!!(e&&typeof e==`object`&&`message`in e&&`messages`in e)}function e_(e){return typeof e==`string`||t_(e)}function t_(e){return!!(e&&typeof e==`object`&&`byteLength`in e&&`byteOffset`in e)}var n_=[],r_={allowDangerousHtml:!0},i_=/^(https?|ircs?|mailto|xmpp)$/i,a_=[{from:`astPlugins`,id:`remove-buggy-html-in-markdown-parser`},{from:`allowDangerousHtml`,id:`remove-buggy-html-in-markdown-parser`},{from:`allowNode`,id:`replace-allownode-allowedtypes-and-disallowedtypes`,to:`allowElement`},{from:`allowedTypes`,id:`replace-allownode-allowedtypes-and-disallowedtypes`,to:`allowedElements`},{from:`className`,id:`remove-classname`},{from:`disallowedTypes`,id:`replace-allownode-allowedtypes-and-disallowedtypes`,to:`disallowedElements`},{from:`escapeHtml`,id:`remove-buggy-html-in-markdown-parser`},{from:`includeElementIndex`,id:`#remove-includeelementindex`},{from:`includeNodeIndex`,id:`change-includenodeindex-to-includeelementindex`},{from:`linkTarget`,id:`remove-linktarget`},{from:`plugins`,id:`change-plugins-to-remarkplugins`,to:`remarkPlugins`},{from:`rawSourcePos`,id:`#remove-rawsourcepos`},{from:`renderers`,id:`change-renderers-to-components`,to:`components`},{from:`source`,id:`change-source-to-children`,to:`children`},{from:`sourcePos`,id:`#remove-sourcepos`},{from:`transformImageUri`,id:`#add-urltransform`,to:`urlTransform`},{from:`transformLinkUri`,id:`#add-urltransform`,to:`urlTransform`}];function o_(e){let t=s_(e),n=c_(e);return l_(t.runSync(t.parse(n),n),e)}function s_(e){let t=e.rehypePlugins||n_,n=e.remarkPlugins||n_,r=e.remarkRehypeOptions?{...e.remarkRehypeOptions,...r_}:r_;return Kg().use(rh).use(n).use(vg,r).use(t)}function c_(e){let t=e.children||``,n=new Rg;return typeof t==`string`?n.value=t:``+t,n}function l_(e,t){let n=t.allowedElements,r=t.allowElement,i=t.components,a=t.disallowedElements,o=t.skipHtml,s=t.unwrapDisallowed,c=t.urlTransform||u_;for(let e of a_)Object.hasOwn(t,e.from)&&``+e.from+(e.to?"use `"+e.to+"` instead":`remove it`)+e.id;return cg(e,l),X(e,{Fragment:w.Fragment,components:i,ignoreInvalidStyle:!0,jsx:w.jsx,jsxs:w.jsxs,passKeys:!0,passNode:!0});function l(e,t,i){if(e.type===`raw`&&i&&typeof t==`number`)return o?i.children.splice(t,1):i.children[t]={type:`text`,value:e.value},t;if(e.type===`element`){let t;for(t in rf)if(Object.hasOwn(rf,t)&&Object.hasOwn(e.properties,t)){let n=e.properties[t],r=rf[t];(r===null||r.includes(e.tagName))&&(e.properties[t]=c(String(n||``),t,e))}}if(e.type===`element`){let o=n?!n.includes(e.tagName):a?a.includes(e.tagName):!1;if(!o&&r&&typeof t==`number`&&(o=!r(e,t,i)),o&&i&&typeof t==`number`)return s&&e.children?i.children.splice(t,1,...e.children):i.children.splice(t,1),t}}}function u_(e){let t=e.indexOf(`:`),n=e.indexOf(`?`),r=e.indexOf(`#`),i=e.indexOf(`/`);return t===-1||i!==-1&&t>i||n!==-1&&t>n||r!==-1&&t>r||i_.test(e.slice(0,t))?e:``}var d_=Object.assign({"../content/3d-flaschenzug-in-autocad.md":`---
+`},i)),a}function vg(e,t){return e&&`run`in e?async function(n,r){let i=_g(n,{file:r,...t});await e.run(i,r)}:function(n,r){return _g(n,{file:r,...e||t})}}function yg(e){if(e)throw e}var bg=s(((e,t)=>{var n=Object.prototype.hasOwnProperty,r=Object.prototype.toString,i=Object.defineProperty,a=Object.getOwnPropertyDescriptor,o=function(e){return typeof Array.isArray==`function`?Array.isArray(e):r.call(e)===`[object Array]`},s=function(e){if(!e||r.call(e)!==`[object Object]`)return!1;var t=n.call(e,`constructor`),i=e.constructor&&e.constructor.prototype&&n.call(e.constructor.prototype,`isPrototypeOf`);if(e.constructor&&!t&&!i)return!1;for(var a in e);return a===void 0||n.call(e,a)},c=function(e,t){i&&t.name===`__proto__`?i(e,t.name,{enumerable:!0,configurable:!0,value:t.newValue,writable:!0}):e[t.name]=t.newValue},l=function(e,t){if(t===`__proto__`){if(!n.call(e,t))return;if(a)return a(e,t).value}return e[t]};t.exports=function e(){var t,n,r,i,a,u,d=arguments[0],f=1,p=arguments.length,m=!1;for(typeof d==`boolean`&&(m=d,d=arguments[1]||{},f=2),(d==null||typeof d!=`object`&&typeof d!=`function`)&&(d={});f<p;++f)if(t=arguments[f],t!=null)for(n in t)r=l(d,n),i=l(t,n),d!==i&&(m&&i&&(s(i)||(a=o(i)))?(a?(a=!1,u=r&&o(r)?r:[]):u=r&&s(r)?r:{},c(d,{name:n,newValue:e(m,u,i)})):i!==void 0&&c(d,{name:n,newValue:i}));return d}}));function xg(e){if(typeof e!=`object`||!e)return!1;let t=Object.getPrototypeOf(e);return(t===null||t===Object.prototype||Object.getPrototypeOf(t)===null)&&!(Symbol.toStringTag in e)&&!(Symbol.iterator in e)}function Sg(){let e=[],t={run:n,use:r};return t;function n(...t){let n=-1,r=t.pop();if(typeof r!=`function`)throw TypeError(`Expected function as last argument, not `+r);i(null,...t);function i(a,...o){let s=e[++n],c=-1;if(a){r(a);return}for(;++c<t.length;)(o[c]===null||o[c]===void 0)&&(o[c]=t[c]);t=o,s?Cg(s,i)(...o):r(null,...o)}}function r(n){if(typeof n!=`function`)throw TypeError("Expected `middelware` to be a function, not "+n);return e.push(n),t}}function Cg(e,t){let n;return r;function r(...t){let r=e.length>t.length,o;r&&t.push(i);try{o=e.apply(this,t)}catch(e){let t=e;if(r&&n)throw t;return i(t)}r||(o&&o.then&&typeof o.then==`function`?o.then(a,i):o instanceof Error?i(o):a(o))}function i(e,...r){n||(n=!0,t(e,...r))}function a(e){i(null,e)}}var wg={basename:Tg,dirname:Eg,extname:Dg,join:Og,sep:`/`};function Tg(e,t){if(t!==void 0&&typeof t!=`string`)throw TypeError(`"ext" argument must be a string`);jg(e);let n=0,r=-1,i=e.length,a;if(t===void 0||t.length===0||t.length>e.length){for(;i--;)if(e.codePointAt(i)===47){if(a){n=i+1;break}}else r<0&&(a=!0,r=i+1);return r<0?``:e.slice(n,r)}if(t===e)return``;let o=-1,s=t.length-1;for(;i--;)if(e.codePointAt(i)===47){if(a){n=i+1;break}}else o<0&&(a=!0,o=i+1),s>-1&&(e.codePointAt(i)===t.codePointAt(s--)?s<0&&(r=i):(s=-1,r=o));return n===r?r=o:r<0&&(r=e.length),e.slice(n,r)}function Eg(e){if(jg(e),e.length===0)return`.`;let t=-1,n=e.length,r;for(;--n;)if(e.codePointAt(n)===47){if(r){t=n;break}}else r||=!0;return t<0?e.codePointAt(0)===47?`/`:`.`:t===1&&e.codePointAt(0)===47?`//`:e.slice(0,t)}function Dg(e){jg(e);let t=e.length,n=-1,r=0,i=-1,a=0,o;for(;t--;){let s=e.codePointAt(t);if(s===47){if(o){r=t+1;break}continue}n<0&&(o=!0,n=t+1),s===46?i<0?i=t:a!==1&&(a=1):i>-1&&(a=-1)}return i<0||n<0||a===0||a===1&&i===n-1&&i===r+1?``:e.slice(i,n)}function Og(...e){let t=-1,n;for(;++t<e.length;)jg(e[t]),e[t]&&(n=n===void 0?e[t]:n+`/`+e[t]);return n===void 0?`.`:kg(n)}function kg(e){jg(e);let t=e.codePointAt(0)===47,n=Ag(e,!t);return n.length===0&&!t&&(n=`.`),n.length>0&&e.codePointAt(e.length-1)===47&&(n+=`/`),t?`/`+n:n}function Ag(e,t){let n=``,r=0,i=-1,a=0,o=-1,s,c;for(;++o<=e.length;){if(o<e.length)s=e.codePointAt(o);else if(s===47)break;else s=47;if(s===47){if(!(i===o-1||a===1))if(i!==o-1&&a===2){if(n.length<2||r!==2||n.codePointAt(n.length-1)!==46||n.codePointAt(n.length-2)!==46){if(n.length>2){if(c=n.lastIndexOf(`/`),c!==n.length-1){c<0?(n=``,r=0):(n=n.slice(0,c),r=n.length-1-n.lastIndexOf(`/`)),i=o,a=0;continue}}else if(n.length>0){n=``,r=0,i=o,a=0;continue}}t&&(n=n.length>0?n+`/..`:`..`,r=2)}else n.length>0?n+=`/`+e.slice(i+1,o):n=e.slice(i+1,o),r=o-i-1;i=o,a=0}else s===46&&a>-1?a++:a=-1}return n}function jg(e){if(typeof e!=`string`)throw TypeError(`Path must be a string. Received `+JSON.stringify(e))}var Mg={cwd:Ng};function Ng(){return`/`}function Pg(e){return!!(typeof e==`object`&&e&&`href`in e&&e.href&&`protocol`in e&&e.protocol&&e.auth===void 0)}function Fg(e){if(typeof e==`string`)e=new URL(e);else if(!Pg(e)){let t=TypeError('The "path" argument must be of type string or an instance of URL. Received `'+e+"`");throw t.code=`ERR_INVALID_ARG_TYPE`,t}if(e.protocol!==`file:`){let e=TypeError(`The URL must be of scheme file`);throw e.code=`ERR_INVALID_URL_SCHEME`,e}return Ig(e)}function Ig(e){if(e.hostname!==``){let e=TypeError(`File URL host must be "localhost" or empty on darwin`);throw e.code=`ERR_INVALID_FILE_URL_HOST`,e}let t=e.pathname,n=-1;for(;++n<t.length;)if(t.codePointAt(n)===37&&t.codePointAt(n+1)===50){let e=t.codePointAt(n+2);if(e===70||e===102){let e=TypeError(`File URL path must not include encoded / characters`);throw e.code=`ERR_INVALID_FILE_URL_PATH`,e}}return decodeURIComponent(t)}var Lg=[`history`,`path`,`basename`,`stem`,`extname`,`dirname`],Rg=class{constructor(e){let t;t=e?Pg(e)?{path:e}:typeof e==`string`||Hg(e)?{value:e}:e:{},this.cwd=`cwd`in t?``:Mg.cwd(),this.data={},this.history=[],this.messages=[],this.value,this.map,this.result,this.stored;let n=-1;for(;++n<Lg.length;){let e=Lg[n];e in t&&t[e]!==void 0&&t[e]!==null&&(this[e]=e===`history`?[...t[e]]:t[e])}let r;for(r in t)Lg.includes(r)||(this[r]=t[r])}get basename(){return typeof this.path==`string`?wg.basename(this.path):void 0}set basename(e){Bg(e,`basename`),zg(e,`basename`),this.path=wg.join(this.dirname||``,e)}get dirname(){return typeof this.path==`string`?wg.dirname(this.path):void 0}set dirname(e){Vg(this.basename,`dirname`),this.path=wg.join(e||``,this.basename)}get extname(){return typeof this.path==`string`?wg.extname(this.path):void 0}set extname(e){if(zg(e,`extname`),Vg(this.dirname,`extname`),e){if(e.codePointAt(0)!==46)throw Error("`extname` must start with `.`");if(e.includes(`.`,1))throw Error("`extname` cannot contain multiple dots")}this.path=wg.join(this.dirname,this.stem+(e||``))}get path(){return this.history[this.history.length-1]}set path(e){Pg(e)&&(e=Fg(e)),Bg(e,`path`),this.path!==e&&this.history.push(e)}get stem(){return typeof this.path==`string`?wg.basename(this.path,this.extname):void 0}set stem(e){Bg(e,`stem`),zg(e,`stem`),this.path=wg.join(this.dirname||``,e+(this.extname||``))}fail(e,t,n){let r=this.message(e,t,n);throw r.fatal=!0,r}info(e,t,n){let r=this.message(e,t,n);return r.fatal=void 0,r}message(e,t,n){let r=new Od(e,t,n);return this.path&&(r.name=this.path+`:`+r.name,r.file=this.path),r.fatal=!1,this.messages.push(r),r}toString(e){return this.value===void 0?``:typeof this.value==`string`?this.value:new TextDecoder(e||void 0).decode(this.value)}};function zg(e,t){if(e&&e.includes(wg.sep))throw Error("`"+t+"` cannot be a path: did not expect `"+wg.sep+"`")}function Bg(e,t){if(!e)throw Error("`"+t+"` cannot be empty")}function Vg(e,t){if(!e)throw Error("Setting `"+t+"` requires `path` to be set too")}function Hg(e){return!!(e&&typeof e==`object`&&`byteLength`in e&&`byteOffset`in e)}var Ug=(function(e){let t=this.constructor.prototype,n=t[e],r=function(){return n.apply(r,arguments)};return Object.setPrototypeOf(r,t),r}),Wg=u(bg(),1),Gg={}.hasOwnProperty,Kg=new class e extends Ug{constructor(){super(`copy`),this.Compiler=void 0,this.Parser=void 0,this.attachers=[],this.compiler=void 0,this.freezeIndex=-1,this.frozen=void 0,this.namespace={},this.parser=void 0,this.transformers=Sg()}copy(){let t=new e,n=-1;for(;++n<this.attachers.length;){let e=this.attachers[n];t.use(...e)}return t.data((0,Wg.default)(!0,{},this.namespace)),t}data(e,t){return typeof e==`string`?arguments.length===2?(Yg(`data`,this.frozen),this.namespace[e]=t,this):Gg.call(this.namespace,e)&&this.namespace[e]||void 0:e?(Yg(`data`,this.frozen),this.namespace=e,this):this.namespace}freeze(){if(this.frozen)return this;let e=this;for(;++this.freezeIndex<this.attachers.length;){let[t,...n]=this.attachers[this.freezeIndex];if(n[0]===!1)continue;n[0]===!0&&(n[0]=void 0);let r=t.call(e,...n);typeof r==`function`&&this.transformers.use(r)}return this.frozen=!0,this.freezeIndex=1/0,this}parse(e){this.freeze();let t=Qg(e),n=this.parser||this.Parser;return qg(`parse`,n),n(String(t),t)}process(e,t){let n=this;return this.freeze(),qg(`process`,this.parser||this.Parser),Jg(`process`,this.compiler||this.Compiler),t?r(void 0,t):new Promise(r);function r(r,i){let a=Qg(e),o=n.parse(a);n.run(o,a,function(e,t,r){if(e||!t||!r)return s(e);let i=t,a=n.stringify(i,r);e_(a)?r.value=a:r.result=a,s(e,r)});function s(e,n){e||!n?i(e):r?r(n):t(void 0,n)}}}processSync(e){let t=!1,n;return this.freeze(),qg(`processSync`,this.parser||this.Parser),Jg(`processSync`,this.compiler||this.Compiler),this.process(e,r),Zg(`processSync`,`process`,t),n;function r(e,r){t=!0,yg(e),n=r}}run(e,t,n){Xg(e),this.freeze();let r=this.transformers;return!n&&typeof t==`function`&&(n=t,t=void 0),n?i(void 0,n):new Promise(i);function i(i,a){let o=Qg(t);r.run(e,o,s);function s(t,r,o){let s=r||e;t?a(t):i?i(s):n(void 0,s,o)}}}runSync(e,t){let n=!1,r;return this.run(e,t,i),Zg(`runSync`,`run`,n),r;function i(e,t){yg(e),r=t,n=!0}}stringify(e,t){this.freeze();let n=Qg(t),r=this.compiler||this.Compiler;return Jg(`stringify`,r),Xg(e),r(e,n)}use(e,...t){let n=this.attachers,r=this.namespace;if(Yg(`use`,this.frozen),e!=null)if(typeof e==`function`)s(e,t);else if(typeof e==`object`)Array.isArray(e)?o(e):a(e);else throw TypeError("Expected usable value, not `"+e+"`");return this;function i(e){if(typeof e==`function`)s(e,[]);else if(typeof e==`object`)if(Array.isArray(e)){let[t,...n]=e;s(t,n)}else a(e);else throw TypeError("Expected usable value, not `"+e+"`")}function a(e){if(!(`plugins`in e)&&!(`settings`in e))throw Error("Expected usable value but received an empty preset, which is probably a mistake: presets typically come with `plugins` and sometimes with `settings`, but this has neither");o(e.plugins),e.settings&&(r.settings=(0,Wg.default)(!0,r.settings,e.settings))}function o(e){let t=-1;if(e!=null)if(Array.isArray(e))for(;++t<e.length;){let n=e[t];i(n)}else throw TypeError("Expected a list of plugins, not `"+e+"`")}function s(e,t){let r=-1,i=-1;for(;++r<n.length;)if(n[r][0]===e){i=r;break}if(i===-1)n.push([e,...t]);else if(t.length>0){let[r,...a]=t,o=n[i][1];xg(o)&&xg(r)&&(r=(0,Wg.default)(!0,o,r)),n[i]=[e,r,...a]}}}}().freeze();function qg(e,t){if(typeof t!=`function`)throw TypeError("Cannot `"+e+"` without `parser`")}function Jg(e,t){if(typeof t!=`function`)throw TypeError("Cannot `"+e+"` without `compiler`")}function Yg(e,t){if(t)throw Error("Cannot call `"+e+"` on a frozen processor.\nCreate a new processor first, by calling it: use `processor()` instead of `processor`.")}function Xg(e){if(!xg(e)||typeof e.type!=`string`)throw TypeError("Expected node, got `"+e+"`")}function Zg(e,t,n){if(!n)throw Error("`"+e+"` finished async. Use `"+t+"` instead")}function Qg(e){return $g(e)?e:new Rg(e)}function $g(e){return!!(e&&typeof e==`object`&&`message`in e&&`messages`in e)}function e_(e){return typeof e==`string`||t_(e)}function t_(e){return!!(e&&typeof e==`object`&&`byteLength`in e&&`byteOffset`in e)}var n_=[],r_={allowDangerousHtml:!0},i_=/^(https?|ircs?|mailto|xmpp)$/i,a_=[{from:`astPlugins`,id:`remove-buggy-html-in-markdown-parser`},{from:`allowDangerousHtml`,id:`remove-buggy-html-in-markdown-parser`},{from:`allowNode`,id:`replace-allownode-allowedtypes-and-disallowedtypes`,to:`allowElement`},{from:`allowedTypes`,id:`replace-allownode-allowedtypes-and-disallowedtypes`,to:`allowedElements`},{from:`className`,id:`remove-classname`},{from:`disallowedTypes`,id:`replace-allownode-allowedtypes-and-disallowedtypes`,to:`disallowedElements`},{from:`escapeHtml`,id:`remove-buggy-html-in-markdown-parser`},{from:`includeElementIndex`,id:`#remove-includeelementindex`},{from:`includeNodeIndex`,id:`change-includenodeindex-to-includeelementindex`},{from:`linkTarget`,id:`remove-linktarget`},{from:`plugins`,id:`change-plugins-to-remarkplugins`,to:`remarkPlugins`},{from:`rawSourcePos`,id:`#remove-rawsourcepos`},{from:`renderers`,id:`change-renderers-to-components`,to:`components`},{from:`source`,id:`change-source-to-children`,to:`children`},{from:`sourcePos`,id:`#remove-sourcepos`},{from:`transformImageUri`,id:`#add-urltransform`,to:`urlTransform`},{from:`transformLinkUri`,id:`#add-urltransform`,to:`urlTransform`}];function o_(e){let t=s_(e),n=c_(e);return l_(t.runSync(t.parse(n),n),e)}function s_(e){let t=e.rehypePlugins||n_,n=e.remarkPlugins||n_,r=e.remarkRehypeOptions?{...e.remarkRehypeOptions,...r_}:r_;return Kg().use(rh).use(n).use(vg,r).use(t)}function c_(e){let t=e.children||``,n=new Rg;return typeof t==`string`?n.value=t:``+t,n}function l_(e,t){let n=t.allowedElements,r=t.allowElement,i=t.components,a=t.disallowedElements,o=t.skipHtml,s=t.unwrapDisallowed,c=t.urlTransform||u_;for(let e of a_)Object.hasOwn(t,e.from)&&``+e.from+(e.to?"use `"+e.to+"` instead":`remove it`)+e.id;return cg(e,l),X(e,{Fragment:w.Fragment,components:i,ignoreInvalidStyle:!0,jsx:w.jsx,jsxs:w.jsxs,passKeys:!0,passNode:!0});function l(e,t,i){if(e.type===`raw`&&i&&typeof t==`number`)return o?i.children.splice(t,1):i.children[t]={type:`text`,value:e.value},t;if(e.type===`element`){let t;for(t in rf)if(Object.hasOwn(rf,t)&&Object.hasOwn(e.properties,t)){let n=e.properties[t],r=rf[t];(r===null||r.includes(e.tagName))&&(e.properties[t]=c(String(n||``),t,e))}}if(e.type===`element`){let o=n?!n.includes(e.tagName):a?a.includes(e.tagName):!1;if(!o&&r&&typeof t==`number`&&(o=!r(e,t,i)),o&&i&&typeof t==`number`)return s&&e.children?i.children.splice(t,1,...e.children):i.children.splice(t,1),t}}}function u_(e){let t=e.indexOf(`:`),n=e.indexOf(`?`),r=e.indexOf(`#`),i=e.indexOf(`/`);return t===-1||i!==-1&&t>i||n!==-1&&t>n||r!==-1&&t>r||i_.test(e.slice(0,t))?e:``}var d_=Object.assign({"../content/de/3d-flaschenzug-in-autocad.md":`---
 id: local-post-1779960596593
 title: 3D-Flaschenzug in AutoCAD
 category: Maschinenbau
@@ -75,7 +75,7 @@ Visualisierung der Mechanik in verschiedenen Ansichten
 Realistische Konstruktion der Bauteile
 
 Das fertige Modell kann für technische Präsentationen, Lernzwecke oder als Grundlage für weitere mechanische Entwicklungen verwendet werden.
-`,"../content/autocad-2d-kleine-dampfmaschine.md":`---
+`,"../content/de/autocad-2d-kleine-dampfmaschine.md":`---
 id: demo-2
 title: AutoCAD 2D – Kleine Dampfmaschine
 category: Maschinenbau
@@ -143,7 +143,7 @@ AutoCAD 2026
 
 Projekt von:
 NGUYEN NHAN DO
-`,"../content/elektronik-test-reparatur.md":`---
+`,"../content/de/elektronik-test-reparatur.md":`---
 id: demo-1
 title: Elektronik • Test • Reparatur
 category: Über mich
@@ -183,6 +183,812 @@ Zusätzlich erweitere ich meine Kenntnisse in:
 Ich arbeite sorgfältig, feinmotorisch und bin sehr lernbereit. Obwohl ich noch nicht über sehr viel Berufserfahrung verfüge, eigne ich mir neue Technologien und technische Themen schnell an und entwickle mich kontinuierlich weiter.
 
 Besonders interessiere ich mich für Prüffeldtechnik, Prototypenentwicklung, hardwarenahe Programmierung sowie die Analyse und Fehlerdiagnose elektronischer Systeme.
+`,"../content/de/finanzverwaltung-mit-datenanalyse.md":`---
+id: local-post-1779957810945
+title: Finanzverwaltung mit Datenanalyse
+category: Softwareentwicklung
+image_url: /my-electronics-blog/images/posts/finanzmanager-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/finanzmanager-1.webp
+- /my-electronics-blog/images/posts/finanzmanager-2.webp
+- /my-electronics-blog/images/posts/finanzmanager-3.webp
+excerpt: 'Die Software ermöglicht die Verwaltung persönlicher Einnahmen und Ausgaben,
+  unterstützt CSV-Import und -Export sowie Echtzeit-Datenanalysen über eine moderne
+  grafische Benutzeroberfläche.
+
+  Über den Button „Zum Projekt“ am Ende der Seite erhalten Sie Zugriff auf den vollständigen
+  Quellcode des Projekts „Finanzmanager“.'
+tags:
+- C++
+- Qt 6.9
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T08:43:30.945Z'
+external_link: https://github.com/nguyennhando/finanzmanager
+project_status: done
+sort_order: 30
+slug: finanzverwaltung-mit-datenanalyse
+---
+
+# Finanzverwaltung mit Datenanalyse
+
+🧭 GeldPilot - Persönliche Finanzverwaltung
+
+Entwicklung einer modernen Desktop-Anwendung zur Finanzverwaltung mit C++, Qt 6 und SQLite.
+Die Software ermöglicht die Verwaltung persönlicher Einnahmen und Ausgaben, unterstützt CSV-Import und -Export sowie Echtzeit-Datenanalysen über eine moderne grafische Benutzeroberfläche.
+Über den Button „Zum Projekt“ am Ende der Seite erhalten Sie Zugriff auf den vollständigen Quellcode des Projekts „Finanzmanager“.
+
+Eine professionelle Desktop-Anwendung zur Verwaltung Ihrer persönlichen Finanzen, entwickelt mit Qt 6.9 und C++.
+📋 Inhaltsverzeichnis
+    • Überblick
+    • Features
+    • Systemanforderungen
+    • Installation
+    • Erste Schritte
+    • Benutzerhandbuch
+    • Technische Details
+    • Entwicklung
+    • Support
+🎯 Überblick
+GeldPilot ist eine benutzerfreundliche Anwendung zur Verwaltung Ihrer Einnahmen und Ausgaben. Mit einer intuitiven Oberfläche können Sie Transaktionen verwalten, Kategorien organisieren und umfassende Finanzberichte erstellen.
+✨ Hauptmerkmale
+    • Transaktionsverwaltung: Hinzufügen, Bearbeiten und Löschen von Einnahmen und Ausgaben
+    • Kategorisierung: Vordefinierte und benutzerdefinierte Kategorien
+    • Zeitraumfilter: Flexible Filterung nach Datum und Kategorie
+    • Finanzübersicht: Automatische Berechnung von Einnahmen, Ausgaben und Bilanz
+    • Visualisierung: Interaktive Balkendiagramme zur Darstellung Ihrer Finanzen
+    • Import/Export: CSV-Import und -Export für Datenaustausch
+    • Druckfunktion: Professionelle Berichte mit Firmenlogo
+🔧 Systemanforderungen
+Mindestanforderungen
+    • Betriebssystem: Windows 10/11, macOS 10.15+, Linux (Ubuntu 20.04+)
+    • RAM: 4 GB
+    • Festplattenspeicher: 100 MB
+    • Bildschirmauflösung: 1024x768
+Empfohlene Anforderungen
+    • RAM: 8 GB oder mehr
+    • Bildschirmauflösung: 1920x1080 oder höher
+🚀 Installation
+Vorkompilierte Version (Windows)
+    1. Laden Sie die neueste Version von der Releases-Seite herunter
+    2. Entpacken Sie das Archiv in einen Ordner Ihrer Wahl
+    3. Starten Sie GeldPilot.exe
+Aus Quellcode kompilieren
+Voraussetzungen
+    • Qt 6.9 oder neuer
+    • CMake 3.16 oder neuer
+    • C++17-kompatible Compiler:
+        ◦ Windows: MinGW-w64 oder MSVC 2019+
+        ◦ macOS: Xcode 12+
+        ◦ Linux: GCC 9+ oder Clang 10+
+Kompilierungsschritte
+# Repository klonen
+git clone https://github.com/username/geldpilot.git
+cd geldpilot
+
+# Build-Verzeichnis erstellen
+mkdir build && cd build
+
+# CMake konfigurieren
+cmake .. -DCMAKE_BUILD_TYPE=Release
+
+# Kompilieren
+cmake --build . --config Release
+
+# Ausführen (Windows)
+./Release/GeldPilot.exe
+
+# Ausführen (Linux/macOS)
+./GeldPilot
+🏁 Erste Schritte
+1. Erste Transaktion hinzufügen
+    1. Starten Sie GeldPilot
+    2. Geben Sie Datum, Betrag und Beschreibung ein
+    3. Wählen Sie eine Kategorie (z.B. "Gehalt" für Einnahmen)
+    4. Wählen Sie den Typ ("Einnahme" oder "Ausgabe")
+    5. Klicken Sie auf "Neue Transaktion"
+2. Daten filtern
+    • Verwenden Sie die Dropdown-Menüs für Kategorien
+    • Setzen Sie Start- und Enddatum für Zeitraumfilter
+    • Klicken Sie "Filter" um die Ansicht zu aktualisieren
+3. Berichte erstellen
+    • Klicken Sie auf "Diagramm" für eine visuelle Darstellung
+    • Nutzen Sie "Drucken" für professionelle Berichte
+    • Exportieren Sie Daten als CSV für weitere Analyse
+📖 Benutzerhandbuch
+Transaktionsverwaltung
+Neue Transaktion hinzufügen
+    1. Füllen Sie alle Pflichtfelder aus:
+        ◦ Datum: Transaktionsdatum
+        ◦ Betrag: Geldbetrag (immer positiv eingeben)
+        ◦ Beschreibung: Kurze Beschreibung der Transaktion
+        ◦ Kategorie: Zuordnung zu einer Kategorie
+        ◦ Typ: "Einnahme" oder "Ausgabe"
+Transaktion bearbeiten
+    1. Wählen Sie eine Zeile in der Tabelle aus
+    2. Die Daten erscheinen automatisch in den Eingabefeldern
+    3. Nehmen Sie Ihre Änderungen vor
+    4. Klicken Sie "Speichern"
+Transaktionen löschen
+    • Einzelne Transaktion: Zeile auswählen → "Löschen"
+    • Mehrere Transaktionen: Mehrere Zeilen auswählen (Strg+Klick) → "Löschen"
+Kategorien
+Vordefinierte Kategorien:
+    • Freizeit
+    • Gehalt
+    • Gesundheit
+    • Lebensmittel
+    • Miete
+    • Sonstiges
+    • Transport
+    • Versicherungen
+    • Investition
+    • Kommunikation
+    • Wohnen
+Filterung und Suche
+Nach Kategorie filtern
+    • Wählen Sie "Alle Kategorien" für ungefilterte Ansicht
+    • Wählen Sie eine spezifische Kategorie für gefilterte Ansicht
+Nach Zeitraum filtern
+    • Setzen Sie Startdatum und Enddatum
+    • Klicken Sie "Filter" zum Anwenden
+Import/Export
+CSV-Import
+    1. Bereiten Sie eine CSV-Datei vor mit Spalten:
+        ◦ ID, Datum, Betrag, Beschreibung, Kategorie, Typ
+    2. Klicken Sie "Import"
+    3. Wählen Sie Ihre CSV-Datei aus
+CSV-Export
+    1. Klicken Sie "Export"
+    2. Wählen Sie Speicherort und Dateiname
+    3. Die aktuelle Tabellenansicht wird exportiert
+Diagramme und Berichte
+Finanzdiagramm anzeigen
+    • Klicken Sie "Diagramm" für Balkendiagramm
+    • Zeigt Kategorien, Gesamteinnahmen, -ausgaben und Bilanz
+    • Interaktive Darstellung mit Farbkodierung
+Drucken
+    • Öffnen Sie das Diagramm
+    • Klicken Sie "Drucken"
+    • Wählen Sie Drucker und Einstellungen
+    • Professioneller Ausdruck mit Logo
+🛠 Technische Details
+Architektur
+    • GUI Framework: Qt 6.9
+    • Datenbank: SQLite (lokale Datei)
+    • Diagramme: Qt Charts
+    • Bauansystem: CMake
+    • Compiler: MinGW-w64 (Windows)
+Datenbankschema
+Tabelle: transaktionen
+CREATE TABLE transaktionen (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    datum DATE NOT NULL,
+    betrag REAL NOT NULL,
+    beschreibung TEXT,
+    kategorie TEXT NOT NULL,
+    typ TEXT NOT NULL CHECK (typ IN ('Einnahme', 'Ausgabe'))
+);
+Tabelle: kategorien
+CREATE TABLE kategorien (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL
+);
+Projektstruktur
+geldpilot/
+├── src/
+│   ├── main.cpp                 # Einstiegspunkt
+│   ├── mainwindow.cpp/h         # Hauptfenster
+│   ├── chartwindow.cpp/h        # Diagrammfenster
+│   ├── datenbankmanager.cpp/h   # Datenbanklogik
+│   └── centerdelegate.h         # UI-Styling
+├── ui/
+│   ├── mainwindow.ui            # Hauptfenster UI
+│   └── chartwindow.ui           # Diagramm UI
+├── resources/
+│   └── icons/                   # Anwendungssymbole
+├── CMakeLists.txt               # Build-Konfiguration
+└── README.md                    # Diese Datei
+👨‍💻 Entwicklung
+Code-Stil
+    • C++17 Standard
+    • Qt-Konventionen
+    • Deskriptive deutsche Variablennamen
+    • Umfangreiche Kommentierung
+Beitrag zum Projekt
+    1. Fork das Repository
+    2. Erstellen Sie einen Feature-Branch
+    3. Machen Sie Ihre Änderungen
+    4. Testen Sie gründlich
+    5. Erstellen Sie einen Pull Request
+Bekannte Probleme
+    • ✅ Mehrfachauswahl für Löschen implementiert
+    • ✅ Datenbankindizierung für Performance
+    • ⚠️ Backup-Funktionalität geplant
+📞 Support
+Hilfe benötigt?
+    • Dokumentation: Lesen Sie dieses README vollständig
+    • Issues: Melden Sie Bugs auf GitHub
+    • E-Mail: support@geldpilot.de
+Häufige Probleme
+Q: Datenbank kann nicht geöffnet werden\xA0A: Stellen Sie sicher, dass die Anwendung Schreibrechte im Installationsordner hat.
+Q: Diagramm wird nicht angezeigt\xA0A: Überprüfen Sie, ob Qt Charts installiert ist.
+Q: Import schlägt fehl\xA0A: Überprüfen Sie das CSV-Format (Semikolon-getrennt).
+
+📄 Lizenz
+© 2025 Nguyen Nhan Do. Alle Rechte vorbehalten.
+Version: 1.0.0
+Entwickler: Nguyen Nhan Do
+Build: Qt 6.9, MinGW-w64, CMake
+
+Behalten Sie mit GeldPilot den Überblick über Ihre Finanzen und steuern Sie gezielt Ihre finanzielle Zukunft! 🧭💰
+`,"../content/de/home-content.md":`---
+type: home_content
+language: de
+hero_badge: Elektrokonstruktion · Prüftechnik · Software
+hero_title: Technik. Dokumentation. Entwicklung.
+hero_text: Diese Website habe ich selbst entwickelt, um technische Projekte, Lernfortschritte und praktische Erfahrungen im Bereich Elektronik, Embedded Systems, Messtechnik und technischer Softwareentwicklung zu dokumentieren.
+transparency_title: Projektinformationen & Transparenz
+transparency_text: Die auf dieser Website gezeigten Fotos von Laborumgebungen, technischen Arbeitsplätzen und elektronischen Geräten dienen ausschließlich der Veranschaulichung meiner technischen Interessen und praktischen Erfahrungen.
+transparency_strong: Sie zeigen weder meinen tatsächlichen Arbeitsplatz noch interne Bereiche oder reale Arbeitsumgebungen eines Unternehmens.
+feature_1_title: Elektronik & Embedded Systems
+feature_1_text: Eigene Lernprojekte rund um Mikrocontroller, Sensorik und hardwarenahe Entwicklung zur praktischen Erweiterung meines technischen Wissens.
+feature_2_title: Automatisierung & Steuerung
+feature_2_text: Praktische Übungen und kleinere Projekte, um industrielle Abläufe, Steuerungstechnik und technische Prozesse besser zu verstehen.
+feature_3_title: Technisches Lernen
+feature_3_text: Dokumentation meines Lernwegs, technischer Erfahrungen und neuer Themen, mit denen ich mich kontinuierlich beschäftige.
+feature_4_title: Eigene Entwicklung
+feature_4_text: Diese Website dient als persönliche Plattform, um Projekte, Ideen und technische Fortschritte übersichtlich festzuhalten.
+warning_one: Projekte mit der Kennzeichnung „Konzept“ befinden sich noch in der Ideen- bzw. Konzeptphase und wurden bisher noch nicht praktisch umgesetzt.
+warning_two: Alle anderen Projekte können über „Beitrag lesen“ geöffnet werden. Am Ende der jeweiligen Projektseite befindet sich die Schaltfläche „Zum Projekt“ mit projektbezogenen Dateien.
+collaboration_title: Zusammenarbeit an modernen Elektronikprojekten.
+collaboration_text: Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder individuelle Entwicklungen.
+---
+`,"../content/de/konzept-eines-pwm-geregelten-dc-netzteils-mit-mess-und-schutzfunktionen.md":`---
+id: local-post-1779960818567
+title: Konzept eines PWM-geregelten DC-Netzteils mit Mess- und Schutzfunktionen
+category: Elektrotechnik
+image_url: /my-electronics-blog/images/posts/DC-Netzteil-main.webp
+image_gallery: []
+excerpt: Lern- und Konzeptprojekt zur Entwicklung eines mikrocontrollerbasierten DC-Netzteils
+  mit PWM-Regelung, Strombegrenzung und grundlegenden Schutzfunktionen.
+tags:
+- PWM
+- Netzteil
+- STM32
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:33:38.567Z'
+external_link: ''
+project_status: idea
+sort_order: 100
+slug: konzept-eines-pwm-geregelten-dc-netzteils-mit-mess-und-schutzfunktionen
+---
+
+# Konzept eines PWM-geregelten DC-Netzteils mit Mess- und Schutzfunktionen
+
+Lern- und Konzeptprojekt zur Entwicklung eines mikrocontrollerbasierten DC-Netzteils mit PWM-Regelung, Strombegrenzung und grundlegenden Schutzfunktionen
+
+Dieses Projekt ist aktuell als Lern- und Konzeptprojekt geplant. Ziel ist nicht nur der Aufbau eines einfachen DC-Netzteils, sondern vor allem das praktische Verständnis von PWM-Regelung, Leistungselektronik und elektronischen Schutzschaltungen.
+
+Geplant ist eine mikrocontrollerbasierte Lösung zur Regelung von Ausgangsspannung und Strom über PWM-Signale und MOSFET-Ansteuerung. Zusätzlich sollen grundlegende Mess- und Schutzfunktionen integriert werden, um das Verhalten des Systems unter unterschiedlichen Lastbedingungen besser analysieren zu können.
+
+Geplante Funktionen:
+
+Einstellbare Ausgangsspannung
+Strombegrenzung
+PWM-basierte Regelung
+Spannungs- und Strommessung
+Temperaturüberwachung
+Kurzschluss- und Überstromschutz
+Anzeige wichtiger Messwerte über Display
+
+Mich interessiert bei diesem Projekt besonders, wie sich PWM-Frequenz, Laständerungen und Schaltverhalten auf Stabilität, Wirkungsgrad und Wärmeentwicklung auswirken.
+
+Das Projekt befindet sich derzeit noch in der Konzept- und Lernphase. Zunächst sollen einzelne Funktionsblöcke wie PWM-Ansteuerung, Strommessung und Schutzschaltungen separat getestet werden, bevor später ein vollständiger Prototyp aufgebaut wird.
+
+Mit diesem Projekt möchte ich mein Wissen in Embedded-Systemen, Leistungselektronik und praktischer Messtechnik weiter vertiefen.
+`,"../content/de/konzeptprojekt-energieuberwachung-mit-esp8266-und-stromsensor.md":`---
+id: local-post-1779960876705
+title: 'Konzeptprojekt: Energieüberwachung mit ESP8266 und Stromsensor'
+category: Embedded Systems
+image_url: /my-electronics-blog/images/posts/Energieüberwachung-main.webp
+image_gallery: []
+excerpt: Geplantes Lernprojekt zur einfachen Erfassung und Visualisierung von Stromverbrauchsdaten
+  mit ESP8266 und Stromsensor über WLAN.
+tags:
+- ESP8266
+- Energieüberwachung
+- Sensorik
+- Embedded Systems
+- IoT
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:34:36.705Z'
+external_link: ''
+project_status: in_progress
+sort_order: 100
+slug: konzeptprojekt-energieuberwachung-mit-esp8266-und-stromsensor
+---
+
+# Konzeptprojekt: Energieüberwachung mit ESP8266 und Stromsensor
+
+Geplantes Lernprojekt zur einfachen Erfassung und Visualisierung von Stromverbrauchsdaten mit ESP8266 und Stromsensor über WLAN.
+
+Dieses Projekt befindet sich aktuell in der Konzept- und Lernphase.
+
+Geplant ist die Entwicklung eines einfachen Systems zur Überwachung von Stromverbrauchsdaten mit ESP8266 und ACS712-Stromsensor.
+
+Vorgesehene Hardware:
+- ESP8266 Mikrocontroller
+- ACS712 Stromsensor
+- OLED Display
+- WLAN-Kommunikation
+
+Geplante Funktionen:
+- Anzeige einfacher Messwerte
+- WLAN-Datenübertragung
+- Dashboard-Visualisierung
+- Grundlagen der Energieverbrauchsanalyse
+
+Das Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, Sensorik und IoT-Kommunikation.
+
+Aktueller Status:
+Konzeptprojekt / in Planung
+`,"../content/de/konzeptprojekt-esp32-basierte-mqtt-sensoruberwachung-fur-smart-home-anwendungen.md":`---
+id: local-post-1779960913660
+title: 'Konzeptprojekt: ESP32-basierte MQTT-Sensorüberwachung für Smart-Home-Anwendungen'
+category: IoT
+image_url: /my-electronics-blog/images/posts/SmartHome-main.webp
+image_gallery: []
+excerpt: Geplantes Lernprojekt zur Entwicklung einer einfachen IoT-Plattform auf Basis
+  eines ESP32-Mikrocontrollers. Ziel des Projekts ist die Erfassung und Visualisierung
+  verschiedener Sensordaten über WLAN und MQTT.
+tags:
+- ESP32
+- MQTT
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:35:13.660Z'
+external_link: ''
+project_status: in_progress
+sort_order: 100
+slug: konzeptprojekt-esp32-basierte-mqtt-sensoruberwachung-fur-smart-home-anwendungen
+---
+
+# Konzeptprojekt: ESP32-basierte MQTT-Sensorüberwachung für Smart-Home-Anwendungen
+
+Geplantes Lernprojekt zur Entwicklung einer einfachen IoT-Plattform auf Basis eines ESP32-Mikrocontrollers. Ziel des Projekts ist die Erfassung und Visualisierung verschiedener Sensordaten über WLAN und MQTT.
+
+Dieses Projekt befindet sich aktuell in der Konzept- und Lernphase.
+
+Geplant ist die Entwicklung einer einfachen IoT-Sensorplattform auf Basis eines ESP32-Mikrocontrollers zur Erfassung und Visualisierung verschiedener Sensordaten.
+
+Vorgesehene Hardware:
+- ESP32 Dev Board
+- DHT22 Temperatur- und Feuchtigkeitssensor
+- Relaismodul für einfache Schaltfunktionen
+- MQTT Broker (z.B. Mosquitto)
+- Dashboard zur Datenvisualisierung
+
+Geplante Funktionen:
+- WLAN-Kommunikation
+- MQTT Publish/Subscribe
+- Sensorüberwachung
+- Dashboard-Visualisierung
+- Erweiterung um zusätzliche Sensoren und Aktoren
+
+Das Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, MQTT-Kommunikation und IoT-Anwendungen.
+
+Aktueller Status:
+Konzeptprojekt / in Planung
+`,"../content/de/konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485.md":`---
+id: local-post-1779960691288
+title: 'Konzeptprojekt: ESP32-basiertes 4–20mA IoT-Gateway mit MQTT und RS485'
+category: IoT
+image_url: /my-electronics-blog/images/posts/ESP32-main.webp
+image_gallery: []
+excerpt: Geplantes Lern- und Entwicklungsprojekt zur Erfassung von 4–20mA-Sensorsignalen
+  mit ESP32, ADS1115 und MQTT-Kommunikation. Ziel des Projekts ist die Entwicklung
+  eines einfachen industriellen IoT-Prototyps zur Sensorüberwachung und Datenvisualisierung
+  über Home Assistant.
+tags:
+- ESP32
+- MQTT
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:31:31.288Z'
+external_link: ''
+project_status: idea
+sort_order: 90
+slug: konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485
+---
+
+# Konzeptprojekt: ESP32-basiertes 4–20mA IoT-Gateway mit MQTT und RS485
+
+Geplantes Lern- und Entwicklungsprojekt zur Erfassung von 4–20mA-Sensorsignalen mit ESP32, ADS1115 und MQTT-Kommunikation. Ziel des Projekts ist die Entwicklung eines einfachen industriellen IoT-Prototyps zur Sensorüberwachung und Datenvisualisierung über Home Assistant.
+
+Dieses Projekt befindet sich aktuell in der Konzept- und Planungsphase.
+
+Ziel ist die Entwicklung eines einfachen IoT-Gateways zur Verarbeitung industrieller 4–20mA-Sensorsignale mit ESP32.
+
+Geplante Funktionen:
+• Erfassung von 4–20mA-Sensorsignalen über ADS1115
+• MQTT-Kommunikation für IoT-Anwendungen
+• RS485 / Modbus-RTU-Unterstützung
+• Visualisierung der Sensordaten über Home Assistant
+• Spannungsversorgung für industrielle 12–24VDC-Umgebungen
+
+Für die erste Entwicklungsphase ist ein schneller Prototyp mit ESP32-DevKit, ADS1115-Modul und MQTT-Anbindung vorgesehen. Nach erfolgreichem Funktionstest ist die Entwicklung einer eigenen PCB-Version mit KiCad geplant.
+
+Geplante Technologien:
+• ESP32-S3
+• ADS1115
+• MQTT
+• RS485 / Modbus RTU
+• Home Assistant
+• KiCad
+
+Aktueller Status:
+Konzeptphase / Lernprojekt
+`,"../content/de/konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt.md":`---
+id: local-post-1779960950659
+title: 'Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT'
+category: Elektrotechnik
+image_url: /my-electronics-blog/images/posts/Schaltnetzteil-main.webp
+image_gallery: []
+excerpt: Geplantes Lernprojekt zur Überwachung von Spannungs-, Strom- und Temperaturwerten
+  eines DC-Schaltnetzteils mit ESP32 und MQTT-Kommunikation.
+tags:
+- MQTT
+- Schaltnetzteil
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:35:50.659Z'
+external_link: ''
+project_status: idea
+sort_order: 100
+slug: konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt
+---
+
+# Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT
+
+Geplantes Lernprojekt zur Überwachung von Spannungs-, Strom- und Temperaturwerten eines DC-Schaltnetzteils mit ESP32 und MQTT-Kommunikation.
+
+Dieses Projekt befindet sich aktuell in der Konzept- und Lernphase.
+
+Geplant ist die Entwicklung eines einfachen Überwachungssystems für DC-Schaltnetzteile auf Basis eines ESP32-Mikrocontrollers.
+
+Ziel des Projekts ist die Erfassung und Visualisierung von Spannungs-, Strom- und Temperaturwerten über WLAN und MQTT.
+
+Vorgesehene Hardware:
+- ESP32 Dev Board
+- Stromsensor (ACS712 oder INA219)
+- Temperatursensor
+- OLED Display
+- WLAN- und MQTT-Kommunikation
+
+Geplante Funktionen:
+- Spannungs- und Stromüberwachung
+- Temperaturüberwachung
+- MQTT-Datenübertragung
+- Dashboard-Visualisierung
+- Einfache Status- und Fehleranzeige
+
+Das Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, Sensorik und industrieller Energieüberwachung.
+
+Aktueller Status:
+Konzeptprojekt / in Planung
+`,"../content/de/personal-way.md":`---
+type: personal_way
+language: de
+title: Nguyen Nhan Do - Technik lernen. Erfahrung sammeln. Mich weiterentwickeln.
+image_1: /my-electronics-blog/images/about-1.webp
+image_2: /my-electronics-blog/images/about-2.webp
+---
+
+Ich bin 2013 nach Deutschland gekommen – nicht, weil mein Leben in Vietnam schlecht war, sondern weil ich herausfinden wollte, wie weit ich mich persönlich und beruflich entwickeln kann, wenn ich meine Komfortzone verlasse und in einem völlig neuen Umfeld noch einmal von vorne beginne.
+
+Die ersten Jahre in Deutschland waren für mich vor allem eine Zeit des Ankommens, Lernens und Anpassens. Neben Sprachkursen habe ich in verschiedenen Bereichen gearbeitet – unter anderem in der Gastronomie, im Management und später auch in der Selbstständigkeit.
+
+Nach mehreren Jahren mit unterschiedlichen beruflichen Erfahrungen habe ich mich bewusst entschieden, wieder stärker in die technische Richtung zurückzukehren und mich langfristig im Bereich Elektronik, Messtechnik und Automatisierung weiterzuentwickeln.
+
+In den vergangenen Jahren konnte ich praktische Erfahrungen in der Kalibrierung, Fehlersuche, Prüfung und Entwicklung elektronischer Systeme sammeln und gleichzeitig mein technisches Wissen kontinuierlich erweitern.
+
+Darüber hinaus habe ich Weiterbildungen in SPS-Programmierung, C++/Qt, AutoCAD und EPLAN absolviert, um meine Kenntnisse gezielt auszubauen und neue technische Bereiche besser zu verstehen.
+
+Dieser Blog dient vor allem dazu, meine technischen Projekte, Erfahrungen und Lernprozesse zu dokumentieren. Hier halte ich Wissen fest, sammle Ideen und dokumentiere meine fachliche Entwicklung im Laufe der Zeit.
+
+Alle Inhalte basieren auf persönlichen Projekten, eigenständigem Lernen und öffentlich zugänglichem Wissen. Vertrauliche Informationen, interne Unterlagen oder Projekte von aktuellen bzw. ehemaligen Arbeitgebern werden selbstverständlich nicht veröffentlicht.
+`,"../content/de/plc-programmierung-einer-industriellen-tauchanlage.md":`---
+id: demo-3
+title: PLC-Programmierung einer industriellen Tauchanlage
+category: SPS-Programmierung
+image_url: /my-electronics-blog/images/posts/Tauchanlage-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Tauchanlage-1.webp
+- /my-electronics-blog/images/posts/Tauchanlage-2.webp
+excerpt: Automatisierte Tauchanlage mit SPS-Steuerung. Automatischer Transport und
+  Tauchprozess mit Siemens S7-300. Hand- und Automatikbetrieb im TIA Portal realisiert.
+tags:
+- SPS
+- S7300
+- TiaPortal
+read_time: 5 Min.
+published: true
+created_at: '2026-04-29T12:00:00Z'
+external_link: https://drive.google.com/drive/folders/1WgBLk6R1F-_J_oisAxwNgQyFdcKVzb-m
+project_status: done
+sort_order: 50
+slug: plc-programmierung-einer-industriellen-tauchanlage
+---
+
+# PLC-Programmierung einer industriellen Tauchanlage
+
+Automatisierte Tauchanlage mit Siemens S7-300
+
+Dieses Projekt umfasst die Entwicklung und Programmierung einer automatisierten Tauchanlage zur Steuerung eines industriellen Transport- und Tauchprozesses.
+Die Anlage ermöglicht das automatische Verfahren, Heben und Senken eines Werkstückkorbs zwischen zwei Tauchbädern unter Berücksichtigung definierter Sicherheits- und Bewegungsbedingungen.
+
+Die Steuerung wurde mit einer Siemens S7-300 CPU im TIA Portal realisiert.
+Das Projekt beinhaltet sowohl einen Handbetrieb zur manuellen Steuerung der Achsen als auch einen vollautomatischen Ablauf mit sequenzieller Prozesssteuerung.
+
+Im Automatikbetrieb fährt der Korb selbstständig zu den einzelnen Tauchstationen, führt definierte Tauch- und Abtropfzeiten aus und kehrt anschließend in die Ausgangsposition zurück.
+Zusätzlich wurden Endlagensensoren, Sicherheitsabfragen, Statusanzeigen, Motorsteuerungen sowie eine Werkstückzählung mit Zeitstempel-Historie implementiert.
+
+Die Softwarestruktur besteht aus mehreren Funktionsbausteinen für Betriebsarten, Ausgangssteuerung, Ablaufsteuerung, Teilehistorie und Diagnosefunktionen.
+Zur Verbesserung der Übersichtlichkeit wurden symbolische Variablen, Datenbausteine sowie strukturierte Datentypen verwendet.
+
+Das Projekt demonstriert praxisnah die Umsetzung industrieller Automatisierungstechnik mit SPS, Sensorik, Aktorik und Ablaufsteuerung im Siemens TIA Portal.
+
+**Zum Projekte klicken, um die vollständige Dokumentation und Projektdateien im Detail anzusehen.**
+`,"../content/de/technisches-portfolio-elektronik-blog.md":`---
+id: technisches-portfolio-elektronik-blog
+slug: technisches-portfolio-elektronik-blog
+title: Technisches Portfolio & Elektronik-Blog
+category: Softwareentwicklung
+image_url: /my-electronics-blog/images/posts/Portfolio-Blog-main.webp
+image_gallery:
+[]
+excerpt: Entwicklung einer modernen persönlichen Portfolio- und Blog-Plattform zur Dokumentation technischer Projekte, Elektronikexperimente, Embedded-Systeme, Automatisierungstechnik und beruflicher Weiterentwicklung.
+tags:
+- React
+- JavaScript
+- Portfolio
+- Blog
+- Embedded Systems
+- Elektronik
+- Webentwicklung
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:30:47.159Z'
+external_link: https://github.com/nguyennhando/my-electronics-blog
+project_status: done
+sort_order: 80
+---
+
+# Technisches Portfolio & Elektronik-Blog
+
+## Projektübersicht
+
+Diese Website wurde vollständig selbst entwickelt, um technische Projekte, Elektronikarbeiten, Lernfortschritte und berufliche Erfahrungen zentral zu dokumentieren.
+
+Die Plattform dient als persönliches Portfolio sowie als technische Wissensdatenbank für Projekte aus den Bereichen:
+
+- Elektronik
+- Embedded Systems
+- IoT
+- Automatisierungstechnik
+- Softwareentwicklung
+- Messtechnik
+- Technische Dokumentation
+
+---
+
+## Verwendete Technologien
+
+### Frontend
+
+- React
+- JavaScript
+- Framer Motion
+- React Markdown
+- Tailwind CSS
+
+### UI-Komponenten
+
+- Lucide React Icons
+- Responsive Layout
+- Animationen
+- Lightbox Galerie
+- Markdown Editor
+
+---
+
+## Hauptfunktionen
+
+### Blog-System
+
+- Technische Projektberichte
+- Markdown-basierte Beiträge
+- Kategorien und Tags
+- Suchfunktion
+- Pagination
+
+### Portfolio-Bereich
+
+- Projektübersicht
+- Statusanzeige
+- Bildergalerie
+- Externe Projektlinks
+
+### Eigener Markdown Editor
+
+Die Website enthält einen integrierten Editor zur Erstellung neuer Beiträge.
+
+Funktionen:
+
+- Live Vorschau
+- Automatische Slug-Erzeugung
+- Markdown Export
+- Direkte Speicherung von Beiträgen
+- Verwaltung von Projekten
+
+---
+
+## Benutzeroberfläche
+
+Besonderer Fokus wurde auf ein modernes technisches Design gelegt:
+
+- Cyberpunk-inspiriertes Farbschema
+- Dunkles UI Design
+- Responsive Darstellung
+- Flüssige Animationen
+- Mobile Optimierung
+
+---
+
+## Ziel des Projekts
+
+Das Ziel dieser Website ist die professionelle Präsentation technischer Fähigkeiten sowie die langfristige Dokumentation eigener Projekte und Lernfortschritte.
+
+Die Plattform wird kontinuierlich erweitert und dient gleichzeitig als praktisches Webentwicklungsprojekt sowie als persönliche technische Wissenssammlung.
+
+---
+
+## Ergebnis
+
+Mit diesem Projekt entstand eine vollständig eigenentwickelte Portfolio- und Blog-Plattform, die technische Dokumentation, Projektmanagement und moderne Webentwicklung miteinander kombiniert.
+`,"../content/de/visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen.md":`---
+id: local-post-1779960317991
+title: Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens
+  WinCC
+category: SPS-Programmierung
+image_url: /my-electronics-blog/images/posts/Mischbehälter-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/Mischbehälter-1.webp
+- /my-electronics-blog/images/posts/Mischbehälter-2.webp
+- /my-electronics-blog/images/posts/Mischbehälter-3.webp
+excerpt: 'Dieses Projekt beschreibt die Entwicklung eines industriellen HMI-Systems
+  zur Überwachung und Steuerung eines Mischbehälters mit Siemens SIMATIC WinCC Runtime
+  Advanced.
+
+  Die Anwendung ermöglicht die Visualisierung von Sensoren, Ventilen, Motoren und
+  Temperaturwerten in Echtzeit sowie die Bedienung im Automatik- und Handbetrieb.
+  Ziel des Projekts ist eine benutzerfreundliche, sichere und effiziente Prozesssteuerung
+  für industrielle Mischprozesse.'
+tags:
+- SPS
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:25:17.991Z'
+external_link: https://drive.google.com/drive/folders/1Vrz5hK6aTVExshjDZIi92ecTgQaFo_kq
+project_status: done
+sort_order: 40
+slug: visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen
+---
+
+# Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens WinCC
+
+Dieses Projekt umfasst die Entwicklung eines modernen HMI-Visualisierungssystems zur Überwachung und Steuerung eines industriellen Mischbehälters mit Siemens SIMATIC WinCC Runtime Advanced und einer Siemens SPS S7-1200/1500.
+
+Die Anwendung ermöglicht die Visualisierung von Sensoren, Ventilen, Motoren und Temperaturwerten in Echtzeit sowie die Bedienung im Automatik- und Handbetrieb. Ziel des Projekts ist eine benutzerfreundliche, sichere und effiziente Prozesssteuerung für industrielle Mischprozesse.
+
+Das System wurde entwickelt, um industrielle Mischprozesse effizient, sicher und benutzerfreundlich zu steuern. Über die HMI-Oberfläche können verschiedene Prozessparameter in Echtzeit überwacht und bedient werden. Dazu gehören unter anderem Motoren, Ventile, Sensoren, Temperaturanzeigen sowie automatische und manuelle Betriebsarten.
+
+Die Visualisierung ermöglicht dem Bediener eine klare Darstellung des gesamten Mischprozesses. Der aktuelle Anlagenstatus wird grafisch dargestellt, wodurch Materialfluss, Motoraktivitäten und Ventilstellungen jederzeit nachvollziehbar sind. Zusätzlich wurden Sicherheitsfunktionen wie Not-Halt, Statusmeldungen und Alarmanzeigen integriert, um einen sicheren Anlagenbetrieb zu gewährleisten.
+
+Im Automatikbetrieb erfolgt die Prozesssteuerung schrittweise über definierte Ablaufsequenzen. Dabei werden Sensorwerte verarbeitet und Aktoren automatisch angesteuert. Im Handbetrieb können einzelne Komponenten manuell getestet und gesteuert werden, was insbesondere bei Wartung und Inbetriebnahme wichtig ist.
+
+Das Projekt beinhaltet außerdem:
+
+* Echtzeit-Kommunikation zwischen SPS und HMI
+* Prozessvisualisierung und Anlagenüberwachung
+* Temperaturüberwachung und Statusanzeigen
+* Steuerung von Ventilen und Motoren
+* Automatik- und Handbetrieb
+* Fehler- und Alarmmanagement
+* Benutzerfreundliche Bedienoberfläche
+
+Ziel des Projekts ist die Entwicklung einer zuverlässigen und effizienten Lösung für industrielle Automatisierungsprozesse. Durch die Kombination aus Siemens SPS-Technologie und WinCC Runtime Advanced entsteht ein leistungsfähiges HMI-System zur Optimierung von Produktionsabläufen und zur Erhöhung der Betriebssicherheit.
+
+Klicken Sie auf die Schaltfläche „Zum Projekt“, um die vollständige Projektdokumentation und weitere Details zum HMI-System anzuzeigen.
+`,"../content/de/wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi.md":`---
+id: local-post-1779960469574
+title: WinCC Fischertechnikmodell – Automatik- und Handbetrieb mit HMI
+category: SPS-Programmierung
+image_url: /my-electronics-blog/images/posts/FischerTechnik-main.webp
+image_gallery:
+- /my-electronics-blog/images/posts/FischerTechnik-1.webp
+excerpt: Programmierung eines Fischertechnik-Pressenmodells mit Siemens CPU1512C,
+  ET200SP und TP700 Comfort Panel. Implementiert werden Automatikbetrieb, Handbetrieb,
+  Benutzerverwaltung, Rezepturverwaltung, Alarmmeldungen sowie eine vollständige HMI-Bedienoberfläche.
+tags:
+- WinCC
+- SPS
+- HMI
+read_time: 5 Min.
+published: true
+created_at: '2026-05-28T09:27:49.574Z'
+external_link: https://drive.google.com/drive/folders/1XwbZqMA_neR7FqreJCQsHW4ddtIEpOKi?usp=drive_link
+project_status: done
+sort_order: 60
+slug: wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi
+---
+
+# WinCC Fischertechnikmodell – Automatik- und Handbetrieb mit HMI
+
+Entwicklung einer SPS- und HMI-Steuerung für das Fischertechnik-Pressenmodell mit Siemens CPU1512C, ET200SP und TP700 Comfort Panel.
+
+Programmierung eines Fischertechnik-Pressenmodells mit Siemens CPU1512C, ET200SP und TP700 Comfort Panel. Implementiert werden Automatikbetrieb, Handbetrieb, Benutzerverwaltung, Rezepturverwaltung, Alarmmeldungen sowie eine vollständige HMI-Bedienoberfläche.
+
+Implementiert werden:
+
+Automatikbetrieb
+Handbetrieb / Einrichtbetrieb
+Benutzerverwaltung
+Alarm- und Meldesystem
+Rezeptverwaltung
+HMI-Visualisierung über WinCC
+
+Die Kommunikation erfolgt über Profinet.
+Das System befindet sich aktuell noch in der Fertigstellung und Optimierung. ⚙️
+`,"../content/de/wissensbibliothek-technische-notizen-und-analysen.md":`---
+id: wissensbibliothek-technische-notizen-und-analysen
+slug: wissensbibliothek-technische-notizen-und-analysen
+content_type: knowledge
+title: Wissensbibliothek: Technische Notizen und Analysen
+category: Grundlagen
+image_url: /my-electronics-blog/images/posts/DC-Netzteil-main.webp
+image_gallery: []
+excerpt: Ein Einstieg in meine Sammlung aus Lernmaterialien, Schaltungsanalysen und technischen Untersuchungen.
+tags:
+- Elektronik
+- Lernen
+- Analyse
+read_time: 3 Min.
+published: true
+created_at: '2026-05-31T12:00:00.000Z'
+external_link: ''
+project_status: done
+sort_order: 1
+---
+
+# Technisches Wissen strukturiert festhalten
+
+Dieser Bereich ergänzt die Projektübersicht um ausführlichere Lernnotizen, technische Analysen und eigene Untersuchungen. Während die Projektbeiträge konkrete Umsetzungen dokumentieren, stehen hier einzelne Themen und Zusammenhänge im Mittelpunkt.
+
+## Geplante Inhalte
+
+- Analysen elektronischer Schaltungen
+- Grundlagen zu Bauteilen und Messverfahren
+- Lernunterlagen zu Embedded Systems und Automatisierung
+- Notizen aus eigenen Versuchen und Recherchen
+- Weiterführende externe Quellen
+
+## Aufbau der Beiträge
+
+Die Beiträge sollen so strukturiert sein, dass wichtige Informationen schnell auffindbar bleiben. Kategorien, Schlagwörter und die Suchfunktion helfen dabei, auch bei einer größeren Sammlung gezielt zum passenden Thema zu gelangen.
 `,"../content/en/3d-flaschenzug-in-autocad.md":`---
 translation_id: local-post-1779960596593
 language: en
@@ -1135,245 +1941,6 @@ This section supplements the project overview with more detailed learning notes,
 ## Article Structure
 
 Articles are structured so that important information remains easy to find. Categories, tags and search make it possible to reach the relevant topic quickly, even as the collection grows.
-`,"../content/finanzverwaltung-mit-datenanalyse.md":`---
-id: local-post-1779957810945
-title: Finanzverwaltung mit Datenanalyse
-category: Softwareentwicklung
-image_url: /my-electronics-blog/images/posts/finanzmanager-main.webp
-image_gallery:
-- /my-electronics-blog/images/posts/finanzmanager-1.webp
-- /my-electronics-blog/images/posts/finanzmanager-2.webp
-- /my-electronics-blog/images/posts/finanzmanager-3.webp
-excerpt: 'Die Software ermöglicht die Verwaltung persönlicher Einnahmen und Ausgaben,
-  unterstützt CSV-Import und -Export sowie Echtzeit-Datenanalysen über eine moderne
-  grafische Benutzeroberfläche.
-
-  Über den Button „Zum Projekt“ am Ende der Seite erhalten Sie Zugriff auf den vollständigen
-  Quellcode des Projekts „Finanzmanager“.'
-tags:
-- C++
-- Qt 6.9
-read_time: 5 Min.
-published: true
-created_at: '2026-05-28T08:43:30.945Z'
-external_link: https://github.com/nguyennhando/finanzmanager
-project_status: done
-sort_order: 30
-slug: finanzverwaltung-mit-datenanalyse
----
-
-# Finanzverwaltung mit Datenanalyse
-
-🧭 GeldPilot - Persönliche Finanzverwaltung
-
-Entwicklung einer modernen Desktop-Anwendung zur Finanzverwaltung mit C++, Qt 6 und SQLite.
-Die Software ermöglicht die Verwaltung persönlicher Einnahmen und Ausgaben, unterstützt CSV-Import und -Export sowie Echtzeit-Datenanalysen über eine moderne grafische Benutzeroberfläche.
-Über den Button „Zum Projekt“ am Ende der Seite erhalten Sie Zugriff auf den vollständigen Quellcode des Projekts „Finanzmanager“.
-
-Eine professionelle Desktop-Anwendung zur Verwaltung Ihrer persönlichen Finanzen, entwickelt mit Qt 6.9 und C++.
-📋 Inhaltsverzeichnis
-    • Überblick
-    • Features
-    • Systemanforderungen
-    • Installation
-    • Erste Schritte
-    • Benutzerhandbuch
-    • Technische Details
-    • Entwicklung
-    • Support
-🎯 Überblick
-GeldPilot ist eine benutzerfreundliche Anwendung zur Verwaltung Ihrer Einnahmen und Ausgaben. Mit einer intuitiven Oberfläche können Sie Transaktionen verwalten, Kategorien organisieren und umfassende Finanzberichte erstellen.
-✨ Hauptmerkmale
-    • Transaktionsverwaltung: Hinzufügen, Bearbeiten und Löschen von Einnahmen und Ausgaben
-    • Kategorisierung: Vordefinierte und benutzerdefinierte Kategorien
-    • Zeitraumfilter: Flexible Filterung nach Datum und Kategorie
-    • Finanzübersicht: Automatische Berechnung von Einnahmen, Ausgaben und Bilanz
-    • Visualisierung: Interaktive Balkendiagramme zur Darstellung Ihrer Finanzen
-    • Import/Export: CSV-Import und -Export für Datenaustausch
-    • Druckfunktion: Professionelle Berichte mit Firmenlogo
-🔧 Systemanforderungen
-Mindestanforderungen
-    • Betriebssystem: Windows 10/11, macOS 10.15+, Linux (Ubuntu 20.04+)
-    • RAM: 4 GB
-    • Festplattenspeicher: 100 MB
-    • Bildschirmauflösung: 1024x768
-Empfohlene Anforderungen
-    • RAM: 8 GB oder mehr
-    • Bildschirmauflösung: 1920x1080 oder höher
-🚀 Installation
-Vorkompilierte Version (Windows)
-    1. Laden Sie die neueste Version von der Releases-Seite herunter
-    2. Entpacken Sie das Archiv in einen Ordner Ihrer Wahl
-    3. Starten Sie GeldPilot.exe
-Aus Quellcode kompilieren
-Voraussetzungen
-    • Qt 6.9 oder neuer
-    • CMake 3.16 oder neuer
-    • C++17-kompatible Compiler:
-        ◦ Windows: MinGW-w64 oder MSVC 2019+
-        ◦ macOS: Xcode 12+
-        ◦ Linux: GCC 9+ oder Clang 10+
-Kompilierungsschritte
-# Repository klonen
-git clone https://github.com/username/geldpilot.git
-cd geldpilot
-
-# Build-Verzeichnis erstellen
-mkdir build && cd build
-
-# CMake konfigurieren
-cmake .. -DCMAKE_BUILD_TYPE=Release
-
-# Kompilieren
-cmake --build . --config Release
-
-# Ausführen (Windows)
-./Release/GeldPilot.exe
-
-# Ausführen (Linux/macOS)
-./GeldPilot
-🏁 Erste Schritte
-1. Erste Transaktion hinzufügen
-    1. Starten Sie GeldPilot
-    2. Geben Sie Datum, Betrag und Beschreibung ein
-    3. Wählen Sie eine Kategorie (z.B. "Gehalt" für Einnahmen)
-    4. Wählen Sie den Typ ("Einnahme" oder "Ausgabe")
-    5. Klicken Sie auf "Neue Transaktion"
-2. Daten filtern
-    • Verwenden Sie die Dropdown-Menüs für Kategorien
-    • Setzen Sie Start- und Enddatum für Zeitraumfilter
-    • Klicken Sie "Filter" um die Ansicht zu aktualisieren
-3. Berichte erstellen
-    • Klicken Sie auf "Diagramm" für eine visuelle Darstellung
-    • Nutzen Sie "Drucken" für professionelle Berichte
-    • Exportieren Sie Daten als CSV für weitere Analyse
-📖 Benutzerhandbuch
-Transaktionsverwaltung
-Neue Transaktion hinzufügen
-    1. Füllen Sie alle Pflichtfelder aus:
-        ◦ Datum: Transaktionsdatum
-        ◦ Betrag: Geldbetrag (immer positiv eingeben)
-        ◦ Beschreibung: Kurze Beschreibung der Transaktion
-        ◦ Kategorie: Zuordnung zu einer Kategorie
-        ◦ Typ: "Einnahme" oder "Ausgabe"
-Transaktion bearbeiten
-    1. Wählen Sie eine Zeile in der Tabelle aus
-    2. Die Daten erscheinen automatisch in den Eingabefeldern
-    3. Nehmen Sie Ihre Änderungen vor
-    4. Klicken Sie "Speichern"
-Transaktionen löschen
-    • Einzelne Transaktion: Zeile auswählen → "Löschen"
-    • Mehrere Transaktionen: Mehrere Zeilen auswählen (Strg+Klick) → "Löschen"
-Kategorien
-Vordefinierte Kategorien:
-    • Freizeit
-    • Gehalt
-    • Gesundheit
-    • Lebensmittel
-    • Miete
-    • Sonstiges
-    • Transport
-    • Versicherungen
-    • Investition
-    • Kommunikation
-    • Wohnen
-Filterung und Suche
-Nach Kategorie filtern
-    • Wählen Sie "Alle Kategorien" für ungefilterte Ansicht
-    • Wählen Sie eine spezifische Kategorie für gefilterte Ansicht
-Nach Zeitraum filtern
-    • Setzen Sie Startdatum und Enddatum
-    • Klicken Sie "Filter" zum Anwenden
-Import/Export
-CSV-Import
-    1. Bereiten Sie eine CSV-Datei vor mit Spalten:
-        ◦ ID, Datum, Betrag, Beschreibung, Kategorie, Typ
-    2. Klicken Sie "Import"
-    3. Wählen Sie Ihre CSV-Datei aus
-CSV-Export
-    1. Klicken Sie "Export"
-    2. Wählen Sie Speicherort und Dateiname
-    3. Die aktuelle Tabellenansicht wird exportiert
-Diagramme und Berichte
-Finanzdiagramm anzeigen
-    • Klicken Sie "Diagramm" für Balkendiagramm
-    • Zeigt Kategorien, Gesamteinnahmen, -ausgaben und Bilanz
-    • Interaktive Darstellung mit Farbkodierung
-Drucken
-    • Öffnen Sie das Diagramm
-    • Klicken Sie "Drucken"
-    • Wählen Sie Drucker und Einstellungen
-    • Professioneller Ausdruck mit Logo
-🛠 Technische Details
-Architektur
-    • GUI Framework: Qt 6.9
-    • Datenbank: SQLite (lokale Datei)
-    • Diagramme: Qt Charts
-    • Bauansystem: CMake
-    • Compiler: MinGW-w64 (Windows)
-Datenbankschema
-Tabelle: transaktionen
-CREATE TABLE transaktionen (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    datum DATE NOT NULL,
-    betrag REAL NOT NULL,
-    beschreibung TEXT,
-    kategorie TEXT NOT NULL,
-    typ TEXT NOT NULL CHECK (typ IN ('Einnahme', 'Ausgabe'))
-);
-Tabelle: kategorien
-CREATE TABLE kategorien (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT UNIQUE NOT NULL
-);
-Projektstruktur
-geldpilot/
-├── src/
-│   ├── main.cpp                 # Einstiegspunkt
-│   ├── mainwindow.cpp/h         # Hauptfenster
-│   ├── chartwindow.cpp/h        # Diagrammfenster
-│   ├── datenbankmanager.cpp/h   # Datenbanklogik
-│   └── centerdelegate.h         # UI-Styling
-├── ui/
-│   ├── mainwindow.ui            # Hauptfenster UI
-│   └── chartwindow.ui           # Diagramm UI
-├── resources/
-│   └── icons/                   # Anwendungssymbole
-├── CMakeLists.txt               # Build-Konfiguration
-└── README.md                    # Diese Datei
-👨‍💻 Entwicklung
-Code-Stil
-    • C++17 Standard
-    • Qt-Konventionen
-    • Deskriptive deutsche Variablennamen
-    • Umfangreiche Kommentierung
-Beitrag zum Projekt
-    1. Fork das Repository
-    2. Erstellen Sie einen Feature-Branch
-    3. Machen Sie Ihre Änderungen
-    4. Testen Sie gründlich
-    5. Erstellen Sie einen Pull Request
-Bekannte Probleme
-    • ✅ Mehrfachauswahl für Löschen implementiert
-    • ✅ Datenbankindizierung für Performance
-    • ⚠️ Backup-Funktionalität geplant
-📞 Support
-Hilfe benötigt?
-    • Dokumentation: Lesen Sie dieses README vollständig
-    • Issues: Melden Sie Bugs auf GitHub
-    • E-Mail: support@geldpilot.de
-Häufige Probleme
-Q: Datenbank kann nicht geöffnet werden\xA0A: Stellen Sie sicher, dass die Anwendung Schreibrechte im Installationsordner hat.
-Q: Diagramm wird nicht angezeigt\xA0A: Überprüfen Sie, ob Qt Charts installiert ist.
-Q: Import schlägt fehl\xA0A: Überprüfen Sie das CSV-Format (Semikolon-getrennt).
-
-📄 Lizenz
-© 2025 Nguyen Nhan Do. Alle Rechte vorbehalten.
-Version: 1.0.0
-Entwickler: Nguyen Nhan Do
-Build: Qt 6.9, MinGW-w64, CMake
-
-Behalten Sie mit GeldPilot den Überblick über Ihre Finanzen und steuern Sie gezielt Ihre finanzielle Zukunft! 🧭💰
 `,"../content/gallery-settings.md":`---
 type: gallery_settings
 ---
@@ -1388,447 +1955,10 @@ type: gallery_settings
   "/my-electronics-blog/images/galerie/Dampfmaschine-main.webp",
   "/my-electronics-blog/images/galerie/nhan.webp"
 ]
-`,"../content/home-content.md":`---
-type: home_content
-language: de
-hero_badge: Elektrokonstruktion · Prüftechnik · Software
-hero_title: Technik. Dokumentation. Entwicklung.
-hero_text: Diese Website habe ich selbst entwickelt, um technische Projekte, Lernfortschritte und praktische Erfahrungen im Bereich Elektronik, Embedded Systems, Messtechnik und technischer Softwareentwicklung zu dokumentieren.
-transparency_title: Projektinformationen & Transparenz
-transparency_text: Die auf dieser Website gezeigten Fotos von Laborumgebungen, technischen Arbeitsplätzen und elektronischen Geräten dienen ausschließlich der Veranschaulichung meiner technischen Interessen und praktischen Erfahrungen.
-transparency_strong: Sie zeigen weder meinen tatsächlichen Arbeitsplatz noch interne Bereiche oder reale Arbeitsumgebungen eines Unternehmens.
-feature_1_title: Elektronik & Embedded Systems
-feature_1_text: Eigene Lernprojekte rund um Mikrocontroller, Sensorik und hardwarenahe Entwicklung zur praktischen Erweiterung meines technischen Wissens.
-feature_2_title: Automatisierung & Steuerung
-feature_2_text: Praktische Übungen und kleinere Projekte, um industrielle Abläufe, Steuerungstechnik und technische Prozesse besser zu verstehen.
-feature_3_title: Technisches Lernen
-feature_3_text: Dokumentation meines Lernwegs, technischer Erfahrungen und neuer Themen, mit denen ich mich kontinuierlich beschäftige.
-feature_4_title: Eigene Entwicklung
-feature_4_text: Diese Website dient als persönliche Plattform, um Projekte, Ideen und technische Fortschritte übersichtlich festzuhalten.
-warning_one: Projekte mit der Kennzeichnung „Konzept“ befinden sich noch in der Ideen- bzw. Konzeptphase und wurden bisher noch nicht praktisch umgesetzt.
-warning_two: Alle anderen Projekte können über „Beitrag lesen“ geöffnet werden. Am Ende der jeweiligen Projektseite befindet sich die Schaltfläche „Zum Projekt“ mit projektbezogenen Dateien.
-collaboration_title: Zusammenarbeit an modernen Elektronikprojekten.
-collaboration_text: Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder individuelle Entwicklungen.
----
-`,"../content/konzept-eines-pwm-geregelten-dc-netzteils-mit-mess-und-schutzfunktionen.md":`---
-id: local-post-1779960818567
-title: Konzept eines PWM-geregelten DC-Netzteils mit Mess- und Schutzfunktionen
-category: Elektrotechnik
-image_url: /my-electronics-blog/images/posts/DC-Netzteil-main.webp
-image_gallery: []
-excerpt: Lern- und Konzeptprojekt zur Entwicklung eines mikrocontrollerbasierten DC-Netzteils
-  mit PWM-Regelung, Strombegrenzung und grundlegenden Schutzfunktionen.
-tags:
-- PWM
-- Netzteil
-- STM32
-read_time: 5 Min.
-published: true
-created_at: '2026-05-28T09:33:38.567Z'
-external_link: ''
-project_status: idea
-sort_order: 100
-slug: konzept-eines-pwm-geregelten-dc-netzteils-mit-mess-und-schutzfunktionen
----
-
-# Konzept eines PWM-geregelten DC-Netzteils mit Mess- und Schutzfunktionen
-
-Lern- und Konzeptprojekt zur Entwicklung eines mikrocontrollerbasierten DC-Netzteils mit PWM-Regelung, Strombegrenzung und grundlegenden Schutzfunktionen
-
-Dieses Projekt ist aktuell als Lern- und Konzeptprojekt geplant. Ziel ist nicht nur der Aufbau eines einfachen DC-Netzteils, sondern vor allem das praktische Verständnis von PWM-Regelung, Leistungselektronik und elektronischen Schutzschaltungen.
-
-Geplant ist eine mikrocontrollerbasierte Lösung zur Regelung von Ausgangsspannung und Strom über PWM-Signale und MOSFET-Ansteuerung. Zusätzlich sollen grundlegende Mess- und Schutzfunktionen integriert werden, um das Verhalten des Systems unter unterschiedlichen Lastbedingungen besser analysieren zu können.
-
-Geplante Funktionen:
-
-Einstellbare Ausgangsspannung
-Strombegrenzung
-PWM-basierte Regelung
-Spannungs- und Strommessung
-Temperaturüberwachung
-Kurzschluss- und Überstromschutz
-Anzeige wichtiger Messwerte über Display
-
-Mich interessiert bei diesem Projekt besonders, wie sich PWM-Frequenz, Laständerungen und Schaltverhalten auf Stabilität, Wirkungsgrad und Wärmeentwicklung auswirken.
-
-Das Projekt befindet sich derzeit noch in der Konzept- und Lernphase. Zunächst sollen einzelne Funktionsblöcke wie PWM-Ansteuerung, Strommessung und Schutzschaltungen separat getestet werden, bevor später ein vollständiger Prototyp aufgebaut wird.
-
-Mit diesem Projekt möchte ich mein Wissen in Embedded-Systemen, Leistungselektronik und praktischer Messtechnik weiter vertiefen.
-`,"../content/konzeptprojekt-energieuberwachung-mit-esp8266-und-stromsensor.md":`---
-id: local-post-1779960876705
-title: 'Konzeptprojekt: Energieüberwachung mit ESP8266 und Stromsensor'
-category: Embedded Systems
-image_url: /my-electronics-blog/images/posts/Energieüberwachung-main.webp
-image_gallery: []
-excerpt: Geplantes Lernprojekt zur einfachen Erfassung und Visualisierung von Stromverbrauchsdaten
-  mit ESP8266 und Stromsensor über WLAN.
-tags:
-- ESP8266
-- Energieüberwachung
-- Sensorik
-- Embedded Systems
-- IoT
-read_time: 5 Min.
-published: true
-created_at: '2026-05-28T09:34:36.705Z'
-external_link: ''
-project_status: in_progress
-sort_order: 100
-slug: konzeptprojekt-energieuberwachung-mit-esp8266-und-stromsensor
----
-
-# Konzeptprojekt: Energieüberwachung mit ESP8266 und Stromsensor
-
-Geplantes Lernprojekt zur einfachen Erfassung und Visualisierung von Stromverbrauchsdaten mit ESP8266 und Stromsensor über WLAN.
-
-Dieses Projekt befindet sich aktuell in der Konzept- und Lernphase.
-
-Geplant ist die Entwicklung eines einfachen Systems zur Überwachung von Stromverbrauchsdaten mit ESP8266 und ACS712-Stromsensor.
-
-Vorgesehene Hardware:
-- ESP8266 Mikrocontroller
-- ACS712 Stromsensor
-- OLED Display
-- WLAN-Kommunikation
-
-Geplante Funktionen:
-- Anzeige einfacher Messwerte
-- WLAN-Datenübertragung
-- Dashboard-Visualisierung
-- Grundlagen der Energieverbrauchsanalyse
-
-Das Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, Sensorik und IoT-Kommunikation.
-
-Aktueller Status:
-Konzeptprojekt / in Planung
-`,"../content/konzeptprojekt-esp32-basierte-mqtt-sensoruberwachung-fur-smart-home-anwendungen.md":`---
-id: local-post-1779960913660
-title: 'Konzeptprojekt: ESP32-basierte MQTT-Sensorüberwachung für Smart-Home-Anwendungen'
-category: IoT
-image_url: /my-electronics-blog/images/posts/SmartHome-main.webp
-image_gallery: []
-excerpt: Geplantes Lernprojekt zur Entwicklung einer einfachen IoT-Plattform auf Basis
-  eines ESP32-Mikrocontrollers. Ziel des Projekts ist die Erfassung und Visualisierung
-  verschiedener Sensordaten über WLAN und MQTT.
-tags:
-- ESP32
-- MQTT
-read_time: 5 Min.
-published: true
-created_at: '2026-05-28T09:35:13.660Z'
-external_link: ''
-project_status: in_progress
-sort_order: 100
-slug: konzeptprojekt-esp32-basierte-mqtt-sensoruberwachung-fur-smart-home-anwendungen
----
-
-# Konzeptprojekt: ESP32-basierte MQTT-Sensorüberwachung für Smart-Home-Anwendungen
-
-Geplantes Lernprojekt zur Entwicklung einer einfachen IoT-Plattform auf Basis eines ESP32-Mikrocontrollers. Ziel des Projekts ist die Erfassung und Visualisierung verschiedener Sensordaten über WLAN und MQTT.
-
-Dieses Projekt befindet sich aktuell in der Konzept- und Lernphase.
-
-Geplant ist die Entwicklung einer einfachen IoT-Sensorplattform auf Basis eines ESP32-Mikrocontrollers zur Erfassung und Visualisierung verschiedener Sensordaten.
-
-Vorgesehene Hardware:
-- ESP32 Dev Board
-- DHT22 Temperatur- und Feuchtigkeitssensor
-- Relaismodul für einfache Schaltfunktionen
-- MQTT Broker (z.B. Mosquitto)
-- Dashboard zur Datenvisualisierung
-
-Geplante Funktionen:
-- WLAN-Kommunikation
-- MQTT Publish/Subscribe
-- Sensorüberwachung
-- Dashboard-Visualisierung
-- Erweiterung um zusätzliche Sensoren und Aktoren
-
-Das Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, MQTT-Kommunikation und IoT-Anwendungen.
-
-Aktueller Status:
-Konzeptprojekt / in Planung
-`,"../content/konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485.md":`---
-id: local-post-1779960691288
-title: 'Konzeptprojekt: ESP32-basiertes 4–20mA IoT-Gateway mit MQTT und RS485'
-category: IoT
-image_url: /my-electronics-blog/images/posts/ESP32-main.webp
-image_gallery: []
-excerpt: Geplantes Lern- und Entwicklungsprojekt zur Erfassung von 4–20mA-Sensorsignalen
-  mit ESP32, ADS1115 und MQTT-Kommunikation. Ziel des Projekts ist die Entwicklung
-  eines einfachen industriellen IoT-Prototyps zur Sensorüberwachung und Datenvisualisierung
-  über Home Assistant.
-tags:
-- ESP32
-- MQTT
-read_time: 5 Min.
-published: true
-created_at: '2026-05-28T09:31:31.288Z'
-external_link: ''
-project_status: idea
-sort_order: 90
-slug: konzeptprojekt-esp32-basiertes-420ma-iot-gateway-mit-mqtt-und-rs485
----
-
-# Konzeptprojekt: ESP32-basiertes 4–20mA IoT-Gateway mit MQTT und RS485
-
-Geplantes Lern- und Entwicklungsprojekt zur Erfassung von 4–20mA-Sensorsignalen mit ESP32, ADS1115 und MQTT-Kommunikation. Ziel des Projekts ist die Entwicklung eines einfachen industriellen IoT-Prototyps zur Sensorüberwachung und Datenvisualisierung über Home Assistant.
-
-Dieses Projekt befindet sich aktuell in der Konzept- und Planungsphase.
-
-Ziel ist die Entwicklung eines einfachen IoT-Gateways zur Verarbeitung industrieller 4–20mA-Sensorsignale mit ESP32.
-
-Geplante Funktionen:
-• Erfassung von 4–20mA-Sensorsignalen über ADS1115
-• MQTT-Kommunikation für IoT-Anwendungen
-• RS485 / Modbus-RTU-Unterstützung
-• Visualisierung der Sensordaten über Home Assistant
-• Spannungsversorgung für industrielle 12–24VDC-Umgebungen
-
-Für die erste Entwicklungsphase ist ein schneller Prototyp mit ESP32-DevKit, ADS1115-Modul und MQTT-Anbindung vorgesehen. Nach erfolgreichem Funktionstest ist die Entwicklung einer eigenen PCB-Version mit KiCad geplant.
-
-Geplante Technologien:
-• ESP32-S3
-• ADS1115
-• MQTT
-• RS485 / Modbus RTU
-• Home Assistant
-• KiCad
-
-Aktueller Status:
-Konzeptphase / Lernprojekt
-`,"../content/konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt.md":`---
-id: local-post-1779960950659
-title: 'Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT'
-category: Elektrotechnik
-image_url: /my-electronics-blog/images/posts/Schaltnetzteil-main.webp
-image_gallery: []
-excerpt: Geplantes Lernprojekt zur Überwachung von Spannungs-, Strom- und Temperaturwerten
-  eines DC-Schaltnetzteils mit ESP32 und MQTT-Kommunikation.
-tags:
-- MQTT
-- Schaltnetzteil
-read_time: 5 Min.
-published: true
-created_at: '2026-05-28T09:35:50.659Z'
-external_link: ''
-project_status: idea
-sort_order: 100
-slug: konzeptprojekt-uberwachung-eines-dc-schaltnetzteils-mit-esp32-und-mqtt
----
-
-# Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT
-
-Geplantes Lernprojekt zur Überwachung von Spannungs-, Strom- und Temperaturwerten eines DC-Schaltnetzteils mit ESP32 und MQTT-Kommunikation.
-
-Dieses Projekt befindet sich aktuell in der Konzept- und Lernphase.
-
-Geplant ist die Entwicklung eines einfachen Überwachungssystems für DC-Schaltnetzteile auf Basis eines ESP32-Mikrocontrollers.
-
-Ziel des Projekts ist die Erfassung und Visualisierung von Spannungs-, Strom- und Temperaturwerten über WLAN und MQTT.
-
-Vorgesehene Hardware:
-- ESP32 Dev Board
-- Stromsensor (ACS712 oder INA219)
-- Temperatursensor
-- OLED Display
-- WLAN- und MQTT-Kommunikation
-
-Geplante Funktionen:
-- Spannungs- und Stromüberwachung
-- Temperaturüberwachung
-- MQTT-Datenübertragung
-- Dashboard-Visualisierung
-- Einfache Status- und Fehleranzeige
-
-Das Projekt dient zur Vertiefung meiner Kenntnisse im Bereich Embedded Systems, Sensorik und industrieller Energieüberwachung.
-
-Aktueller Status:
-Konzeptprojekt / in Planung
-`,"../content/personal-way.md":`---
-type: personal_way
-language: de
-title: Nguyen Nhan Do - Technik lernen. Erfahrung sammeln. Mich weiterentwickeln.
-image_1: /my-electronics-blog/images/about-1.webp
-image_2: /my-electronics-blog/images/about-2.webp
----
-
-Ich bin 2013 nach Deutschland gekommen – nicht, weil mein Leben in Vietnam schlecht war, sondern weil ich herausfinden wollte, wie weit ich mich persönlich und beruflich entwickeln kann, wenn ich meine Komfortzone verlasse und in einem völlig neuen Umfeld noch einmal von vorne beginne.
-
-Die ersten Jahre in Deutschland waren für mich vor allem eine Zeit des Ankommens, Lernens und Anpassens. Neben Sprachkursen habe ich in verschiedenen Bereichen gearbeitet – unter anderem in der Gastronomie, im Management und später auch in der Selbstständigkeit.
-
-Nach mehreren Jahren mit unterschiedlichen beruflichen Erfahrungen habe ich mich bewusst entschieden, wieder stärker in die technische Richtung zurückzukehren und mich langfristig im Bereich Elektronik, Messtechnik und Automatisierung weiterzuentwickeln.
-
-In den vergangenen Jahren konnte ich praktische Erfahrungen in der Kalibrierung, Fehlersuche, Prüfung und Entwicklung elektronischer Systeme sammeln und gleichzeitig mein technisches Wissen kontinuierlich erweitern.
-
-Darüber hinaus habe ich Weiterbildungen in SPS-Programmierung, C++/Qt, AutoCAD und EPLAN absolviert, um meine Kenntnisse gezielt auszubauen und neue technische Bereiche besser zu verstehen.
-
-Dieser Blog dient vor allem dazu, meine technischen Projekte, Erfahrungen und Lernprozesse zu dokumentieren. Hier halte ich Wissen fest, sammle Ideen und dokumentiere meine fachliche Entwicklung im Laufe der Zeit.
-
-Alle Inhalte basieren auf persönlichen Projekten, eigenständigem Lernen und öffentlich zugänglichem Wissen. Vertrauliche Informationen, interne Unterlagen oder Projekte von aktuellen bzw. ehemaligen Arbeitgebern werden selbstverständlich nicht veröffentlicht.
-`,"../content/plc-programmierung-einer-industriellen-tauchanlage.md":`---
-id: demo-3
-title: PLC-Programmierung einer industriellen Tauchanlage
-category: SPS-Programmierung
-image_url: /my-electronics-blog/images/posts/Tauchanlage-main.webp
-image_gallery:
-- /my-electronics-blog/images/posts/Tauchanlage-1.webp
-- /my-electronics-blog/images/posts/Tauchanlage-2.webp
-excerpt: Automatisierte Tauchanlage mit SPS-Steuerung. Automatischer Transport und
-  Tauchprozess mit Siemens S7-300. Hand- und Automatikbetrieb im TIA Portal realisiert.
-tags:
-- SPS
-- S7300
-- TiaPortal
-read_time: 5 Min.
-published: true
-created_at: '2026-04-29T12:00:00Z'
-external_link: https://drive.google.com/drive/folders/1WgBLk6R1F-_J_oisAxwNgQyFdcKVzb-m
-project_status: done
-sort_order: 50
-slug: plc-programmierung-einer-industriellen-tauchanlage
----
-
-# PLC-Programmierung einer industriellen Tauchanlage
-
-Automatisierte Tauchanlage mit Siemens S7-300
-
-Dieses Projekt umfasst die Entwicklung und Programmierung einer automatisierten Tauchanlage zur Steuerung eines industriellen Transport- und Tauchprozesses.
-Die Anlage ermöglicht das automatische Verfahren, Heben und Senken eines Werkstückkorbs zwischen zwei Tauchbädern unter Berücksichtigung definierter Sicherheits- und Bewegungsbedingungen.
-
-Die Steuerung wurde mit einer Siemens S7-300 CPU im TIA Portal realisiert.
-Das Projekt beinhaltet sowohl einen Handbetrieb zur manuellen Steuerung der Achsen als auch einen vollautomatischen Ablauf mit sequenzieller Prozesssteuerung.
-
-Im Automatikbetrieb fährt der Korb selbstständig zu den einzelnen Tauchstationen, führt definierte Tauch- und Abtropfzeiten aus und kehrt anschließend in die Ausgangsposition zurück.
-Zusätzlich wurden Endlagensensoren, Sicherheitsabfragen, Statusanzeigen, Motorsteuerungen sowie eine Werkstückzählung mit Zeitstempel-Historie implementiert.
-
-Die Softwarestruktur besteht aus mehreren Funktionsbausteinen für Betriebsarten, Ausgangssteuerung, Ablaufsteuerung, Teilehistorie und Diagnosefunktionen.
-Zur Verbesserung der Übersichtlichkeit wurden symbolische Variablen, Datenbausteine sowie strukturierte Datentypen verwendet.
-
-Das Projekt demonstriert praxisnah die Umsetzung industrieller Automatisierungstechnik mit SPS, Sensorik, Aktorik und Ablaufsteuerung im Siemens TIA Portal.
-
-**Zum Projekte klicken, um die vollständige Dokumentation und Projektdateien im Detail anzusehen.**
 `,"../content/site-settings.md":`---
 type: site_settings
 background_image: /my-electronics-blog/images/background.webp
 ---
-`,"../content/technisches-portfolio-elektronik-blog.md":`---
-id: technisches-portfolio-elektronik-blog
-slug: technisches-portfolio-elektronik-blog
-title: Technisches Portfolio & Elektronik-Blog
-category: Softwareentwicklung
-image_url: /my-electronics-blog/images/posts/Portfolio-Blog-main.webp
-image_gallery:
-[]
-excerpt: Entwicklung einer modernen persönlichen Portfolio- und Blog-Plattform zur Dokumentation technischer Projekte, Elektronikexperimente, Embedded-Systeme, Automatisierungstechnik und beruflicher Weiterentwicklung.
-tags:
-- React
-- JavaScript
-- Portfolio
-- Blog
-- Embedded Systems
-- Elektronik
-- Webentwicklung
-read_time: 5 Min.
-published: true
-created_at: '2026-05-28T09:30:47.159Z'
-external_link: https://github.com/nguyennhando/my-electronics-blog
-project_status: done
-sort_order: 80
----
-
-# Technisches Portfolio & Elektronik-Blog
-
-## Projektübersicht
-
-Diese Website wurde vollständig selbst entwickelt, um technische Projekte, Elektronikarbeiten, Lernfortschritte und berufliche Erfahrungen zentral zu dokumentieren.
-
-Die Plattform dient als persönliches Portfolio sowie als technische Wissensdatenbank für Projekte aus den Bereichen:
-
-- Elektronik
-- Embedded Systems
-- IoT
-- Automatisierungstechnik
-- Softwareentwicklung
-- Messtechnik
-- Technische Dokumentation
-
----
-
-## Verwendete Technologien
-
-### Frontend
-
-- React
-- JavaScript
-- Framer Motion
-- React Markdown
-- Tailwind CSS
-
-### UI-Komponenten
-
-- Lucide React Icons
-- Responsive Layout
-- Animationen
-- Lightbox Galerie
-- Markdown Editor
-
----
-
-## Hauptfunktionen
-
-### Blog-System
-
-- Technische Projektberichte
-- Markdown-basierte Beiträge
-- Kategorien und Tags
-- Suchfunktion
-- Pagination
-
-### Portfolio-Bereich
-
-- Projektübersicht
-- Statusanzeige
-- Bildergalerie
-- Externe Projektlinks
-
-### Eigener Markdown Editor
-
-Die Website enthält einen integrierten Editor zur Erstellung neuer Beiträge.
-
-Funktionen:
-
-- Live Vorschau
-- Automatische Slug-Erzeugung
-- Markdown Export
-- Direkte Speicherung von Beiträgen
-- Verwaltung von Projekten
-
----
-
-## Benutzeroberfläche
-
-Besonderer Fokus wurde auf ein modernes technisches Design gelegt:
-
-- Cyberpunk-inspiriertes Farbschema
-- Dunkles UI Design
-- Responsive Darstellung
-- Flüssige Animationen
-- Mobile Optimierung
-
----
-
-## Ziel des Projekts
-
-Das Ziel dieser Website ist die professionelle Präsentation technischer Fähigkeiten sowie die langfristige Dokumentation eigener Projekte und Lernfortschritte.
-
-Die Plattform wird kontinuierlich erweitert und dient gleichzeitig als praktisches Webentwicklungsprojekt sowie als persönliche technische Wissenssammlung.
-
----
-
-## Ergebnis
-
-Mit diesem Projekt entstand eine vollständig eigenentwickelte Portfolio- und Blog-Plattform, die technische Dokumentation, Projektmanagement und moderne Webentwicklung miteinander kombiniert.
 `,"../content/vi/3d-flaschenzug-in-autocad.md":`---
 translation_id: local-post-1779960596593
 language: vi
@@ -2279,7 +2409,7 @@ transparency_title: Thông tin dự án & Minh bạch
 transparency_text: Các hình ảnh về phòng thí nghiệm, không gian làm việc kỹ thuật và thiết bị điện tử trên website này chỉ nhằm minh họa cho sở thích kỹ thuật và kinh nghiệm thực hành của tôi.
 transparency_strong: Chúng không thể hiện nơi làm việc thực tế, khu vực nội bộ hay môi trường làm việc thật của bất kỳ doanh nghiệp nào.
 feature_1_title: Điện tử & Hệ thống nhúng
-feature_1_text: Các dự án học tập cá nhân về vi điều khiển, cảm biến và phát triển gần phần cứng nhằm mở rộng kiến thức kỹ thuật qua thực hành.
+feature_1_text: Các dự án học tập cá nhân về vi điều khiển, cảm biến và phát triển phần cứng nhằm mở rộng kiến thức kỹ thuật qua thực hành.
 feature_2_title: Tự động hóa & Điều khiển
 feature_2_text: Các bài thực hành và dự án nhỏ để hiểu rõ hơn quy trình công nghiệp, kỹ thuật điều khiển và các quá trình kỹ thuật.
 feature_3_title: Học tập kỹ thuật
@@ -2846,136 +2976,6 @@ Khu vực này bổ sung cho danh sách dự án bằng các ghi chú học tậ
 ## Cấu trúc bài viết
 
 Bài viết được tổ chức để thông tin quan trọng luôn dễ tìm. Category, tag và chức năng tìm kiếm giúp nhanh chóng đi đến chủ đề phù hợp ngay cả khi thư viện ngày càng lớn.
-`,"../content/visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen.md":`---
-id: local-post-1779960317991
-title: Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens
-  WinCC
-category: SPS-Programmierung
-image_url: /my-electronics-blog/images/posts/Mischbehälter-main.webp
-image_gallery:
-- /my-electronics-blog/images/posts/Mischbehälter-1.webp
-- /my-electronics-blog/images/posts/Mischbehälter-2.webp
-- /my-electronics-blog/images/posts/Mischbehälter-3.webp
-excerpt: 'Dieses Projekt beschreibt die Entwicklung eines industriellen HMI-Systems
-  zur Überwachung und Steuerung eines Mischbehälters mit Siemens SIMATIC WinCC Runtime
-  Advanced.
-
-  Die Anwendung ermöglicht die Visualisierung von Sensoren, Ventilen, Motoren und
-  Temperaturwerten in Echtzeit sowie die Bedienung im Automatik- und Handbetrieb.
-  Ziel des Projekts ist eine benutzerfreundliche, sichere und effiziente Prozesssteuerung
-  für industrielle Mischprozesse.'
-tags:
-- SPS
-read_time: 5 Min.
-published: true
-created_at: '2026-05-28T09:25:17.991Z'
-external_link: https://drive.google.com/drive/folders/1Vrz5hK6aTVExshjDZIi92ecTgQaFo_kq
-project_status: done
-sort_order: 40
-slug: visualisierung-und-automatisierung-eines-industriellen-mischprozesses-mit-siemen
----
-
-# Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens WinCC
-
-Dieses Projekt umfasst die Entwicklung eines modernen HMI-Visualisierungssystems zur Überwachung und Steuerung eines industriellen Mischbehälters mit Siemens SIMATIC WinCC Runtime Advanced und einer Siemens SPS S7-1200/1500.
-
-Die Anwendung ermöglicht die Visualisierung von Sensoren, Ventilen, Motoren und Temperaturwerten in Echtzeit sowie die Bedienung im Automatik- und Handbetrieb. Ziel des Projekts ist eine benutzerfreundliche, sichere und effiziente Prozesssteuerung für industrielle Mischprozesse.
-
-Das System wurde entwickelt, um industrielle Mischprozesse effizient, sicher und benutzerfreundlich zu steuern. Über die HMI-Oberfläche können verschiedene Prozessparameter in Echtzeit überwacht und bedient werden. Dazu gehören unter anderem Motoren, Ventile, Sensoren, Temperaturanzeigen sowie automatische und manuelle Betriebsarten.
-
-Die Visualisierung ermöglicht dem Bediener eine klare Darstellung des gesamten Mischprozesses. Der aktuelle Anlagenstatus wird grafisch dargestellt, wodurch Materialfluss, Motoraktivitäten und Ventilstellungen jederzeit nachvollziehbar sind. Zusätzlich wurden Sicherheitsfunktionen wie Not-Halt, Statusmeldungen und Alarmanzeigen integriert, um einen sicheren Anlagenbetrieb zu gewährleisten.
-
-Im Automatikbetrieb erfolgt die Prozesssteuerung schrittweise über definierte Ablaufsequenzen. Dabei werden Sensorwerte verarbeitet und Aktoren automatisch angesteuert. Im Handbetrieb können einzelne Komponenten manuell getestet und gesteuert werden, was insbesondere bei Wartung und Inbetriebnahme wichtig ist.
-
-Das Projekt beinhaltet außerdem:
-
-* Echtzeit-Kommunikation zwischen SPS und HMI
-* Prozessvisualisierung und Anlagenüberwachung
-* Temperaturüberwachung und Statusanzeigen
-* Steuerung von Ventilen und Motoren
-* Automatik- und Handbetrieb
-* Fehler- und Alarmmanagement
-* Benutzerfreundliche Bedienoberfläche
-
-Ziel des Projekts ist die Entwicklung einer zuverlässigen und effizienten Lösung für industrielle Automatisierungsprozesse. Durch die Kombination aus Siemens SPS-Technologie und WinCC Runtime Advanced entsteht ein leistungsfähiges HMI-System zur Optimierung von Produktionsabläufen und zur Erhöhung der Betriebssicherheit.
-
-Klicken Sie auf die Schaltfläche „Zum Projekt“, um die vollständige Projektdokumentation und weitere Details zum HMI-System anzuzeigen.
-`,"../content/wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi.md":`---
-id: local-post-1779960469574
-title: WinCC Fischertechnikmodell – Automatik- und Handbetrieb mit HMI
-category: SPS-Programmierung
-image_url: /my-electronics-blog/images/posts/FischerTechnik-main.webp
-image_gallery:
-- /my-electronics-blog/images/posts/FischerTechnik-1.webp
-excerpt: Programmierung eines Fischertechnik-Pressenmodells mit Siemens CPU1512C,
-  ET200SP und TP700 Comfort Panel. Implementiert werden Automatikbetrieb, Handbetrieb,
-  Benutzerverwaltung, Rezepturverwaltung, Alarmmeldungen sowie eine vollständige HMI-Bedienoberfläche.
-tags:
-- WinCC
-- SPS
-- HMI
-read_time: 5 Min.
-published: true
-created_at: '2026-05-28T09:27:49.574Z'
-external_link: https://drive.google.com/drive/folders/1XwbZqMA_neR7FqreJCQsHW4ddtIEpOKi?usp=drive_link
-project_status: done
-sort_order: 60
-slug: wincc-fischertechnikmodell-automatik-und-handbetrieb-mit-hmi
----
-
-# WinCC Fischertechnikmodell – Automatik- und Handbetrieb mit HMI
-
-Entwicklung einer SPS- und HMI-Steuerung für das Fischertechnik-Pressenmodell mit Siemens CPU1512C, ET200SP und TP700 Comfort Panel.
-
-Programmierung eines Fischertechnik-Pressenmodells mit Siemens CPU1512C, ET200SP und TP700 Comfort Panel. Implementiert werden Automatikbetrieb, Handbetrieb, Benutzerverwaltung, Rezepturverwaltung, Alarmmeldungen sowie eine vollständige HMI-Bedienoberfläche.
-
-Implementiert werden:
-
-Automatikbetrieb
-Handbetrieb / Einrichtbetrieb
-Benutzerverwaltung
-Alarm- und Meldesystem
-Rezeptverwaltung
-HMI-Visualisierung über WinCC
-
-Die Kommunikation erfolgt über Profinet.
-Das System befindet sich aktuell noch in der Fertigstellung und Optimierung. ⚙️
-`,"../content/wissensbibliothek-technische-notizen-und-analysen.md":`---
-id: wissensbibliothek-technische-notizen-und-analysen
-slug: wissensbibliothek-technische-notizen-und-analysen
-content_type: knowledge
-title: Wissensbibliothek: Technische Notizen und Analysen
-category: Grundlagen
-image_url: /my-electronics-blog/images/posts/DC-Netzteil-main.webp
-image_gallery: []
-excerpt: Ein Einstieg in meine Sammlung aus Lernmaterialien, Schaltungsanalysen und technischen Untersuchungen.
-tags:
-- Elektronik
-- Lernen
-- Analyse
-read_time: 3 Min.
-published: true
-created_at: '2026-05-31T12:00:00.000Z'
-external_link: ''
-project_status: done
-sort_order: 1
----
-
-# Technisches Wissen strukturiert festhalten
-
-Dieser Bereich ergänzt die Projektübersicht um ausführlichere Lernnotizen, technische Analysen und eigene Untersuchungen. Während die Projektbeiträge konkrete Umsetzungen dokumentieren, stehen hier einzelne Themen und Zusammenhänge im Mittelpunkt.
-
-## Geplante Inhalte
-
-- Analysen elektronischer Schaltungen
-- Grundlagen zu Bauteilen und Messverfahren
-- Lernunterlagen zu Embedded Systems und Automatisierung
-- Notizen aus eigenen Versuchen und Recherchen
-- Weiterführende externe Quellen
-
-## Aufbau der Beiträge
-
-Die Beiträge sollen so strukturiert sein, dass wichtige Informationen schnell auffindbar bleiben. Kategorien, Schlagwörter und die Suchfunktion helfen dabei, auch bei einer größeren Sammlung gezielt zum passenden Thema zu gelangen.
 `}),f_=e=>Array.isArray(e)?e:e?String(e).split(`,`).map(e=>e.trim()).filter(Boolean):[],p_=e=>{let t=String(e||``).trim();return t===`true`?!0:t===`false`?!1:t===`null`?null:t===``?``:t.replace(/^["']|["']$/g,``)},m_=e=>{let t=e.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);if(!t)return{data:{},content:e};let n={},r=t[1].split(/\r?\n/),i=null;for(let e of r){if(!e.trim())continue;let t=e.match(/^\s*-\s+(.*)$/);if(t&&i){Array.isArray(n[i])||(n[i]=[]),n[i].push(p_(t[1]));continue}if(/^\s+/.test(e)&&i&&!Array.isArray(n[i])){n[i]=`${n[i]||``} ${p_(e)}`.trim();continue}let r=e.indexOf(`:`);if(r===-1)continue;let a=e.slice(0,r).trim(),o=e.slice(r+1).trim();i=a,o===``?n[a]=``:o===`[]`?n[a]=[]:n[a]=p_(o)}return{data:n,content:t[2].trim()}},h_=Object.entries(d_).map(([e,t])=>{let{data:n,content:r}=m_(t),i=n.slug||e.split(`/`).pop().replace(/\.md$/,``),a=e.match(/\/content\/(de|en|vi)\//)?.[1],o=n.language||a||`de`,s=n.translation_id||n.id||i;return{...n,id:s,slug:i,language:o,translation_id:s,source_path:e.replace(`../content/`,``),content:r,image_gallery:f_(n.image_gallery),tags:f_(n.tags),published:n.published!==!1,external_link:n.external_link||null,created_at:n.created_at||new Date().toISOString(),sort_order:Number.isFinite(Number(n.sort_order))?Number(n.sort_order):100}}),g_=h_.filter(e=>e.type===`personal_way`),__=g_.find(e=>e.language===`de`)||g_[0],v_=h_.filter(e=>e.type===`home_content`),y_=h_.find(e=>e.type===`site_settings`),b_=h_.find(e=>e.type===`gallery_settings`),x_=(e,t=`de`)=>e.find(e=>e.language===t)||e.find(e=>e.language===`de`)||e[0],S_=(e=`de`)=>x_(g_,e),C_=(e=`de`)=>x_(v_,e),w_=(()=>{if(!b_?.content)return[];try{let e=JSON.parse(b_.content);return Array.isArray(e)?e.filter(e=>typeof e==`string`&&e.trim()):[]}catch{return[]}})(),T_=h_.filter(e=>![`personal_way`,`home_content`,`site_settings`,`gallery_settings`].includes(e.type)).sort((e,t)=>{let n=Number.isFinite(Number(e.sort_order))?Number(e.sort_order):100,r=Number.isFinite(Number(t.sort_order))?Number(t.sort_order):100;return n===r?new Date(t.created_at||0)-new Date(e.created_at||0):n-r}),E_=(e,t)=>[...new Set(e.filter(e=>e.translation_id===t).map(e=>e.language))],D_=(e=`de`)=>{let t=T_.filter(e=>e.published!==!1);return[...new Set(t.map(e=>e.translation_id))].map(n=>{let r=t.filter(e=>e.translation_id===n),i=r.find(t=>t.language===e)||r.find(e=>e.language===`de`)||r[0];return{...i,id:n,available_languages:E_(t,n),requested_language:e,is_translation_fallback:i.language!==e}}).sort((e,t)=>{let n=Number.isFinite(Number(e.sort_order))?Number(e.sort_order):100,r=Number.isFinite(Number(t.sort_order))?Number(t.sort_order):100;return n===r?new Date(t.created_at||0)-new Date(e.created_at||0):n-r})};D_(`de`).filter(e=>e.content_type===`knowledge`),D_(`de`).filter(e=>e.content_type!==`knowledge`);var O_=(...e)=>e.filter((e,t,n)=>!!e&&e.trim()!==``&&n.indexOf(e)===t).join(` `).trim(),k_=e=>e.replace(/([a-z0-9])([A-Z])/g,`$1-$2`).toLowerCase(),A_=e=>e.replace(/^([A-Z])|[\s-_]+(\w)/g,(e,t,n)=>n?n.toUpperCase():t.toLowerCase()),j_=e=>{let t=A_(e);return t.charAt(0).toUpperCase()+t.slice(1)},M_={xmlns:`http://www.w3.org/2000/svg`,width:24,height:24,viewBox:`0 0 24 24`,fill:`none`,stroke:`currentColor`,strokeWidth:2,strokeLinecap:`round`,strokeLinejoin:`round`},N_=e=>{for(let t in e)if(t.startsWith(`aria-`)||t===`role`||t===`title`)return!0;return!1},P_=(0,C.createContext)({}),F_=()=>(0,C.useContext)(P_),I_=(0,C.forwardRef)(({color:e,size:t,strokeWidth:n,absoluteStrokeWidth:r,className:i=``,children:a,iconNode:o,...s},c)=>{let{size:l=24,strokeWidth:u=2,absoluteStrokeWidth:d=!1,color:f=`currentColor`,className:p=``}=F_()??{},m=r??d?Number(n??u)*24/Number(t??l):n??u;return(0,C.createElement)(`svg`,{ref:c,...M_,width:t??l??M_.width,height:t??l??M_.height,stroke:e??f,strokeWidth:m,className:O_(`lucide`,p,i),...!a&&!N_(s)&&{"aria-hidden":`true`},...s},[...o.map(([e,t])=>(0,C.createElement)(e,t)),...Array.isArray(a)?a:[a]])}),L_=(e,t)=>{let n=(0,C.forwardRef)(({className:n,...r},i)=>(0,C.createElement)(I_,{ref:i,iconNode:t,className:O_(`lucide-${k_(j_(e))}`,`lucide-${e}`,n),...r}));return n.displayName=j_(e),n},R_=L_(`arrow-left`,[[`path`,{d:`m12 19-7-7 7-7`,key:`1l729n`}],[`path`,{d:`M19 12H5`,key:`x3x0zl`}]]),z_=L_(`arrow-right`,[[`path`,{d:`M5 12h14`,key:`1ays0h`}],[`path`,{d:`m12 5 7 7-7 7`,key:`xquz4c`}]]),B_=L_(`book-open`,[[`path`,{d:`M12 7v14`,key:`1akyts`}],[`path`,{d:`M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z`,key:`ruj8y`}]]),V_=L_(`bot`,[[`path`,{d:`M12 8V4H8`,key:`hb8ula`}],[`rect`,{width:`16`,height:`12`,x:`4`,y:`8`,rx:`2`,key:`enze0r`}],[`path`,{d:`M2 14h2`,key:`vft8re`}],[`path`,{d:`M20 14h2`,key:`4cs60a`}],[`path`,{d:`M15 13v2`,key:`1xurst`}],[`path`,{d:`M9 13v2`,key:`rq6x2g`}]]),H_=L_(`calendar-days`,[[`path`,{d:`M8 2v4`,key:`1cmpym`}],[`path`,{d:`M16 2v4`,key:`4m81vk`}],[`rect`,{width:`18`,height:`18`,x:`3`,y:`4`,rx:`2`,key:`1hopcy`}],[`path`,{d:`M3 10h18`,key:`8toen8`}],[`path`,{d:`M8 14h.01`,key:`6423bh`}],[`path`,{d:`M12 14h.01`,key:`1etili`}],[`path`,{d:`M16 14h.01`,key:`1gbofw`}],[`path`,{d:`M8 18h.01`,key:`lrp35t`}],[`path`,{d:`M12 18h.01`,key:`mhygvu`}],[`path`,{d:`M16 18h.01`,key:`kzsmim`}]]),U_=L_(`chevron-left`,[[`path`,{d:`m15 18-6-6 6-6`,key:`1wnfg3`}]]),W_=L_(`chevron-right`,[[`path`,{d:`m9 18 6-6-6-6`,key:`mthhwq`}]]),G_=L_(`circuit-board`,[[`rect`,{width:`18`,height:`18`,x:`3`,y:`3`,rx:`2`,key:`afitv7`}],[`path`,{d:`M11 9h4a2 2 0 0 0 2-2V3`,key:`1ve2rv`}],[`circle`,{cx:`9`,cy:`9`,r:`2`,key:`af1f0g`}],[`path`,{d:`M7 21v-4a2 2 0 0 1 2-2h4`,key:`1fwkro`}],[`circle`,{cx:`15`,cy:`15`,r:`2`,key:`3i40o0`}]]),K_=L_(`clock`,[[`circle`,{cx:`12`,cy:`12`,r:`10`,key:`1mglay`}],[`path`,{d:`M12 6v6l4 2`,key:`mmk7yg`}]]),q_=L_(`code-xml`,[[`path`,{d:`m18 16 4-4-4-4`,key:`1inbqp`}],[`path`,{d:`m6 8-4 4 4 4`,key:`15zrgr`}],[`path`,{d:`m14.5 4-5 16`,key:`e7oirm`}]]),J_=L_(`cpu`,[[`path`,{d:`M12 20v2`,key:`1lh1kg`}],[`path`,{d:`M12 2v2`,key:`tus03m`}],[`path`,{d:`M17 20v2`,key:`1rnc9c`}],[`path`,{d:`M17 2v2`,key:`11trls`}],[`path`,{d:`M2 12h2`,key:`1t8f8n`}],[`path`,{d:`M2 17h2`,key:`7oei6x`}],[`path`,{d:`M2 7h2`,key:`asdhe0`}],[`path`,{d:`M20 12h2`,key:`1q8mjw`}],[`path`,{d:`M20 17h2`,key:`1fpfkl`}],[`path`,{d:`M20 7h2`,key:`1o8tra`}],[`path`,{d:`M7 20v2`,key:`4gnj0m`}],[`path`,{d:`M7 2v2`,key:`1i4yhu`}],[`rect`,{x:`4`,y:`4`,width:`16`,height:`16`,rx:`2`,key:`1vbyd7`}],[`rect`,{x:`8`,y:`8`,width:`8`,height:`8`,rx:`1`,key:`z9xiuo`}]]),Y_=L_(`external-link`,[[`path`,{d:`M15 3h6v6`,key:`1q9fwt`}],[`path`,{d:`M10 14 21 3`,key:`gplh6r`}],[`path`,{d:`M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6`,key:`a6xqqp`}]]),X_=L_(`flask-conical`,[[`path`,{d:`M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2`,key:`18mbvz`}],[`path`,{d:`M6.453 15h11.094`,key:`3shlmq`}],[`path`,{d:`M8.5 2h7`,key:`csnxdl`}]]),Z_=L_(`gauge`,[[`path`,{d:`m12 14 4-4`,key:`9kzdfg`}],[`path`,{d:`M3.34 19a10 10 0 1 1 17.32 0`,key:`19p75a`}]]),Q_=L_(`globe`,[[`circle`,{cx:`12`,cy:`12`,r:`10`,key:`1mglay`}],[`path`,{d:`M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20`,key:`13o1zl`}],[`path`,{d:`M2 12h20`,key:`9i4pu4`}]]),$_=L_(`graduation-cap`,[[`path`,{d:`M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z`,key:`j76jl0`}],[`path`,{d:`M22 10v6`,key:`1lu8f3`}],[`path`,{d:`M6 12.5V16a6 3 0 0 0 12 0v-3.5`,key:`1r8lef`}]]),ev=L_(`library`,[[`path`,{d:`m16 6 4 14`,key:`ji33uf`}],[`path`,{d:`M12 6v14`,key:`1n7gus`}],[`path`,{d:`M8 8v12`,key:`1gg7y9`}],[`path`,{d:`M4 4v16`,key:`6qkkli`}]]),tv=L_(`menu`,[[`path`,{d:`M4 5h16`,key:`1tepv9`}],[`path`,{d:`M4 12h16`,key:`1lakjw`}],[`path`,{d:`M4 19h16`,key:`1djgab`}]]),nv=L_(`monitor-smartphone`,[[`path`,{d:`M18 8V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h8`,key:`10dyio`}],[`path`,{d:`M10 19v-3.96 3.15`,key:`1irgej`}],[`path`,{d:`M7 19h5`,key:`qswx4l`}],[`rect`,{width:`6`,height:`10`,x:`16`,y:`12`,rx:`2`,key:`1egngj`}]]),rv=L_(`radio-tower`,[[`path`,{d:`M4.9 16.1C1 12.2 1 5.8 4.9 1.9`,key:`s0qx1y`}],[`path`,{d:`M7.8 4.7a6.14 6.14 0 0 0-.8 7.5`,key:`1idnkw`}],[`circle`,{cx:`12`,cy:`9`,r:`2`,key:`1092wv`}],[`path`,{d:`M16.2 4.8c2 2 2.26 5.11.8 7.47`,key:`ojru2q`}],[`path`,{d:`M19.1 1.9a9.96 9.96 0 0 1 0 14.1`,key:`rhi7fg`}],[`path`,{d:`M9.5 18h5`,key:`mfy3pd`}],[`path`,{d:`m8 22 4-11 4 11`,key:`25yftu`}]]),iv=L_(`search`,[[`path`,{d:`m21 21-4.34-4.34`,key:`14j7rj`}],[`circle`,{cx:`11`,cy:`11`,r:`8`,key:`4ej97u`}]]),av=L_(`shield-check`,[[`path`,{d:`M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z`,key:`oel41y`}],[`path`,{d:`m9 12 2 2 4-4`,key:`dzmm74`}]]),ov=L_(`triangle-alert`,[[`path`,{d:`m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3`,key:`wmoenq`}],[`path`,{d:`M12 9v4`,key:`juzpu7`}],[`path`,{d:`M12 17h.01`,key:`p32p05`}]]),sv=L_(`workflow`,[[`rect`,{width:`8`,height:`8`,x:`3`,y:`3`,rx:`2`,key:`by2w9f`}],[`path`,{d:`M7 11v4a2 2 0 0 0 2 2h4`,key:`xkn7yn`}],[`rect`,{width:`8`,height:`8`,x:`13`,y:`13`,rx:`2`,key:`1cgmvn`}]]),cv=L_(`wrench`,[[`path`,{d:`M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z`,key:`1ngwbx`}]]),lv=L_(`x`,[[`path`,{d:`M18 6 6 18`,key:`1bl5f8`}],[`path`,{d:`m6 6 12 12`,key:`d8bk6v`}]]),uv=5e3,dv=[`de`,`en`,`vi`],fv={de:{tagline:`Technik · Entwicklung · Lernen`,gallery:`Galerie`,contact:`Kontakt`,knowledge:`Wissen & Forschung`,projects:`Projekte`,discover:`Projekte entdecken`,openProject:`Projekt öffnen`,readPost:`Beitrag lesen`,search:`Suchen...`,all:`Alle`,noPosts:`Keine Beiträge gefunden.`,technicalBlog:`Technik Blog`,blogTitle:`Elektronikprojekte & Dokumentationen`,projectImages:`Projektbilder`,enlarge:`Vergrößern`,image:`Bild`,previous:`← Vorherige`,next:`Nächste →`,page:`Seite`,of:`von`,location:`Standort`,focus:`Schwerpunkt`,knowledgeLibrary:`Wissensbibliothek`,knowledgeTitle:`Wissen, Lernmaterialien & Forschung`,knowledgeIntro:`Technische Notizen, Schaltungsanalysen, Lernunterlagen und eigene Untersuchungen - strukturiert gesammelt und gut durchsuchbar.`,knowledgeNotice:`Hinweis zur Wissensbibliothek`,knowledgeSearch:`Analyse, Bauteil oder Thema suchen...`,allTopics:`Alle Themen`,selectedPost:`Ausgewählter Beitrag`,archive:`Archiv`,morePosts:`Weitere Beiträge`,posts:`Beiträge`,backKnowledge:`Zurück zur Wissensbibliothek`,externalSource:`Externe Quelle öffnen`,backBlog:`Zurück zum Blog`,heroTitle:`Technik. Dokumentation. Entwicklung.`,heroText:`Diese Website habe ich selbst entwickelt, um technische Projekte, Lernfortschritte und praktische Erfahrungen im Bereich Elektronik, Embedded Systems, Messtechnik und technischer Softwareentwicklung zu dokumentieren.`,transparency:`Transparenz`,transparencyTitle:`Projektinformationen & Transparenz`,transparencyText:`Die auf dieser Website gezeigten Fotos von Laborumgebungen, technischen Arbeitsplätzen und elektronischen Geräten dienen ausschließlich der Veranschaulichung meiner technischen Interessen und praktischen Erfahrungen.`,transparencyStrong:`Sie zeigen weder meinen tatsächlichen Arbeitsplatz noch interne Bereiche oder reale Arbeitsumgebungen eines Unternehmens.`,personalWay:`Persönlicher Weg`,importantNotice:`Wichtiger Hinweis`,importantTitle:`Wichtiger Hinweis zu meinen Projekten`,warningOne:`Projekte mit der Kennzeichnung „Konzept“ befinden sich noch in der Ideen- bzw. Konzeptphase und wurden bisher noch nicht praktisch umgesetzt.`,warningTwo:`Alle anderen Projekte können über „Beitrag lesen“ geöffnet werden. Am Ende der jeweiligen Projektseite befindet sich die Schaltfläche „Zum Projekt“ mit projektbezogenen Dateien.`,collaborationTitle:`Zusammenarbeit an modernen Elektronikprojekten.`,collaborationText:`Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder individuelle Entwicklungen.`,privacy:`Datenschutz`,legalNotice:`Impressum`,back:`Zurück`,country:`Deutschland`,knowledgeNoticeParagraphs:[`Viele Grundlagen und technische Informationen in diesem Bereich sind bereits in Fachbüchern, Dokumentationen oder anderen Quellen verfügbar.`,`Der Schwerpunkt dieser Wissensbibliothek liegt daher nicht nur auf der Sammlung von Lernmaterialien. Ich möchte vor allem Themen genauer analysieren, die aus meiner Sicht an anderen Stellen nicht immer verständlich oder ausreichend nachvollziehbar erklärt werden.`,`Die Beiträge spiegeln meinen persönlichen Lernprozess und mein aktuelles technisches Verständnis wider. Sie sollen Zusammenhänge Schritt für Schritt greifbarer machen und zugleich als Grundlage für weitere Untersuchungen dienen.`],noKnowledge:`Noch keine passenden Beiträge`,noKnowledgeText:`Neue Lernnotizen und Analysen werden hier nach und nach ergänzt.`,footer:`© 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.`,conceptProject:`Konzeptprojekt – noch nicht umgesetzt`,noProjectLink:`Kein Projektlink hinterlegt`,heroBadge:`Elektrokonstruktion · Prüftechnik · Software`,docs:`Dokumente`,sourceCode:`Quellcode`,focusValue:`IoT · Automatisierung`,tools:`Werkzeuge`,toolsValue:`SPS · AutoCAD · EPLAN · C++ · Qt`,translationFallbackShort:`Deutsch`,translationFallback:`Dieser Beitrag ist noch nicht in der gewählten Sprache verfügbar. Die deutsche Version wird angezeigt.`},en:{tagline:`Technology · Development · Learning`,gallery:`Gallery`,contact:`Contact`,knowledge:`Knowledge & Research`,projects:`Projects`,discover:`Explore projects`,openProject:`Open project`,readPost:`Read article`,search:`Search...`,all:`All`,noPosts:`No articles found.`,technicalBlog:`Technical Blog`,blogTitle:`Electronics Projects & Documentation`,projectImages:`Gallery Images`,enlarge:`Enlarge`,image:`Image`,previous:`← Previous`,next:`Next →`,page:`Page`,of:`of`,location:`Location`,focus:`Focus`,knowledgeLibrary:`Knowledge Library`,knowledgeTitle:`Knowledge, Learning Materials & Research`,knowledgeIntro:`Technical notes, circuit analyses, learning materials and personal research - structured and easy to search.`,knowledgeNotice:`About this knowledge library`,knowledgeSearch:`Search for an analysis, component or topic...`,allTopics:`All topics`,selectedPost:`Featured article`,archive:`Archive`,morePosts:`More articles`,posts:`articles`,backKnowledge:`Back to the knowledge library`,externalSource:`Open external source`,backBlog:`Back to the blog`,heroTitle:`Technology. Documentation. Development.`,heroText:`I built this website to document technical projects, learning progress and practical experience in electronics, embedded systems, measurement technology and technical software development.`,transparency:`Transparency`,transparencyTitle:`Project Information & Transparency`,transparencyText:`The photos of laboratory environments, technical workspaces and electronic devices shown on this website are solely intended to illustrate my technical interests and practical experience.`,transparencyStrong:`They do not show my actual workplace, internal areas or real working environments of any company.`,personalWay:`Personal Journey`,importantNotice:`Important Notice`,importantTitle:`Important notice about my projects`,warningOne:`Projects marked as “Concept” are still in the idea or concept phase and have not yet been implemented in practice.`,warningTwo:`All other projects can be opened via “Read article”. At the end of each project page, the “Open project” button provides project-related files.`,collaborationTitle:`Collaboration on modern electronics projects.`,collaborationText:`Are you looking for support with embedded systems, sensors, robotics or industrial automation? Contact me for technical collaboration or individual developments.`,privacy:`Privacy`,legalNotice:`Legal Notice`,back:`Back`,country:`Germany`,knowledgeNoticeParagraphs:[`Many fundamentals and technical details in this section are already available in textbooks, documentation or other sources.`,`The focus of this knowledge library is therefore not merely collecting learning material. I especially want to analyse topics that, from my perspective, are not always explained clearly or comprehensibly elsewhere.`,`The articles reflect my personal learning process and my current technical understanding. They aim to make connections easier to grasp step by step and provide a basis for further investigation.`],noKnowledge:`No matching articles yet`,noKnowledgeText:`New learning notes and analyses will gradually be added here.`,footer:`© 2026 ElektronikLab — Modern electronics and automation projects.`,conceptProject:`Concept project – not yet implemented`,noProjectLink:`No project link provided`,heroBadge:`Electrical Design · Testing · Software`,docs:`Documents`,sourceCode:`Source Code`,focusValue:`IoT · Automation`,tools:`Tools`,toolsValue:`PLC · AutoCAD · EPLAN · C++ · Qt`,translationFallbackShort:`German version`,translationFallback:`This article is not yet available in the selected language. The German version is shown.`},vi:{tagline:`Kỹ thuật · Phát triển · Học hỏi`,gallery:`Thư viện ảnh`,contact:`Liên hệ`,knowledge:`Kiến thức & Nghiên cứu`,projects:`Dự án`,discover:`Khám phá dự án`,openProject:`Mở dự án`,readPost:`Đọc bài viết`,search:`Tìm kiếm...`,all:`Tất cả`,noPosts:`Không tìm thấy bài viết.`,technicalBlog:`Blog Kỹ thuật`,blogTitle:`Dự án Điện tử & Tài liệu`,projectImages:`Hình ảnh`,enlarge:`Phóng to`,image:`Ảnh`,previous:`← Trước`,next:`Tiếp →`,page:`Trang`,of:`trên`,location:`Vị trí`,focus:`Trọng tâm`,knowledgeLibrary:`Thư viện Kiến thức`,knowledgeTitle:`Kiến thức, Tài liệu học tập & Nghiên cứu`,knowledgeIntro:`Ghi chú kỹ thuật, phân tích mạch, tài liệu học tập và nghiên cứu cá nhân - được sắp xếp rõ ràng và dễ tìm kiếm.`,knowledgeNotice:`Lưu ý về thư viện kiến thức`,knowledgeSearch:`Tìm phân tích, linh kiện hoặc chủ đề...`,allTopics:`Tất cả chủ đề`,selectedPost:`Bài viết nổi bật`,archive:`Lưu trữ`,morePosts:`Các bài viết khác`,posts:`bài viết`,backKnowledge:`Quay lại thư viện kiến thức`,externalSource:`Mở nguồn bên ngoài`,backBlog:`Quay lại blog`,heroTitle:`Kỹ thuật. Tài liệu. Phát triển.`,heroText:`Tôi tự xây dựng website này để ghi lại các dự án kỹ thuật, quá trình học tập và kinh nghiệm thực tế trong lĩnh vực điện tử, hệ thống nhúng, đo lường và phát triển phần mềm kỹ thuật.`,transparency:`Minh bạch`,transparencyTitle:`Thông tin dự án & Minh bạch`,transparencyText:`Các hình ảnh về phòng thí nghiệm, không gian làm việc kỹ thuật và thiết bị điện tử trên website này chỉ nhằm minh họa cho sở thích kỹ thuật và kinh nghiệm thực hành của tôi.`,transparencyStrong:`Chúng không thể hiện nơi làm việc thực tế, khu vực nội bộ hay môi trường làm việc thật của bất kỳ doanh nghiệp nào.`,personalWay:`Hành trình cá nhân`,importantNotice:`Lưu ý quan trọng`,importantTitle:`Lưu ý quan trọng về các dự án của tôi`,warningOne:`Các dự án có nhãn “Ý tưởng” vẫn đang ở giai đoạn ý tưởng hoặc khái niệm và chưa được triển khai thực tế.`,warningTwo:`Các dự án khác có thể được mở bằng nút “Đọc bài viết”. Cuối mỗi trang dự án có nút “Mở dự án” với các tệp liên quan.`,collaborationTitle:`Hợp tác trong các dự án điện tử hiện đại.`,collaborationText:`Bạn cần hỗ trợ về hệ thống nhúng, cảm biến, robot hoặc tự động hóa công nghiệp? Hãy liên hệ với tôi để hợp tác kỹ thuật hoặc phát triển giải pháp riêng.`,privacy:`Quyền riêng tư`,legalNotice:`Thông tin pháp lý`,back:`Quay lại`,country:`Đức`,knowledgeNoticeParagraphs:[`Nhiều kiến thức nền tảng và thông tin kỹ thuật trong khu vực này đã có trong sách chuyên ngành, tài liệu hoặc các nguồn khác.`,`Vì vậy, trọng tâm của thư viện kiến thức không chỉ là tập hợp tài liệu học tập. Tôi muốn phân tích kỹ hơn những chủ đề mà theo góc nhìn của mình chưa được giải thích thật sự rõ ràng hoặc dễ hiểu ở những nơi khác.`,`Các bài viết phản ánh quá trình học tập và hiểu biết kỹ thuật hiện tại của tôi. Mục tiêu là làm rõ các mối liên hệ từng bước và tạo nền tảng cho những nghiên cứu tiếp theo.`],noKnowledge:`Chưa có bài viết phù hợp`,noKnowledgeText:`Các ghi chú học tập và phân tích mới sẽ được bổ sung dần tại đây.`,footer:`© 2026 ElektronikLab — Các dự án điện tử và tự động hóa hiện đại.`,conceptProject:`Dự án ý tưởng – chưa được triển khai`,noProjectLink:`Chưa có liên kết dự án`,heroBadge:`Thiết kế điện · Kiểm thử · Phần mềm`,docs:`Tài liệu`,sourceCode:`Mã nguồn`,focusValue:`IoT · Tự động hóa`,tools:`Công cụ`,toolsValue:`PLC · AutoCAD · EPLAN · C++ · Qt`,translationFallbackShort:`Bản tiếng Đức`,translationFallback:`Bài viết này chưa có bản dịch theo ngôn ngữ đã chọn. Website đang hiển thị bản tiếng Đức.`}},pv=e=>{let t=fv[e]||fv.de,n=C_(e);return n?{...t,heroBadge:n.hero_badge,heroTitle:n.hero_title,heroText:n.hero_text,transparencyTitle:n.transparency_title,transparencyText:n.transparency_text,transparencyStrong:n.transparency_strong,warningOne:n.warning_one,warningTwo:n.warning_two,collaborationTitle:n.collaboration_title,collaborationText:n.collaboration_text}:t},mv=[`/my-electronics-blog/images/galerie/Dampfmaschine-main.webp`,`/my-electronics-blog/images/galerie/finanzmanager-main.webp`,`/my-electronics-blog/images/galerie/Mischbehälter-main.webp`,`/my-electronics-blog/images/galerie/Flaschenzug-main.webp`,`/my-electronics-blog/images/galerie/Tauchanlage-main.webp`],hv=e=>{if(!e)return[];if(Array.isArray(e))return e.filter(Boolean);if(typeof e==`string`)try{let t=JSON.parse(e);return Array.isArray(t)?t.filter(Boolean):[]}catch{return e.split(`
 `).map(e=>e.trim()).filter(Boolean)}return[]},gv=e=>[`idea`,`in_progress`,`done`].includes(e)?e:`done`,_v=(e,t=`de`)=>({de:{idea:`Idee`,in_progress:`In Arbeit`,done:`Umgesetzt`},en:{idea:`Concept`,in_progress:`In progress`,done:`Completed`},vi:{idea:`Ý tưởng`,in_progress:`Đang thực hiện`,done:`Hoàn thành`}})[t]?.[gv(e)]||gv(e),vv=e=>({idea:`border-zinc-500/30 bg-zinc-500/15 text-zinc-300`,in_progress:`border-yellow-400/30 bg-yellow-400/10 text-yellow-300`,done:`border-emerald-400/30 bg-emerald-400/10 text-emerald-300`})[gv(e)],yv=e=>gv(e?.project_status)===`idea`,bv=(e,t=`de`)=>e?new Intl.DateTimeFormat({de:`de-DE`,en:`en-US`,vi:`vi-VN`}[t]||`de-DE`,{day:`2-digit`,month:`long`,year:`numeric`}).format(new Date(e)):{de:`Kein Datum`,en:`No date`,vi:`Không có ngày`}[t],xv=e=>({IoT:rv,Robotik:V_,Messtechnik:Z_,"Über mich":Q_,"Karriere & Weiterbildung":av,"WinCC & HMI":nv,"Technische Erfahrungen":cv})[e]||J_,Sv=(e,t=`de`)=>({en:{Elektrotechnik:`Electrical Engineering`,Maschinenbau:`Mechanical Engineering`,"Über mich":`About Me`,Softwareentwicklung:`Software Development`,"SPS-Programmierung":`PLC Programming`,Grundlagen:`Fundamentals`,Robotik:`Robotics`,Messtechnik:`Measurement Technology`,"Karriere & Weiterbildung":`Career & Continuing Education`,"Technische Erfahrungen":`Technical Experience`},vi:{Elektrotechnik:`Kỹ thuật điện`,Maschinenbau:`Cơ khí`,"Über mich":`Về tôi`,Softwareentwicklung:`Phát triển phần mềm`,"SPS-Programmierung":`Lập trình PLC`,Grundlagen:`Kiến thức nền tảng`,Robotik:`Robot`,Messtechnik:`Kỹ thuật đo lường`,"Karriere & Weiterbildung":`Sự nghiệp & Đào tạo nâng cao`,"Technische Erfahrungen":`Kinh nghiệm kỹ thuật`}})[t]?.[e]||e,Cv={de:[{icon:J_,title:`Elektronik & Embedded Systems`,text:`Eigene Lernprojekte rund um Mikrocontroller, Sensorik und hardwarenahe Entwicklung zur praktischen Erweiterung meines technischen Wissens.`},{icon:sv,title:`Automatisierung & Steuerung`,text:`Praktische Übungen und kleinere Projekte, um industrielle Abläufe, Steuerungstechnik und technische Prozesse besser zu verstehen.`},{icon:av,title:`Technisches Lernen`,text:`Dokumentation meines Lernwegs, technischer Erfahrungen und neuer Themen, mit denen ich mich kontinuierlich beschäftige.`},{icon:nv,title:`Eigene Entwicklung`,text:`Diese Website dient als persönliche Plattform, um Projekte, Ideen und technische Fortschritte übersichtlich festzuhalten.`}],en:[{icon:J_,title:`Electronics & Embedded Systems`,text:`Personal learning projects involving microcontrollers, sensors and hardware-oriented development to expand my technical knowledge through practice.`},{icon:sv,title:`Automation & Control`,text:`Practical exercises and smaller projects to better understand industrial workflows, control technology and technical processes.`},{icon:av,title:`Technical Learning`,text:`Documentation of my learning journey, technical experience and new topics that I continuously explore.`},{icon:nv,title:`Personal Development`,text:`This website is my personal platform for documenting projects, ideas and technical progress in a clear format.`}],vi:[{icon:J_,title:`Điện tử & Hệ thống nhúng`,text:`Các dự án học tập cá nhân về vi điều khiển, cảm biến và phát triển gần phần cứng nhằm mở rộng kiến thức kỹ thuật qua thực hành.`},{icon:sv,title:`Tự động hóa & Điều khiển`,text:`Các bài thực hành và dự án nhỏ để hiểu rõ hơn quy trình công nghiệp, kỹ thuật điều khiển và các quá trình kỹ thuật.`},{icon:av,title:`Học tập kỹ thuật`,text:`Ghi lại hành trình học tập, kinh nghiệm kỹ thuật và những chủ đề mới mà tôi liên tục tìm hiểu.`},{icon:nv,title:`Phát triển cá nhân`,text:`Website này là nền tảng cá nhân để lưu lại dự án, ý tưởng và tiến bộ kỹ thuật một cách rõ ràng.`}]},wv={en:{title:`Nguyen Nhan Do - Learning technology. Gaining experience. Continuing to grow.`,content:`I came to Germany in 2013 - not because my life in Vietnam was bad, but because I wanted to discover how far I could develop personally and professionally by leaving my comfort zone and starting again in a completely new environment.
 
