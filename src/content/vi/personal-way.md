@@ -1,7 +1,7 @@
 ---
 type: personal_way
 language: vi
-title: Nguyen Nhan Do - Học kỹ thuật. Tích lũy kinh nghiệm. Không ngừng phát triển.
+title: Đỗ Nguyễn Nhân - Học kỹ thuật. Tích lũy kinh nghiệm. Không ngừng phát triển.
 image_1: /my-electronics-blog/images/about-1.webp
 image_2: /my-electronics-blog/images/about-2.webp
 ---

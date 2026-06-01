@@ -87,7 +87,7 @@ In Chrome or Edge:
 2. Choose whether it is a project article or a knowledge article.
 3. Edit the content and preview the result.
 4. Click `In Ordner speichern`.
-5. Select `src/content/` the first time. The editor creates or uses the selected language subfolder automatically.
+5. Select exactly `src/content/` the first time. Do not select `src/content/de/`, `src/content/en/` or `src/content/vi/`. The editor creates or uses the selected language subfolder automatically.
 6. Add referenced article images to `public/images/posts/`.
 7. Deploy the updated website.
 

@@ -982,6 +982,11 @@ function MarkdownEditorPage() {
 
     try {
       const directory = contentDirectory || await window.showDirectoryPicker({ mode: "readwrite" });
+      if (directory.name !== "content") {
+        setContentDirectory(null);
+        window.alert("Bitte wählen Sie genau den Ordner src/content aus, nicht einen Sprachordner wie de, en oder vi.");
+        return;
+      }
       if (!contentDirectory) setContentDirectory(directory);
       const targetDirectory = output.directory
         ? await directory.getDirectoryHandle(output.directory, { create: true })
@@ -1221,7 +1226,7 @@ function MarkdownEditorPage() {
                     <li>Englisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/en/home-content.md</code></li>
                     <li>Vietnamesisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/vi/home-content.md</code></li>
                   </ul>
-                  <p className="mt-3 text-xs text-zinc-400">Wenn Sie „In Ordner speichern“ verwenden, wählen Sie den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content</code>. Der Editor legt englische und vietnamesische Dateien automatisch im passenden Unterordner ab.</p>
+                  <p className="mt-3 text-xs text-zinc-400">Wenn Sie „In Ordner speichern“ verwenden, wählen Sie genau den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content</code>. Wählen Sie nicht <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">de</code>, <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">en</code> oder <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">vi</code>. Der Editor legt die Datei automatisch im passenden Sprachordner ab.</p>
                   <p className="mt-2 text-xs text-zinc-400">Nach dem Speichern laden Sie die Blog-Seite neu. Für die veröffentlichte Website müssen Sie anschließend neu bauen und deployen.</p>
                 </div>
                 <div>
@@ -1302,7 +1307,7 @@ function MarkdownEditorPage() {
                     <li>Englisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/en/personal-way.md</code></li>
                     <li>Vietnamesisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/vi/personal-way.md</code></li>
                   </ul>
-                  <p className="mt-3 text-xs text-zinc-400">Wenn Sie „In Ordner speichern“ verwenden, wählen Sie den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content</code>. Der Editor legt englische und vietnamesische Dateien automatisch im passenden Unterordner ab.</p>
+                  <p className="mt-3 text-xs text-zinc-400">Wenn Sie „In Ordner speichern“ verwenden, wählen Sie genau den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content</code>. Wählen Sie nicht <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">de</code>, <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">en</code> oder <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">vi</code>. Der Editor legt die Datei automatisch im passenden Sprachordner ab.</p>
                 </div>
                 <div>
                   <label className={labelClass}>Sprache</label>
@@ -1367,7 +1372,7 @@ function MarkdownEditorPage() {
           <div className="grid gap-4 rounded-2xl border border-white/10 bg-black/20 p-5 sm:grid-cols-2">
             <div className="sm:col-span-2 rounded-xl border border-cyan-400/20 bg-cyan-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
               <p className="font-black text-cyan-200">Mehrsprachige Beiträge speichern</p>
-              <p className="mt-2">Verwenden Sie für alle Sprachversionen desselben Beitrags dieselbe <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">translation_id</code>. Beim Speichern legt der Editor die Datei automatisch im Unterordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">de</code>, <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">en</code> oder <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">vi</code> innerhalb von <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content</code> ab.</p>
+              <p className="mt-2">Verwenden Sie für alle Sprachversionen desselben Beitrags dieselbe <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">translation_id</code>. Wählen Sie beim Speichern genau den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content</code>, nicht einen Sprachordner. Der Editor legt die Datei automatisch unter <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">de</code>, <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">en</code> oder <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">vi</code> ab.</p>
             </div>
             <div className="sm:col-span-2">
               <label className={labelClass}>Inhaltstyp</label>
