@@ -1214,6 +1214,16 @@ function MarkdownEditorPage() {
 
             {showHomeContentEditor && (
               <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
+                <div className="rounded-xl border border-blue-400/20 bg-blue-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
+                  <p className="font-black text-blue-200">Speicherort der Markdown-Datei</p>
+                  <p className="mt-2">Speichern Sie die Datei abhängig von der ausgewählten Sprache unter:</p>
+                  <ul className="mt-2 ml-5 list-disc space-y-1">
+                    <li>Deutsch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/home-content.md</code></li>
+                    <li>Englisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/en/home-content.md</code></li>
+                    <li>Vietnamesisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/vi/home-content.md</code></li>
+                  </ul>
+                  <p className="mt-3 text-xs text-zinc-400">Wenn Sie „In Ordner speichern“ verwenden, wählen Sie den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content</code>. Der Editor legt englische und vietnamesische Dateien automatisch im passenden Unterordner ab.</p>
+                </div>
                 <div>
                   <label className={labelClass}>Sprache</label>
                   <select className={inputClass} value={homeContentForm.language} onChange={(e) => selectHomeContentLanguage(e.target.value)}>
