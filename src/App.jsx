@@ -1480,6 +1480,13 @@ function MarkdownEditorPage() {
             <div className="sm:col-span-2 rounded-xl border border-cyan-400/20 bg-cyan-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
               <p className="font-black text-cyan-200">Mehrsprachige Beiträge speichern</p>
               <p className="mt-2">Verwenden Sie für alle Sprachversionen desselben Beitrags dieselbe <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">translation_id</code>. Wählen Sie beim Speichern genau den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content</code>, nicht einen Sprachordner. Der Editor legt die Datei automatisch unter <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">de</code>, <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">en</code> oder <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">vi</code> ab.</p>
+              <p className="mt-3 font-bold text-cyan-100">Speicherort abhängig von Sprache und Slug:</p>
+              <ul className="mt-2 ml-5 list-disc space-y-1">
+                <li>Deutsch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content/de/slug.md</code></li>
+                <li>Englisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content/en/slug.md</code></li>
+                <li>Vietnamesisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content/vi/slug.md</code></li>
+              </ul>
+              <p className="mt-3 text-xs text-zinc-400">Bei „MD exportieren“ wird nur die Datei heruntergeladen. Verschieben Sie sie anschließend manuell in den passenden Sprachordner.</p>
             </div>
             <div className="sm:col-span-2">
               <label className={labelClass}>Inhaltstyp</label>
