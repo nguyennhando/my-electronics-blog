@@ -198,10 +198,10 @@ title: Finanzverwaltung mit Datenanalyse
 category: Softwareentwicklung
 image_url: /my-electronics-blog/images/posts/finanzmanager-main.webp
 image_gallery:
-- /my-electronics-blog/images/posts/finanzmanager-1.webp
 - /my-electronics-blog/images/posts/finanzmanager-2.webp
 - /my-electronics-blog/images/posts/finanzmanager-3.webp
 - /my-electronics-blog/images/posts/finanzmanager-4.webp
+- /my-electronics-blog/images/posts/finanzmanager-5.webp
 excerpt: Die Software ermöglicht die Verwaltung persönlicher Einnahmen und Ausgaben, unterstützt CSV-Import und -Export sowie Echtzeit-Datenanalysen über eine moderne grafische Benutzeroberfläche. Über den Button „Zum Projekt“ am Ende der Seite erhalten Sie Zugriff auf den vollständigen Quellcode des Projekts „Finanzmanager“.
 tags:
 - C++
