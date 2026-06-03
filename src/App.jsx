@@ -769,7 +769,7 @@ function PostDetailPage({ post, onBack, language }) {
 // ─────────────────────────────────────────────
 // MARKDOWN EDITOR
 // ─────────────────────────────────────────────
-function KnowledgePage({ posts, onOpenPost, language }) {
+function KnowledgePage({ posts, onOpenPost, getPostUrl, language }) {
   const POSTS_PER_PAGE = 10;
   const t = getUiText(language);
   const [search, setSearch] = useState("");
@@ -839,7 +839,12 @@ function KnowledgePage({ posts, onOpenPost, language }) {
           <>
             <section className="mt-8">
               <p className="mb-3 text-xs font-black uppercase tracking-widest text-slate-300">{t.selectedPost}</p>
-              <button type="button" onClick={() => onOpenPost(featuredPost.id)} className="group grid w-full overflow-hidden rounded-[2rem] border border-slate-300/25 bg-[#0b1023]/95 text-left transition hover:border-slate-200/60 lg:grid-cols-[0.42fr_0.58fr]">
+              <a href={getKnowledgePostUrl(featuredPost.id)} onClick={(event) => {
+                if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+                  event.preventDefault();
+                  onOpenPost(featuredPost.id);
+                }
+              }} className="group grid w-full overflow-hidden rounded-[2rem] border border-slate-300/25 bg-[#0b1023]/95 text-left transition hover:border-slate-200/60 lg:grid-cols-[0.42fr_0.58fr]">
                 <div className="h-56 overflow-hidden bg-slate-950/30 lg:h-auto">
                   {featuredPost.image_url ? <img src={featuredPost.image_url} alt="" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><FlaskConical className="h-14 w-14 text-slate-300/60" /></div>}
                 </div>
@@ -853,7 +858,7 @@ function KnowledgePage({ posts, onOpenPost, language }) {
                   <p className="mt-3 line-clamp-3 text-sm leading-7 text-zinc-400 sm:text-base">{featuredPost.excerpt}</p>
                   <span className="mt-5 inline-flex items-center gap-2 text-sm font-black text-slate-200">{t.readPost} <ArrowRight className="h-4 w-4" /></span>
                 </div>
-              </button>
+              </a>
             </section>
 
             {listPosts.length > 0 && <section className="mt-10">
@@ -863,7 +868,12 @@ function KnowledgePage({ posts, onOpenPost, language }) {
               </div>
               <div className="grid gap-3">
                 {paginatedPosts.map((post) => (
-                  <button key={post.id} type="button" onClick={() => onOpenPost(post.id)} className="group grid gap-4 rounded-2xl border border-white/10 bg-[#07111f]/90 p-4 text-left transition hover:border-slate-300/50 sm:grid-cols-[140px_1fr_auto] sm:items-center">
+                  <a key={post.id} href={getKnowledgePostUrl(post.id)} onClick={(event) => {
+                    if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+                      event.preventDefault();
+                      onOpenPost(post.id);
+                    }
+                  }} className="group grid gap-4 rounded-2xl border border-white/10 bg-[#07111f]/90 p-4 text-left transition hover:border-slate-300/50 sm:grid-cols-[140px_1fr_auto] sm:items-center">
                     <div className="hidden h-24 overflow-hidden rounded-xl bg-slate-950/30 sm:block">
                       {post.image_url ? <img src={post.image_url} alt="" className="h-full w-full object-cover transition group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><GraduationCap className="h-8 w-8 text-slate-300/60" /></div>}
                     </div>
@@ -874,7 +884,7 @@ function KnowledgePage({ posts, onOpenPost, language }) {
                       <p className="mt-2 line-clamp-2 text-sm leading-6 text-zinc-400">{post.excerpt}</p>
                     </div>
                     <ArrowRight className="hidden h-5 w-5 text-slate-300 sm:block" />
-                  </button>
+                  </a>
                 ))}
               </div>
               {totalPages > 1 && <div className="mt-6 flex justify-center gap-2">{Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => <button key={number} type="button" onClick={() => setCurrentPage(number)} className={`h-10 w-10 rounded-xl text-sm font-black ${currentPage === number ? "bg-slate-200 text-slate-950" : "border border-white/10 bg-white/5 text-zinc-300"}`}>{number}</button>)}</div>}
@@ -1632,7 +1642,7 @@ function MarkdownEditorPage() {
 // ─────────────────────────────────────────────
 // HOME PAGE
 // ─────────────────────────────────────────────
-function HomePage({ posts, galleryImages, onOpenPost, onGoImpressum, onGoDatenschutz, language }) {
+function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum, onGoDatenschutz, language }) {
   const POSTS_PER_PAGE = 15;
   const t = getUiText(language);
   const personalWay = getPersonalWay(language);
@@ -1821,10 +1831,14 @@ const paginatedPosts = filteredPosts.slice(
                         {(post.tags || []).map(tag => <span key={tag} className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-400">#{tag}</span>)}
                       </div>
                       <div className="flex gap-2 pt-6 sm:mt-auto sm:gap-3">
-                        <button type="button" onClick={() => onOpenPost(post.id)}
-                          className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base">
+                        <a href={getPostUrl(post.id)} onClick={(event) => {
+                          if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+                            event.preventDefault();
+                            onOpenPost(post.id);
+                          }
+                        }} className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base">
                           {t.readPost}
-                        </button>
+                        </a>
                       </div>
                     </div>
                   </GradientBorder>
@@ -2409,36 +2423,72 @@ function App() {
   const currentPost = useMemo(() => posts.find(p => String(p.id) === String(currentPostId)) || null, [posts, currentPostId]);
   const currentKnowledgePost = useMemo(() => knowledgePosts.find(p => String(p.id) === String(currentPostId)) || null, [knowledgePosts, currentPostId]);
 
-  // ── Navigation ──
-  const openPost = useCallback((id) => {
-    setCurrentPostId(id);
-    setPage("post");
+  const buildRouteUrl = useCallback((nextPage, postId = null) => {
+    const params = new URLSearchParams();
+
+    if (nextPage === "post" && postId) params.set("post", postId);
+    else if (nextPage === "knowledge-post" && postId) params.set("knowledge", postId);
+    else if (nextPage === "knowledge") params.set("page", "knowledge");
+    else if (nextPage === "impressum") params.set("page", "impressum");
+    else if (nextPage === "datenschutz") params.set("page", "datenschutz");
+
+    const query = params.toString();
+    return query ? `${window.location.pathname}?${query}` : window.location.pathname;
   }, []);
 
-  const openKnowledgePost = useCallback((id) => {
-    setCurrentPostId(id);
-    setPage("knowledge-post");
+  const parseRouteFromLocation = useCallback(() => {
+    const params = new URLSearchParams(window.location.search);
+    const postId = params.get("post");
+    const knowledgeId = params.get("knowledge");
+    const pageParam = params.get("page");
+
+    if (postId) return { page: "post", currentPostId: postId };
+    if (knowledgeId) return { page: "knowledge-post", currentPostId: knowledgeId };
+    if (pageParam === "knowledge") return { page: "knowledge", currentPostId: null };
+    if (pageParam === "impressum") return { page: "impressum", currentPostId: null };
+    if (pageParam === "datenschutz") return { page: "datenschutz", currentPostId: null };
+    return { page: "home", currentPostId: null };
   }, []);
 
-  const navigate = useCallback((nextPage) => {
+  useEffect(() => {
+    const route = parseRouteFromLocation();
+    setPage(route.page);
+    setCurrentPostId(route.currentPostId);
+    window.history.replaceState({}, "", buildRouteUrl(route.page, route.currentPostId));
+
+    const onPopState = () => {
+      const nextRoute = parseRouteFromLocation();
+      setPage(nextRoute.page);
+      setCurrentPostId(nextRoute.currentPostId);
+    };
+
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [buildRouteUrl, parseRouteFromLocation]);
+
+  const setRouteState = useCallback((nextPage, postId = null, replace = false) => {
     setPage(nextPage);
-    setCurrentPostId(null);
-  }, []);
+    setCurrentPostId(postId);
+    const nextUrl = buildRouteUrl(nextPage, postId);
+    if (replace) window.history.replaceState({}, "", nextUrl);
+    else window.history.pushState({}, "", nextUrl);
+  }, [buildRouteUrl]);
 
-  const goHome = useCallback(() => {
-    setPage("home");
-    setCurrentPostId(null);
-  }, []);
+  const getPostUrl = useCallback((id) => `?post=${encodeURIComponent(id)}`, []);
+  const getKnowledgePostUrl = useCallback((id) => `?knowledge=${encodeURIComponent(id)}`, []);
 
-  const goImpressum = useCallback(() => {
-    setPage("impressum");
-    setCurrentPostId(null);
-  }, []);
+  // ── Navigation ──
+  const openPost = useCallback((id) => setRouteState("post", id), [setRouteState]);
 
-  const goDatenschutz = useCallback(() => {
-    setPage("datenschutz");
-    setCurrentPostId(null);
-  }, []);
+  const openKnowledgePost = useCallback((id) => setRouteState("knowledge-post", id), [setRouteState]);
+
+  const navigate = useCallback((nextPage) => setRouteState(nextPage, null), [setRouteState]);
+
+  const goHome = useCallback(() => setRouteState("home", null), [setRouteState]);
+
+  const goImpressum = useCallback(() => setRouteState("impressum", null), [setRouteState]);
+
+  const goDatenschutz = useCallback(() => setRouteState("datenschutz", null), [setRouteState]);
 
   if (isMarkdownEditor) {
     return <MarkdownEditorPage />;
@@ -2476,12 +2526,13 @@ if (page === "datenschutz") {
       ) : page === "knowledge-post" && currentKnowledgePost ? (
         <KnowledgeDetailPage post={currentKnowledgePost} onBack={() => navigate("knowledge")} language={language} />
       ) : page === "knowledge" ? (
-        <KnowledgePage posts={knowledgePosts} onOpenPost={openKnowledgePost} language={language} />
+        <KnowledgePage posts={knowledgePosts} onOpenPost={openKnowledgePost} getPostUrl={getKnowledgePostUrl} language={language} />
       ) : (
         <HomePage
           posts={posts}
           galleryImages={galleryImages}
           onOpenPost={openPost}
+          getPostUrl={getPostUrl}
           onGoImpressum={goImpressum}
           onGoDatenschutz={goDatenschutz}
           language={language}
