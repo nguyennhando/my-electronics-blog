@@ -839,7 +839,7 @@ function KnowledgePage({ posts, onOpenPost, getPostUrl, language }) {
           <>
             <section className="mt-8">
               <p className="mb-3 text-xs font-black uppercase tracking-widest text-slate-300">{t.selectedPost}</p>
-              <a href={getKnowledgePostUrl(featuredPost.id)} onClick={(event) => {
+              <a href={getPostUrl(featuredPost.id)} onClick={(event) => {
                 if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
                   event.preventDefault();
                   onOpenPost(featuredPost.id);
@@ -868,7 +868,7 @@ function KnowledgePage({ posts, onOpenPost, getPostUrl, language }) {
               </div>
               <div className="grid gap-3">
                 {paginatedPosts.map((post) => (
-                  <a key={post.id} href={getKnowledgePostUrl(post.id)} onClick={(event) => {
+                  <a key={post.id} href={getPostUrl(post.id)} onClick={(event) => {
                     if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
                       event.preventDefault();
                       onOpenPost(post.id);
