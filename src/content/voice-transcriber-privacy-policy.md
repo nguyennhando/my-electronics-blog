@@ -52,4 +52,4 @@ The application does not transmit user content to third-party services.
 
 Developer: Nguyen Nhan Do
 
-Email: your-email@example.com
+Email: nguyennhan.do@outlook.de
