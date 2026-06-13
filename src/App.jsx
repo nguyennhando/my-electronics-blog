@@ -10,6 +10,7 @@ import {
   Wrench, Mail, MonitorSmartphone, Workflow, AlertTriangle, ExternalLink,
   ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock, Download, FileText, Image as ImageIcon, Pencil, Save,
   BookOpen, Library, FlaskConical, GraduationCap, ChevronUp, ChevronDown,
+  LogIn, LogOut, LockKeyhole, KeyRound,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────
@@ -114,6 +115,47 @@ const DEFAULT_GALLERY_IMAGES = [
 // ─────────────────────────────────────────────
 // DATA HELPERS
 // ─────────────────────────────────────────────
+const ADMIN_AUTH_KEY = "electronics-blog-admin-auth-v1";
+const ADMIN_SESSION_KEY = "electronics-blog-admin-session-v1";
+
+const bytesToHex = (bytes) => Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+
+const createAdminSalt = () => {
+  const bytes = new Uint8Array(16);
+  window.crypto.getRandomValues(bytes);
+  return bytesToHex(bytes);
+};
+
+const createRecoveryCode = () => {
+  const bytes = new Uint8Array(9);
+  window.crypto.getRandomValues(bytes);
+  const token = bytesToHex(bytes).toUpperCase().match(/.{1,6}/g).join("-");
+  return `ADMIN-${token}`;
+};
+
+const hashAdminSecret = async (secret, salt) => {
+  const data = new TextEncoder().encode(`${salt}:${secret}`);
+  const digest = await window.crypto.subtle.digest("SHA-256", data);
+  return bytesToHex(new Uint8Array(digest));
+};
+
+const readAdminConfig = () => {
+  try {
+    return JSON.parse(window.localStorage.getItem(ADMIN_AUTH_KEY) || "null");
+  } catch {
+    return null;
+  }
+};
+
+const saveAdminConfig = (config) => {
+  window.localStorage.setItem(ADMIN_AUTH_KEY, JSON.stringify(config));
+};
+
+const setAdminSession = (active) => {
+  if (active) window.localStorage.setItem(ADMIN_SESSION_KEY, "active");
+  else window.localStorage.removeItem(ADMIN_SESSION_KEY);
+};
+
 const normalizeImageList = (value) => {
   if (!value) return [];
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -474,7 +516,290 @@ function Lightbox({ images, index, onClose }) {
 // ─────────────────────────────────────────────
 // HEADER
 // ─────────────────────────────────────────────
-function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange = () => {} }) {
+function AdminAccessPanel({ allowEditor, onAuthenticated, onBack }) {
+  const [config, setConfig] = useState(() => readAdminConfig());
+  const [mode, setMode] = useState(() => readAdminConfig() ? "login" : "setup");
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [recoveryCode, setRecoveryCode] = useState("");
+  const [newRecoveryCode, setNewRecoveryCode] = useState("");
+  const [message, setMessage] = useState("");
+  const isSetup = mode === "setup";
+  const isForgot = mode === "forgot";
+
+  const resetFields = () => {
+    setPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setRecoveryCode("");
+    setMessage("");
+  };
+
+  const completeAuth = () => {
+    setAdminSession(true);
+    onAuthenticated();
+  };
+
+  const saveNewPassword = async (plainPassword) => {
+    const salt = createAdminSalt();
+    const recovery = createRecoveryCode();
+    const nextConfig = {
+      salt,
+      passwordHash: await hashAdminSecret(plainPassword, salt),
+      recoveryHash: await hashAdminSecret(recovery, salt),
+      updatedAt: new Date().toISOString(),
+    };
+
+    saveAdminConfig(nextConfig);
+    setConfig(nextConfig);
+    setNewRecoveryCode(recovery);
+  };
+
+  const handleSetup = async (event) => {
+    event.preventDefault();
+    if (newPassword.length < 8) {
+      setMessage("Mat khau can it nhat 8 ky tu.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setMessage("Mat khau xac nhan khong khop.");
+      return;
+    }
+
+    await saveNewPassword(newPassword);
+    resetFields();
+    setMessage("Da tao mat khau admin. Hay luu ma khoi phuc ben duoi.");
+  };
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    if (!config) {
+      setMode("setup");
+      return;
+    }
+
+    const passwordHash = await hashAdminSecret(password, config.salt);
+    if (passwordHash !== config.passwordHash) {
+      setMessage("Sai mat khau. Chi admin moi duoc quyen dang nhap.");
+      return;
+    }
+
+    completeAuth();
+  };
+
+  const handleForgot = async (event) => {
+    event.preventDefault();
+    if (!config) {
+      setMode("setup");
+      return;
+    }
+    if (newPassword.length < 8) {
+      setMessage("Mat khau moi can it nhat 8 ky tu.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setMessage("Mat khau xac nhan khong khop.");
+      return;
+    }
+
+    const recoveryHash = await hashAdminSecret(recoveryCode.trim(), config.salt);
+    if (recoveryHash !== config.recoveryHash) {
+      setMessage("Ma khoi phuc khong dung.");
+      return;
+    }
+
+    await saveNewPassword(newPassword);
+    resetFields();
+    setMode("login");
+    setMessage("Da doi mat khau. Hay luu ma khoi phuc moi.");
+  };
+
+  const resetLocalAdmin = () => {
+    window.localStorage.removeItem(ADMIN_AUTH_KEY);
+    setAdminSession(false);
+    setConfig(null);
+    setNewRecoveryCode("");
+    resetFields();
+    setMode("setup");
+    setMessage("Da xoa cau hinh admin tren trinh duyet nay. Hay tao mat khau moi.");
+  };
+
+  return (
+    <div className="min-h-screen overflow-x-hidden text-white">
+      <Background />
+      <main className="mx-auto flex min-h-screen max-w-5xl items-center px-4 py-24 sm:px-5">
+        <section className="w-full overflow-hidden rounded-[2rem] border border-white/10 bg-[#07111f]/95 shadow-2xl shadow-black/30 backdrop-blur-xl">
+          <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="border-b border-white/10 bg-white/[0.03] p-6 sm:p-8 lg:border-b-0 lg:border-r">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-300/30 bg-cyan-300/10 text-cyan-200">
+                <LockKeyhole className="h-6 w-6" />
+              </div>
+              <h1 className="mt-5 text-2xl font-black sm:text-4xl">Admin Login</h1>
+              <p className="mt-4 text-sm leading-7 text-zinc-300">
+                Chi admin moi duoc quyen dang nhap. Neu ban khong phai admin, vui long quay lai trang chu.
+              </p>
+              <p className="mt-4 rounded-2xl border border-yellow-300/25 bg-yellow-300/10 p-4 text-sm leading-6 text-yellow-100">
+                Bao mat nay duoc luu cuc bo tren trinh duyet. Editor admin chi mo trong moi truong local dev.
+              </p>
+              <button type="button" onClick={onBack} className="mt-6 inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10 hover:text-white">
+                <ArrowLeft className="h-4 w-4" /> Quay lai Blog
+              </button>
+            </div>
+
+            <div className="p-6 sm:p-8">
+              {!allowEditor ? (
+                <div className="rounded-2xl border border-cyan-300/20 bg-cyan-300/10 p-5 text-sm leading-7 text-cyan-50">
+                  Nut nay chi danh cho admin. Trang dang nhap de chinh sua bai viet chi hoat dong khi chay local bang <span className="font-black">npm run admin</span>.
+                </div>
+              ) : newRecoveryCode ? (
+                <div className="space-y-5">
+                  <div>
+                    <p className="text-xs font-bold uppercase text-cyan-300">Ma khoi phuc</p>
+                    <h2 className="mt-2 text-xl font-black">Hay luu ma nay de dung khi quen mat khau</h2>
+                  </div>
+                  <div className="rounded-2xl border border-emerald-300/25 bg-emerald-300/10 p-4 font-mono text-sm font-bold text-emerald-100 sm:text-base">
+                    {newRecoveryCode}
+                  </div>
+                  <button type="button" onClick={completeAuth} className="inline-flex items-center gap-2 rounded-xl bg-cyan-300 px-5 py-3 font-black text-slate-950 transition hover:bg-white">
+                    <LogIn className="h-4 w-4" /> Vao admin
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={isSetup ? handleSetup : isForgot ? handleForgot : handleLogin} className="space-y-5">
+                  <div>
+                    <p className="text-xs font-bold uppercase text-cyan-300">
+                      {isSetup ? "Thiet lap lan dau" : isForgot ? "Quen mat khau" : "Xac thuc admin"}
+                    </p>
+                    <h2 className="mt-2 text-xl font-black">
+                      {isSetup ? "Tao mat khau admin" : isForgot ? "Nhap ma khoi phuc de dat lai mat khau" : "Nhap mat khau de vao editor"}
+                    </h2>
+                  </div>
+
+                  {!isSetup && !isForgot && (
+                    <div>
+                      <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">Mat khau</label>
+                      <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" autoFocus />
+                    </div>
+                  )}
+
+                  {(isSetup || isForgot) && (
+                    <>
+                      {isForgot && (
+                        <div>
+                          <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">Ma khoi phuc</label>
+                          <input value={recoveryCode} onChange={(event) => setRecoveryCode(event.target.value)} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" placeholder="ADMIN-XXXXXX-XXXXXX-XXXXXX" />
+                        </div>
+                      )}
+                      <div>
+                        <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">Mat khau moi</label>
+                        <input type="password" value={newPassword} onChange={(event) => setNewPassword(event.target.value)} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
+                      </div>
+                      <div>
+                        <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">Nhap lai mat khau</label>
+                        <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
+                      </div>
+                    </>
+                  )}
+
+                  {message && <p className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-zinc-200">{message}</p>}
+
+                  <div className="flex flex-wrap gap-3">
+                    <button type="submit" className="inline-flex items-center gap-2 rounded-xl bg-cyan-300 px-5 py-3 font-black text-slate-950 transition hover:bg-white">
+                      {isForgot ? <KeyRound className="h-4 w-4" /> : <LogIn className="h-4 w-4" />}
+                      {isSetup ? "Tao mat khau" : isForgot ? "Dat lai mat khau" : "Dang nhap"}
+                    </button>
+                    {!isSetup && (
+                      <button type="button" onClick={() => { resetFields(); setMode(isForgot ? "login" : "forgot"); }} className="rounded-xl border border-white/10 px-5 py-3 text-sm font-bold text-zinc-300 transition hover:bg-white/10 hover:text-white">
+                        {isForgot ? "Quay lai dang nhap" : "Quen mat khau"}
+                      </button>
+                    )}
+                    {isForgot && (
+                      <button type="button" onClick={resetLocalAdmin} className="rounded-xl border border-red-300/20 px-5 py-3 text-sm font-bold text-red-100 transition hover:bg-red-300/10">
+                        Xoa cau hinh local
+                      </button>
+                    )}
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
+
+function AdminPasswordModal({ onClose }) {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [recoveryCode, setRecoveryCode] = useState("");
+  const [message, setMessage] = useState("");
+
+  const changePassword = async (event) => {
+    event.preventDefault();
+    const config = readAdminConfig();
+    if (!config) {
+      setMessage("Chua co cau hinh admin.");
+      return;
+    }
+    if (newPassword.length < 8) {
+      setMessage("Mat khau moi can it nhat 8 ky tu.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setMessage("Mat khau xac nhan khong khop.");
+      return;
+    }
+
+    const currentHash = await hashAdminSecret(currentPassword, config.salt);
+    if (currentHash !== config.passwordHash) {
+      setMessage("Mat khau hien tai khong dung.");
+      return;
+    }
+
+    const salt = createAdminSalt();
+    const nextRecoveryCode = createRecoveryCode();
+    saveAdminConfig({
+      salt,
+      passwordHash: await hashAdminSecret(newPassword, salt),
+      recoveryHash: await hashAdminSecret(nextRecoveryCode, salt),
+      updatedAt: new Date().toISOString(),
+    });
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setRecoveryCode(nextRecoveryCode);
+    setMessage("Da doi mat khau. Hay luu ma khoi phuc moi.");
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
+      <form onSubmit={changePassword} className="w-full max-w-lg rounded-2xl border border-white/10 bg-[#07111f] p-6 text-white shadow-2xl">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase text-cyan-300">Admin</p>
+            <h2 className="mt-1 text-xl font-black">Doi mat khau</h2>
+          </div>
+          <button type="button" onClick={onClose} className="rounded-xl border border-white/10 p-2 text-zinc-300 hover:bg-white/10"><X className="h-4 w-4" /></button>
+        </div>
+        <div className="mt-5 grid gap-4">
+          <input type="password" value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} placeholder="Mat khau hien tai" className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
+          <input type="password" value={newPassword} onChange={(event) => setNewPassword(event.target.value)} placeholder="Mat khau moi" className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
+          <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} placeholder="Nhap lai mat khau moi" className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
+          {recoveryCode && <div className="rounded-xl border border-emerald-300/25 bg-emerald-300/10 p-3 font-mono text-sm font-bold text-emerald-100">{recoveryCode}</div>}
+          {message && <p className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-zinc-200">{message}</p>}
+          <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-300 px-5 py-3 font-black text-slate-950 transition hover:bg-white">
+            <Save className="h-4 w-4" /> Luu mat khau moi
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange = () => {}, onAdminAccess = null, isAdminAuthenticated = false }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const t = getUiText(language);
 
@@ -507,6 +832,11 @@ function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange
           <button type="button" onClick={goKnowledge} className="inline-flex items-center gap-2 rounded-full border border-slate-300/30 bg-slate-300/10 px-4 py-2 text-sm font-bold text-slate-200 transition hover:border-slate-200/60 hover:bg-slate-300/20">
             <BookOpen className="h-4 w-4" /> {t.knowledge}
           </button>
+          {onAdminAccess && (
+            <button type="button" onClick={() => { setMenuOpen(false); onAdminAccess(); }} className="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2 text-sm font-bold text-cyan-100 transition hover:border-cyan-200/60 hover:bg-cyan-300/20">
+              <LogIn className="h-4 w-4" /> {isAdminAuthenticated ? "Admin" : "Login"}
+            </button>
+          )}
           <div className="flex rounded-full border border-white/10 bg-white/5 p-1">
             {LANGUAGES.map((item) => <button key={item} type="button" onClick={() => onLanguageChange(item)} className={`rounded-full px-2 py-1 text-[11px] font-black uppercase transition ${language === item ? "bg-cyan-400 text-black" : "text-zinc-400 hover:text-white"}`}>{item}</button>)}
           </div>
@@ -526,6 +856,11 @@ function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange
             <button type="button" onClick={goKnowledge} className="mt-2 inline-flex items-center gap-2 rounded-xl border border-slate-300/30 bg-slate-300/10 px-3 py-2 text-left font-bold text-slate-200">
               <BookOpen className="h-4 w-4" /> {t.knowledge}
             </button>
+            {onAdminAccess && (
+              <button type="button" onClick={() => { setMenuOpen(false); onAdminAccess(); }} className="mt-2 inline-flex items-center gap-2 rounded-xl border border-cyan-300/30 bg-cyan-300/10 px-3 py-2 text-left font-bold text-cyan-100">
+                <LogIn className="h-4 w-4" /> {isAdminAuthenticated ? "Admin" : "Login"}
+              </button>
+            )}
             <div className="mt-2 flex w-fit rounded-xl border border-white/10 bg-white/5 p-1">
               {LANGUAGES.map((item) => <button key={item} type="button" onClick={() => onLanguageChange(item)} className={`rounded-lg px-3 py-1.5 text-xs font-black uppercase transition ${language === item ? "bg-cyan-400 text-black" : "text-zinc-400"}`}>{item}</button>)}
             </div>
@@ -938,7 +1273,7 @@ function KnowledgeDetailPage({ post, onBack, language }) {
   );
 }
 
-function MarkdownEditorPage() {
+function MarkdownEditorPage({ onLogout = () => {} }) {
   const [form, setForm] = useState(emptyEditorForm);
   const [selectedSlug, setSelectedSlug] = useState("");
   const [slugEdited, setSlugEdited] = useState(false);
@@ -953,6 +1288,7 @@ function MarkdownEditorPage() {
   const [showGalleryEditor, setShowGalleryEditor] = useState(false);
   const [galleryImagesForm, setGalleryImagesForm] = useState((GALLERY_IMAGES.length ? GALLERY_IMAGES : DEFAULT_GALLERY_IMAGES).join("\n"));
   const [showProjectOrderEditor, setShowProjectOrderEditor] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [projectOrderLanguage, setProjectOrderLanguage] = useState("de");
   const [projectOrderIds, setProjectOrderIds] = useState(() => getLocalizedContentPosts("de")
     .filter((post) => post.content_type !== "knowledge")
@@ -1187,11 +1523,20 @@ function MarkdownEditorPage() {
               <p className="text-xs text-zinc-500">ElektronikLab</p>
             </div>
           </div>
-          <a href="/my-electronics-blog/" className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
-            <ArrowLeft className="h-4 w-4" /> Blog
-          </a>
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <button type="button" onClick={() => setShowPasswordModal(true)} className="inline-flex items-center gap-2 rounded-xl border border-cyan-300/20 px-4 py-2 text-sm font-bold text-cyan-100 transition hover:bg-cyan-300/10">
+              <KeyRound className="h-4 w-4" /> Passwort
+            </button>
+            <button type="button" onClick={onLogout} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
+              <LogOut className="h-4 w-4" /> Logout
+            </button>
+            <a href="/my-electronics-blog/" className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
+              <ArrowLeft className="h-4 w-4" /> Blog
+            </a>
+          </div>
         </div>
       </header>
+      {showPasswordModal && <AdminPasswordModal onClose={() => setShowPasswordModal(false)} />}
 
       <main className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-5 lg:grid-cols-[1.05fr_0.95fr]">
         <section className="space-y-5">
@@ -2402,7 +2747,10 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
 // APP ROOT (routing + state)
 // ─────────────────────────────────────────────
 function App() {
-  const isMarkdownEditor = import.meta.env.DEV && new URLSearchParams(window.location.search).get("admin") === "1";
+  const isAdminRequest = new URLSearchParams(window.location.search).get("admin") === "1";
+  const isMarkdownEditor = import.meta.env.DEV && isAdminRequest;
+  const [showAdminAccess, setShowAdminAccess] = useState(false);
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => window.localStorage.getItem(ADMIN_SESSION_KEY) === "active");
   const [page, setPage] = useState("home"); // "home" | "post" | "knowledge" | "knowledge-post" | "impressum" | "datenschutz"
   const [currentPostId, setCurrentPostId] = useState(null);
   const [language, setLanguage] = useState(() => {
@@ -2451,6 +2799,8 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (isAdminRequest) return undefined;
+
     const route = parseRouteFromLocation();
     setPage(route.page);
     setCurrentPostId(route.currentPostId);
@@ -2464,7 +2814,7 @@ function App() {
 
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
-  }, [buildRouteUrl, parseRouteFromLocation]);
+  }, [buildRouteUrl, isAdminRequest, parseRouteFromLocation]);
 
   const setRouteState = useCallback((nextPage, postId = null, replace = false) => {
     setPage(nextPage);
@@ -2490,8 +2840,39 @@ function App() {
 
   const goDatenschutz = useCallback(() => setRouteState("datenschutz", null), [setRouteState]);
 
+  const openAdminAccess = useCallback(() => {
+    if (import.meta.env.DEV && isAdminAuthenticated) {
+      window.location.assign(`${window.location.pathname}?admin=1`);
+      return;
+    }
+
+    setShowAdminAccess(true);
+  }, [isAdminAuthenticated]);
+
+  const handleAdminAuthenticated = useCallback(() => {
+    setIsAdminAuthenticated(true);
+    if (import.meta.env.DEV) window.location.assign(`${window.location.pathname}?admin=1`);
+    else setShowAdminAccess(false);
+  }, []);
+
+  const handleAdminLogout = useCallback(() => {
+    setAdminSession(false);
+    setIsAdminAuthenticated(false);
+    window.location.assign(window.location.pathname);
+  }, []);
+
+  const closeAdminAccess = useCallback(() => {
+    setShowAdminAccess(false);
+    if (isAdminRequest) window.location.assign(window.location.pathname);
+  }, [isAdminRequest]);
+
   if (isMarkdownEditor) {
-    return <MarkdownEditorPage />;
+    if (isAdminAuthenticated) return <MarkdownEditorPage onLogout={handleAdminLogout} />;
+    return <AdminAccessPanel allowEditor={import.meta.env.DEV} onAuthenticated={handleAdminAuthenticated} onBack={closeAdminAccess} />;
+  }
+
+  if (showAdminAccess) {
+    return <AdminAccessPanel allowEditor={import.meta.env.DEV} onAuthenticated={handleAdminAuthenticated} onBack={closeAdminAccess} />;
   }
 
   if (page === "impressum") {
@@ -2519,7 +2900,7 @@ if (page === "datenschutz") {
   return (
     <>
      <CookieBanner language={language} />
-      <SiteHeader onNavigate={navigate} currentPage={page} language={language} onLanguageChange={setLanguage} />
+      <SiteHeader onNavigate={navigate} currentPage={page} language={language} onLanguageChange={setLanguage} onAdminAccess={openAdminAccess} isAdminAuthenticated={isAdminAuthenticated} />
 
       {page === "post" && currentPost ? (
         <PostDetailPage post={currentPost} onBack={goHome} language={language} />
