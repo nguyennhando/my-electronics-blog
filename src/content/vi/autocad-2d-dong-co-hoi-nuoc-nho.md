@@ -20,7 +20,7 @@ published: true
 created_at: '2026-05-08T12:00:00Z'
 external_link: https://drive.google.com/drive/folders/1GDWUKT5mLYHnSlSns5oKxpMZrkY9WENy
 project_status: done
-sort_order: 80
+sort_order: 90
 ---
 
 # AutoCAD 2D - Động cơ hơi nước nhỏ
