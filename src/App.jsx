@@ -117,6 +117,10 @@ const DEFAULT_GALLERY_IMAGES = [
 // ─────────────────────────────────────────────
 const ADMIN_AUTH_KEY = "electronics-blog-admin-auth-v1";
 const ADMIN_SESSION_KEY = "electronics-blog-admin-session-v1";
+const GITHUB_TOKEN_KEY = "electronics-blog-github-token-v1";
+const GITHUB_REPO_OWNER = "nguyennhando";
+const GITHUB_REPO_NAME = "my-electronics-blog";
+const GITHUB_REPO_BRANCH = "main";
 
 const bytesToHex = (bytes) => Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
 
@@ -155,6 +159,22 @@ const setAdminSession = (active) => {
   if (active) window.localStorage.setItem(ADMIN_SESSION_KEY, "active");
   else window.localStorage.removeItem(ADMIN_SESSION_KEY);
 };
+
+const textToBase64 = (text) => {
+  const bytes = new TextEncoder().encode(text);
+  let binary = "";
+  const chunkSize = 0x8000;
+
+  for (let index = 0; index < bytes.length; index += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(index, index + chunkSize));
+  }
+
+  return btoa(binary);
+};
+
+const encodeGithubPath = (path) => path.split("/").map(encodeURIComponent).join("/");
+
+const getGithubContentPath = (output) => `src/content/${output.directory ? `${output.directory}/` : ""}${output.filename}`;
 
 const ADMIN_TEXT = {
   de: {
@@ -1392,6 +1412,8 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   const [slugEdited, setSlugEdited] = useState(false);
   const [contentDirectory, setContentDirectory] = useState(null);
   const [saveMessage, setSaveMessage] = useState("");
+  const [githubToken, setGithubToken] = useState(() => window.localStorage.getItem(GITHUB_TOKEN_KEY) || "");
+  const [showGithubToken, setShowGithubToken] = useState(() => !window.localStorage.getItem(GITHUB_TOKEN_KEY));
   const [showHomeContentEditor, setShowHomeContentEditor] = useState(false);
   const [homeContentForm, setHomeContentForm] = useState(() => getLocalizedHomeContent("de"));
   const [showPersonalWayEditor, setShowPersonalWayEditor] = useState(false);
@@ -1436,6 +1458,77 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     const output = getMarkdownExport();
     if (!output) return;
     downloadTextFile(output.filename, output.markdown);
+  };
+
+  const saveGithubToken = () => {
+    const token = githubToken.trim();
+    if (!token) {
+      window.localStorage.removeItem(GITHUB_TOKEN_KEY);
+      setSaveMessage("GitHub token wurde entfernt.");
+      return;
+    }
+
+    window.localStorage.setItem(GITHUB_TOKEN_KEY, token);
+    setShowGithubToken(false);
+    setSaveMessage("GitHub token wurde lokal im Browser gespeichert.");
+  };
+
+  const saveOutputsToGitHub = async (outputs, commitMessage) => {
+    const token = githubToken.trim() || window.localStorage.getItem(GITHUB_TOKEN_KEY);
+    if (!token) {
+      setShowGithubToken(true);
+      setSaveMessage("Bitte zuerst einen GitHub token eintragen.");
+      return;
+    }
+
+    try {
+      for (const output of outputs) {
+        const path = getGithubContentPath(output);
+        const apiPath = encodeGithubPath(path);
+        const fileUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${apiPath}?ref=${GITHUB_REPO_BRANCH}`;
+        const headers = {
+          Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${token}`,
+          "X-GitHub-Api-Version": "2022-11-28",
+        };
+        let sha = null;
+        const currentFile = await fetch(fileUrl, { headers });
+
+        if (currentFile.ok) {
+          const currentData = await currentFile.json();
+          sha = currentData.sha;
+        } else if (currentFile.status !== 404) {
+          throw new Error(`GitHub konnte ${path} nicht lesen (${currentFile.status}).`);
+        }
+
+        const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${apiPath}`, {
+          method: "PUT",
+          headers: {
+            ...headers,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            branch: GITHUB_REPO_BRANCH,
+            message: commitMessage || `Update ${path}`,
+            content: textToBase64(output.markdown),
+            ...(sha ? { sha } : {}),
+          }),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`GitHub konnte ${path} nicht speichern (${response.status}). ${errorText}`);
+        }
+      }
+
+      setSaveMessage(`${outputs.length} Datei(en) wurden auf GitHub gespeichert. GitHub Pages danach kurz neu laden.`);
+    } catch (error) {
+      setSaveMessage(error.message || "GitHub speichern ist fehlgeschlagen.");
+    }
+  };
+
+  const saveMarkdownToGitHub = async (output) => {
+    await saveOutputsToGitHub([output], `Update ${getGithubContentPath(output)}`);
   };
 
   const getContentDirectory = async () => {
@@ -1490,20 +1583,17 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
 
   const saveProjectOrderToDirectory = async () => {
     try {
-      const directory = await getContentDirectory();
-      if (!directory) return;
       const orderByTranslationId = new Map(projectOrderIds.map((translationId, index) => [translationId, (index + 1) * 10]));
       const projectVariants = CONTENT_POSTS.filter((post) => post.content_type !== "knowledge" && orderByTranslationId.has(post.translation_id));
 
-      for (const post of projectVariants) {
-        await writeMarkdownToDirectory(directory, {
-          filename: `${post.slug}.md`,
-          directory: post.language,
-          markdown: createMarkdownFile({ ...post, sort_order: orderByTranslationId.get(post.translation_id) }),
-        });
-      }
+      const outputs = projectVariants.map((post) => ({
+        filename: `${post.slug}.md`,
+        directory: post.language,
+        markdown: createMarkdownFile({ ...post, sort_order: orderByTranslationId.get(post.translation_id) }),
+      }));
 
-      setSaveMessage(`Die Reihenfolge von ${projectOrderIds.length} Projektkarten wurde für alle Sprachen gespeichert.`);
+      await saveOutputsToGitHub(outputs, "Update project card order");
+
     } catch (error) {
       if (error.name !== "AbortError") {
         window.alert("Die Reihenfolge konnte nicht gespeichert werden.");
@@ -1514,7 +1604,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   const savePostToDirectory = async () => {
     const output = getMarkdownExport();
     if (!output) return;
-    await saveMarkdownToDirectory(output);
+    await saveMarkdownToGitHub(output);
   };
 
   const selectHomeContentLanguage = (language) => {
@@ -1530,7 +1620,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   });
 
   const saveHomeContentToDirectory = async () => {
-    await saveMarkdownToDirectory(getHomeContentExport());
+    await saveMarkdownToGitHub(getHomeContentExport());
   };
 
   const exportHomeContent = () => {
@@ -1560,7 +1650,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   const savePersonalWayToDirectory = async () => {
     const output = getPersonalWayExport();
     if (!output) return;
-    await saveMarkdownToDirectory(output);
+    await saveMarkdownToGitHub(output);
   };
 
   const exportPersonalWay = () => {
@@ -1575,7 +1665,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   });
 
   const saveSiteSettingsToDirectory = async () => {
-    await saveMarkdownToDirectory(getSiteSettingsExport());
+    await saveMarkdownToGitHub(getSiteSettingsExport());
   };
 
   const exportSiteSettings = () => {
@@ -1589,7 +1679,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   });
 
   const saveGallerySettingsToDirectory = async () => {
-    await saveMarkdownToDirectory(getGallerySettingsExport());
+    await saveMarkdownToGitHub(getGallerySettingsExport());
   };
 
   const exportGallerySettings = () => {
@@ -1653,6 +1743,35 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
 
       <main className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-5 lg:grid-cols-[1.05fr_0.95fr]">
         <section className="space-y-5">
+          <div className="rounded-2xl border border-sky-400/20 bg-sky-400/5 p-5">
+            <button type="button" onClick={() => setShowGithubToken((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
+              <span>
+                <span className="block text-xs font-bold uppercase text-sky-300">GitHub</span>
+                <span className="mt-1 block font-black">Direkt auf GitHub speichern</span>
+              </span>
+              <Code2 className="h-5 w-5 text-sky-300" />
+            </button>
+            {showGithubToken && (
+              <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
+                <p className="text-sm leading-6 text-zinc-300">
+                  Tragen Sie einen GitHub fine-grained token mit <span className="font-bold text-white">Contents: Read and write</span> fuer <span className="font-bold text-white">nguyennhando/my-electronics-blog</span> ein. Der Token wird nur lokal in diesem Browser gespeichert.
+                </p>
+                <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
+                  <input
+                    type="password"
+                    value={githubToken}
+                    onChange={(event) => setGithubToken(event.target.value)}
+                    className={inputClass}
+                    placeholder="github_pat_..."
+                  />
+                  <button type="button" onClick={saveGithubToken} className="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-400 px-4 py-3 text-sm font-black text-black transition hover:bg-sky-300">
+                    <Save className="h-4 w-4" /> Token speichern
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/5 p-5">
             <button type="button" onClick={() => setShowSiteSettingsEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
               <span>
@@ -1678,7 +1797,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <button type="button" onClick={saveSiteSettingsToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-emerald-400 px-4 py-2 text-sm font-black text-black transition hover:bg-emerald-300">
-                    <Save className="h-4 w-4" /> In Ordner speichern
+                    <Code2 className="h-4 w-4" /> Auf GitHub speichern
                   </button>
                   <button type="button" onClick={exportSiteSettings} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
                     <Download className="h-4 w-4" /> MD exportieren
@@ -1720,7 +1839,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <button type="button" onClick={saveGallerySettingsToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2 text-sm font-black text-black transition hover:bg-cyan-300">
-                    <Save className="h-4 w-4" /> In Ordner speichern
+                    <Code2 className="h-4 w-4" /> Auf GitHub speichern
                   </button>
                   <button type="button" onClick={exportGallerySettings} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
                     <Download className="h-4 w-4" /> MD exportieren
@@ -1744,7 +1863,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                 <div className="rounded-xl border border-orange-400/20 bg-orange-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
                   <p className="font-black text-orange-200">Projektkarten visuell sortieren</p>
                   <p className="mt-2">Verschieben Sie Karten mit den Pfeilen nach oben oder unten. Beim Speichern wird die Reihenfolge automatisch für alle Sprachversionen übernommen.</p>
-                  <p className="mt-2 text-xs text-zinc-400">Wählen Sie genau den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-orange-100">src/content</code>, nicht einen Sprachordner.</p>
+                  <p className="mt-2 text-xs text-zinc-400">Mit „Reihenfolge speichern“ wird die neue Sortierung direkt auf GitHub gespeichert.</p>
                 </div>
                 <div>
                   <label className={labelClass}>Vorschau-Sprache</label>
@@ -1775,7 +1894,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                   ))}
                 </div>
                 <button type="button" onClick={saveProjectOrderToDirectory} className="inline-flex w-fit items-center gap-2 rounded-xl bg-orange-400 px-4 py-2 text-sm font-black text-black transition hover:bg-orange-300">
-                  <Save className="h-4 w-4" /> Reihenfolge speichern
+                  <Code2 className="h-4 w-4" /> Reihenfolge speichern
                 </button>
                 {saveMessage && <p className="text-xs font-bold text-emerald-300">{saveMessage}</p>}
               </div>
@@ -1801,8 +1920,8 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                     <li>Englisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/en/home-content.md</code></li>
                     <li>Vietnamesisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/vi/home-content.md</code></li>
                   </ul>
-                  <p className="mt-3 text-xs text-zinc-400">Wenn Sie „In Ordner speichern“ verwenden, wählen Sie genau den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content</code>. Wählen Sie nicht <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">de</code>, <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">en</code> oder <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">vi</code>. Der Editor legt die Datei automatisch im passenden Sprachordner ab.</p>
-                  <p className="mt-2 text-xs text-zinc-400">Nach dem Speichern laden Sie die Blog-Seite neu. Für die veröffentlichte Website müssen Sie anschließend neu bauen und deployen.</p>
+                  <p className="mt-3 text-xs text-zinc-400">Mit „Auf GitHub speichern“ wird diese Datei direkt in den passenden Sprachordner unter <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content</code> geschrieben.</p>
+                  <p className="mt-2 text-xs text-zinc-400">Nach dem Speichern lädt GitHub Pages die Änderung nach kurzer Zeit neu.</p>
                 </div>
                 <div>
                   <label className={labelClass}>Sprache</label>
@@ -1820,7 +1939,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                 ))}
                 <div className="flex flex-wrap gap-2">
                   <button type="button" onClick={saveHomeContentToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-blue-400 px-4 py-2 text-sm font-black text-black transition hover:bg-blue-300">
-                    <Save className="h-4 w-4" /> In Ordner speichern
+                    <Code2 className="h-4 w-4" /> Auf GitHub speichern
                   </button>
                   <button type="button" onClick={exportHomeContent} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
                     <Download className="h-4 w-4" /> MD exportieren
@@ -1882,7 +2001,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                     <li>Englisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/en/personal-way.md</code></li>
                     <li>Vietnamesisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/vi/personal-way.md</code></li>
                   </ul>
-                  <p className="mt-3 text-xs text-zinc-400">Wenn Sie „In Ordner speichern“ verwenden, wählen Sie genau den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content</code>. Wählen Sie nicht <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">de</code>, <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">en</code> oder <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">vi</code>. Der Editor legt die Datei automatisch im passenden Sprachordner ab.</p>
+                  <p className="mt-3 text-xs text-zinc-400">Mit „Auf GitHub speichern“ wird diese Datei direkt in den passenden Sprachordner unter <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content</code> geschrieben.</p>
                 </div>
                 <div>
                   <label className={labelClass}>Sprache</label>
@@ -1910,7 +2029,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <button type="button" onClick={savePersonalWayToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-fuchsia-400 px-4 py-2 text-sm font-black text-black transition hover:bg-fuchsia-300">
-                    <Save className="h-4 w-4" /> In Ordner speichern
+                    <Code2 className="h-4 w-4" /> Auf GitHub speichern
                   </button>
                   <button type="button" onClick={exportPersonalWay} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
                     <Download className="h-4 w-4" /> MD exportieren
@@ -2042,7 +2161,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
               <h2 className="font-black text-cyan-300">Vorschau</h2>
               <div className="flex flex-wrap justify-end gap-2">
                 <button type="button" onClick={savePostToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2 text-sm font-black text-black transition hover:bg-cyan-300">
-                  <Save className="h-4 w-4" /> In Ordner speichern
+                  <Code2 className="h-4 w-4" /> Auf GitHub speichern
                 </button>
                 <button type="button" onClick={exportPost} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
                   <Download className="h-4 w-4" /> MD exportieren
