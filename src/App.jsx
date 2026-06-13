@@ -828,14 +828,14 @@ function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange
           <button type="button" onClick={goKnowledge} className="inline-flex items-center gap-2 rounded-full border border-slate-300/30 bg-slate-300/10 px-4 py-2 text-sm font-bold text-slate-200 transition hover:border-slate-200/60 hover:bg-slate-300/20">
             <BookOpen className="h-4 w-4" /> {t.knowledge}
           </button>
+          <div className="flex rounded-full border border-white/10 bg-white/5 p-1">
+            {LANGUAGES.map((item) => <button key={item} type="button" onClick={() => onLanguageChange(item)} className={`rounded-full px-2 py-1 text-[11px] font-black uppercase transition ${language === item ? "bg-cyan-400 text-black" : "text-zinc-400 hover:text-white"}`}>{item}</button>)}
+          </div>
           {onAdminAccess && (
             <button type="button" onClick={() => { setMenuOpen(false); onAdminAccess(); }} className="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2 text-sm font-bold text-cyan-100 transition hover:border-cyan-200/60 hover:bg-cyan-300/20">
               <LogIn className="h-4 w-4" /> {isAdminAuthenticated ? "Admin" : "Login"}
             </button>
           )}
-          <div className="flex rounded-full border border-white/10 bg-white/5 p-1">
-            {LANGUAGES.map((item) => <button key={item} type="button" onClick={() => onLanguageChange(item)} className={`rounded-full px-2 py-1 text-[11px] font-black uppercase transition ${language === item ? "bg-cyan-400 text-black" : "text-zinc-400 hover:text-white"}`}>{item}</button>)}
-          </div>
         </div>
 
         <button type="button" className="rounded-xl border border-white/10 p-2 text-white hover:bg-white/10 md:hidden" onClick={() => setMenuOpen(v => !v)}>
