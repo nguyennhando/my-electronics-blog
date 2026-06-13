@@ -6,10 +6,10 @@ language: en
 content_type: project
 title: Voice Transcriber Privacy Policy
 category: Software
-image_url: C:\Users\nguye\my-electronics-blog\posts\voice-transcriber-main.webp
+image_url: /my-electronics-blog/images/posts/voice-transcriber-main.webp
 image_gallery:
-- C:\Users\nguye\my-electronics-blog\posts\voice-transcriber-1.webp
-- C:\Users\nguye\my-electronics-blog\posts\voice-transcriber-2.webp
+- /my-electronics-blog/images/posts/voice-transcriber-1.webp
+- /my-electronics-blog/images/posts/voice-transcriber-2.webp
 excerpt: Privacy policy for Voice Transcriber desktop application.
 tags:
 - Legal
