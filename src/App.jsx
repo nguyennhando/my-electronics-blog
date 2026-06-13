@@ -1473,6 +1473,46 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     setSaveMessage("GitHub token wurde lokal im Browser gespeichert.");
   };
 
+  const getGithubErrorMessage = async (response, fallback) => {
+    try {
+      const data = await response.json();
+      return `${fallback} (${response.status}): ${data.message || "Keine Details von GitHub."}`;
+    } catch {
+      return `${fallback} (${response.status}).`;
+    }
+  };
+
+  const testGithubToken = async () => {
+    const token = githubToken.trim() || window.localStorage.getItem(GITHUB_TOKEN_KEY);
+    if (!token) {
+      setShowGithubToken(true);
+      setSaveMessage("Bitte zuerst einen GitHub token eintragen.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}`, {
+        headers: {
+          Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${token}`,
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(await getGithubErrorMessage(response, "Token-Test fehlgeschlagen"));
+      }
+
+      setSaveMessage("Token funktioniert. GitHub API ist erreichbar.");
+    } catch (error) {
+      setSaveMessage(
+        error instanceof TypeError
+          ? "GitHub API ist vom Browser blockiert oder nicht erreichbar. Bitte Chrome/Edge testen, Adblock/Tracking-Schutz pruefen, oder MD exportieren verwenden."
+          : error.message
+      );
+    }
+  };
+
   const saveOutputsToGitHub = async (outputs, commitMessage) => {
     const token = githubToken.trim() || window.localStorage.getItem(GITHUB_TOKEN_KEY);
     if (!token) {
@@ -1498,7 +1538,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
           const currentData = await currentFile.json();
           sha = currentData.sha;
         } else if (currentFile.status !== 404) {
-          throw new Error(`GitHub konnte ${path} nicht lesen (${currentFile.status}).`);
+          throw new Error(await getGithubErrorMessage(currentFile, `GitHub konnte ${path} nicht lesen`));
         }
 
         const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${apiPath}`, {
@@ -1516,14 +1556,17 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
         });
 
         if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`GitHub konnte ${path} nicht speichern (${response.status}). ${errorText}`);
+          throw new Error(await getGithubErrorMessage(response, `GitHub konnte ${path} nicht speichern`));
         }
       }
 
       setSaveMessage(`${outputs.length} Datei(en) wurden auf GitHub gespeichert. GitHub Pages danach kurz neu laden.`);
     } catch (error) {
-      setSaveMessage(error.message || "GitHub speichern ist fehlgeschlagen.");
+      setSaveMessage(
+        error instanceof TypeError
+          ? "GitHub API ist vom Browser blockiert oder nicht erreichbar. Bitte Chrome/Edge testen, Adblock/Tracking-Schutz pruefen, oder MD exportieren verwenden."
+          : error.message || "GitHub speichern ist fehlgeschlagen."
+      );
     }
   };
 
@@ -1756,7 +1799,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                 <p className="text-sm leading-6 text-zinc-300">
                   Tragen Sie einen GitHub fine-grained token mit <span className="font-bold text-white">Contents: Read and write</span> fuer <span className="font-bold text-white">nguyennhando/my-electronics-blog</span> ein. Der Token wird nur lokal in diesem Browser gespeichert.
                 </p>
-                <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
+                <div className="grid gap-3 sm:grid-cols-[1fr_auto_auto]">
                   <input
                     type="password"
                     value={githubToken}
@@ -1766,6 +1809,9 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                   />
                   <button type="button" onClick={saveGithubToken} className="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-400 px-4 py-3 text-sm font-black text-black transition hover:bg-sky-300">
                     <Save className="h-4 w-4" /> Token speichern
+                  </button>
+                  <button type="button" onClick={testGithubToken} className="inline-flex items-center justify-center gap-2 rounded-xl border border-sky-300/30 px-4 py-3 text-sm font-bold text-sky-100 transition hover:bg-sky-300/10">
+                    <Code2 className="h-4 w-4" /> Token testen
                   </button>
                 </div>
               </div>
