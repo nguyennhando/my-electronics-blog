@@ -156,6 +156,108 @@ const setAdminSession = (active) => {
   else window.localStorage.removeItem(ADMIN_SESSION_KEY);
 };
 
+const ADMIN_TEXT = {
+  de: {
+    title: "Admin Login",
+    intro: "Nur Admins dürfen sich anmelden. Wenn Sie kein Admin sind, kehren Sie bitte zur Startseite zurück.",
+    notice: "Diese Anmeldung wird lokal in Ihrem Browser gespeichert. Auf GitHub Pages kann der Admin-Editor die Oberfläche öffnen, aber ohne Backend keine Dateien automatisch nach GitHub schreiben.",
+    backBlog: "Zurück zum Blog",
+    recoveryCode: "Wiederherstellungscode",
+    saveRecovery: "Bitte speichern Sie diesen Code, falls Sie Ihr Passwort vergessen.",
+    enterAdmin: "Admin öffnen",
+    firstSetup: "Ersteinrichtung",
+    forgotPassword: "Passwort vergessen",
+    adminAuth: "Admin-Prüfung",
+    createPasswordTitle: "Admin-Passwort erstellen",
+    resetPasswordTitle: "Wiederherstellungscode eingeben und Passwort neu setzen",
+    loginTitle: "Passwort eingeben, um den Editor zu oeffnen",
+    password: "Passwort",
+    recoveryCodeLabel: "Wiederherstellungscode",
+    newPassword: "Neues Passwort",
+    confirmPassword: "Passwort wiederholen",
+    createPassword: "Passwort erstellen",
+    resetPassword: "Passwort neu setzen",
+    login: "Anmelden",
+    backLogin: "Zurück zur Anmeldung",
+    forgot: "Passwort vergessen",
+    resetLocal: "Lokale Konfiguration loeschen",
+    passwordTooShort: "Das Passwort muss mindestens 8 Zeichen lang sein.",
+    confirmMismatch: "Die Passwortbestätigung stimmt nicht überein.",
+    setupDone: "Admin-Passwort erstellt. Bitte speichern Sie den Wiederherstellungscode unten.",
+    wrongPassword: "Falsches Passwort. Nur Admins duerfen sich anmelden.",
+    newPasswordTooShort: "Das neue Passwort muss mindestens 8 Zeichen lang sein.",
+    wrongRecovery: "Der Wiederherstellungscode ist nicht korrekt.",
+    passwordChanged: "Passwort geändert. Bitte speichern Sie den neuen Wiederherstellungscode.",
+    localReset: "Admin-Konfiguration in diesem Browser gelöscht. Bitte erstellen Sie ein neues Passwort.",
+  },
+  en: {
+    title: "Admin Login",
+    intro: "Only admins are allowed to sign in. If you are not an admin, please return to the home page.",
+    notice: "This login is stored locally in your browser. On GitHub Pages, the admin editor can open the interface, but cannot automatically write files to GitHub without a backend.",
+    backBlog: "Back to Blog",
+    recoveryCode: "Recovery Code",
+    saveRecovery: "Please save this code in case you forget your password.",
+    enterAdmin: "Open admin",
+    firstSetup: "First setup",
+    forgotPassword: "Forgot password",
+    adminAuth: "Admin authentication",
+    createPasswordTitle: "Create an admin password",
+    resetPasswordTitle: "Enter your recovery code to reset the password",
+    loginTitle: "Enter your password to open the editor",
+    password: "Password",
+    recoveryCodeLabel: "Recovery code",
+    newPassword: "New password",
+    confirmPassword: "Confirm password",
+    createPassword: "Create password",
+    resetPassword: "Reset password",
+    login: "Sign in",
+    backLogin: "Back to sign in",
+    forgot: "Forgot password",
+    resetLocal: "Clear local setup",
+    passwordTooShort: "Password must be at least 8 characters.",
+    confirmMismatch: "Password confirmation does not match.",
+    setupDone: "Admin password created. Please save the recovery code below.",
+    wrongPassword: "Wrong password. Only admins are allowed to sign in.",
+    newPasswordTooShort: "New password must be at least 8 characters.",
+    wrongRecovery: "The recovery code is not correct.",
+    passwordChanged: "Password changed. Please save the new recovery code.",
+    localReset: "Admin setup was cleared in this browser. Please create a new password.",
+  },
+  vi: {
+    title: "Đăng nhập Admin",
+    intro: "Chỉ admin mới được quyền đăng nhập. Nếu bạn không phải admin, vui lòng quay lại trang chủ.",
+    notice: "Đăng nhập này được lưu cục bộ trên trình duyệt. Trên GitHub Pages, admin editor có thể mở giao diện nhưng chưa thể tự động ghi file lên GitHub nếu chưa có backend.",
+    backBlog: "Quay lại Blog",
+    recoveryCode: "Mã khôi phục",
+    saveRecovery: "Hãy lưu mã này để dùng khi quên mật khẩu.",
+    enterAdmin: "Vào admin",
+    firstSetup: "Thiết lập lần đầu",
+    forgotPassword: "Quên mật khẩu",
+    adminAuth: "Xác thực admin",
+    createPasswordTitle: "Tạo mật khẩu admin",
+    resetPasswordTitle: "Nhập mã khôi phục để đặt lại mật khẩu",
+    loginTitle: "Nhập mật khẩu để vào editor",
+    password: "Mật khẩu",
+    recoveryCodeLabel: "Mã khôi phục",
+    newPassword: "Mật khẩu mới",
+    confirmPassword: "Nhập lại mật khẩu",
+    createPassword: "Tạo mật khẩu",
+    resetPassword: "Đặt lại mật khẩu",
+    login: "Đăng nhập",
+    backLogin: "Quay lại đăng nhập",
+    forgot: "Quên mật khẩu",
+    resetLocal: "Xóa cấu hình local",
+    passwordTooShort: "Mật khẩu cần ít nhất 8 ký tự.",
+    confirmMismatch: "Mật khẩu xác nhận không khớp.",
+    setupDone: "Đã tạo mật khẩu admin. Hãy lưu mã khôi phục bên dưới.",
+    wrongPassword: "Sai mật khẩu. Chỉ admin mới được quyền đăng nhập.",
+    newPasswordTooShort: "Mật khẩu mới cần ít nhất 8 ký tự.",
+    wrongRecovery: "Mã khôi phục không đúng.",
+    passwordChanged: "Đã đổi mật khẩu. Hãy lưu mã khôi phục mới.",
+    localReset: "Đã xóa cấu hình admin trên trình duyệt này. Hãy tạo mật khẩu mới.",
+  },
+};
+
 const normalizeImageList = (value) => {
   if (!value) return [];
   if (Array.isArray(value)) return value.filter(Boolean);
@@ -516,7 +618,7 @@ function Lightbox({ images, index, onClose }) {
 // ─────────────────────────────────────────────
 // HEADER
 // ─────────────────────────────────────────────
-function AdminAccessPanel({ onAuthenticated, onBack }) {
+function AdminAccessPanel({ language = "de", onLanguageChange = () => {}, onAuthenticated, onBack }) {
   const [config, setConfig] = useState(() => readAdminConfig());
   const [mode, setMode] = useState(() => readAdminConfig() ? "login" : "setup");
   const [password, setPassword] = useState("");
@@ -527,6 +629,7 @@ function AdminAccessPanel({ onAuthenticated, onBack }) {
   const [message, setMessage] = useState("");
   const isSetup = mode === "setup";
   const isForgot = mode === "forgot";
+  const t = ADMIN_TEXT[language] || ADMIN_TEXT.de;
 
   const resetFields = () => {
     setPassword("");
@@ -559,17 +662,17 @@ function AdminAccessPanel({ onAuthenticated, onBack }) {
   const handleSetup = async (event) => {
     event.preventDefault();
     if (newPassword.length < 8) {
-      setMessage("Mat khau can it nhat 8 ky tu.");
+      setMessage(t.passwordTooShort);
       return;
     }
     if (newPassword !== confirmPassword) {
-      setMessage("Mat khau xac nhan khong khop.");
+      setMessage(t.confirmMismatch);
       return;
     }
 
     await saveNewPassword(newPassword);
     resetFields();
-    setMessage("Da tao mat khau admin. Hay luu ma khoi phuc ben duoi.");
+    setMessage(t.setupDone);
   };
 
   const handleLogin = async (event) => {
@@ -581,7 +684,7 @@ function AdminAccessPanel({ onAuthenticated, onBack }) {
 
     const passwordHash = await hashAdminSecret(password, config.salt);
     if (passwordHash !== config.passwordHash) {
-      setMessage("Sai mat khau. Chi admin moi duoc quyen dang nhap.");
+      setMessage(t.wrongPassword);
       return;
     }
 
@@ -595,24 +698,24 @@ function AdminAccessPanel({ onAuthenticated, onBack }) {
       return;
     }
     if (newPassword.length < 8) {
-      setMessage("Mat khau moi can it nhat 8 ky tu.");
+      setMessage(t.newPasswordTooShort);
       return;
     }
     if (newPassword !== confirmPassword) {
-      setMessage("Mat khau xac nhan khong khop.");
+      setMessage(t.confirmMismatch);
       return;
     }
 
     const recoveryHash = await hashAdminSecret(recoveryCode.trim(), config.salt);
     if (recoveryHash !== config.recoveryHash) {
-      setMessage("Ma khoi phuc khong dung.");
+      setMessage(t.wrongRecovery);
       return;
     }
 
     await saveNewPassword(newPassword);
     resetFields();
     setMode("login");
-    setMessage("Da doi mat khau. Hay luu ma khoi phuc moi.");
+    setMessage(t.passwordChanged);
   };
 
   const resetLocalAdmin = () => {
@@ -622,7 +725,7 @@ function AdminAccessPanel({ onAuthenticated, onBack }) {
     setNewRecoveryCode("");
     resetFields();
     setMode("setup");
-    setMessage("Da xoa cau hinh admin tren trinh duyet nay. Hay tao mat khau moi.");
+    setMessage(t.localReset);
   };
 
   return (
@@ -630,20 +733,34 @@ function AdminAccessPanel({ onAuthenticated, onBack }) {
       <Background />
       <main className="mx-auto flex min-h-screen max-w-5xl items-center px-4 py-24 sm:px-5">
         <section className="w-full overflow-hidden rounded-[2rem] border border-white/10 bg-[#07111f]/95 shadow-2xl shadow-black/30 backdrop-blur-xl">
+          <div className="flex justify-end border-b border-white/10 px-6 py-4 sm:px-8">
+            <div className="flex rounded-full border border-white/10 bg-white/5 p-1">
+              {LANGUAGES.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => onLanguageChange(item)}
+                  className={`rounded-full px-3 py-1.5 text-xs font-black uppercase transition ${language === item ? "bg-cyan-400 text-black" : "text-zinc-400 hover:text-white"}`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
             <div className="border-b border-white/10 bg-white/[0.03] p-6 sm:p-8 lg:border-b-0 lg:border-r">
               <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-300/30 bg-cyan-300/10 text-cyan-200">
                 <LockKeyhole className="h-6 w-6" />
               </div>
-              <h1 className="mt-5 text-2xl font-black sm:text-4xl">Admin Login</h1>
+              <h1 className="mt-5 text-2xl font-black sm:text-4xl">{t.title}</h1>
               <p className="mt-4 text-sm leading-7 text-zinc-300">
-                Chi admin moi duoc quyen dang nhap. Neu ban khong phai admin, vui long quay lai trang chu.
+                {t.intro}
               </p>
               <p className="mt-4 rounded-2xl border border-yellow-300/25 bg-yellow-300/10 p-4 text-sm leading-6 text-yellow-100">
-                Bao mat nay duoc luu cuc bo tren trinh duyet. Tren GitHub Pages, admin editor co the mo giao dien nhung khong the tu dong ghi file len GitHub neu chua co backend.
+                {t.notice}
               </p>
               <button type="button" onClick={onBack} className="mt-6 inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10 hover:text-white">
-                <ArrowLeft className="h-4 w-4" /> Quay lai Blog
+                <ArrowLeft className="h-4 w-4" /> {t.backBlog}
               </button>
             </div>
 
@@ -651,30 +768,30 @@ function AdminAccessPanel({ onAuthenticated, onBack }) {
               {newRecoveryCode ? (
                 <div className="space-y-5">
                   <div>
-                    <p className="text-xs font-bold uppercase text-cyan-300">Ma khoi phuc</p>
-                    <h2 className="mt-2 text-xl font-black">Hay luu ma nay de dung khi quen mat khau</h2>
+                    <p className="text-xs font-bold uppercase text-cyan-300">{t.recoveryCode}</p>
+                    <h2 className="mt-2 text-xl font-black">{t.saveRecovery}</h2>
                   </div>
                   <div className="rounded-2xl border border-emerald-300/25 bg-emerald-300/10 p-4 font-mono text-sm font-bold text-emerald-100 sm:text-base">
                     {newRecoveryCode}
                   </div>
                   <button type="button" onClick={completeAuth} className="inline-flex items-center gap-2 rounded-xl bg-cyan-300 px-5 py-3 font-black text-slate-950 transition hover:bg-white">
-                    <LogIn className="h-4 w-4" /> Vao admin
+                    <LogIn className="h-4 w-4" /> {t.enterAdmin}
                   </button>
                 </div>
               ) : (
                 <form onSubmit={isSetup ? handleSetup : isForgot ? handleForgot : handleLogin} className="space-y-5">
                   <div>
                     <p className="text-xs font-bold uppercase text-cyan-300">
-                      {isSetup ? "Thiet lap lan dau" : isForgot ? "Quen mat khau" : "Xac thuc admin"}
+                      {isSetup ? t.firstSetup : isForgot ? t.forgotPassword : t.adminAuth}
                     </p>
                     <h2 className="mt-2 text-xl font-black">
-                      {isSetup ? "Tao mat khau admin" : isForgot ? "Nhap ma khoi phuc de dat lai mat khau" : "Nhap mat khau de vao editor"}
+                      {isSetup ? t.createPasswordTitle : isForgot ? t.resetPasswordTitle : t.loginTitle}
                     </h2>
                   </div>
 
                   {!isSetup && !isForgot && (
                     <div>
-                      <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">Mat khau</label>
+                      <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">{t.password}</label>
                       <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" autoFocus />
                     </div>
                   )}
@@ -683,16 +800,16 @@ function AdminAccessPanel({ onAuthenticated, onBack }) {
                     <>
                       {isForgot && (
                         <div>
-                          <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">Ma khoi phuc</label>
+                          <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">{t.recoveryCodeLabel}</label>
                           <input value={recoveryCode} onChange={(event) => setRecoveryCode(event.target.value)} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" placeholder="ADMIN-XXXXXX-XXXXXX-XXXXXX" />
                         </div>
                       )}
                       <div>
-                        <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">Mat khau moi</label>
+                        <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">{t.newPassword}</label>
                         <input type="password" value={newPassword} onChange={(event) => setNewPassword(event.target.value)} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
                       </div>
                       <div>
-                        <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">Nhap lai mat khau</label>
+                        <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">{t.confirmPassword}</label>
                         <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
                       </div>
                     </>
@@ -703,16 +820,16 @@ function AdminAccessPanel({ onAuthenticated, onBack }) {
                   <div className="flex flex-wrap gap-3">
                     <button type="submit" className="inline-flex items-center gap-2 rounded-xl bg-cyan-300 px-5 py-3 font-black text-slate-950 transition hover:bg-white">
                       {isForgot ? <KeyRound className="h-4 w-4" /> : <LogIn className="h-4 w-4" />}
-                      {isSetup ? "Tao mat khau" : isForgot ? "Dat lai mat khau" : "Dang nhap"}
+                      {isSetup ? t.createPassword : isForgot ? t.resetPassword : t.login}
                     </button>
                     {!isSetup && (
                       <button type="button" onClick={() => { resetFields(); setMode(isForgot ? "login" : "forgot"); }} className="rounded-xl border border-white/10 px-5 py-3 text-sm font-bold text-zinc-300 transition hover:bg-white/10 hover:text-white">
-                        {isForgot ? "Quay lai dang nhap" : "Quen mat khau"}
+                        {isForgot ? t.backLogin : t.forgot}
                       </button>
                     )}
                     {isForgot && (
                       <button type="button" onClick={resetLocalAdmin} className="rounded-xl border border-red-300/20 px-5 py-3 text-sm font-bold text-red-100 transition hover:bg-red-300/10">
-                        Xoa cau hinh local
+                        {t.resetLocal}
                       </button>
                     )}
                   </div>
@@ -2863,11 +2980,11 @@ function App() {
 
   if (isMarkdownEditor) {
     if (isAdminAuthenticated) return <MarkdownEditorPage onLogout={handleAdminLogout} />;
-    return <AdminAccessPanel onAuthenticated={handleAdminAuthenticated} onBack={closeAdminAccess} />;
+    return <AdminAccessPanel language={language} onLanguageChange={setLanguage} onAuthenticated={handleAdminAuthenticated} onBack={closeAdminAccess} />;
   }
 
   if (showAdminAccess) {
-    return <AdminAccessPanel onAuthenticated={handleAdminAuthenticated} onBack={closeAdminAccess} />;
+    return <AdminAccessPanel language={language} onLanguageChange={setLanguage} onAuthenticated={handleAdminAuthenticated} onBack={closeAdminAccess} />;
   }
 
   if (page === "impressum") {
