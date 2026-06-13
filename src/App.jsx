@@ -516,7 +516,7 @@ function Lightbox({ images, index, onClose }) {
 // ─────────────────────────────────────────────
 // HEADER
 // ─────────────────────────────────────────────
-function AdminAccessPanel({ allowEditor, onAuthenticated, onBack }) {
+function AdminAccessPanel({ onAuthenticated, onBack }) {
   const [config, setConfig] = useState(() => readAdminConfig());
   const [mode, setMode] = useState(() => readAdminConfig() ? "login" : "setup");
   const [password, setPassword] = useState("");
@@ -640,7 +640,7 @@ function AdminAccessPanel({ allowEditor, onAuthenticated, onBack }) {
                 Chi admin moi duoc quyen dang nhap. Neu ban khong phai admin, vui long quay lai trang chu.
               </p>
               <p className="mt-4 rounded-2xl border border-yellow-300/25 bg-yellow-300/10 p-4 text-sm leading-6 text-yellow-100">
-                Bao mat nay duoc luu cuc bo tren trinh duyet. Editor admin chi mo trong moi truong local dev.
+                Bao mat nay duoc luu cuc bo tren trinh duyet. Tren GitHub Pages, admin editor co the mo giao dien nhung khong the tu dong ghi file len GitHub neu chua co backend.
               </p>
               <button type="button" onClick={onBack} className="mt-6 inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10 hover:text-white">
                 <ArrowLeft className="h-4 w-4" /> Quay lai Blog
@@ -648,11 +648,7 @@ function AdminAccessPanel({ allowEditor, onAuthenticated, onBack }) {
             </div>
 
             <div className="p-6 sm:p-8">
-              {!allowEditor ? (
-                <div className="rounded-2xl border border-cyan-300/20 bg-cyan-300/10 p-5 text-sm leading-7 text-cyan-50">
-                  Nut nay chi danh cho admin. Trang dang nhap de chinh sua bai viet chi hoat dong khi chay local bang <span className="font-black">npm run admin</span>.
-                </div>
-              ) : newRecoveryCode ? (
+              {newRecoveryCode ? (
                 <div className="space-y-5">
                   <div>
                     <p className="text-xs font-bold uppercase text-cyan-300">Ma khoi phuc</p>
@@ -2748,7 +2744,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
 // ─────────────────────────────────────────────
 function App() {
   const isAdminRequest = new URLSearchParams(window.location.search).get("admin") === "1";
-  const isMarkdownEditor = import.meta.env.DEV && isAdminRequest;
+  const isMarkdownEditor = isAdminRequest;
   const [showAdminAccess, setShowAdminAccess] = useState(false);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => window.localStorage.getItem(ADMIN_SESSION_KEY) === "active");
   const [page, setPage] = useState("home"); // "home" | "post" | "knowledge" | "knowledge-post" | "impressum" | "datenschutz"
@@ -2841,7 +2837,7 @@ function App() {
   const goDatenschutz = useCallback(() => setRouteState("datenschutz", null), [setRouteState]);
 
   const openAdminAccess = useCallback(() => {
-    if (import.meta.env.DEV && isAdminAuthenticated) {
+    if (isAdminAuthenticated) {
       window.location.assign(`${window.location.pathname}?admin=1`);
       return;
     }
@@ -2851,8 +2847,7 @@ function App() {
 
   const handleAdminAuthenticated = useCallback(() => {
     setIsAdminAuthenticated(true);
-    if (import.meta.env.DEV) window.location.assign(`${window.location.pathname}?admin=1`);
-    else setShowAdminAccess(false);
+    window.location.assign(`${window.location.pathname}?admin=1`);
   }, []);
 
   const handleAdminLogout = useCallback(() => {
@@ -2868,11 +2863,11 @@ function App() {
 
   if (isMarkdownEditor) {
     if (isAdminAuthenticated) return <MarkdownEditorPage onLogout={handleAdminLogout} />;
-    return <AdminAccessPanel allowEditor={import.meta.env.DEV} onAuthenticated={handleAdminAuthenticated} onBack={closeAdminAccess} />;
+    return <AdminAccessPanel onAuthenticated={handleAdminAuthenticated} onBack={closeAdminAccess} />;
   }
 
   if (showAdminAccess) {
-    return <AdminAccessPanel allowEditor={import.meta.env.DEV} onAuthenticated={handleAdminAuthenticated} onBack={closeAdminAccess} />;
+    return <AdminAccessPanel onAuthenticated={handleAdminAuthenticated} onBack={closeAdminAccess} />;
   }
 
   if (page === "impressum") {
