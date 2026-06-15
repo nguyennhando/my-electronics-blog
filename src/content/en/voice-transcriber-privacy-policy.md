@@ -20,27 +20,58 @@ project_status: done
 sort_order: 100
 ---
 
+# Voice Transcriber
+
+Fast, accurate, and privacy-focused speech-to-text transcription for Windows.
+
+Voice Transcriber converts audio and video files into text directly on your computer using advanced AI speech recognition technology.
+
+## Features
+
+* Offline transcription
+* No cloud upload required
+* Fast and accurate speech recognition
+* Audio and video file support
+* Automatic subtitle generation
+* Export transcripts to text files
+* Simple and user-friendly interface
+* No user account required
+
+## Privacy First
+
+All processing is performed locally on your device.
+
+Your audio files, video files, and generated transcripts never leave your computer.
+
+Voice Transcriber does not collect, store, transmit, or share personal data.
+
+## Free Trial
+
+Voice Transcriber is available as a free 30-day trial version.
+
+## Download
+
+Click the **Open Project** button above to download and install Voice Transcriber.
+
+Start your free 30-day trial and experience fast, private, and offline AI-powered transcription.
+-------------------------------------------------------------------------
 # Privacy Policy
 
 **Last Updated: June 2026**
 
-## Introduction
-
-Voice Transcriber is a desktop application designed for audio and video transcription. We are committed to protecting user privacy and ensuring transparency regarding how data is handled.
+Voice Transcriber is an offline desktop application for audio and video transcription.
 
 ## Data Collection
 
 Voice Transcriber does not collect, store, transmit, sell, or share any personal information.
 
-The application operates entirely on the user's device and does not require the submission of personal data.
-
 ## Audio and Video Processing
 
-All audio and video files are processed locally on the user's computer.
+All audio and video processing is performed locally on the user's device.
 
 Files selected by the user are never uploaded to external servers, cloud services, or third-party platforms.
 
-Voice Transcriber does not retain copies of user files after processing, except for files explicitly saved by the user.
+Voice Transcriber does not retain copies of user files except those explicitly saved by the user.
 
 ## Internet Connectivity
 
@@ -54,13 +85,11 @@ Voice Transcriber does not require user registration, subscriptions, or user acc
 
 ## Analytics and Tracking
 
-Voice Transcriber does not use analytics services, advertising networks, tracking technologies, cookies, or telemetry systems to monitor user activity.
+Voice Transcriber does not use analytics services, advertising networks, cookies, tracking technologies, or telemetry systems.
 
 ## Third-Party Services
 
-Voice Transcriber does not transmit user-generated content to third-party services.
-
-Any third-party libraries included in the software operate locally and do not receive user data.
+Voice Transcriber does not transmit user content to third-party services.
 
 ## Data Security
 
@@ -70,41 +99,8 @@ Because all processing is performed locally on the user's device, users maintain
 
 This Privacy Policy may be updated from time to time. Any changes will be reflected by updating the "Last Updated" date above.
 
-## Contact Information
+## Contact
 
-Developer: Nguyen Nhan Do
+**Developer:** Nguyen Nhan Do
 
-Email: [nguyennhan.do@outlook.de](mailto:nguyennhan.do@outlook.de)
-
-
-# Voice Transcriber
-
-Fast, accurate, and privacy-focused speech-to-text transcription for Windows.
-
-Voice Transcriber converts audio and video files into text directly on your computer using modern AI speech recognition technology.
-
-### Key Features
-
-* Offline transcription – no cloud required
-* Privacy-first processing on your local device
-* Support for audio and video files
-* Fast and accurate speech recognition
-* Automatic subtitle generation
-* Export transcripts to text files
-* Simple and user-friendly interface
-* No user account required
-
-### Privacy First
-
-Unlike many online transcription services, Voice Transcriber processes your files locally. Your audio, video, and transcription data never leave your computer.
-
-### Ideal For
-
-* Meetings and interviews
-* Podcasts
-* Video creators
-* Lectures and courses
-* Research and documentation
-* Personal note-taking
-
-Voice Transcriber helps you transform speech into text quickly, securely, and efficiently.
+**Email:** [nguyennhan.do@outlook.de](mailto:nguyennhan.do@outlook.de)
