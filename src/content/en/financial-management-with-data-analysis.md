@@ -1,10 +1,10 @@
 ---
 id: financial-management-with-data-analysis
 slug: financial-management-with-data-analysis
-translation_id: local-post-1779957810945
+translation_id: privacy-policy-geldpilot
 language: en
-content_type: 
-title: Financial Management with Data Analysis
+content_type: project
+title: Privacy Policy for GeldPilot
 category: Softwareentwicklung
 image_url: /my-electronics-blog/images/posts/finanzmanager-main.webp
 image_gallery:
@@ -23,276 +23,115 @@ project_status: done
 sort_order: 30
 ---
 
-# Financial Management with Data Analysis
+# Privacy Policy for GeldPilot
 
-## GeldPilot - Personal Finance Management
+**Effective Date:** June 17, 2026
 
-GeldPilot is a modern desktop application for managing personal finances, developed with C++, Qt 6 and SQLite. It supports income and expense tracking, CSV import and export, and real-time data analysis through a modern graphical interface.
+## Introduction
 
-The `Open project` button at the end of the page provides access to the complete source code.
+This Privacy Policy explains how GeldPilot ("the Application") handles user data and protects user privacy.
 
-## Overview
+GeldPilot is a desktop application developed by Nguyen Nhan Do for personal financial management. The application is designed to operate locally on the user's device and does not require online accounts or cloud services.
 
-GeldPilot is a user-friendly application for managing income and expenses. Its intuitive interface makes it possible to manage transactions, organize categories and create comprehensive financial reports.
+## Developer Information
 
-## Main Features
+**Developer:** Nguyen Nhan Do
 
-- **Transaction management:** Add, edit and delete income and expenses
-- **Categories:** Use predefined and custom categories
-- **Period filters:** Filter flexibly by date and category
-- **Financial overview:** Automatically calculate income, expenses and balance
-- **Visualization:** Display finances with interactive bar charts
-- **Import and export:** Exchange data through CSV files
-- **Printing:** Generate professional reports with a company logo
+**Email:** [nguyennhan.do@outlook.de](mailto:nguyennhan.do@outlook.de)
 
-## System Requirements
+**Address:** Hugo-Sinzheimerstr. 15, 60437 Frankfurt am Main, Germany
 
-### Minimum Requirements
+## Information We Collect
 
-- Operating system: Windows 10 or 11, macOS 10.15+, or Linux Ubuntu 20.04+
-- Memory: 4 GB RAM
-- Disk space: 100 MB
-- Screen resolution: 1024 x 768
+GeldPilot does not collect personal information from users.
 
-### Recommended Requirements
+The application allows users to enter and manage financial information, including:
 
-- Memory: 8 GB RAM or more
-- Screen resolution: 1920 x 1080 or higher
+* Income records
+* Expense records
+* Categories
+* Transaction descriptions
+* Financial reports
 
-## Installation
+All information entered by the user remains on the user's device.
 
-### Precompiled Windows Version
+## Data Storage
 
-1. Download the latest version from the Releases page.
-2. Extract the archive to a folder of your choice.
-3. Start `GeldPilot.exe`.
+GeldPilot stores financial data locally using an SQLite database located on the user's device.
 
-### Build from Source
+No financial information is transmitted to the developer or any third party.
 
-Requirements:
+## Internet Connectivity
 
-- Qt 6.9 or newer
-- CMake 3.16 or newer
-- A C++17-compatible compiler:
-  - Windows: MinGW-w64 or MSVC 2019+
-  - macOS: Xcode 12+
-  - Linux: GCC 9+ or Clang 10+
+GeldPilot does not require an Internet connection for its core functionality.
 
-Build steps:
+The application does not upload user data to remote servers.
 
-```bash
-git clone https://github.com/username/geldpilot.git
-cd geldpilot
-mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build . --config Release
-```
+## Analytics and Tracking
 
-Start the application:
+GeldPilot does not use:
 
-```bash
-# Windows
-./Release/GeldPilot.exe
+* Analytics services
+* Advertising networks
+* Tracking technologies
+* Telemetry services
+* Behavioral profiling
 
-# Linux or macOS
-./GeldPilot
-```
+No usage information is collected.
 
-## Getting Started
+## Third-Party Services
 
-### Add Your First Transaction
+GeldPilot does not integrate with third-party services that collect personal information.
 
-1. Start GeldPilot.
-2. Enter the date, amount and description.
-3. Select a category, such as `Salary`.
-4. Select the type: `Income` or `Expense`.
-5. Click `New Transaction`.
+## Data Sharing
 
-### Filter Data
+The developer does not receive, access, sell, rent, or share user financial data.
 
-- Use the category dropdown menus.
-- Set a start date and end date for a time-period filter.
-- Click `Filter` to update the view.
+All user information remains under the user's control.
 
-### Create Reports
+## User Rights
 
-- Click `Chart` for a visual representation.
-- Use `Print` for a professional report.
-- Export data as CSV for further analysis.
+Users may:
 
-## User Guide
+* Access their own data
+* Modify their data
+* Export their data
+* Create backups
+* Permanently delete their data
 
-### Transaction Management
+These actions can be performed directly through the application.
 
-To add a transaction, fill in all required fields:
+## Data Security
 
-- Date: transaction date
-- Amount: monetary amount, always entered as a positive value
-- Description: short description of the transaction
-- Category: assigned category
-- Type: `Income` or `Expense`
+Because all information is stored locally on the user's device, users are responsible for maintaining appropriate security measures such as:
 
-To edit a transaction:
+* Device passwords
+* Operating system updates
+* Regular backups
+* Antivirus protection
 
-1. Select a row in the table.
-2. The data appears automatically in the input fields.
-3. Make the required changes.
-4. Click `Save`.
+## Children's Privacy
 
-To delete transactions:
+GeldPilot is not directed toward children under the age of 13.
 
-- Single transaction: select a row and click `Delete`.
-- Multiple transactions: select several rows with `Ctrl + Click` and click `Delete`.
+The application does not knowingly collect information from children.
 
-### Categories
+## Changes to This Privacy Policy
 
-Predefined categories:
+This Privacy Policy may be updated from time to time.
 
-- Leisure
-- Salary
-- Health
-- Groceries
-- Rent
-- Other
-- Transport
-- Insurance
-- Investment
-- Communication
-- Housing
+Any future changes will be published on the official Privacy Policy page.
 
-### Filtering and Search
+## Contact Information
 
-Filter by category:
+For questions regarding this Privacy Policy, please contact:
 
-- Select `All Categories` for an unfiltered view.
-- Select a specific category for a filtered view.
+Nguyen Nhan Do
 
-Filter by time period:
+Email: [nguyennhan.do@outlook.de](mailto:nguyennhan.do@outlook.de)
 
-1. Set the start date and end date.
-2. Click `Filter`.
+Address: Hugo-Sinzheimerstr. 15, 60437 Frankfurt am Main, Germany
 
-### Import and Export
+## Consent
 
-CSV import:
-
-1. Prepare a CSV file with the columns `ID`, `Date`, `Amount`, `Description`, `Category` and `Type`.
-2. Click `Import`.
-3. Select the CSV file.
-
-CSV export:
-
-1. Click `Export`.
-2. Select a location and filename.
-3. The current table view is exported.
-
-### Charts and Reports
-
-To display the financial chart, click `Chart`. The bar chart shows categories, total income, total expenses and balance with interactive color coding.
-
-To print a report:
-
-1. Open the chart.
-2. Click `Print`.
-3. Select the printer and settings.
-4. The application creates a professional printout with a logo.
-
-## Technical Details
-
-### Architecture
-
-- GUI framework: Qt 6.9
-- Database: SQLite local file
-- Charts: Qt Charts
-- Build system: CMake
-- Compiler on Windows: MinGW-w64
-
-### Database Schema
-
-Transactions table:
-
-```sql
-CREATE TABLE transaktionen (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    datum DATE NOT NULL,
-    betrag REAL NOT NULL,
-    beschreibung TEXT,
-    kategorie TEXT NOT NULL,
-    typ TEXT NOT NULL CHECK (typ IN ('Einnahme', 'Ausgabe'))
-);
-```
-
-Categories table:
-
-```sql
-CREATE TABLE kategorien (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT UNIQUE NOT NULL
-);
-```
-
-### Project Structure
-
-```text
-geldpilot/
-  src/
-    main.cpp                 Application entry point
-    mainwindow.cpp/h         Main window
-    chartwindow.cpp/h        Chart window
-    datenbankmanager.cpp/h   Database logic
-    centerdelegate.h         UI styling
-  ui/
-    mainwindow.ui            Main-window UI
-    chartwindow.ui           Chart UI
-  resources/
-    icons/                   Application icons
-  CMakeLists.txt             Build configuration
-  README.md                  Documentation
-```
-
-## Development
-
-Code style:
-
-- C++17 standard
-- Qt conventions
-- Descriptive German variable names
-- Extensive comments
-
-To contribute:
-
-1. Fork the repository.
-2. Create a feature branch.
-3. Make your changes.
-4. Test thoroughly.
-5. Create a pull request.
-
-Known topics:
-
-- Multiple selection for deletion is implemented.
-- Database indexing for performance is implemented.
-- Backup functionality is planned.
-
-## Support
-
-Need help?
-
-- Documentation: read the complete README.
-- Issues: report bugs on GitHub.
-- E-mail: `support@geldpilot.de`
-
-Frequently asked questions:
-
-- **The database cannot be opened:** Make sure the application has write permission in the installation directory.
-- **The chart is not displayed:** Check whether Qt Charts is installed.
-- **Import fails:** Check the CSV format. It must be semicolon-separated.
-
-## License
-
-Copyright 2025 Nguyen Nhan Do. All rights reserved.  
-Version: 1.0.0  
-Developer: Nguyen Nhan Do  
-Build: Qt 6.9, MinGW-w64, CMake
-
-Use GeldPilot to keep track of your finances and shape your financial future with confidence.
+By using GeldPilot, you agree to the terms described in this Privacy Policy.
