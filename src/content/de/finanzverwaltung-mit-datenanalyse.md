@@ -21,7 +21,7 @@ published: true
 created_at: '2026-05-28T08:43:30.945Z'
 external_link: https://github.com/nguyennhando/finanzmanager
 project_status: done
-sort_order: 30
+sort_order: 40
 ---
 
 💰 GeldPilot – Persönliche Finanzverwaltung
