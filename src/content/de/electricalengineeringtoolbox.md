@@ -6,12 +6,14 @@ language: de
 content_type: project
 title: ElectricalEngineeringToolbox
 category: Software
-image_url: 
+image_url: /my-electronics-blog/images/posts/EEToolbox-main-1.webp
 image_gallery:
-[]
+- /my-electronics-blog/images/posts/EEToolbox-main-2.webp
+- /my-electronics-blog/images/posts/EEToolbox-main-3.webp
+- /my-electronics-blog/images/posts/EEToolbox-main-4.webp
 excerpt: Offline electrical engineering calculator suite for cable sizing, voltage drop, breaker selection, motor calculations, transformer sizing, project management, and engineering reports.
 tags:
-[]
+- Software
 read_time: 5 Min.
 published: true
 created_at: '2026-06-19T06:29:08.495Z'
