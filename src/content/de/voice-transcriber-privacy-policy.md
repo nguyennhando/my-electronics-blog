@@ -22,87 +22,279 @@ sort_order: 100
 
 # Voice Transcriber
 
-Schnelle, präzise und datenschutzfreundliche Spracherkennung für Windows.
+**Schnelle, präzise und datenschutzfreundliche Spracherkennung für Windows**
 
-Voice Transcriber wandelt Audio- und Videodateien direkt auf Ihrem Computer in Text um – mit moderner KI-gestützter Spracherkennung.
+Voice Transcriber wandelt Audio- und Videodateien direkt auf Ihrem Computer in Text um – mit moderner, KI-gestützter Spracherkennung. Keine Cloud. Kein Upload. Keine Registrierung. Ihre Dateien bleiben auf Ihrem Gerät.
+
+---
+
+## Kurzbeschreibung (Microsoft Store)
+
+Voice Transcriber ist eine Offline-Desktop-App für Windows, die Audio- und Videodateien lokal in Text, Untertitel und Exportdateien umwandelt – schnell, präzise und vollständig datenschutzfreundlich.
+
+---
+
+## Warum Voice Transcriber?
+
+Ob Podcast, Meeting, Vorlesung, Interview oder persönliche Sprachnotiz: Voice Transcriber hilft Ihnen, gesprochene Inhalte in lesbaren Text zu verwandeln – ohne externe Server und ohne Wartezeit in der Cloud.
+
+- **100 % offline** – Verarbeitung direkt auf Ihrem PC  
+- **Datenschutz by Design** – keine Übertragung Ihrer Medien  
+- **Schnell & präzise** – moderne KI-Spracherkennung  
+- **Einfach bedienbar** – klare Oberfläche für Einsteiger und Profis  
+- **Sofort loslegen** – keine Anmeldung, kein Konto erforderlich  
+
+---
 
 ## Funktionen
 
-* Offline-Transkription
-* Kein Cloud-Upload erforderlich
-* Schnelle und präzise Spracherkennung
-* Unterstützung für Audio- und Videodateien
-* Automatische Untertitelerstellung
-* Export von Transkripten als Textdateien
-* Einfache und benutzerfreundliche Oberfläche
-* Keine Benutzerregistrierung erforderlich
+### Transkription
+- Offline-Transkription von Audio- und Videodateien
+- Schnelle und präzise Spracherkennung
+- Unterstützung gängiger Formate (z. B. MP3, WAV, M4A, MP4, MKV, FLAC, OGG)
+- Automatische Spracherkennung oder manuelle Sprachauswahl
+
+### Batch-Verarbeitung
+- Mehrere Dateien in die Warteschlange legen
+- Ordner hinzufügen und sequenziell verarbeiten
+- Fortschrittsanzeige für einzelne Dateien und Gesamtfortschritt
+- Pause, Fortsetzen und Abbrechen während der Verarbeitung
+
+### Export & Untertitel
+- Transkript als **TXT** exportieren
+- Untertitel als **SRT** und **VTT** erstellen
+- Weitere Exportformate für Dokumentation und Weiterverarbeitung
+- Ergebnisse standardmäßig neben der Quelldatei speichern
+
+### Benutzerfreundlichkeit
+- Moderne, übersichtliche Oberfläche
+- Drag & Drop für Dateien
+- Mehrsprachige Benutzeroberfläche
+- Keine Benutzerregistrierung erforderlich
+
+---
 
 ## Datenschutz an erster Stelle
 
-Die gesamte Verarbeitung erfolgt lokal auf Ihrem Gerät.
+Bei Voice Transcriber steht Ihre Privatsphäre im Mittelpunkt.
 
-Ihre Audio- und Videodateien sowie die erstellten Transkripte verlassen niemals Ihren Computer.
+- Die **gesamte Verarbeitung erfolgt lokal** auf Ihrem Gerät  
+- **Kein Cloud-Upload** Ihrer Audio- oder Videodateien  
+- **Keine Speicherung** Ihrer Inhalte durch uns  
+- **Keine Analyse-, Tracking- oder Werbedienste**  
+- **Keine Weitergabe** an Drittanbieter  
 
-Voice Transcriber sammelt, speichert, überträgt oder teilt keine personenbezogenen Daten.
+Ihre Audio- und Videodateien sowie die erstellten Transkripte verlassen niemals Ihren Computer, sofern Sie diese nicht selbst exportieren oder weitergeben.
+
+Voice Transcriber sammelt, speichert, überträgt oder teilt **keine personenbezogenen Daten**.
+
+---
 
 ## Kostenlose Testversion
 
-Voice Transcriber kann 30 Tage lang kostenlos getestet werden.
+Voice Transcriber kann **30 Tage lang kostenlos** getestet werden.
 
-## Download
+In dieser Zeit können Sie alle Kernfunktionen ausprobieren – Transkription, Batch-Verarbeitung, Export und Untertitelerstellung – vollständig offline auf Ihrem Windows-PC.
 
-Klicken Sie auf die Schaltfläche **Open Project**, um die Installationsdatei herunterzuladen und Voice Transcriber zu installieren.
+---
 
-Starten Sie Ihre kostenlose 30-Tage-Testversion und erleben Sie schnelle, private und vollständig offline arbeitende KI-Transkription.
+## Systemanforderungen
 
--------------------------------------------------------------------------
+| Anforderung | Details |
+|---|---|
+| Betriebssystem | Windows 10 / Windows 11 (64-Bit) |
+| Arbeitsspeicher | 4 GB RAM empfohlen (8 GB+ für größere Modelle) |
+| Festplatte | Ausreichend Speicher für App, Modelle und Exportdateien |
+| Internet | **Nicht erforderlich** für die Transkription |
+| Sonstiges | Lokale Verarbeitung; optionale Internetverbindung nur für Updates |
+
+---
+
+## Download & Installation
+
+Klicken Sie auf die Schaltfläche **Open Project** (bzw. **Herunterladen** / **Installieren**), um die Installationsdatei zu erhalten und Voice Transcriber auf Ihrem Windows-PC zu installieren.
+
+1. Installer herunterladen  
+2. Installation starten und Anweisungen folgen  
+3. Voice Transcriber öffnen  
+4. Modell auswählen oder herunterladen  
+5. Audio/Video hinzufügen und Transkription starten  
+
+Starten Sie Ihre **kostenlose 30-Tage-Testversion** und erleben Sie schnelle, private und vollständig offline arbeitende KI-Transkription.
+
+---
+
+## Für wen ist Voice Transcriber geeignet?
+
+- Journalisten, Redakteure und Content-Ersteller  
+- Studierende und Lehrende  
+- Unternehmen mit Anforderungen an Datenschutz und Compliance  
+- Podcaster und Video-Produzenten  
+- Jeder, der Audio und Video **lokal und sicher** in Text umwandeln möchte  
+
+---
+
+## Häufig gestellte Fragen (FAQ)
+
+**Benötige ich eine Internetverbindung?**  
+Nein. Die Transkription funktioniert vollständig offline. Eine Internetverbindung kann optional für Software-Updates oder Modell-Downloads genutzt werden.
+
+**Werden meine Dateien hochgeladen?**  
+Nein. Alle Dateien werden ausschließlich auf Ihrem Gerät verarbeitet.
+
+**Muss ich ein Konto erstellen?**  
+Nein. Voice Transcriber erfordert keine Registrierung.
+
+**Welche Dateiformate werden unterstützt?**  
+Gängige Audio- und Videoformate wie MP3, WAV, M4A, MP4, MKV, FLAC und OGG.
+
+**Kann ich mehrere Dateien gleichzeitig verarbeiten?**  
+Ja. Mit der Batch-Funktion können Sie mehrere Dateien nacheinander in einer Warteschlange verarbeiten.
+
+**Wo werden die Ergebnisse gespeichert?**  
+Standardmäßig neben der jeweiligen Quelldatei. Optional kann ein eigener Ausgabeordner gewählt werden.
+
+---
+
+## Entwickler
+
+**Nguyen Nhan Do**  
+E-Mail: [nguyennhan.do@outlook.de](mailto:nguyennhan.do@outlook.de)
+
+---
 
 # Datenschutzerklärung
 
 **Stand: Juni 2026**
 
-Voice Transcriber ist eine Offline-Desktopanwendung zur Transkription von Audio- und Videodateien.
+Voice Transcriber ist eine Offline-Desktopanwendung zur Transkription von Audio- und Videodateien unter Windows.
 
-## Datenerfassung
+Diese Datenschutzerklärung beschreibt, wie Voice Transcriber mit Daten umgeht – und welche Daten **nicht** erhoben werden.
 
-Voice Transcriber erhebt, speichert, übermittelt, verkauft oder teilt keine personenbezogenen Daten.
+---
 
-## Verarbeitung von Audio- und Videodateien
+## 1. Verantwortlicher
 
-Die gesamte Verarbeitung von Audio- und Videodateien erfolgt lokal auf dem Gerät des Nutzers.
+**Entwickler:** Nguyen Nhan Do  
+**E-Mail:** [nguyennhan.do@outlook.de](mailto:nguyennhan.do@outlook.de)
 
-Vom Nutzer ausgewählte Dateien werden niemals auf externe Server, Cloud-Dienste oder Plattformen Dritter hochgeladen.
+---
 
-Voice Transcriber speichert keine Kopien der Dateien, außer wenn diese ausdrücklich vom Nutzer gespeichert werden.
+## 2. Grundsatz: Offline-Verarbeitung
 
-## Internetverbindung
+Voice Transcriber ist als **Offline-Anwendung** konzipiert. Die Kernfunktionen – insbesondere die Transkription von Audio- und Videodateien – werden **ausschließlich lokal auf dem Gerät des Nutzers** ausgeführt.
 
-Für die Kernfunktionen von Voice Transcriber ist keine Internetverbindung erforderlich.
+---
 
-Optionale Internetzugriffe, beispielsweise zur Prüfung auf Software-Updates, beinhalten keine Übertragung von Audio-, Video- oder Transkriptionsinhalten.
+## 3. Datenerfassung
 
-## Benutzerkonten
+Voice Transcriber erhebt, speichert, übermittelt, verkauft oder teilt **keine personenbezogenen Daten**.
 
-Für die Nutzung von Voice Transcriber sind keine Registrierung, kein Abonnement und kein Benutzerkonto erforderlich.
+Es werden insbesondere **nicht** erhoben:
 
-## Analyse- und Trackingdienste
+- Name, Adresse oder Kontaktdaten  
+- Audio-, Video- oder Transkriptionsinhalte  
+- Nutzungsprofile oder Verhaltensdaten  
+- Gerätekennungen zu Tracking-Zwecken  
+- Standortdaten  
 
-Voice Transcriber verwendet keine Analysewerkzeuge, Werbenetzwerke, Cookies, Tracking-Technologien oder Telemetriesysteme.
+---
 
-## Dienste von Drittanbietern
+## 4. Verarbeitung von Audio- und Videodateien
 
-Voice Transcriber übermittelt keine nutzergenerierten Inhalte an Drittanbieter.
+Die gesamte Verarbeitung von Audio- und Videodateien erfolgt **lokal auf dem Gerät des Nutzers**.
 
-## Datensicherheit
+- Vom Nutzer ausgewählte Dateien werden **niemals** auf externe Server, Cloud-Dienste oder Plattformen Dritter hochgeladen.  
+- Voice Transcriber speichert **keine Kopien** der Dateien, außer wenn diese ausdrücklich vom Nutzer exportiert oder gespeichert werden.  
+- Der Nutzer behält jederzeit die **volle Kontrolle** über Quelldateien und erzeugte Transkripte.
 
-Da sämtliche Verarbeitung lokal auf dem Gerät des Nutzers erfolgt, behalten die Nutzer jederzeit die vollständige Kontrolle über ihre Audio- und Videodateien sowie die erzeugten Transkripte.
+---
 
-## Änderungen dieser Datenschutzerklärung
+## 5. Internetverbindung
 
-Diese Datenschutzerklärung kann gelegentlich aktualisiert werden. Änderungen werden durch eine Anpassung des Datums „Stand“ auf dieser Seite kenntlich gemacht.
+Für die **Kernfunktionen** von Voice Transcriber ist **keine Internetverbindung** erforderlich.
 
-## Kontakt
+Optionale Internetzugriffe – beispielsweise zur Prüfung auf Software-Updates oder zum Herunterladen von Sprachmodellen – beinhalten **keine Übertragung** von Audio-, Video- oder Transkriptionsinhalten an den Entwickler oder Dritte.
 
-**Entwickler:** Nguyen Nhan Do
+---
+
+## 6. Benutzerkonten
+
+Für die Nutzung von Voice Transcriber sind **keine Registrierung**, **kein Abonnement** und **kein Benutzerkonto** erforderlich.
+
+---
+
+## 7. Analyse-, Tracking- und Werbedienste
+
+Voice Transcriber verwendet **keine**:
+
+- Analysewerkzeuge  
+- Werbenetzwerke  
+- Cookies  
+- Tracking-Technologien  
+- Telemetriesysteme  
+
+---
+
+## 8. Dienste von Drittanbietern
+
+Voice Transcriber übermittelt **keine nutzergenerierten Inhalte** (Audio, Video, Transkripte) an Drittanbieter.
+
+Sofern der Nutzer Dateien selbst exportiert oder manuell weitergibt, erfolgt dies außerhalb der App und in Verantwortung des Nutzers.
+
+---
+
+## 9. Datensicherheit
+
+Da sämtliche Verarbeitung lokal auf dem Gerät des Nutzers erfolgt, behalten die Nutzer jederzeit die **vollständige Kontrolle** über ihre Audio- und Videodateien sowie die erzeugten Transkripte.
+
+Der Entwickler hat keinen Zugriff auf die vom Nutzer verarbeiteten Inhalte.
+
+---
+
+## 10. Rechte der betroffenen Personen
+
+Da Voice Transcriber keine personenbezogenen Daten erhebt, sind typische Auskunfts-, Berichtigungs- oder Löschanfragen in der Regel nicht anwendbar.
+
+Bei Fragen zum Datenschutz können Sie den Entwickler kontaktieren:
 
 **E-Mail:** [nguyennhan.do@outlook.de](mailto:nguyennhan.do@outlook.de)
+
+---
+
+## 11. Änderungen dieser Datenschutzerklärung
+
+Diese Datenschutzerklärung kann gelegentlich aktualisiert werden. Änderungen werden durch eine Anpassung des Datums **„Stand“** auf dieser Seite kenntlich gemacht.
+
+---
+
+## 12. Kontakt
+
+**Entwickler:** Nguyen Nhan Do  
+**E-Mail:** [nguyennhan.do@outlook.de](mailto:nguyennhan.do@outlook.de)
+
+---
+
+## Microsoft Store – Kurztexte (Copy & Paste)
+
+**Store-Titel:**  
+Voice Transcriber
+
+**Untertitel / Tagline:**  
+Offline-Spracherkennung für Windows
+
+**Kurzbeschreibung (ca. 200 Zeichen):**  
+Transkribieren Sie Audio und Video offline auf Ihrem PC. Schnell, präzise und datenschutzfreundlich – ohne Cloud, ohne Upload, ohne Registrierung. 30 Tage kostenlos testen.
+
+**Suchbegriffe (Keywords):**  
+Transkription, Spracherkennung, Speech to Text, Offline, Untertitel, SRT, VTT, Audio, Video, Whisper, Datenschutz, Windows, Batch, Export
+
+**Privacy Policy URL (Beispiel):**  
+`https://www.nhansoft.com/voice-transcriber/privacy`
+
+**Support URL (Beispiel):**  
+`https://www.nhansoft.com/voice-transcriber/support`
+
+---
+
+*© 2026 Nguyen Nhan Do · Voice Transcriber · Alle Rechte vorbehalten.*
