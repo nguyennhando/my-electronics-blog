@@ -9,13 +9,16 @@ category: Software
 image_url: /my-electronics-blog/images/posts/voice-transcriber-main.webp
 image_gallery:
 - /my-electronics-blog/images/posts/voice-transcriber-1.webp
+- /my-electronics-blog/images/posts/voice-transcriber-2.webp
+- /my-electronics-blog/images/posts/voice-transcriber-3.webp
+- /my-electronics-blog/images/posts/voice-transcriber-4.webp
 excerpt: Datenschutzerklärung für die Software Voice Transcriber.
 tags:
 - Legal
 read_time: 5 Min.
 published: true
 created_at: '2026-06-12T21:50:19.939Z'
-external_link: https://drive.google.com/file/d/1rRpLjGEnTuoXv6DHCa_Bu3rfwFBJI86U/view?usp=sharing
+external_link: https://apps.microsoft.com/detail/9n8m3j7r0w6z?hl=de-DE&gl=DE
 project_status: done
 sort_order: 100
 ---
