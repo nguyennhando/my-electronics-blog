@@ -9,98 +9,133 @@ category: Software
 image_url: /my-electronics-blog/images/posts/voice-transcriber-main.webp
 image_gallery:
 - /my-electronics-blog/images/posts/voice-transcriber-1.webp
+- /my-electronics-blog/images/posts/voice-transcriber-3.webp
+- /my-electronics-blog/images/posts/voice-transcriber-4.webp
 excerpt: Privacy policy for Voice Transcriber desktop application.
 tags:
 - Legal
 read_time: 5 Min.
 published: true
 created_at: '2026-06-12T21:50:19.939Z'
-external_link: https://drive.google.com/file/d/1X4DAh1dQHq8UpHyEUYdbxj6Lt7kWsuEt/view?usp=drive_link
+external_link: https://apps.microsoft.com/detail/9n8m3j7r0w6z?hl=de-DE&gl=DE
 project_status: done
 sort_order: 100
 ---
 
 # Voice Transcriber
 
-Fast, accurate, and privacy-focused speech-to-text transcription for Windows.
+**Fast, accurate, and privacy-friendly speech recognition for Windows**
 
-Voice Transcriber converts audio and video files into text directly on your computer using advanced AI speech recognition technology.
+Voice Transcriber converts audio and video files into text directly on your computer using modern, AI-powered speech recognition. No cloud. No upload. No registration. Your files stay on your device.
+
+---
+
+## Short description (Microsoft Store)
+
+Voice Transcriber is an offline desktop app for Windows that converts audio and video files locally into text, subtitles, and export files — fast, accurate, and fully privacy-friendly.
+
+---
+
+## Why Voice Transcriber?
+
+Whether it's a podcast, meeting, lecture, interview, or personal voice memo: Voice Transcriber helps you turn spoken content into readable text — without external servers and without waiting in the cloud.
+
+- **100% offline** — processing runs directly on your PC
+- **Privacy by design** — your media is never transmitted
+- **Fast & accurate** — modern AI speech recognition
+- **Easy to use** — clear interface for beginners and professionals
+- **Get started instantly** — no sign-in, no account required
+
+---
 
 ## Features
 
-* Offline transcription
-* No cloud upload required
-* Fast and accurate speech recognition
-* Audio and video file support
-* Automatic subtitle generation
-* Export transcripts to text files
-* Simple and user-friendly interface
-* No user account required
+### Transcription
+- Offline transcription of audio and video files
+- Fast and accurate speech recognition
+- Support for common formats (e.g. MP3, WAV, M4A, MP4, MKV, FLAC, OGG)
+- Automatic language detection or manual language selection
 
-## Privacy First
+### Batch processing
+- Queue multiple files
+- Add folders and process them sequentially
+- Progress display for individual files and overall progress
+- Pause, resume, and cancel during processing
 
-All processing is performed locally on your device.
+### Export & subtitles
+- Export transcripts as **TXT**
+- Create subtitles as **SRT** and **VTT**
+- Additional export formats for documentation and further processing
+- Results saved next to the source file by default
 
-Your audio files, video files, and generated transcripts never leave your computer.
+### Usability
+- Modern, clean interface
+- Drag & drop for files
+- Multilingual user interface
+- No user registration required
 
-Voice Transcriber does not collect, store, transmit, or share personal data.
+---
 
-## Free Trial
+## Privacy first
 
-Voice Transcriber is available as a free 30-day trial version.
+Your privacy is at the heart of Voice Transcriber.
 
-## Download
+- **All processing is local** on your device
+- **No cloud upload** of your audio or video files
+- **No storage** of your content by us
+- **No analytics, tracking, or advertising services**
+- **No sharing** with third parties
 
-Click the **Open Project** button above to download and install Voice Transcriber.
+Your audio and video files and the transcripts you create never leave your computer unless you export or share them yourself.
 
-Start your free 30-day trial and experience fast, private, and offline AI-powered transcription.
--------------------------------------------------------------------------
-# Privacy Policy
+Voice Transcriber does **not** collect, store, transmit, or share **personal data**.
 
-**Last Updated: June 2026**
+---
 
-Voice Transcriber is an offline desktop application for audio and video transcription.
+## Free trial
 
-## Data Collection
+Voice Transcriber can be tried **free for 30 days**.
 
-Voice Transcriber does not collect, store, transmit, sell, or share any personal information.
+During this period, you can try all core features — transcription, batch processing, export, and subtitle creation — fully offline on your Windows PC.
 
-## Audio and Video Processing
+---
 
-All audio and video processing is performed locally on the user's device.
+## System requirements
 
-Files selected by the user are never uploaded to external servers, cloud services, or third-party platforms.
+| Requirement | Details |
+|---|---|
+| Operating system | Windows 10 / Windows 11 (64-bit) |
+| Memory | 4 GB RAM recommended (8 GB+ for larger models) |
+| Storage | Sufficient space for the app, models, and export files |
+| Internet | **Not required** for transcription |
+| Other | Local processing; optional internet connection only for updates |
 
-Voice Transcriber does not retain copies of user files except those explicitly saved by the user.
+---
 
-## Internet Connectivity
+## Download & installation
 
-Voice Transcriber does not require an internet connection for its core transcription functionality.
+Click the **Open Project** button (or **Download** / **Install**) to get the installer and install Voice Transcriber on your Windows PC.
 
-Any optional internet access, such as checking for software updates, does not involve the transmission of user audio, video, or transcription content.
+1. Download the installer
+2. Start installation and follow the instructions
+3. Open Voice Transcriber
+4. Select or download a model
+5. Add audio/video and start transcription
 
-## User Accounts
+Start your **free 30-day trial** and experience fast, private, fully offline AI transcription.
 
-Voice Transcriber does not require user registration, subscriptions, or user accounts.
+---
 
-## Analytics and Tracking
+## Who is Voice Transcriber for?
 
-Voice Transcriber does not use analytics services, advertising networks, cookies, tracking technologies, or telemetry systems.
+- Journalists, editors, and content creators
+- Students and educators
+- Businesses with privacy and compliance requirements
+- Podcasters and video producers
+- Anyone who wants to convert audio and video to text **locally and securely**
 
-## Third-Party Services
+---
 
-Voice Transcriber does not transmit user content to third-party services.
+## Frequently asked questions (FAQ)
 
-## Data Security
-
-Because all processing is performed locally on the user's device, users maintain full control over their audio files, video files, and generated transcripts.
-
-## Changes to This Privacy Policy
-
-This Privacy Policy may be updated from time to time. Any changes will be reflected by updating the "Last Updated" date above.
-
-## Contact
-
-**Developer:** Nguyen Nhan Do
-
-**Email:** [nguyennhan.do@outlook.de](mailto:nguyennhan.do@outlook.de)
+**Do I need an internet
