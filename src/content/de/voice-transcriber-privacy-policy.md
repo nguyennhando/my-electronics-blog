@@ -292,11 +292,11 @@ Transkribieren Sie Audio und Video offline auf Ihrem PC. Schnell, präzise und d
 **Suchbegriffe (Keywords):**  
 Transkription, Spracherkennung, Speech to Text, Offline, Untertitel, SRT, VTT, Audio, Video, Whisper, Datenschutz, Windows, Batch, Export
 
-**Privacy Policy URL (Beispiel):**  
-`https://www.nhansoft.com/voice-transcriber/privacy`
+**Privacy Policy URL:**  
+https://nguyennhando.github.io/my-electronics-blog/?post=voice-transcriber-privacy-policy
 
-**Support URL (Beispiel):**  
-`https://www.nhansoft.com/voice-transcriber/support`
+**Support URL:**  
+https://nguyennhando.github.io/my-electronics-blog/?post=voice-transcriber-privacy-policy
 
 ---
 
