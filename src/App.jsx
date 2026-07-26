@@ -2467,6 +2467,28 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                     )}
                   </div>
                 </div>
+                {siteSettingsForm.resume_url && (
+                  <div>
+                    <p className="mb-3 text-xs font-bold uppercase text-zinc-500">{t.livePreviewLabel}</p>
+                    <div className="flex items-center justify-center rounded-xl border border-white/10 bg-[#07111f]/95 p-6">
+                      <a
+                        href={siteSettingsForm.resume_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-emerald-400 to-lime-300 px-4 py-2 text-sm font-black text-black shadow-lg shadow-emerald-500/40 transition hover:from-emerald-300 hover:to-lime-200"
+                      >
+                        <motion.span
+                          className="pointer-events-none absolute inset-0 rounded-full bg-white/50"
+                          initial={{ opacity: 0.6, scale: 1 }}
+                          animate={{ opacity: 0, scale: 1.8 }}
+                          transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
+                        />
+                        <FileText className="relative h-4 w-4" />
+                        <span className="relative">{t.resumeButton}</span>
+                      </a>
+                    </div>
+                  </div>
+                )}
                 <div className="flex flex-wrap gap-2">
                   <button type="button" onClick={saveSiteSettingsToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-emerald-400 px-4 py-2 text-sm font-black text-black transition hover:bg-emerald-300">
                     <Code2 className="h-4 w-4" /> {t.saveGithubButton}
