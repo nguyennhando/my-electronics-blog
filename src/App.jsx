@@ -2081,6 +2081,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
 
     const path = `public/${folder}/${Date.now()}-${slugifyFilename(file.name)}`;
     const apiPath = encodeGithubPath(path);
+    const previousRun = await fetchLatestActionsRun();
 
     try {
       const buffer = await file.arrayBuffer();
@@ -2101,6 +2102,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
 
       const publicUrl = `/my-electronics-blog/${folder}/${path.split("/").pop()}`;
       setSaveMessage(t.fileUploadedMessage(publicUrl));
+      watchDeployment(previousRun?.id ?? null);
       return publicUrl;
     } catch (error) {
       setSaveMessage(
