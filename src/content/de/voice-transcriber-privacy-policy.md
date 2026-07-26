@@ -9,7 +9,6 @@ category: Software
 image_url: /my-electronics-blog/images/posts/voice-transcriber-main.webp
 image_gallery:
 - /my-electronics-blog/images/posts/voice-transcriber-1.webp
-- /my-electronics-blog/images/posts/voice-transcriber-2.webp
 - /my-electronics-blog/images/posts/voice-transcriber-3.webp
 - /my-electronics-blog/images/posts/voice-transcriber-4.webp
 excerpt: Datenschutzerklärung für die Software Voice Transcriber.
