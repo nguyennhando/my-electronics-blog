@@ -118,6 +118,7 @@ const DEFAULT_GALLERY_IMAGES = [
 const ADMIN_AUTH_KEY = "electronics-blog-admin-auth-v1";
 const ADMIN_SESSION_KEY = "electronics-blog-admin-session-v1";
 const GITHUB_TOKEN_KEY = "electronics-blog-github-token-v1";
+const ADMIN_UI_LANGUAGE_KEY = "electronics-blog-admin-ui-language-v1";
 const GITHUB_REPO_OWNER = "nguyennhando";
 const GITHUB_REPO_NAME = "my-electronics-blog";
 const GITHUB_REPO_BRANCH = "main";
@@ -160,8 +161,7 @@ const setAdminSession = (active) => {
   else window.localStorage.removeItem(ADMIN_SESSION_KEY);
 };
 
-const textToBase64 = (text) => {
-  const bytes = new TextEncoder().encode(text);
+const bytesToBase64 = (bytes) => {
   let binary = "";
   const chunkSize = 0x8000;
 
@@ -170,6 +170,16 @@ const textToBase64 = (text) => {
   }
 
   return btoa(binary);
+};
+
+const textToBase64 = (text) => bytesToBase64(new TextEncoder().encode(text));
+
+const slugifyFilename = (name) => {
+  const dotIndex = name.lastIndexOf(".");
+  const base = dotIndex > 0 ? name.slice(0, dotIndex) : name;
+  const extension = dotIndex > 0 ? name.slice(dotIndex + 1).toLowerCase() : "";
+  const safeBase = slugify(base) || "bild";
+  return extension ? `${safeBase}.${extension}` : safeBase;
 };
 
 const encodeGithubPath = (path) => path.split("/").map(encodeURIComponent).join("/");
@@ -209,6 +219,11 @@ const ADMIN_TEXT = {
     wrongRecovery: "Der Wiederherstellungscode ist nicht korrekt.",
     passwordChanged: "Passwort geändert. Bitte speichern Sie den neuen Wiederherstellungscode.",
     localReset: "Admin-Konfiguration in diesem Browser gelöscht. Bitte erstellen Sie ein neues Passwort.",
+    changePasswordTitle: "Passwort ändern",
+    currentPassword: "Aktuelles Passwort",
+    currentPasswordWrong: "Aktuelles Passwort ist falsch.",
+    noAdminConfig: "Keine Admin-Konfiguration vorhanden.",
+    savePasswordButton: "Neues Passwort speichern",
   },
   en: {
     title: "Admin Login",
@@ -242,6 +257,11 @@ const ADMIN_TEXT = {
     wrongRecovery: "The recovery code is not correct.",
     passwordChanged: "Password changed. Please save the new recovery code.",
     localReset: "Admin setup was cleared in this browser. Please create a new password.",
+    changePasswordTitle: "Change password",
+    currentPassword: "Current password",
+    currentPasswordWrong: "Current password is incorrect.",
+    noAdminConfig: "No admin configuration found.",
+    savePasswordButton: "Save new password",
   },
   vi: {
     title: "Đăng nhập Admin",
@@ -275,6 +295,269 @@ const ADMIN_TEXT = {
     wrongRecovery: "Mã khôi phục không đúng.",
     passwordChanged: "Đã đổi mật khẩu. Hãy lưu mã khôi phục mới.",
     localReset: "Đã xóa cấu hình admin trên trình duyệt này. Hãy tạo mật khẩu mới.",
+    changePasswordTitle: "Đổi mật khẩu",
+    currentPassword: "Mật khẩu hiện tại",
+    currentPasswordWrong: "Mật khẩu hiện tại không đúng.",
+    noAdminConfig: "Chưa có cấu hình admin.",
+    savePasswordButton: "Lưu mật khẩu mới",
+  },
+};
+
+function CodeText({ tokens, codeClassName }) {
+  return tokens.map((token, index) => (typeof token === "string"
+    ? <span key={index}>{token}</span>
+    : <code key={index} className={codeClassName}>{token.code}</code>));
+}
+
+const EDITOR_TEXT = {
+  de: {
+    headerTitle: "Markdown-Beitrag erstellen",
+    passwordButton: "Passwort", logoutButton: "Logout", blogButton: "Blog",
+    badgeWebsite: "Website", badgeStartseite: "Startseite", badgeBlog: "Blog",
+    githubSectionTitle: "Direkt auf GitHub speichern",
+    githubTokenIntroPre: "Tragen Sie einen GitHub fine-grained token mit ",
+    githubTokenIntroMid: " fuer ",
+    githubTokenIntroPost: " ein. Der Token wird nur lokal in diesem Browser gespeichert.",
+    saveTokenButton: "Token speichern", testTokenButton: "Token testen",
+    websiteSectionTitle: "Website-Hintergrund bearbeiten", backgroundImageLabel: "Hintergrundbild", noBackgroundText: "Standard-Hintergrund ohne Bild",
+    saveGithubButton: "Auf GitHub speichern", exportMdButton: "MD exportieren", uploadButton: "Hochladen",
+    gallerySectionTitle: "Projektgalerie bearbeiten", galleryInstructionsTitle: "So fügen Sie neue Galeriebilder hinzu",
+    galleryStep1Pre: "Kopieren Sie die Bilddatei in den Ordner ", galleryStep1Post: ".",
+    galleryStep2Pre: "Tragen Sie den Bildpfad ein, zum Beispiel ", galleryStep2Post: ".",
+    galleryStep3: "Verwenden Sie pro Zeile genau einen Bildpfad.",
+    galleryStep4: "Die erste Zeile ist das große Hauptbild. Die zweite und dritte Zeile sind die kleinen Bilder auf der rechten Seite.",
+    galleryStep5Pre: "Speichern Sie die Datei anschließend im Ordner ", galleryStep5Post: ".",
+    galleryPositionNote: "Die Bildposition innerhalb des Rahmens wird automatisch zentriert.",
+    galleryImagesLabel: "Galeriebilder, ein Pfad pro Zeile",
+    galleryImagesHelp: "Die Galerie ist frei zusammengestellt. Die Bilder müssen keinem bestimmten Projekt zugeordnet sein.",
+    addImageButton: "Bild hinzufügen",
+    orderSectionTitle: "Reihenfolge der Projektkarten bearbeiten", orderInstructionsTitle: "Projektkarten visuell sortieren",
+    orderInstructions1: "Verschieben Sie Karten mit den Pfeilen nach oben oder unten. Beim Speichern wird die Reihenfolge automatisch für alle Sprachversionen übernommen.",
+    orderInstructions2: "Mit „Reihenfolge speichern” wird die neue Sortierung direkt auf GitHub gespeichert.",
+    previewLanguageLabel: "Vorschau-Sprache", moveUpAria: "Nach oben verschieben", moveDownAria: "Nach unten verschieben", saveOrderButton: "Reihenfolge speichern",
+    homeContentSectionTitle: "Startseiten-Inhalte bearbeiten",
+    fileLocationTitle: "Speicherort der Markdown-Datei", fileLocationIntro: "Speichern Sie die Datei abhängig von der ausgewählten Sprache unter:",
+    langDeutsch: "Deutsch", langEnglisch: "Englisch", langVietnamesisch: "Vietnamesisch",
+    homeContentSaveNotePre: "Mit „Auf GitHub speichern” wird diese Datei direkt in den passenden Sprachordner unter ", homeContentSaveNotePost: " geschrieben.",
+    homeContentReloadNote: "Nach dem Speichern lädt GitHub Pages die Änderung nach kurzer Zeit neu.",
+    languageLabel: "Sprache", livePreviewLabel: "Live-Vorschau",
+    personalWaySectionTitle: "Persönlicher Weg bearbeiten",
+    personalWaySaveNotePre: "Mit „Auf GitHub speichern” wird diese Datei direkt in den passenden Sprachordner unter ", personalWaySaveNotePost: " geschrieben.",
+    titleLabelRequired: "Titel *", image1Label: "Bild 1", image2Label: "Bild 2",
+    markdownContentLabelRequired: "Markdown-Inhalt *", markdownContentLabel: "Markdown-Inhalt",
+    previewLabel: "Vorschau", personalWayPreviewLabel: "Persönlicher Weg",
+    loadPostLabel: "Beitrag laden oder neu erstellen", newPostOption: "Neuer Beitrag", knowledgeTag: "[Wissen]", projectTag: "[Projekt]", deleteButton: "Löschen",
+    multilingualNoticeTitle: "Mehrsprachige Beiträge speichern",
+    multilingualP1: "Verwenden Sie für alle Sprachversionen desselben Beitrags dieselbe ",
+    multilingualP2: ". Wählen Sie beim Speichern genau den Ordner ",
+    multilingualP3: ", nicht einen Sprachordner. Der Editor legt die Datei automatisch unter ",
+    multilingualP4: ", ", multilingualP5: " oder ", multilingualP6: " ab.",
+    multilingualLocationIntro: "Speicherort abhängig von Sprache und Slug:",
+    exportNote: "Bei „MD exportieren” wird nur die Datei heruntergeladen. Verschieben Sie sie anschließend manuell in den passenden Sprachordner.",
+    contentTypeLabel: "Inhaltstyp", contentTypeProjectOption: "Projektbeitrag für den Blog", contentTypeKnowledgeOption: "Wissen, Lernmaterial oder Forschung",
+    categoryLabel: "Kategorie", titlePlaceholder: "Titel des Projekts", statusLabel: "Status",
+    advancedToggleLabel: "Erweitert (normalerweise nicht nötig)",
+    translationIdLabel: "Translation ID", translationIdPlaceholder: "gemeinsame-beitrags-id",
+    translationIdAvailable: "Vorhanden: ", translationIdNone: "noch keine Sprachversion",
+    slugLabel: "Slug", slugPlaceholder: "projekt-name", sortOrderLabel: "Reihenfolge",
+    excerptLabel: "Kurzbeschreibung *", mainImageLabel: "Hauptbild",
+    tagsLabel: "Tags, durch Komma getrennt", tagsPlaceholder: "ESP32, MQTT, IoT", readTimeLabel: "Lesezeit",
+    externalLinkLabelKnowledge: "Externe Quelle oder weiterführender Link", externalLinkLabelProject: "Externer Projektlink",
+    publishedLabel: "Veröffentlicht",
+    blogCardLabel: "Blog-Karte", noMainImageText: "Kein Hauptbild", categoryPlaceholder: "Kategorie",
+    titlePlaceholderPreview: "Titel des Beitrags", excerptPlaceholderPreview: "Kurzbeschreibung des Projekts", readPostButtonPreview: "Beitrag lesen",
+    validationRequiredFields: "Titel, Slug, Kurzbeschreibung und Inhalt sind Pflichtfelder.",
+    personalWayValidation: "Titel und Inhalt sind Pflichtfelder.",
+    deleteConfirm: (title, path) => `"${title}" wirklich unwiderruflich von GitHub löschen (${path})?`,
+    noTokenMessage: "Bitte zuerst einen GitHub token eintragen.",
+    tokenRemovedMessage: "GitHub token wurde entfernt.", tokenSavedMessage: "GitHub token wurde lokal im Browser gespeichert.",
+    tokenTestFailedPrefix: "Token-Test fehlgeschlagen", noGithubDetails: "Keine Details von GitHub.",
+    tokenWorksMessage: "Token funktioniert. GitHub API ist erreichbar.",
+    githubBlockedMessage: "GitHub API ist vom Browser blockiert oder nicht erreichbar. Bitte Chrome/Edge testen, Adblock/Tracking-Schutz pruefen, oder MD exportieren verwenden.",
+    githubBlockedMessageShort: "GitHub API ist vom Browser blockiert oder nicht erreichbar. Bitte Chrome/Edge testen, Adblock/Tracking-Schutz pruefen.",
+    savedFilesMessage: (count) => `${count} Datei(en) wurden auf GitHub gespeichert.`,
+    githubSaveFailedGeneric: "GitHub speichern ist fehlgeschlagen.", noGithubTokenError: "Kein GitHub Token hinterlegt.",
+    imageUploadFailedPrefix: "Bild-Upload fehlgeschlagen", imageUploadedMessage: (url) => `Bild hochgeladen: ${url}`,
+    directorySaveUnsupported: "Direktes Speichern wird von diesem Browser nicht unterstützt. Bitte verwenden Sie MD exportieren.",
+    wrongDirectoryAlert: "Bitte wählen Sie genau den Ordner src/content aus, nicht einen Sprachordner wie de, en oder vi.",
+    directorySavedMessage: (name) => `${name} wurde gespeichert.`,
+    directorySaveFailedAlert: "Die Datei konnte nicht gespeichert werden. Bitte verwenden Sie MD exportieren.",
+    orderSaveFailedAlert: "Die Reihenfolge konnte nicht gespeichert werden.",
+    renameRemovedOldFile: (path) => ` Alte Datei ${path} wurde entfernt.`,
+    renameRemoveFailedNote: (path, err) => ` Achtung: alte Datei ${path} konnte nicht automatisch entfernt werden (${err}). Bitte manuell auf GitHub löschen.`,
+    postDeletedMessage: (path) => `${path} wurde gelöscht.`,
+    deleteFailedMessage: (err) => `Löschen fehlgeschlagen: ${err}`,
+    deployWaiting: "Wird veröffentlicht ... das dauert normalerweise 1–2 Minuten.",
+    deploySuccess: "Fertig! Die Änderungen sind jetzt live.",
+    deployFailed: "Veröffentlichung fehlgeschlagen.",
+    deployTimeout: "Noch keine Rückmeldung von GitHub. Bitte in ein paar Minuten die Seite manuell prüfen.",
+    deployDetails: "Details", deployErrorDetails: "Fehler ansehen", deploySeeSite: "Seite ansehen",
+  },
+  en: {
+    headerTitle: "Create markdown post",
+    passwordButton: "Password", logoutButton: "Logout", blogButton: "Blog",
+    badgeWebsite: "Website", badgeStartseite: "Home page", badgeBlog: "Blog",
+    githubSectionTitle: "Save directly to GitHub",
+    githubTokenIntroPre: "Enter a GitHub fine-grained token with ",
+    githubTokenIntroMid: " for ",
+    githubTokenIntroPost: " here. The token is stored locally in this browser only.",
+    saveTokenButton: "Save token", testTokenButton: "Test token",
+    websiteSectionTitle: "Edit website background", backgroundImageLabel: "Background image", noBackgroundText: "Default background, no image",
+    saveGithubButton: "Save to GitHub", exportMdButton: "Export MD", uploadButton: "Upload",
+    gallerySectionTitle: "Edit project gallery", galleryInstructionsTitle: "How to add new gallery images",
+    galleryStep1Pre: "Copy the image file into the folder ", galleryStep1Post: ".",
+    galleryStep2Pre: "Enter the image path, for example ", galleryStep2Post: ".",
+    galleryStep3: "Use exactly one image path per line.",
+    galleryStep4: "The first line is the large main image. The second and third lines are the small images on the right.",
+    galleryStep5Pre: "Then save the file in the folder ", galleryStep5Post: ".",
+    galleryPositionNote: "The image position within the frame is centered automatically.",
+    galleryImagesLabel: "Gallery images, one path per line",
+    galleryImagesHelp: "The gallery is freely composed. Images don't need to belong to any specific project.",
+    addImageButton: "Add image",
+    orderSectionTitle: "Edit project card order", orderInstructionsTitle: "Sort project cards visually",
+    orderInstructions1: "Move cards up or down with the arrows. Saving applies the new order automatically to all language versions.",
+    orderInstructions2: "“Save order” saves the new sorting directly to GitHub.",
+    previewLanguageLabel: "Preview language", moveUpAria: "Move up", moveDownAria: "Move down", saveOrderButton: "Save order",
+    homeContentSectionTitle: "Edit home page content",
+    fileLocationTitle: "Markdown file location", fileLocationIntro: "The file is saved depending on the selected language under:",
+    langDeutsch: "German", langEnglisch: "English", langVietnamesisch: "Vietnamese",
+    homeContentSaveNotePre: "“Save to GitHub” writes this file directly into the matching language folder under ", homeContentSaveNotePost: ".",
+    homeContentReloadNote: "After saving, GitHub Pages reloads the change shortly after.",
+    languageLabel: "Language", livePreviewLabel: "Live preview",
+    personalWaySectionTitle: "Edit personal journey",
+    personalWaySaveNotePre: "“Save to GitHub” writes this file directly into the matching language folder under ", personalWaySaveNotePost: ".",
+    titleLabelRequired: "Title *", image1Label: "Image 1", image2Label: "Image 2",
+    markdownContentLabelRequired: "Markdown content *", markdownContentLabel: "Markdown content",
+    previewLabel: "Preview", personalWayPreviewLabel: "Personal journey",
+    loadPostLabel: "Load post or create new one", newPostOption: "New post", knowledgeTag: "[Knowledge]", projectTag: "[Project]", deleteButton: "Delete",
+    multilingualNoticeTitle: "Saving posts in multiple languages",
+    multilingualP1: "Use the same ",
+    multilingualP2: " for all language versions of the same post. When saving, select exactly the folder ",
+    multilingualP3: ", not a language folder. The editor automatically places the file under ",
+    multilingualP4: ", ", multilingualP5: " or ", multilingualP6: ".",
+    multilingualLocationIntro: "Save location depends on language and slug:",
+    exportNote: "“Export MD” only downloads the file. Move it manually into the matching language folder afterwards.",
+    contentTypeLabel: "Content type", contentTypeProjectOption: "Project post for the blog", contentTypeKnowledgeOption: "Knowledge, learning material or research",
+    categoryLabel: "Category", titlePlaceholder: "Project title", statusLabel: "Status",
+    advancedToggleLabel: "Advanced (usually not needed)",
+    translationIdLabel: "Translation ID", translationIdPlaceholder: "shared-post-id",
+    translationIdAvailable: "Available: ", translationIdNone: "no language version yet",
+    slugLabel: "Slug", slugPlaceholder: "project-name", sortOrderLabel: "Sort order",
+    excerptLabel: "Excerpt *", mainImageLabel: "Main image",
+    tagsLabel: "Tags, comma-separated", tagsPlaceholder: "ESP32, MQTT, IoT", readTimeLabel: "Read time",
+    externalLinkLabelKnowledge: "External source or further link", externalLinkLabelProject: "External project link",
+    publishedLabel: "Published",
+    blogCardLabel: "Blog card", noMainImageText: "No main image", categoryPlaceholder: "Category",
+    titlePlaceholderPreview: "Post title", excerptPlaceholderPreview: "Project excerpt", readPostButtonPreview: "Read post",
+    validationRequiredFields: "Title, slug, excerpt and content are required fields.",
+    personalWayValidation: "Title and content are required fields.",
+    deleteConfirm: (title, path) => `Permanently delete "${title}" from GitHub (${path})?`,
+    noTokenMessage: "Please enter a GitHub token first.",
+    tokenRemovedMessage: "GitHub token removed.", tokenSavedMessage: "GitHub token saved locally in this browser.",
+    tokenTestFailedPrefix: "Token test failed", noGithubDetails: "No details from GitHub.",
+    tokenWorksMessage: "Token works. GitHub API is reachable.",
+    githubBlockedMessage: "GitHub API is blocked by the browser or unreachable. Please try Chrome/Edge, check ad/tracking blockers, or use Export MD instead.",
+    githubBlockedMessageShort: "GitHub API is blocked by the browser or unreachable. Please try Chrome/Edge and check ad/tracking blockers.",
+    savedFilesMessage: (count) => `${count} file(s) saved to GitHub.`,
+    githubSaveFailedGeneric: "Saving to GitHub failed.", noGithubTokenError: "No GitHub token stored.",
+    imageUploadFailedPrefix: "Image upload failed", imageUploadedMessage: (url) => `Image uploaded: ${url}`,
+    directorySaveUnsupported: "Direct saving isn't supported by this browser. Please use Export MD.",
+    wrongDirectoryAlert: "Please select exactly the src/content folder, not a language folder such as de, en or vi.",
+    directorySavedMessage: (name) => `${name} saved.`,
+    directorySaveFailedAlert: "The file could not be saved. Please use Export MD.",
+    orderSaveFailedAlert: "The order could not be saved.",
+    renameRemovedOldFile: (path) => ` Old file ${path} was removed.`,
+    renameRemoveFailedNote: (path, err) => ` Warning: the old file ${path} could not be removed automatically (${err}). Please delete it manually on GitHub.`,
+    postDeletedMessage: (path) => `${path} was deleted.`,
+    deleteFailedMessage: (err) => `Delete failed: ${err}`,
+    deployWaiting: "Publishing ... this usually takes 1–2 minutes.",
+    deploySuccess: "Done! The changes are now live.",
+    deployFailed: "Publishing failed.",
+    deployTimeout: "No response from GitHub yet. Please check the site manually in a few minutes.",
+    deployDetails: "Details", deployErrorDetails: "View error", deploySeeSite: "View site",
+  },
+  vi: {
+    headerTitle: "Tạo bài viết markdown",
+    passwordButton: "Mật khẩu", logoutButton: "Đăng xuất", blogButton: "Blog",
+    badgeWebsite: "Website", badgeStartseite: "Trang chủ", badgeBlog: "Blog",
+    githubSectionTitle: "Lưu trực tiếp lên GitHub",
+    githubTokenIntroPre: "Nhập một GitHub fine-grained token có quyền ",
+    githubTokenIntroMid: " cho ",
+    githubTokenIntroPost: " vào đây. Token chỉ được lưu cục bộ trên trình duyệt này.",
+    saveTokenButton: "Lưu token", testTokenButton: "Kiểm tra token",
+    websiteSectionTitle: "Chỉnh sửa hình nền website", backgroundImageLabel: "Hình nền", noBackgroundText: "Hình nền mặc định, không có ảnh",
+    saveGithubButton: "Lưu lên GitHub", exportMdButton: "Xuất MD", uploadButton: "Tải lên",
+    gallerySectionTitle: "Chỉnh sửa thư viện ảnh dự án", galleryInstructionsTitle: "Cách thêm ảnh mới vào thư viện",
+    galleryStep1Pre: "Sao chép file ảnh vào thư mục ", galleryStep1Post: ".",
+    galleryStep2Pre: "Nhập đường dẫn ảnh, ví dụ ", galleryStep2Post: ".",
+    galleryStep3: "Mỗi dòng chỉ nhập đúng một đường dẫn ảnh.",
+    galleryStep4: "Dòng đầu tiên là ảnh chính lớn. Dòng thứ hai và ba là các ảnh nhỏ ở bên phải.",
+    galleryStep5Pre: "Sau đó lưu file vào thư mục ", galleryStep5Post: ".",
+    galleryPositionNote: "Vị trí ảnh trong khung sẽ tự động được canh giữa.",
+    galleryImagesLabel: "Ảnh thư viện, mỗi dòng một đường dẫn",
+    galleryImagesHelp: "Thư viện ảnh được sắp xếp tự do, ảnh không cần gắn với một dự án cụ thể nào.",
+    addImageButton: "Thêm ảnh",
+    orderSectionTitle: "Chỉnh sửa thứ tự thẻ dự án", orderInstructionsTitle: "Sắp xếp thứ tự thẻ dự án trực quan",
+    orderInstructions1: "Di chuyển thẻ lên/xuống bằng các mũi tên. Khi lưu, thứ tự mới sẽ tự động áp dụng cho tất cả các bản ngôn ngữ.",
+    orderInstructions2: "Nhấn “Lưu thứ tự” để lưu cách sắp xếp mới trực tiếp lên GitHub.",
+    previewLanguageLabel: "Ngôn ngữ xem trước", moveUpAria: "Chuyển lên trên", moveDownAria: "Chuyển xuống dưới", saveOrderButton: "Lưu thứ tự",
+    homeContentSectionTitle: "Chỉnh sửa nội dung trang chủ",
+    fileLocationTitle: "Vị trí lưu file markdown", fileLocationIntro: "File sẽ được lưu tùy theo ngôn ngữ đã chọn tại:",
+    langDeutsch: "Tiếng Đức", langEnglisch: "Tiếng Anh", langVietnamesisch: "Tiếng Việt",
+    homeContentSaveNotePre: "Nhấn “Lưu lên GitHub” để ghi file này trực tiếp vào thư mục ngôn ngữ tương ứng trong ", homeContentSaveNotePost: ".",
+    homeContentReloadNote: "Sau khi lưu, GitHub Pages sẽ tải lại thay đổi sau ít phút.",
+    languageLabel: "Ngôn ngữ", livePreviewLabel: "Xem trước trực tiếp",
+    personalWaySectionTitle: "Chỉnh sửa hành trình cá nhân",
+    personalWaySaveNotePre: "Nhấn “Lưu lên GitHub” để ghi file này trực tiếp vào thư mục ngôn ngữ tương ứng trong ", personalWaySaveNotePost: ".",
+    titleLabelRequired: "Tiêu đề *", image1Label: "Ảnh 1", image2Label: "Ảnh 2",
+    markdownContentLabelRequired: "Nội dung markdown *", markdownContentLabel: "Nội dung markdown",
+    previewLabel: "Xem trước", personalWayPreviewLabel: "Hành trình cá nhân",
+    loadPostLabel: "Tải bài viết hoặc tạo mới", newPostOption: "Bài viết mới", knowledgeTag: "[Kiến thức]", projectTag: "[Dự án]", deleteButton: "Xóa",
+    multilingualNoticeTitle: "Lưu bài viết đa ngôn ngữ",
+    multilingualP1: "Dùng chung một ",
+    multilingualP2: " cho tất cả các bản ngôn ngữ của cùng một bài viết. Khi lưu, hãy chọn đúng thư mục ",
+    multilingualP3: ", không phải thư mục ngôn ngữ. Editor sẽ tự động đặt file vào ",
+    multilingualP4: ", ", multilingualP5: " hoặc ", multilingualP6: ".",
+    multilingualLocationIntro: "Vị trí lưu tùy theo ngôn ngữ và slug:",
+    exportNote: "Khi bấm “Xuất MD”, file chỉ được tải về máy. Sau đó bạn cần tự chuyển vào đúng thư mục ngôn ngữ.",
+    contentTypeLabel: "Loại nội dung", contentTypeProjectOption: "Bài viết dự án cho blog", contentTypeKnowledgeOption: "Kiến thức, tài liệu học tập hoặc nghiên cứu",
+    categoryLabel: "Danh mục", titlePlaceholder: "Tiêu đề dự án", statusLabel: "Trạng thái",
+    advancedToggleLabel: "Nâng cao (thường không cần)",
+    translationIdLabel: "Translation ID", translationIdPlaceholder: "id-bai-viet-chung",
+    translationIdAvailable: "Đã có: ", translationIdNone: "chưa có bản ngôn ngữ nào",
+    slugLabel: "Slug", slugPlaceholder: "ten-du-an", sortOrderLabel: "Thứ tự",
+    excerptLabel: "Mô tả ngắn *", mainImageLabel: "Ảnh chính",
+    tagsLabel: "Tags, cách nhau bằng dấu phẩy", tagsPlaceholder: "ESP32, MQTT, IoT", readTimeLabel: "Thời gian đọc",
+    externalLinkLabelKnowledge: "Nguồn ngoài hoặc liên kết tham khảo", externalLinkLabelProject: "Liên kết dự án bên ngoài",
+    publishedLabel: "Đã xuất bản",
+    blogCardLabel: "Thẻ blog", noMainImageText: "Chưa có ảnh chính", categoryPlaceholder: "Danh mục",
+    titlePlaceholderPreview: "Tiêu đề bài viết", excerptPlaceholderPreview: "Mô tả ngắn của dự án", readPostButtonPreview: "Đọc bài viết",
+    validationRequiredFields: "Tiêu đề, slug, mô tả ngắn và nội dung là các trường bắt buộc.",
+    personalWayValidation: "Tiêu đề và nội dung là các trường bắt buộc.",
+    deleteConfirm: (title, path) => `Xóa vĩnh viễn "${title}" khỏi GitHub (${path})?`,
+    noTokenMessage: "Vui lòng nhập GitHub token trước.",
+    tokenRemovedMessage: "Đã xóa GitHub token.", tokenSavedMessage: "Đã lưu GitHub token cục bộ trên trình duyệt này.",
+    tokenTestFailedPrefix: "Kiểm tra token thất bại", noGithubDetails: "Không có thông tin chi tiết từ GitHub.",
+    tokenWorksMessage: "Token hoạt động tốt. GitHub API có thể truy cập được.",
+    githubBlockedMessage: "GitHub API bị trình duyệt chặn hoặc không thể truy cập. Hãy thử Chrome/Edge, kiểm tra tiện ích chặn quảng cáo/theo dõi, hoặc dùng Xuất MD thay thế.",
+    githubBlockedMessageShort: "GitHub API bị trình duyệt chặn hoặc không thể truy cập. Hãy thử Chrome/Edge và kiểm tra tiện ích chặn quảng cáo/theo dõi.",
+    savedFilesMessage: (count) => `Đã lưu ${count} file lên GitHub.`,
+    githubSaveFailedGeneric: "Lưu lên GitHub thất bại.", noGithubTokenError: "Chưa có GitHub token.",
+    imageUploadFailedPrefix: "Tải ảnh lên thất bại", imageUploadedMessage: (url) => `Đã tải ảnh lên: ${url}`,
+    directorySaveUnsupported: "Trình duyệt này không hỗ trợ lưu trực tiếp. Vui lòng dùng Xuất MD.",
+    wrongDirectoryAlert: "Vui lòng chọn đúng thư mục src/content, không phải thư mục ngôn ngữ như de, en hoặc vi.",
+    directorySavedMessage: (name) => `Đã lưu ${name}.`,
+    directorySaveFailedAlert: "Không thể lưu file. Vui lòng dùng Xuất MD.",
+    orderSaveFailedAlert: "Không thể lưu thứ tự.",
+    renameRemovedOldFile: (path) => ` Đã xóa file cũ ${path}.`,
+    renameRemoveFailedNote: (path, err) => ` Lưu ý: không thể tự động xóa file cũ ${path} (${err}). Vui lòng tự xóa trên GitHub.`,
+    postDeletedMessage: (path) => `Đã xóa ${path}.`,
+    deleteFailedMessage: (err) => `Xóa thất bại: ${err}`,
+    deployWaiting: "Đang xuất bản ... thường mất khoảng 1–2 phút.",
+    deploySuccess: "Xong! Thay đổi đã hiển thị trực tiếp trên trang.",
+    deployFailed: "Xuất bản thất bại.",
+    deployTimeout: "Chưa có phản hồi từ GitHub. Vui lòng tự kiểm tra trang sau vài phút.",
+    deployDetails: "Chi tiết", deployErrorDetails: "Xem lỗi", deploySeeSite: "Xem trang",
   },
 };
 
@@ -418,6 +701,33 @@ const HOME_CONTENT_FIELDS = [
   ["collaboration_title", "Zusammenarbeit: Titel"],
   ["collaboration_text", "Zusammenarbeit: Text"],
 ];
+
+const HOME_CONTENT_FIELD_LABELS = {
+  en: {
+    hero_badge: "Hero: Badge", hero_title: "Hero: Title", hero_text: "Hero: Text",
+    transparency_title: "Transparency: Title", transparency_text: "Transparency: Text", transparency_strong: "Transparency: Highlighted text",
+    feature_1_title: "Card 1: Title", feature_1_text: "Card 1: Text",
+    feature_2_title: "Card 2: Title", feature_2_text: "Card 2: Text",
+    feature_3_title: "Card 3: Title", feature_3_text: "Card 3: Text",
+    feature_4_title: "Card 4: Title", feature_4_text: "Card 4: Text",
+    warning_one: "Project notice: Paragraph 1", warning_two: "Project notice: Paragraph 2",
+    collaboration_title: "Collaboration: Title", collaboration_text: "Collaboration: Text",
+  },
+  vi: {
+    hero_badge: "Hero: Nhãn", hero_title: "Hero: Tiêu đề", hero_text: "Hero: Nội dung",
+    transparency_title: "Minh bạch: Tiêu đề", transparency_text: "Minh bạch: Nội dung", transparency_strong: "Minh bạch: Đoạn nhấn mạnh",
+    feature_1_title: "Thẻ 1: Tiêu đề", feature_1_text: "Thẻ 1: Nội dung",
+    feature_2_title: "Thẻ 2: Tiêu đề", feature_2_text: "Thẻ 2: Nội dung",
+    feature_3_title: "Thẻ 3: Tiêu đề", feature_3_text: "Thẻ 3: Nội dung",
+    feature_4_title: "Thẻ 4: Tiêu đề", feature_4_text: "Thẻ 4: Nội dung",
+    warning_one: "Lưu ý dự án: Đoạn 1", warning_two: "Lưu ý dự án: Đoạn 2",
+    collaboration_title: "Hợp tác: Tiêu đề", collaboration_text: "Hợp tác: Nội dung",
+  },
+};
+
+const getHomeContentFieldLabel = (key, language) => HOME_CONTENT_FIELD_LABELS[language]?.[key]
+  || HOME_CONTENT_FIELDS.find(([fieldKey]) => fieldKey === key)?.[1]
+  || key;
 
 const createHomeContentFile = (homeContent) => `---
 type: home_content
@@ -863,7 +1173,8 @@ function AdminAccessPanel({ language = "de", onLanguageChange = () => {}, onAuth
   );
 }
 
-function AdminPasswordModal({ onClose }) {
+function AdminPasswordModal({ onClose, language = "de" }) {
+  const t = ADMIN_TEXT[language] || ADMIN_TEXT.de;
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -874,21 +1185,21 @@ function AdminPasswordModal({ onClose }) {
     event.preventDefault();
     const config = readAdminConfig();
     if (!config) {
-      setMessage("Chua co cau hinh admin.");
+      setMessage(t.noAdminConfig);
       return;
     }
     if (newPassword.length < 8) {
-      setMessage("Mat khau moi can it nhat 8 ky tu.");
+      setMessage(t.newPasswordTooShort);
       return;
     }
     if (newPassword !== confirmPassword) {
-      setMessage("Mat khau xac nhan khong khop.");
+      setMessage(t.confirmMismatch);
       return;
     }
 
     const currentHash = await hashAdminSecret(currentPassword, config.salt);
     if (currentHash !== config.passwordHash) {
-      setMessage("Mat khau hien tai khong dung.");
+      setMessage(t.currentPasswordWrong);
       return;
     }
 
@@ -904,7 +1215,7 @@ function AdminPasswordModal({ onClose }) {
     setNewPassword("");
     setConfirmPassword("");
     setRecoveryCode(nextRecoveryCode);
-    setMessage("Da doi mat khau. Hay luu ma khoi phuc moi.");
+    setMessage(t.passwordChanged);
   };
 
   return (
@@ -913,18 +1224,18 @@ function AdminPasswordModal({ onClose }) {
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-xs font-bold uppercase text-cyan-300">Admin</p>
-            <h2 className="mt-1 text-xl font-black">Doi mat khau</h2>
+            <h2 className="mt-1 text-xl font-black">{t.changePasswordTitle}</h2>
           </div>
           <button type="button" onClick={onClose} className="rounded-xl border border-white/10 p-2 text-zinc-300 hover:bg-white/10"><X className="h-4 w-4" /></button>
         </div>
         <div className="mt-5 grid gap-4">
-          <input type="password" value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} placeholder="Mat khau hien tai" className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
-          <input type="password" value={newPassword} onChange={(event) => setNewPassword(event.target.value)} placeholder="Mat khau moi" className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
-          <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} placeholder="Nhap lai mat khau moi" className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
+          <input type="password" value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} placeholder={t.currentPassword} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
+          <input type="password" value={newPassword} onChange={(event) => setNewPassword(event.target.value)} placeholder={t.newPassword} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
+          <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} placeholder={t.confirmPassword} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
           {recoveryCode && <div className="rounded-xl border border-emerald-300/25 bg-emerald-300/10 p-3 font-mono text-sm font-bold text-emerald-100">{recoveryCode}</div>}
           {message && <p className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-zinc-200">{message}</p>}
           <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-300 px-5 py-3 font-black text-slate-950 transition hover:bg-white">
-            <Save className="h-4 w-4" /> Luu mat khau moi
+            <Save className="h-4 w-4" /> {t.savePasswordButton}
           </button>
         </div>
       </form>
@@ -1406,7 +1717,89 @@ function KnowledgeDetailPage({ post, onBack, language }) {
   );
 }
 
+function ImageUploadButton({ label = "Bild hochladen", subfolder, uploadImage, onUploaded }) {
+  const inputRef = useRef(null);
+  const [busy, setBusy] = useState(false);
+
+  const handleChange = async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    setBusy(true);
+    const url = await uploadImage(file, subfolder);
+    setBusy(false);
+    if (url) onUploaded(url);
+  };
+
+  return (
+    <>
+      <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleChange} />
+      <button
+        type="button"
+        disabled={busy}
+        onClick={() => inputRef.current?.click()}
+        className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-white/10 px-4 py-3 text-sm font-bold text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        <ImageIcon className="h-4 w-4" /> {busy ? "Lädt hoch..." : label}
+      </button>
+    </>
+  );
+}
+
+function DeployStatusBanner({ state, onDismiss, language = "de" }) {
+  if (!state) return null;
+
+  const t = EDITOR_TEXT[language] || EDITOR_TEXT.de;
+  const isFailed = state.status === "failed";
+  const isSuccess = state.status === "success";
+  const isTimeout = state.status === "timeout";
+  const isDone = isFailed || isSuccess;
+
+  const Icon = isFailed ? AlertTriangle : isSuccess ? ShieldCheck : Clock;
+  const label = isFailed
+    ? t.deployFailed
+    : isTimeout
+      ? t.deployTimeout
+      : isSuccess
+        ? t.deploySuccess
+        : t.deployWaiting;
+
+  const tone = isFailed
+    ? "border-red-400/30 bg-red-400/10 text-red-100"
+    : isSuccess
+      ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-100"
+      : "border-cyan-400/30 bg-cyan-400/10 text-cyan-100";
+
+  return (
+    <div className={`mx-auto flex max-w-7xl items-center gap-3 border-t px-4 py-2.5 text-sm font-bold sm:px-5 ${tone}`}>
+      <Icon className={`h-4 w-4 shrink-0 ${isDone ? "" : "animate-pulse"}`} />
+      <span className="flex-1">{label}</span>
+      {state.url && (
+        <a href={state.url} target="_blank" rel="noopener noreferrer" className="shrink-0 underline underline-offset-4 hover:text-white">
+          {isFailed ? t.deployErrorDetails : t.deployDetails}
+        </a>
+      )}
+      {isSuccess && (
+        <a href={`https://${GITHUB_REPO_OWNER}.github.io/${GITHUB_REPO_NAME}/`} target="_blank" rel="noopener noreferrer" className="shrink-0 underline underline-offset-4 hover:text-white">
+          {t.deploySeeSite}
+        </a>
+      )}
+      <button type="button" onClick={onDismiss} className="shrink-0 rounded-lg p-1 hover:bg-white/10"><X className="h-3.5 w-3.5" /></button>
+    </div>
+  );
+}
+
 function MarkdownEditorPage({ onLogout = () => {} }) {
+  const [uiLanguage, setUiLanguage] = useState(() => {
+    const saved = window.localStorage.getItem(ADMIN_UI_LANGUAGE_KEY);
+    return LANGUAGES.includes(saved) ? saved : "de";
+  });
+  const t = EDITOR_TEXT[uiLanguage] || EDITOR_TEXT.de;
+  const changeUiLanguage = (language) => {
+    setUiLanguage(language);
+    window.localStorage.setItem(ADMIN_UI_LANGUAGE_KEY, language);
+  };
   const [form, setForm] = useState(emptyEditorForm);
   const [selectedSlug, setSelectedSlug] = useState("");
   const [slugEdited, setSlugEdited] = useState(false);
@@ -1424,6 +1817,8 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   const [galleryImagesForm, setGalleryImagesForm] = useState((GALLERY_IMAGES.length ? GALLERY_IMAGES : DEFAULT_GALLERY_IMAGES).join("\n"));
   const [showProjectOrderEditor, setShowProjectOrderEditor] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showAdvancedFields, setShowAdvancedFields] = useState(false);
+  const [deployState, setDeployState] = useState(null);
   const [projectOrderLanguage, setProjectOrderLanguage] = useState("de");
   const [projectOrderIds, setProjectOrderIds] = useState(() => getLocalizedContentPosts("de")
     .filter((post) => post.content_type !== "knowledge")
@@ -1440,7 +1835,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   const getMarkdownExport = () => {
     const slug = form.slug || slugify(form.title);
     if (!slug || !form.title.trim() || !form.excerpt.trim() || !form.content.trim()) {
-      window.alert("Titel, Slug, Kurzbeschreibung und Inhalt sind Pflichtfelder.");
+      window.alert(t.validationRequiredFields);
       return null;
     }
 
@@ -1464,19 +1859,19 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     const token = githubToken.trim();
     if (!token) {
       window.localStorage.removeItem(GITHUB_TOKEN_KEY);
-      setSaveMessage("GitHub token wurde entfernt.");
+      setSaveMessage(t.tokenRemovedMessage);
       return;
     }
 
     window.localStorage.setItem(GITHUB_TOKEN_KEY, token);
     setShowGithubToken(false);
-    setSaveMessage("GitHub token wurde lokal im Browser gespeichert.");
+    setSaveMessage(t.tokenSavedMessage);
   };
 
   const getGithubErrorMessage = async (response, fallback) => {
     try {
       const data = await response.json();
-      return `${fallback} (${response.status}): ${data.message || "Keine Details von GitHub."}`;
+      return `${fallback} (${response.status}): ${data.message || t.noGithubDetails}`;
     } catch {
       return `${fallback} (${response.status}).`;
     }
@@ -1486,7 +1881,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     const token = githubToken.trim() || window.localStorage.getItem(GITHUB_TOKEN_KEY);
     if (!token) {
       setShowGithubToken(true);
-      setSaveMessage("Bitte zuerst einen GitHub token eintragen.");
+      setSaveMessage(t.noTokenMessage);
       return;
     }
 
@@ -1500,39 +1895,87 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
       });
 
       if (!response.ok) {
-        throw new Error(await getGithubErrorMessage(response, "Token-Test fehlgeschlagen"));
+        throw new Error(await getGithubErrorMessage(response, t.tokenTestFailedPrefix));
       }
 
-      setSaveMessage("Token funktioniert. GitHub API ist erreichbar.");
+      setSaveMessage(t.tokenWorksMessage);
     } catch (error) {
       setSaveMessage(
         error instanceof TypeError
-          ? "GitHub API ist vom Browser blockiert oder nicht erreichbar. Bitte Chrome/Edge testen, Adblock/Tracking-Schutz pruefen, oder MD exportieren verwenden."
+          ? t.githubBlockedMessage
           : error.message
       );
     }
   };
 
-  const saveOutputsToGitHub = async (outputs, commitMessage) => {
+  const getGithubAuth = () => {
     const token = githubToken.trim() || window.localStorage.getItem(GITHUB_TOKEN_KEY);
     if (!token) {
       setShowGithubToken(true);
-      setSaveMessage("Bitte zuerst einen GitHub token eintragen.");
-      return;
+      setSaveMessage(t.noTokenMessage);
+      return null;
     }
+
+    return {
+      token,
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${token}`,
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    };
+  };
+
+  const fetchLatestActionsRun = async () => {
+    try {
+      const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/actions/runs?branch=${GITHUB_REPO_BRANCH}&per_page=1`);
+      if (!response.ok) return null;
+      const data = await response.json();
+      return data.workflow_runs?.[0] || null;
+    } catch {
+      return null;
+    }
+  };
+
+  const watchDeployment = async (previousRunId) => {
+    setDeployState({ status: "waiting", url: null });
+    const deadline = Date.now() + 5 * 60 * 1000;
+    let trackedRunId = null;
+
+    while (Date.now() < deadline) {
+      await new Promise((resolve) => setTimeout(resolve, 4000));
+      const run = await fetchLatestActionsRun();
+      if (!run) continue;
+
+      if (!trackedRunId) {
+        if (run.id === previousRunId) continue;
+        trackedRunId = run.id;
+      }
+      if (run.id !== trackedRunId) continue;
+
+      if (run.status === "completed") {
+        setDeployState({ status: run.conclusion === "success" ? "success" : "failed", url: run.html_url });
+        return;
+      }
+      setDeployState({ status: run.status, url: run.html_url });
+    }
+
+    setDeployState((current) => (current?.status === "success" || current?.status === "failed" ? current : { status: "timeout", url: null }));
+  };
+
+  const saveOutputsToGitHub = async (outputs, commitMessage) => {
+    const auth = getGithubAuth();
+    if (!auth) return false;
+
+    const previousRun = await fetchLatestActionsRun();
 
     try {
       for (const output of outputs) {
         const path = getGithubContentPath(output);
         const apiPath = encodeGithubPath(path);
         const fileUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${apiPath}?ref=${GITHUB_REPO_BRANCH}`;
-        const headers = {
-          Accept: "application/vnd.github+json",
-          Authorization: `Bearer ${token}`,
-          "X-GitHub-Api-Version": "2022-11-28",
-        };
         let sha = null;
-        const currentFile = await fetch(fileUrl, { headers });
+        const currentFile = await fetch(fileUrl, { headers: auth.headers });
 
         if (currentFile.ok) {
           const currentData = await currentFile.json();
@@ -1544,7 +1987,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
         const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${apiPath}`, {
           method: "PUT",
           headers: {
-            ...headers,
+            ...auth.headers,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -1560,30 +2003,98 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
         }
       }
 
-      setSaveMessage(`${outputs.length} Datei(en) wurden auf GitHub gespeichert. GitHub Pages danach kurz neu laden.`);
+      setSaveMessage(t.savedFilesMessage(outputs.length));
+      watchDeployment(previousRun?.id ?? null);
+      return true;
     } catch (error) {
       setSaveMessage(
         error instanceof TypeError
-          ? "GitHub API ist vom Browser blockiert oder nicht erreichbar. Bitte Chrome/Edge testen, Adblock/Tracking-Schutz pruefen, oder MD exportieren verwenden."
-          : error.message || "GitHub speichern ist fehlgeschlagen."
+          ? t.githubBlockedMessage
+          : error.message || t.githubSaveFailedGeneric
       );
+      return false;
     }
   };
 
-  const saveMarkdownToGitHub = async (output) => {
-    await saveOutputsToGitHub([output], `Update ${getGithubContentPath(output)}`);
+  const saveMarkdownToGitHub = async (output) =>
+    saveOutputsToGitHub([output], `Update ${getGithubContentPath(output)}`);
+
+  const deleteGithubFile = async (path, commitMessage) => {
+    const auth = getGithubAuth();
+    if (!auth) throw new Error(t.noGithubTokenError);
+
+    const apiPath = encodeGithubPath(path);
+    const fileUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${apiPath}?ref=${GITHUB_REPO_BRANCH}`;
+    const currentFile = await fetch(fileUrl, { headers: auth.headers });
+
+    if (currentFile.status === 404) return;
+    if (!currentFile.ok) {
+      throw new Error(await getGithubErrorMessage(currentFile, `GitHub konnte ${path} nicht lesen`));
+    }
+
+    const { sha } = await currentFile.json();
+    const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${apiPath}`, {
+      method: "DELETE",
+      headers: { ...auth.headers, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        branch: GITHUB_REPO_BRANCH,
+        message: commitMessage || `Delete ${path}`,
+        sha,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(await getGithubErrorMessage(response, `GitHub konnte ${path} nicht löschen`));
+    }
+  };
+
+  const uploadImageToGithub = async (file, subfolder) => {
+    const auth = getGithubAuth();
+    if (!auth) return null;
+
+    const path = `public/images/${subfolder}/${Date.now()}-${slugifyFilename(file.name)}`;
+    const apiPath = encodeGithubPath(path);
+
+    try {
+      const buffer = await file.arrayBuffer();
+      const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${apiPath}`, {
+        method: "PUT",
+        headers: { ...auth.headers, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          branch: GITHUB_REPO_BRANCH,
+          message: `Upload image ${path}`,
+          content: bytesToBase64(new Uint8Array(buffer)),
+        }),
+      });
+
+      if (!response.ok) {
+        setSaveMessage(await getGithubErrorMessage(response, t.imageUploadFailedPrefix));
+        return null;
+      }
+
+      const publicUrl = `/my-electronics-blog/images/${subfolder}/${path.split("/").pop()}`;
+      setSaveMessage(t.imageUploadedMessage(publicUrl));
+      return publicUrl;
+    } catch (error) {
+      setSaveMessage(
+        error instanceof TypeError
+          ? t.githubBlockedMessageShort
+          : error.message || t.imageUploadFailedPrefix
+      );
+      return null;
+    }
   };
 
   const getContentDirectory = async () => {
     if (!window.showDirectoryPicker) {
-      window.alert("Direktes Speichern wird von diesem Browser nicht unterstützt. Bitte verwenden Sie MD exportieren.");
+      window.alert(t.directorySaveUnsupported);
       return null;
     }
 
     const directory = contentDirectory || await window.showDirectoryPicker({ mode: "readwrite" });
     if (directory.name !== "content") {
       setContentDirectory(null);
-      window.alert("Bitte wählen Sie genau den Ordner src/content aus, nicht einen Sprachordner wie de, en oder vi.");
+      window.alert(t.wrongDirectoryAlert);
       return null;
     }
     if (!contentDirectory) setContentDirectory(directory);
@@ -1605,10 +2116,10 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
       const directory = await getContentDirectory();
       if (!directory) return;
       await writeMarkdownToDirectory(directory, output);
-      setSaveMessage(`${output.directory ? `${output.directory}/` : ""}${output.filename} wurde gespeichert.`);
+      setSaveMessage(t.directorySavedMessage(`${output.directory ? `${output.directory}/` : ""}${output.filename}`));
     } catch (error) {
       if (error.name !== "AbortError") {
-        window.alert("Die Datei konnte nicht gespeichert werden. Bitte verwenden Sie MD exportieren.");
+        window.alert(t.directorySaveFailedAlert);
       }
     }
   };
@@ -1639,7 +2150,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
 
     } catch (error) {
       if (error.name !== "AbortError") {
-        window.alert("Die Reihenfolge konnte nicht gespeichert werden.");
+        window.alert(t.orderSaveFailedAlert);
       }
     }
   };
@@ -1647,7 +2158,44 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   const savePostToDirectory = async () => {
     const output = getMarkdownExport();
     if (!output) return;
-    await saveMarkdownToGitHub(output);
+
+    const previousSourcePath = form.source_path;
+    const newSourcePath = `${output.directory}/${output.filename}`;
+
+    const saved = await saveMarkdownToGitHub(output);
+    if (!saved) return;
+
+    setForm((current) => ({ ...current, source_path: newSourcePath }));
+    setSelectedSlug(newSourcePath);
+
+    if (previousSourcePath && previousSourcePath !== newSourcePath) {
+      try {
+        await deleteGithubFile(`src/content/${previousSourcePath}`, `Remove old file after rename to ${newSourcePath}`);
+        setSaveMessage((current) => `${current}${t.renameRemovedOldFile(`src/content/${previousSourcePath}`)}`);
+      } catch (error) {
+        setSaveMessage((current) => `${current}${t.renameRemoveFailedNote(`src/content/${previousSourcePath}`, error.message)}`);
+      }
+    }
+  };
+
+  const deletePostFromGitHub = async () => {
+    if (!form.source_path) return;
+
+    const confirmed = window.confirm(t.deleteConfirm(form.title || form.slug, `src/content/${form.source_path}`));
+    if (!confirmed) return;
+
+    const previousRun = await fetchLatestActionsRun();
+
+    try {
+      await deleteGithubFile(`src/content/${form.source_path}`, `Delete ${form.source_path}`);
+      setSaveMessage(t.postDeletedMessage(`src/content/${form.source_path}`));
+      setForm(emptyEditorForm());
+      setSelectedSlug("");
+      setSlugEdited(false);
+      watchDeployment(previousRun?.id ?? null);
+    } catch (error) {
+      setSaveMessage(t.deleteFailedMessage(error.message));
+    }
   };
 
   const selectHomeContentLanguage = (language) => {
@@ -1679,7 +2227,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
 
   const getPersonalWayExport = () => {
     if (!personalWayForm.title.trim() || !personalWayForm.content.trim()) {
-      window.alert("Titel und Inhalt sind Pflichtfelder.");
+      window.alert(t.personalWayValidation);
       return null;
     }
 
@@ -1765,39 +2313,52 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
           <div className="flex items-center gap-3">
             <FileText className="h-6 w-6 text-cyan-300" />
             <div>
-              <h1 className="font-black">Markdown-Beitrag erstellen</h1>
+              <h1 className="font-black">{t.headerTitle}</h1>
               <p className="text-xs text-zinc-500">ElektronikLab</p>
             </div>
           </div>
           <div className="flex flex-wrap items-center justify-end gap-2">
+            <div className="flex rounded-full border border-white/10 bg-white/5 p-1">
+              {LANGUAGES.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => changeUiLanguage(item)}
+                  className={`rounded-full px-3 py-1.5 text-xs font-black uppercase transition ${uiLanguage === item ? "bg-cyan-400 text-black" : "text-zinc-400 hover:text-white"}`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
             <button type="button" onClick={() => setShowPasswordModal(true)} className="inline-flex items-center gap-2 rounded-xl border border-cyan-300/20 px-4 py-2 text-sm font-bold text-cyan-100 transition hover:bg-cyan-300/10">
-              <KeyRound className="h-4 w-4" /> Passwort
+              <KeyRound className="h-4 w-4" /> {t.passwordButton}
             </button>
             <button type="button" onClick={onLogout} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
-              <LogOut className="h-4 w-4" /> Logout
+              <LogOut className="h-4 w-4" /> {t.logoutButton}
             </button>
             <a href="/my-electronics-blog/" className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
-              <ArrowLeft className="h-4 w-4" /> Blog
+              <ArrowLeft className="h-4 w-4" /> {t.blogButton}
             </a>
           </div>
         </div>
+        <DeployStatusBanner state={deployState} onDismiss={() => setDeployState(null)} language={uiLanguage} />
       </header>
-      {showPasswordModal && <AdminPasswordModal onClose={() => setShowPasswordModal(false)} />}
+      {showPasswordModal && <AdminPasswordModal onClose={() => setShowPasswordModal(false)} language={uiLanguage} />}
 
-      <main className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-5 lg:grid-cols-[1.05fr_0.95fr]">
+      <main className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-5 lg:grid-cols-[0.9fr_1.1fr]">
         <section className="space-y-5">
           <div className="rounded-2xl border border-sky-400/20 bg-sky-400/5 p-5">
             <button type="button" onClick={() => setShowGithubToken((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
               <span>
                 <span className="block text-xs font-bold uppercase text-sky-300">GitHub</span>
-                <span className="mt-1 block font-black">Direkt auf GitHub speichern</span>
+                <span className="mt-1 block font-black">{t.githubSectionTitle}</span>
               </span>
               <Code2 className="h-5 w-5 text-sky-300" />
             </button>
             {showGithubToken && (
               <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
                 <p className="text-sm leading-6 text-zinc-300">
-                  Tragen Sie einen GitHub fine-grained token mit <span className="font-bold text-white">Contents: Read and write</span> fuer <span className="font-bold text-white">nguyennhando/my-electronics-blog</span> ein. Der Token wird nur lokal in diesem Browser gespeichert.
+                  {t.githubTokenIntroPre}<span className="font-bold text-white">Contents: Read and write</span>{t.githubTokenIntroMid}<span className="font-bold text-white">nguyennhando/my-electronics-blog</span>{t.githubTokenIntroPost}
                 </p>
                 <div className="grid gap-3 sm:grid-cols-[1fr_auto_auto]">
                   <input
@@ -1808,10 +2369,10 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                     placeholder="github_pat_..."
                   />
                   <button type="button" onClick={saveGithubToken} className="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-400 px-4 py-3 text-sm font-black text-black transition hover:bg-sky-300">
-                    <Save className="h-4 w-4" /> Token speichern
+                    <Save className="h-4 w-4" /> {t.saveTokenButton}
                   </button>
                   <button type="button" onClick={testGithubToken} className="inline-flex items-center justify-center gap-2 rounded-xl border border-sky-300/30 px-4 py-3 text-sm font-bold text-sky-100 transition hover:bg-sky-300/10">
-                    <Code2 className="h-4 w-4" /> Token testen
+                    <Code2 className="h-4 w-4" /> {t.testTokenButton}
                   </button>
                 </div>
               </div>
@@ -1821,8 +2382,8 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
           <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/5 p-5">
             <button type="button" onClick={() => setShowSiteSettingsEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
               <span>
-                <span className="block text-xs font-bold uppercase text-emerald-300">Website</span>
-                <span className="mt-1 block font-black">Website-Hintergrund bearbeiten</span>
+                <span className="block text-xs font-bold uppercase text-emerald-300">{t.badgeWebsite}</span>
+                <span className="mt-1 block font-black">{t.websiteSectionTitle}</span>
               </span>
               <ImageIcon className="h-5 w-5 text-emerald-300" />
             </button>
@@ -1830,23 +2391,26 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
             {showSiteSettingsEditor && (
               <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
                 <div>
-                  <label className={labelClass}>Hintergrundbild</label>
-                  <input className={inputClass} value={siteSettingsForm.background_image} onChange={(e) => setSiteSettingsForm((current) => ({ ...current, background_image: e.target.value }))} placeholder="/my-electronics-blog/images/background.webp" />
+                  <label className={labelClass}>{t.backgroundImageLabel}</label>
+                  <div className="flex gap-2">
+                    <input className={inputClass} value={siteSettingsForm.background_image} onChange={(e) => setSiteSettingsForm((current) => ({ ...current, background_image: e.target.value }))} placeholder="/my-electronics-blog/images/background.webp" />
+                    <ImageUploadButton label={t.uploadButton} subfolder="background" uploadImage={uploadImageToGithub} onUploaded={(url) => setSiteSettingsForm((current) => ({ ...current, background_image: url }))} />
+                  </div>
                 </div>
                 <div className="relative h-44 overflow-hidden rounded-xl border border-white/10 bg-[#07111f]">
                   {siteSettingsForm.background_image ? (
                     <img src={siteSettingsForm.background_image} alt="" className="h-full w-full object-cover opacity-60" />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-sm text-zinc-500">Standard-Hintergrund ohne Bild</div>
+                    <div className="flex h-full items-center justify-center text-sm text-zinc-500">{t.noBackgroundText}</div>
                   )}
                   <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-900/30 to-fuchsia-600/20" />
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <button type="button" onClick={saveSiteSettingsToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-emerald-400 px-4 py-2 text-sm font-black text-black transition hover:bg-emerald-300">
-                    <Code2 className="h-4 w-4" /> Auf GitHub speichern
+                    <Code2 className="h-4 w-4" /> {t.saveGithubButton}
                   </button>
                   <button type="button" onClick={exportSiteSettings} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
-                    <Download className="h-4 w-4" /> MD exportieren
+                    <Download className="h-4 w-4" /> {t.exportMdButton}
                   </button>
                 </div>
               </div>
@@ -1856,8 +2420,8 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
           <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-5">
             <button type="button" onClick={() => setShowGalleryEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
               <span>
-                <span className="block text-xs font-bold uppercase text-cyan-300">Startseite</span>
-                <span className="mt-1 block font-black">Projektgalerie bearbeiten</span>
+                <span className="block text-xs font-bold uppercase text-cyan-300">{t.badgeStartseite}</span>
+                <span className="mt-1 block font-black">{t.gallerySectionTitle}</span>
               </span>
               <ImageIcon className="h-5 w-5 text-cyan-300" />
             </button>
@@ -1865,30 +2429,33 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
             {showGalleryEditor && (
               <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
                 <div className="rounded-xl border border-cyan-400/20 bg-cyan-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
-                  <p className="font-black text-cyan-200">So fügen Sie neue Galeriebilder hinzu</p>
+                  <p className="font-black text-cyan-200">{t.galleryInstructionsTitle}</p>
                   <ol className="mt-2 ml-5 list-decimal space-y-1">
-                    <li>Kopieren Sie die Bilddatei in den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">public/images/galerie</code>.</li>
-                    <li>Tragen Sie den Bildpfad ein, zum Beispiel <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">/my-electronics-blog/images/galerie/dateiname.webp</code>.</li>
-                    <li>Verwenden Sie pro Zeile genau einen Bildpfad.</li>
-                    <li>Die erste Zeile ist das große Hauptbild. Die zweite und dritte Zeile sind die kleinen Bilder auf der rechten Seite.</li>
-                    <li>Speichern Sie die Datei anschließend im Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content</code>.</li>
+                    <li>{t.galleryStep1Pre}<code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">public/images/galerie</code>{t.galleryStep1Post}</li>
+                    <li>{t.galleryStep2Pre}<code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">/my-electronics-blog/images/galerie/dateiname.webp</code>{t.galleryStep2Post}</li>
+                    <li>{t.galleryStep3}</li>
+                    <li>{t.galleryStep4}</li>
+                    <li>{t.galleryStep5Pre}<code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content</code>{t.galleryStep5Post}</li>
                   </ol>
-                  <p className="mt-3 text-xs text-zinc-400">Die Bildposition innerhalb des Rahmens wird automatisch zentriert.</p>
+                  <p className="mt-3 text-xs text-zinc-400">{t.galleryPositionNote}</p>
                 </div>
                 <div>
-                  <label className={labelClass}>Galeriebilder, ein Pfad pro Zeile</label>
+                  <label className={labelClass}>{t.galleryImagesLabel}</label>
                   <textarea className={`${inputClass} min-h-[220px] font-mono leading-6`} value={galleryImagesForm} onChange={(e) => setGalleryImagesForm(e.target.value)} placeholder="/my-electronics-blog/images/galerie/bild.webp" />
-                  <p className="mt-2 text-xs leading-5 text-zinc-500">Die Galerie ist frei zusammengestellt. Die Bilder müssen keinem bestimmten Projekt zugeordnet sein.</p>
+                  <p className="mt-2 text-xs leading-5 text-zinc-500">{t.galleryImagesHelp}</p>
+                  <div className="mt-2">
+                    <ImageUploadButton label={t.addImageButton} subfolder="galerie" uploadImage={uploadImageToGithub} onUploaded={(url) => setGalleryImagesForm((current) => current ? `${current}\n${url}` : url)} />
+                  </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {galleryImagesForm.split("\n").map((item) => item.trim()).filter(Boolean).slice(0, 6).map((image) => <img key={image} src={image} alt="" className="h-28 w-full rounded-xl object-cover" />)}
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <button type="button" onClick={saveGallerySettingsToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2 text-sm font-black text-black transition hover:bg-cyan-300">
-                    <Code2 className="h-4 w-4" /> Auf GitHub speichern
+                    <Code2 className="h-4 w-4" /> {t.saveGithubButton}
                   </button>
                   <button type="button" onClick={exportGallerySettings} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
-                    <Download className="h-4 w-4" /> MD exportieren
+                    <Download className="h-4 w-4" /> {t.exportMdButton}
                   </button>
                 </div>
               </div>
@@ -1898,8 +2465,8 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
           <div className="rounded-2xl border border-orange-400/20 bg-orange-400/5 p-5">
             <button type="button" onClick={() => setShowProjectOrderEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
               <span>
-                <span className="block text-xs font-bold uppercase text-orange-300">Blog</span>
-                <span className="mt-1 block font-black">Reihenfolge der Projektkarten bearbeiten</span>
+                <span className="block text-xs font-bold uppercase text-orange-300">{t.badgeBlog}</span>
+                <span className="mt-1 block font-black">{t.orderSectionTitle}</span>
               </span>
               <ChevronUp className="h-5 w-5 text-orange-300" />
             </button>
@@ -1907,12 +2474,12 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
             {showProjectOrderEditor && (
               <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
                 <div className="rounded-xl border border-orange-400/20 bg-orange-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
-                  <p className="font-black text-orange-200">Projektkarten visuell sortieren</p>
-                  <p className="mt-2">Verschieben Sie Karten mit den Pfeilen nach oben oder unten. Beim Speichern wird die Reihenfolge automatisch für alle Sprachversionen übernommen.</p>
-                  <p className="mt-2 text-xs text-zinc-400">Mit „Reihenfolge speichern“ wird die neue Sortierung direkt auf GitHub gespeichert.</p>
+                  <p className="font-black text-orange-200">{t.orderInstructionsTitle}</p>
+                  <p className="mt-2">{t.orderInstructions1}</p>
+                  <p className="mt-2 text-xs text-zinc-400">{t.orderInstructions2}</p>
                 </div>
                 <div>
-                  <label className={labelClass}>Vorschau-Sprache</label>
+                  <label className={labelClass}>{t.previewLanguageLabel}</label>
                   <select className={inputClass} value={projectOrderLanguage} onChange={(e) => setProjectOrderLanguage(e.target.value)}>
                     <option value="de">DE - Deutsch</option>
                     <option value="en">EN - English</option>
@@ -1929,10 +2496,10 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                         <p className="mt-1 text-xs text-zinc-500">{getCategoryLabel(post.category, projectOrderLanguage)} · {getStatusLabel(post.project_status, projectOrderLanguage)}</p>
                       </div>
                       <div className="flex shrink-0 flex-col gap-1">
-                        <button type="button" disabled={index === 0} onClick={() => moveProjectOrder(post.translation_id, -1)} className="rounded-lg border border-white/10 p-1.5 text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30" aria-label="Nach oben verschieben">
+                        <button type="button" disabled={index === 0} onClick={() => moveProjectOrder(post.translation_id, -1)} className="rounded-lg border border-white/10 p-1.5 text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30" aria-label={t.moveUpAria}>
                           <ChevronUp className="h-4 w-4" />
                         </button>
-                        <button type="button" disabled={index === projectOrderPosts.length - 1} onClick={() => moveProjectOrder(post.translation_id, 1)} className="rounded-lg border border-white/10 p-1.5 text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30" aria-label="Nach unten verschieben">
+                        <button type="button" disabled={index === projectOrderPosts.length - 1} onClick={() => moveProjectOrder(post.translation_id, 1)} className="rounded-lg border border-white/10 p-1.5 text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30" aria-label={t.moveDownAria}>
                           <ChevronDown className="h-4 w-4" />
                         </button>
                       </div>
@@ -1940,7 +2507,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                   ))}
                 </div>
                 <button type="button" onClick={saveProjectOrderToDirectory} className="inline-flex w-fit items-center gap-2 rounded-xl bg-orange-400 px-4 py-2 text-sm font-black text-black transition hover:bg-orange-300">
-                  <Code2 className="h-4 w-4" /> Reihenfolge speichern
+                  <Code2 className="h-4 w-4" /> {t.saveOrderButton}
                 </button>
                 {saveMessage && <p className="text-xs font-bold text-emerald-300">{saveMessage}</p>}
               </div>
@@ -1950,8 +2517,8 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
           <div className="rounded-2xl border border-blue-400/20 bg-blue-400/5 p-5">
             <button type="button" onClick={() => setShowHomeContentEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
               <span>
-                <span className="block text-xs font-bold uppercase text-blue-300">Startseite</span>
-                <span className="mt-1 block font-black">Startseiten-Inhalte bearbeiten</span>
+                <span className="block text-xs font-bold uppercase text-blue-300">{t.badgeStartseite}</span>
+                <span className="mt-1 block font-black">{t.homeContentSectionTitle}</span>
               </span>
               <Pencil className="h-5 w-5 text-blue-300" />
             </button>
@@ -1959,41 +2526,41 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
             {showHomeContentEditor && (
               <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
                 <div className="rounded-xl border border-blue-400/20 bg-blue-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
-                  <p className="font-black text-blue-200">Speicherort der Markdown-Datei</p>
-                  <p className="mt-2">Speichern Sie die Datei abhängig von der ausgewählten Sprache unter:</p>
+                  <p className="font-black text-blue-200">{t.fileLocationTitle}</p>
+                  <p className="mt-2">{t.fileLocationIntro}</p>
                   <ul className="mt-2 ml-5 list-disc space-y-1">
-                    <li>Deutsch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/de/home-content.md</code></li>
-                    <li>Englisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/en/home-content.md</code></li>
-                    <li>Vietnamesisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/vi/home-content.md</code></li>
+                    <li>{t.langDeutsch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/de/home-content.md</code></li>
+                    <li>{t.langEnglisch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/en/home-content.md</code></li>
+                    <li>{t.langVietnamesisch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/vi/home-content.md</code></li>
                   </ul>
-                  <p className="mt-3 text-xs text-zinc-400">Mit „Auf GitHub speichern“ wird diese Datei direkt in den passenden Sprachordner unter <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content</code> geschrieben.</p>
-                  <p className="mt-2 text-xs text-zinc-400">Nach dem Speichern lädt GitHub Pages die Änderung nach kurzer Zeit neu.</p>
+                  <p className="mt-3 text-xs text-zinc-400">{t.homeContentSaveNotePre}<code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content</code>{t.homeContentSaveNotePost}</p>
+                  <p className="mt-2 text-xs text-zinc-400">{t.homeContentReloadNote}</p>
                 </div>
                 <div>
-                  <label className={labelClass}>Sprache</label>
+                  <label className={labelClass}>{t.languageLabel}</label>
                   <select className={inputClass} value={homeContentForm.language} onChange={(e) => selectHomeContentLanguage(e.target.value)}>
                     <option value="de">DE - Deutsch</option>
                     <option value="en">EN - English</option>
                     <option value="vi">VI - Tiếng Việt</option>
                   </select>
                 </div>
-                {HOME_CONTENT_FIELDS.map(([key, label]) => (
+                {HOME_CONTENT_FIELDS.map(([key]) => (
                   <div key={key}>
-                    <label className={labelClass}>{label}</label>
+                    <label className={labelClass}>{getHomeContentFieldLabel(key, uiLanguage)}</label>
                     <textarea className={`${inputClass} min-h-[88px] leading-6`} value={homeContentForm[key] || ""} onChange={(e) => setHomeContentForm((current) => ({ ...current, [key]: e.target.value }))} />
                   </div>
                 ))}
                 <div className="flex flex-wrap gap-2">
                   <button type="button" onClick={saveHomeContentToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-blue-400 px-4 py-2 text-sm font-black text-black transition hover:bg-blue-300">
-                    <Code2 className="h-4 w-4" /> Auf GitHub speichern
+                    <Code2 className="h-4 w-4" /> {t.saveGithubButton}
                   </button>
                   <button type="button" onClick={exportHomeContent} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
-                    <Download className="h-4 w-4" /> MD exportieren
+                    <Download className="h-4 w-4" /> {t.exportMdButton}
                   </button>
                 </div>
                 {saveMessage && <p className="text-xs font-bold text-emerald-300">{saveMessage}</p>}
                 <div className="border-t border-white/10 pt-5">
-                  <p className="mb-3 text-xs font-bold uppercase text-zinc-500">Live-Vorschau</p>
+                  <p className="mb-3 text-xs font-bold uppercase text-zinc-500">{t.livePreviewLabel}</p>
                   <div className="space-y-4 rounded-xl border border-white/10 bg-[#07111f]/95 p-4">
                     <div>
                       <p className="text-xs font-bold uppercase tracking-widest text-cyan-300">{homeContentForm.hero_badge}</p>
@@ -2031,8 +2598,8 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
           <div className="rounded-2xl border border-fuchsia-400/20 bg-fuchsia-400/5 p-5">
             <button type="button" onClick={() => setShowPersonalWayEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
               <span>
-                <span className="block text-xs font-bold uppercase text-fuchsia-300">Startseite</span>
-                <span className="mt-1 block font-black">Persönlicher Weg bearbeiten</span>
+                <span className="block text-xs font-bold uppercase text-fuchsia-300">{t.badgeStartseite}</span>
+                <span className="mt-1 block font-black">{t.personalWaySectionTitle}</span>
               </span>
               <Pencil className="h-5 w-5 text-fuchsia-300" />
             </button>
@@ -2040,17 +2607,17 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
             {showPersonalWayEditor && (
               <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
                 <div className="rounded-xl border border-fuchsia-400/20 bg-fuchsia-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
-                  <p className="font-black text-fuchsia-200">Speicherort der Markdown-Datei</p>
-                  <p className="mt-2">Speichern Sie die Datei abhängig von der ausgewählten Sprache unter:</p>
+                  <p className="font-black text-fuchsia-200">{t.fileLocationTitle}</p>
+                  <p className="mt-2">{t.fileLocationIntro}</p>
                   <ul className="mt-2 ml-5 list-disc space-y-1">
-                    <li>Deutsch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/de/personal-way.md</code></li>
-                    <li>Englisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/en/personal-way.md</code></li>
-                    <li>Vietnamesisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/vi/personal-way.md</code></li>
+                    <li>{t.langDeutsch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/de/personal-way.md</code></li>
+                    <li>{t.langEnglisch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/en/personal-way.md</code></li>
+                    <li>{t.langVietnamesisch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/vi/personal-way.md</code></li>
                   </ul>
-                  <p className="mt-3 text-xs text-zinc-400">Mit „Auf GitHub speichern“ wird diese Datei direkt in den passenden Sprachordner unter <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content</code> geschrieben.</p>
+                  <p className="mt-3 text-xs text-zinc-400">{t.personalWaySaveNotePre}<code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content</code>{t.personalWaySaveNotePost}</p>
                 </div>
                 <div>
-                  <label className={labelClass}>Sprache</label>
+                  <label className={labelClass}>{t.languageLabel}</label>
                   <select className={inputClass} value={personalWayForm.language || "de"} onChange={(e) => selectPersonalWayLanguage(e.target.value)}>
                     <option value="de">DE - Deutsch</option>
                     <option value="en">EN - English</option>
@@ -2058,38 +2625,44 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                   </select>
                 </div>
                 <div>
-                  <label className={labelClass}>Titel *</label>
+                  <label className={labelClass}>{t.titleLabelRequired}</label>
                   <input className={inputClass} value={personalWayForm.title} onChange={(e) => setPersonalWayForm((current) => ({ ...current, title: e.target.value }))} />
                 </div>
                 <div>
-                  <label className={labelClass}>Bild 1</label>
-                  <input className={inputClass} value={personalWayForm.image_1} onChange={(e) => setPersonalWayForm((current) => ({ ...current, image_1: e.target.value }))} />
+                  <label className={labelClass}>{t.image1Label}</label>
+                  <div className="flex gap-2">
+                    <input className={inputClass} value={personalWayForm.image_1} onChange={(e) => setPersonalWayForm((current) => ({ ...current, image_1: e.target.value }))} />
+                    <ImageUploadButton label={t.uploadButton} subfolder="personal-way" uploadImage={uploadImageToGithub} onUploaded={(url) => setPersonalWayForm((current) => ({ ...current, image_1: url }))} />
+                  </div>
                 </div>
                 <div>
-                  <label className={labelClass}>Bild 2</label>
-                  <input className={inputClass} value={personalWayForm.image_2} onChange={(e) => setPersonalWayForm((current) => ({ ...current, image_2: e.target.value }))} />
+                  <label className={labelClass}>{t.image2Label}</label>
+                  <div className="flex gap-2">
+                    <input className={inputClass} value={personalWayForm.image_2} onChange={(e) => setPersonalWayForm((current) => ({ ...current, image_2: e.target.value }))} />
+                    <ImageUploadButton label={t.uploadButton} subfolder="personal-way" uploadImage={uploadImageToGithub} onUploaded={(url) => setPersonalWayForm((current) => ({ ...current, image_2: url }))} />
+                  </div>
                 </div>
                 <div>
-                  <label className={labelClass}>Markdown-Inhalt *</label>
+                  <label className={labelClass}>{t.markdownContentLabelRequired}</label>
                   <textarea className={`${inputClass} min-h-[320px] font-mono leading-6`} value={personalWayForm.content} onChange={(e) => setPersonalWayForm((current) => ({ ...current, content: e.target.value }))} />
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <button type="button" onClick={savePersonalWayToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-fuchsia-400 px-4 py-2 text-sm font-black text-black transition hover:bg-fuchsia-300">
-                    <Code2 className="h-4 w-4" /> Auf GitHub speichern
+                    <Code2 className="h-4 w-4" /> {t.saveGithubButton}
                   </button>
                   <button type="button" onClick={exportPersonalWay} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
-                    <Download className="h-4 w-4" /> MD exportieren
+                    <Download className="h-4 w-4" /> {t.exportMdButton}
                   </button>
                 </div>
                 <div className="border-t border-white/10 pt-5">
-                  <p className="mb-3 text-xs font-bold uppercase text-zinc-500">Vorschau</p>
+                  <p className="mb-3 text-xs font-bold uppercase text-zinc-500">{t.previewLabel}</p>
                   <div className="grid gap-4 lg:grid-cols-2">
                     <div className="grid gap-3">
                       <img src={personalWayForm.image_1} alt="" className="h-40 w-full rounded-xl object-cover" />
                       <img src={personalWayForm.image_2} alt="" className="h-40 w-full rounded-xl object-cover" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold uppercase text-cyan-300">Persönlicher Weg</p>
+                      <p className="text-xs font-bold uppercase text-cyan-300">{t.personalWayPreviewLabel}</p>
                       <h2 className="mt-2 text-xl font-black leading-tight">{personalWayForm.title}</h2>
                       <div className="prose prose-invert mt-4 max-w-none text-sm leading-6 prose-p:my-3 prose-p:text-zinc-300">
                         <ReactMarkdown>{personalWayForm.content}</ReactMarkdown>
@@ -2102,34 +2675,46 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
           </div>
 
           <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-5">
-            <label className={labelClass}>Beitrag laden oder neu erstellen</label>
-            <select className={inputClass} value={selectedSlug} onChange={(e) => selectPost(e.target.value)}>
-              <option value="">Neuer Beitrag</option>
-              {CONTENT_POSTS.map((post) => <option key={post.source_path} value={post.source_path}>[{post.language.toUpperCase()}] {post.content_type === "knowledge" ? "[Wissen]" : "[Projekt]"} {post.title}</option>)}
-            </select>
+            <label className={labelClass}>{t.loadPostLabel}</label>
+            <div className="flex gap-2">
+              <select className={inputClass} value={selectedSlug} onChange={(e) => selectPost(e.target.value)}>
+                <option value="">{t.newPostOption}</option>
+                {CONTENT_POSTS.map((post) => <option key={post.source_path} value={post.source_path}>[{post.language.toUpperCase()}] {post.content_type === "knowledge" ? t.knowledgeTag : t.projectTag} {post.title}</option>)}
+              </select>
+              {form.source_path && (
+                <button type="button" onClick={deletePostFromGitHub} className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-red-400/30 px-4 py-3 text-sm font-bold text-red-200 transition hover:bg-red-400/10">
+                  <X className="h-4 w-4" /> {t.deleteButton}
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="grid gap-4 rounded-2xl border border-white/10 bg-black/20 p-5 sm:grid-cols-2">
             <div className="sm:col-span-2 rounded-xl border border-cyan-400/20 bg-cyan-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
-              <p className="font-black text-cyan-200">Mehrsprachige Beiträge speichern</p>
-              <p className="mt-2">Verwenden Sie für alle Sprachversionen desselben Beitrags dieselbe <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">translation_id</code>. Wählen Sie beim Speichern genau den Ordner <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content</code>, nicht einen Sprachordner. Der Editor legt die Datei automatisch unter <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">de</code>, <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">en</code> oder <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">vi</code> ab.</p>
-              <p className="mt-3 font-bold text-cyan-100">Speicherort abhängig von Sprache und Slug:</p>
+              <p className="font-black text-cyan-200">{t.multilingualNoticeTitle}</p>
+              <p className="mt-2">
+                <CodeText codeClassName="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100" tokens={[
+                  t.multilingualP1, { code: "translation_id" }, t.multilingualP2, { code: "src/content" }, t.multilingualP3,
+                  { code: "de" }, t.multilingualP4, { code: "en" }, t.multilingualP5, { code: "vi" }, t.multilingualP6,
+                ]} />
+              </p>
+              <p className="mt-3 font-bold text-cyan-100">{t.multilingualLocationIntro}</p>
               <ul className="mt-2 ml-5 list-disc space-y-1">
-                <li>Deutsch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content/de/slug.md</code></li>
-                <li>Englisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content/en/slug.md</code></li>
-                <li>Vietnamesisch: <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content/vi/slug.md</code></li>
+                <li>{t.langDeutsch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content/de/slug.md</code></li>
+                <li>{t.langEnglisch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content/en/slug.md</code></li>
+                <li>{t.langVietnamesisch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content/vi/slug.md</code></li>
               </ul>
-              <p className="mt-3 text-xs text-zinc-400">Bei „MD exportieren“ wird nur die Datei heruntergeladen. Verschieben Sie sie anschließend manuell in den passenden Sprachordner.</p>
+              <p className="mt-3 text-xs text-zinc-400">{t.exportNote}</p>
             </div>
             <div className="sm:col-span-2">
-              <label className={labelClass}>Inhaltstyp</label>
+              <label className={labelClass}>{t.contentTypeLabel}</label>
               <select className={inputClass} value={form.content_type} onChange={(e) => update("content_type", e.target.value)}>
-                <option value="project">Projektbeitrag für den Blog</option>
-                <option value="knowledge">Wissen, Lernmaterial oder Forschung</option>
+                <option value="project">{t.contentTypeProjectOption}</option>
+                <option value="knowledge">{t.contentTypeKnowledgeOption}</option>
               </select>
             </div>
             <div>
-              <label className={labelClass}>Sprache</label>
+              <label className={labelClass}>{t.languageLabel}</label>
               <select className={inputClass} value={form.language} onChange={(e) => update("language", e.target.value)}>
                 <option value="de">DE - Deutsch</option>
                 <option value="en">EN - English</option>
@@ -2137,66 +2722,81 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
               </select>
             </div>
             <div>
-              <label className={labelClass}>Translation ID</label>
-              <input className={inputClass} value={form.translation_id} onChange={(e) => update("translation_id", slugify(e.target.value))} placeholder="gemeinsame-beitrags-id" />
-              <p className="mt-2 text-xs leading-5 text-zinc-500">Vorhanden: {translationLanguages.length ? translationLanguages.map((item) => item.toUpperCase()).join(", ") : "noch keine Sprachversion"}</p>
-            </div>
-            <div className="sm:col-span-2">
-              <label className={labelClass}>Titel *</label>
-              <input className={inputClass} value={form.title} onChange={(e) => update("title", e.target.value)} placeholder="Titel des Projekts" />
-            </div>
-            <div>
-              <label className={labelClass}>Slug *</label>
-              <input className={inputClass} value={form.slug} onChange={(e) => { setSlugEdited(true); update("slug", slugify(e.target.value)); }} placeholder="projekt-name" />
-            </div>
-            <div>
-              <label className={labelClass}>Kategorie</label>
+              <label className={labelClass}>{t.categoryLabel}</label>
               <input className={inputClass} value={form.category} onChange={(e) => update("category", e.target.value)} />
             </div>
+            <div className="sm:col-span-2">
+              <label className={labelClass}>{t.titleLabelRequired}</label>
+              <input className={inputClass} value={form.title} onChange={(e) => update("title", e.target.value)} placeholder={t.titlePlaceholder} />
+            </div>
             {form.content_type !== "knowledge" && <div>
-              <label className={labelClass}>Status</label>
+              <label className={labelClass}>{t.statusLabel}</label>
               <select className={inputClass} value={form.project_status} onChange={(e) => update("project_status", e.target.value)}>
-                <option value="idea">Idee</option>
-                <option value="in_progress">In Arbeit</option>
-                <option value="done">Umgesetzt</option>
+                <option value="idea">{getStatusLabel("idea", uiLanguage)}</option>
+                <option value="in_progress">{getStatusLabel("in_progress", uiLanguage)}</option>
+                <option value="done">{getStatusLabel("done", uiLanguage)}</option>
               </select>
             </div>}
-            <div>
-              <label className={labelClass}>Reihenfolge</label>
-              <input className={inputClass} type="number" value={form.sort_order} onChange={(e) => update("sort_order", e.target.value)} />
-            </div>
             <div className="sm:col-span-2">
-              <label className={labelClass}>Kurzbeschreibung *</label>
+              <button type="button" onClick={() => setShowAdvancedFields((current) => !current)} className="inline-flex items-center gap-2 text-xs font-bold uppercase text-zinc-500 transition hover:text-zinc-300">
+                {showAdvancedFields ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />} {t.advancedToggleLabel}
+              </button>
+            </div>
+            {showAdvancedFields && (
+              <>
+                <div>
+                  <label className={labelClass}>{t.translationIdLabel}</label>
+                  <input className={inputClass} value={form.translation_id} onChange={(e) => update("translation_id", slugify(e.target.value))} placeholder={t.translationIdPlaceholder} />
+                  <p className="mt-2 text-xs leading-5 text-zinc-500">{t.translationIdAvailable}{translationLanguages.length ? translationLanguages.map((item) => item.toUpperCase()).join(", ") : t.translationIdNone}</p>
+                </div>
+                <div>
+                  <label className={labelClass}>{t.slugLabel}</label>
+                  <input className={inputClass} value={form.slug} onChange={(e) => { setSlugEdited(true); update("slug", slugify(e.target.value)); }} placeholder={t.slugPlaceholder} />
+                </div>
+                <div>
+                  <label className={labelClass}>{t.sortOrderLabel}</label>
+                  <input className={inputClass} type="number" value={form.sort_order} onChange={(e) => update("sort_order", e.target.value)} />
+                </div>
+              </>
+            )}
+            <div className="sm:col-span-2">
+              <label className={labelClass}>{t.excerptLabel}</label>
               <textarea className={inputClass} rows={3} value={form.excerpt} onChange={(e) => update("excerpt", e.target.value)} />
             </div>
             <div className="sm:col-span-2">
-              <label className={labelClass}>Hauptbild</label>
-              <input className={inputClass} value={form.image_url} onChange={(e) => update("image_url", e.target.value)} placeholder="/my-electronics-blog/images/posts/bild.webp" />
+              <label className={labelClass}>{t.mainImageLabel}</label>
+              <div className="flex gap-2">
+                <input className={inputClass} value={form.image_url} onChange={(e) => update("image_url", e.target.value)} placeholder="/my-electronics-blog/images/posts/bild.webp" />
+                <ImageUploadButton label={t.uploadButton} subfolder="posts" uploadImage={uploadImageToGithub} onUploaded={(url) => update("image_url", url)} />
+              </div>
             </div>
             <div className="sm:col-span-2">
-              <label className={labelClass}>Galeriebilder, ein Pfad pro Zeile</label>
+              <label className={labelClass}>{t.galleryImagesLabel}</label>
               <textarea className={inputClass} rows={3} value={form.image_gallery} onChange={(e) => update("image_gallery", e.target.value)} />
+              <div className="mt-2">
+                <ImageUploadButton label={t.addImageButton} subfolder="posts" uploadImage={uploadImageToGithub} onUploaded={(url) => update("image_gallery", form.image_gallery ? `${form.image_gallery}\n${url}` : url)} />
+              </div>
             </div>
             <div>
-              <label className={labelClass}>Tags, durch Komma getrennt</label>
-              <input className={inputClass} value={form.tags} onChange={(e) => update("tags", e.target.value)} placeholder="ESP32, MQTT, IoT" />
+              <label className={labelClass}>{t.tagsLabel}</label>
+              <input className={inputClass} value={form.tags} onChange={(e) => update("tags", e.target.value)} placeholder={t.tagsPlaceholder} />
             </div>
             <div>
-              <label className={labelClass}>Lesezeit</label>
+              <label className={labelClass}>{t.readTimeLabel}</label>
               <input className={inputClass} value={form.read_time} onChange={(e) => update("read_time", e.target.value)} />
             </div>
             <div className="sm:col-span-2">
-              <label className={labelClass}>{form.content_type === "knowledge" ? "Externe Quelle oder weiterführender Link" : "Externer Projektlink"}</label>
+              <label className={labelClass}>{form.content_type === "knowledge" ? t.externalLinkLabelKnowledge : t.externalLinkLabelProject}</label>
               <input className={inputClass} value={form.external_link} onChange={(e) => update("external_link", e.target.value)} placeholder="https://..." />
             </div>
             <label className="flex items-center gap-3 text-sm font-bold text-zinc-300">
               <input type="checkbox" checked={form.published} onChange={(e) => update("published", e.target.checked)} />
-              Veröffentlicht
+              {t.publishedLabel}
             </label>
           </div>
 
           <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
-            <label className={labelClass}>Markdown-Inhalt *</label>
+            <label className={labelClass}>{t.markdownContentLabelRequired}</label>
             <textarea className={`${inputClass} min-h-[420px] font-mono leading-6`} value={form.content} onChange={(e) => update("content", e.target.value)} />
           </div>
         </section>
@@ -2204,20 +2804,20 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
         <aside className="lg:sticky lg:top-[90px] lg:self-start">
           <div className="space-y-5 rounded-2xl border border-white/10 bg-[#07111f]/95 p-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 className="font-black text-cyan-300">Vorschau</h2>
+              <h2 className="font-black text-cyan-300">{t.previewLabel}</h2>
               <div className="flex flex-wrap justify-end gap-2">
                 <button type="button" onClick={savePostToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2 text-sm font-black text-black transition hover:bg-cyan-300">
-                  <Code2 className="h-4 w-4" /> Auf GitHub speichern
+                  <Code2 className="h-4 w-4" /> {t.saveGithubButton}
                 </button>
                 <button type="button" onClick={exportPost} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
-                  <Download className="h-4 w-4" /> MD exportieren
+                  <Download className="h-4 w-4" /> {t.exportMdButton}
                 </button>
               </div>
             </div>
             {saveMessage && <p className="text-xs font-bold text-emerald-300">{saveMessage}</p>}
 
             <div>
-              <p className="mb-3 text-xs font-bold uppercase text-zinc-500">Blog-Karte</p>
+              <p className="mb-3 text-xs font-bold uppercase text-zinc-500">{t.blogCardLabel}</p>
               <GradientBorder
                 gradient={previewIsIdea ? "from-zinc-600 via-zinc-500 to-zinc-600" : "from-cyan-400 via-cyan-500 to-cyan-400"}
                 rounded="rounded-[1.4rem] sm:rounded-[2rem]"
@@ -2228,29 +2828,29 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                   {form.image_url ? (
                     <img src={form.image_url} alt="" className={`h-full w-full object-cover ${previewIsIdea ? "grayscale opacity-70" : ""}`} />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-sm text-zinc-600">Kein Hauptbild</div>
+                    <div className="flex h-full items-center justify-center text-sm text-zinc-600">{t.noMainImageText}</div>
                   )}
                 </div>
                 <div className="flex flex-1 flex-col p-4 sm:p-6">
                   <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
-                    <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">{createElement(PreviewIcon, { className: "h-3.5 w-3.5" })} {form.category || "Kategorie"}</span>
-                    {form.content_type !== "knowledge" && <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getStatusClasses(form.project_status)}`}>{getStatusLabel(form.project_status)}</span>}
+                    <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">{createElement(PreviewIcon, { className: "h-3.5 w-3.5" })} {form.category || t.categoryPlaceholder}</span>
+                    {form.content_type !== "knowledge" && <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getStatusClasses(form.project_status)}`}>{getStatusLabel(form.project_status, form.language)}</span>}
                     <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(form.created_at)}</span>
                   </div>
-                  <h3 className="text-lg font-black leading-tight sm:text-2xl">{form.title || "Titel des Beitrags"}</h3>
-                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-zinc-400 sm:text-base sm:leading-7">{form.excerpt || "Kurzbeschreibung des Projekts"}</p>
+                  <h3 className="text-lg font-black leading-tight sm:text-2xl">{form.title || t.titlePlaceholderPreview}</h3>
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-zinc-400 sm:text-base sm:leading-7">{form.excerpt || t.excerptPlaceholderPreview}</p>
                   <div className="mt-5 flex flex-wrap gap-2">
                     {previewTags.map((tag) => <span key={tag} className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-400">#{tag}</span>)}
                   </div>
                   <div className="mt-auto pt-6">
-                    <span className="block rounded-2xl bg-cyan-400 px-5 py-3 text-center text-sm font-bold text-black sm:text-base">Beitrag lesen</span>
+                    <span className="block rounded-2xl bg-cyan-400 px-5 py-3 text-center text-sm font-bold text-black sm:text-base">{t.readPostButtonPreview}</span>
                   </div>
                 </div>
               </GradientBorder>
             </div>
 
             <div className="border-t border-white/10 pt-5">
-              <p className="mb-3 text-xs font-bold uppercase text-zinc-500">Markdown-Inhalt</p>
+              <p className="mb-3 text-xs font-bold uppercase text-zinc-500">{t.markdownContentLabel}</p>
               <div className="prose prose-invert max-w-none prose-headings:text-white prose-p:text-zinc-300 prose-strong:text-white prose-li:text-zinc-300">
                 <ReactMarkdown>{form.content}</ReactMarkdown>
               </div>
