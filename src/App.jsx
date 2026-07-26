@@ -39,6 +39,7 @@ const UI_TEXT = {
     noKnowledge: "Noch keine passenden Beiträge", noKnowledgeText: "Neue Lernnotizen und Analysen werden hier nach und nach ergänzt.", footer: "© 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.",
     conceptProject: "Konzeptprojekt – noch nicht umgesetzt", noProjectLink: "Kein Projektlink hinterlegt",
     heroBadge: "Elektrokonstruktion · Prüftechnik · Software", docs: "Dokumente", sourceCode: "Quellcode", focusValue: "IoT · Automatisierung", tools: "Werkzeuge", toolsValue: "SPS · AutoCAD · EPLAN · C++ · Qt", translationFallbackShort: "Deutsch", translationFallback: "Dieser Beitrag ist noch nicht in der gewählten Sprache verfügbar. Die deutsche Version wird angezeigt.",
+    resumeButton: "Lebenslauf ansehen",
   },
   en: {
     tagline: "Technology · Development · Learning", gallery: "Gallery", contact: "Contact", knowledge: "Knowledge & Research",
@@ -60,6 +61,7 @@ const UI_TEXT = {
     noKnowledge: "No matching articles yet", noKnowledgeText: "New learning notes and analyses will gradually be added here.", footer: "© 2026 ElektronikLab — Modern electronics and automation projects.",
     conceptProject: "Concept project – not yet implemented", noProjectLink: "No project link provided",
     heroBadge: "Electrical Design · Testing · Software", docs: "Documents", sourceCode: "Source Code", focusValue: "IoT · Automation", tools: "Tools", toolsValue: "PLC · AutoCAD · EPLAN · C++ · Qt", translationFallbackShort: "German version", translationFallback: "This article is not yet available in the selected language. The German version is shown.",
+    resumeButton: "View resume",
   },
   vi: {
     tagline: "Kỹ thuật · Phát triển · Học hỏi", gallery: "Thư viện ảnh", contact: "Liên hệ", knowledge: "Kiến thức & Nghiên cứu",
@@ -81,6 +83,7 @@ const UI_TEXT = {
     noKnowledge: "Chưa có bài viết phù hợp", noKnowledgeText: "Các ghi chú học tập và phân tích mới sẽ được bổ sung dần tại đây.", footer: "© 2026 ElektronikLab — Các dự án điện tử và tự động hóa hiện đại.",
     conceptProject: "Dự án ý tưởng – chưa được triển khai", noProjectLink: "Chưa có liên kết dự án",
     heroBadge: "Thiết kế điện · Kiểm thử · Phần mềm", docs: "Tài liệu", sourceCode: "Mã nguồn", focusValue: "IoT · Tự động hóa", tools: "Công cụ", toolsValue: "PLC · AutoCAD · EPLAN · C++ · Qt", translationFallbackShort: "Bản tiếng Đức", translationFallback: "Bài viết này chưa có bản dịch theo ngôn ngữ đã chọn. Website đang hiển thị bản tiếng Đức.",
+    resumeButton: "Xem sơ yếu lý lịch",
   },
 };
 const getUiText = (language) => {
@@ -319,7 +322,7 @@ const EDITOR_TEXT = {
     githubTokenIntroMid: " fuer ",
     githubTokenIntroPost: " ein. Der Token wird nur lokal in diesem Browser gespeichert.",
     saveTokenButton: "Token speichern", testTokenButton: "Token testen",
-    websiteSectionTitle: "Website-Hintergrund bearbeiten", backgroundImageLabel: "Hintergrundbild", noBackgroundText: "Standard-Hintergrund ohne Bild",
+    websiteSectionTitle: "Website-Einstellungen bearbeiten", backgroundImageLabel: "Hintergrundbild", noBackgroundText: "Standard-Hintergrund ohne Bild",
     saveGithubButton: "Auf GitHub speichern", exportMdButton: "MD exportieren", uploadButton: "Hochladen",
     gallerySectionTitle: "Projektgalerie bearbeiten", galleryInstructionsTitle: "So fügen Sie neue Galeriebilder hinzu",
     galleryStep1Pre: "Kopieren Sie die Bilddatei in den Ordner ", galleryStep1Post: ".",
@@ -377,7 +380,8 @@ const EDITOR_TEXT = {
     githubBlockedMessageShort: "GitHub API ist vom Browser blockiert oder nicht erreichbar. Bitte Chrome/Edge testen, Adblock/Tracking-Schutz pruefen.",
     savedFilesMessage: (count) => `${count} Datei(en) wurden auf GitHub gespeichert.`,
     githubSaveFailedGeneric: "GitHub speichern ist fehlgeschlagen.", noGithubTokenError: "Kein GitHub Token hinterlegt.",
-    imageUploadFailedPrefix: "Bild-Upload fehlgeschlagen", imageUploadedMessage: (url) => `Bild hochgeladen: ${url}`,
+    fileUploadFailedPrefix: "Datei-Upload fehlgeschlagen", fileUploadedMessage: (url) => `Datei hochgeladen: ${url}`,
+    resumeLabel: "Lebenslauf (PDF)", resumeButton: "Lebenslauf ansehen", uploadingLabel: "Lädt hoch...",
     directorySaveUnsupported: "Direktes Speichern wird von diesem Browser nicht unterstützt. Bitte verwenden Sie MD exportieren.",
     wrongDirectoryAlert: "Bitte wählen Sie genau den Ordner src/content aus, nicht einen Sprachordner wie de, en oder vi.",
     directorySavedMessage: (name) => `${name} wurde gespeichert.`,
@@ -402,7 +406,7 @@ const EDITOR_TEXT = {
     githubTokenIntroMid: " for ",
     githubTokenIntroPost: " here. The token is stored locally in this browser only.",
     saveTokenButton: "Save token", testTokenButton: "Test token",
-    websiteSectionTitle: "Edit website background", backgroundImageLabel: "Background image", noBackgroundText: "Default background, no image",
+    websiteSectionTitle: "Edit website settings", backgroundImageLabel: "Background image", noBackgroundText: "Default background, no image",
     saveGithubButton: "Save to GitHub", exportMdButton: "Export MD", uploadButton: "Upload",
     gallerySectionTitle: "Edit project gallery", galleryInstructionsTitle: "How to add new gallery images",
     galleryStep1Pre: "Copy the image file into the folder ", galleryStep1Post: ".",
@@ -460,7 +464,8 @@ const EDITOR_TEXT = {
     githubBlockedMessageShort: "GitHub API is blocked by the browser or unreachable. Please try Chrome/Edge and check ad/tracking blockers.",
     savedFilesMessage: (count) => `${count} file(s) saved to GitHub.`,
     githubSaveFailedGeneric: "Saving to GitHub failed.", noGithubTokenError: "No GitHub token stored.",
-    imageUploadFailedPrefix: "Image upload failed", imageUploadedMessage: (url) => `Image uploaded: ${url}`,
+    fileUploadFailedPrefix: "File upload failed", fileUploadedMessage: (url) => `File uploaded: ${url}`,
+    resumeLabel: "Resume (PDF)", resumeButton: "View resume", uploadingLabel: "Uploading...",
     directorySaveUnsupported: "Direct saving isn't supported by this browser. Please use Export MD.",
     wrongDirectoryAlert: "Please select exactly the src/content folder, not a language folder such as de, en or vi.",
     directorySavedMessage: (name) => `${name} saved.`,
@@ -485,7 +490,7 @@ const EDITOR_TEXT = {
     githubTokenIntroMid: " cho ",
     githubTokenIntroPost: " vào đây. Token chỉ được lưu cục bộ trên trình duyệt này.",
     saveTokenButton: "Lưu token", testTokenButton: "Kiểm tra token",
-    websiteSectionTitle: "Chỉnh sửa hình nền website", backgroundImageLabel: "Hình nền", noBackgroundText: "Hình nền mặc định, không có ảnh",
+    websiteSectionTitle: "Chỉnh sửa cài đặt website", backgroundImageLabel: "Hình nền", noBackgroundText: "Hình nền mặc định, không có ảnh",
     saveGithubButton: "Lưu lên GitHub", exportMdButton: "Xuất MD", uploadButton: "Tải lên",
     gallerySectionTitle: "Chỉnh sửa thư viện ảnh dự án", galleryInstructionsTitle: "Cách thêm ảnh mới vào thư viện",
     galleryStep1Pre: "Sao chép file ảnh vào thư mục ", galleryStep1Post: ".",
@@ -543,7 +548,8 @@ const EDITOR_TEXT = {
     githubBlockedMessageShort: "GitHub API bị trình duyệt chặn hoặc không thể truy cập. Hãy thử Chrome/Edge và kiểm tra tiện ích chặn quảng cáo/theo dõi.",
     savedFilesMessage: (count) => `Đã lưu ${count} file lên GitHub.`,
     githubSaveFailedGeneric: "Lưu lên GitHub thất bại.", noGithubTokenError: "Chưa có GitHub token.",
-    imageUploadFailedPrefix: "Tải ảnh lên thất bại", imageUploadedMessage: (url) => `Đã tải ảnh lên: ${url}`,
+    fileUploadFailedPrefix: "Tải file lên thất bại", fileUploadedMessage: (url) => `Đã tải file lên: ${url}`,
+    resumeLabel: "Sơ yếu lý lịch (PDF)", resumeButton: "Xem sơ yếu lý lịch", uploadingLabel: "Đang tải lên...",
     directorySaveUnsupported: "Trình duyệt này không hỗ trợ lưu trực tiếp. Vui lòng dùng Xuất MD.",
     wrongDirectoryAlert: "Vui lòng chọn đúng thư mục src/content, không phải thư mục ngôn ngữ như de, en hoặc vi.",
     directorySavedMessage: (name) => `Đã lưu ${name}.`,
@@ -739,6 +745,7 @@ ${HOME_CONTENT_FIELDS.map(([key]) => `${key}: ${singleLine(homeContent[key])}`).
 const createSiteSettingsFile = (siteSettings) => `---
 type: site_settings
 background_image: ${singleLine(siteSettings.background_image)}
+resume_url: ${singleLine(siteSettings.resume_url)}
 ---
 `;
 
@@ -1348,9 +1355,28 @@ function HeroSlideshow({ slides, onDiscover, onOpenPost, language }) {
   return (
     <section className="relative mx-auto grid max-w-7xl items-center gap-8 px-4 py-10 sm:px-5 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-24">
       <div className="relative z-10">
-        <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-4 py-2 backdrop-blur-sm">
-          <CircuitBoard className="h-4 w-4 text-cyan-400" />
-          <span className="text-sm font-medium text-cyan-300">{t.heroBadge}</span>
+        <div className="mb-6 flex flex-wrap items-center gap-3">
+          <div className="inline-flex items-center gap-3 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-4 py-2 backdrop-blur-sm">
+            <CircuitBoard className="h-4 w-4 text-cyan-400" />
+            <span className="text-sm font-medium text-cyan-300">{t.heroBadge}</span>
+          </div>
+          {SITE_SETTINGS.resume_url && (
+            <a
+              href={SITE_SETTINGS.resume_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-emerald-400 to-lime-300 px-4 py-2 text-sm font-black text-black shadow-lg shadow-emerald-500/40 transition hover:from-emerald-300 hover:to-lime-200"
+            >
+              <motion.span
+                className="pointer-events-none absolute inset-0 rounded-full bg-white/50"
+                initial={{ opacity: 0.6, scale: 1 }}
+                animate={{ opacity: 0, scale: 1.8 }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
+              />
+              <FileText className="relative h-4 w-4" />
+              <span className="relative">{t.resumeButton}</span>
+            </a>
+          )}
         </div>
         <h2 className="max-w-4xl text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">{t.heroTitle}</h2>
         <p className="mt-5 max-w-2xl text-[15px] leading-7 text-zinc-300 sm:mt-8 sm:text-lg sm:leading-9">{t.heroText}</p>
@@ -1717,7 +1743,7 @@ function KnowledgeDetailPage({ post, onBack, language }) {
   );
 }
 
-function ImageUploadButton({ label = "Bild hochladen", subfolder, uploadImage, onUploaded }) {
+function ImageUploadButton({ label = "Bild hochladen", loadingLabel = "...", subfolder, accept = "image/*", icon: Icon = ImageIcon, uploadImage, onUploaded }) {
   const inputRef = useRef(null);
   const [busy, setBusy] = useState(false);
 
@@ -1734,14 +1760,14 @@ function ImageUploadButton({ label = "Bild hochladen", subfolder, uploadImage, o
 
   return (
     <>
-      <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleChange} />
+      <input ref={inputRef} type="file" accept={accept} className="hidden" onChange={handleChange} />
       <button
         type="button"
         disabled={busy}
         onClick={() => inputRef.current?.click()}
         className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-white/10 px-4 py-3 text-sm font-bold text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <ImageIcon className="h-4 w-4" /> {busy ? "Lädt hoch..." : label}
+        <Icon className="h-4 w-4" /> {busy ? loadingLabel : label}
       </button>
     </>
   );
@@ -2048,11 +2074,11 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     }
   };
 
-  const uploadImageToGithub = async (file, subfolder) => {
+  const uploadFileToGithub = async (file, folder) => {
     const auth = getGithubAuth();
     if (!auth) return null;
 
-    const path = `public/images/${subfolder}/${Date.now()}-${slugifyFilename(file.name)}`;
+    const path = `public/${folder}/${Date.now()}-${slugifyFilename(file.name)}`;
     const apiPath = encodeGithubPath(path);
 
     try {
@@ -2062,28 +2088,30 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
         headers: { ...auth.headers, "Content-Type": "application/json" },
         body: JSON.stringify({
           branch: GITHUB_REPO_BRANCH,
-          message: `Upload image ${path}`,
+          message: `Upload file ${path}`,
           content: bytesToBase64(new Uint8Array(buffer)),
         }),
       });
 
       if (!response.ok) {
-        setSaveMessage(await getGithubErrorMessage(response, t.imageUploadFailedPrefix));
+        setSaveMessage(await getGithubErrorMessage(response, t.fileUploadFailedPrefix));
         return null;
       }
 
-      const publicUrl = `/my-electronics-blog/images/${subfolder}/${path.split("/").pop()}`;
-      setSaveMessage(t.imageUploadedMessage(publicUrl));
+      const publicUrl = `/my-electronics-blog/${folder}/${path.split("/").pop()}`;
+      setSaveMessage(t.fileUploadedMessage(publicUrl));
       return publicUrl;
     } catch (error) {
       setSaveMessage(
         error instanceof TypeError
           ? t.githubBlockedMessageShort
-          : error.message || t.imageUploadFailedPrefix
+          : error.message || t.fileUploadFailedPrefix
       );
       return null;
     }
   };
+
+  const uploadImageToGithub = (file, subfolder) => uploadFileToGithub(file, `images/${subfolder}`);
 
   const getContentDirectory = async () => {
     if (!window.showDirectoryPicker) {
@@ -2394,7 +2422,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                   <label className={labelClass}>{t.backgroundImageLabel}</label>
                   <div className="flex gap-2">
                     <input className={inputClass} value={siteSettingsForm.background_image} onChange={(e) => setSiteSettingsForm((current) => ({ ...current, background_image: e.target.value }))} placeholder="/my-electronics-blog/images/background.webp" />
-                    <ImageUploadButton label={t.uploadButton} subfolder="background" uploadImage={uploadImageToGithub} onUploaded={(url) => setSiteSettingsForm((current) => ({ ...current, background_image: url }))} />
+                    <ImageUploadButton label={t.uploadButton} subfolder="background" uploadImage={uploadImageToGithub} loadingLabel={t.uploadingLabel} onUploaded={(url) => setSiteSettingsForm((current) => ({ ...current, background_image: url }))} />
                   </div>
                 </div>
                 <div className="relative h-44 overflow-hidden rounded-xl border border-white/10 bg-[#07111f]">
@@ -2404,6 +2432,13 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                     <div className="flex h-full items-center justify-center text-sm text-zinc-500">{t.noBackgroundText}</div>
                   )}
                   <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-900/30 to-fuchsia-600/20" />
+                </div>
+                <div>
+                  <label className={labelClass}>{t.resumeLabel}</label>
+                  <div className="flex gap-2">
+                    <input className={inputClass} value={siteSettingsForm.resume_url || ""} onChange={(e) => setSiteSettingsForm((current) => ({ ...current, resume_url: e.target.value }))} placeholder="/my-electronics-blog/documents/lebenslauf.pdf" />
+                    <ImageUploadButton label={t.uploadButton} loadingLabel={t.uploadingLabel} icon={FileText} accept="application/pdf" uploadImage={(file) => uploadFileToGithub(file, "documents")} onUploaded={(url) => setSiteSettingsForm((current) => ({ ...current, resume_url: url }))} />
+                  </div>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <button type="button" onClick={saveSiteSettingsToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-emerald-400 px-4 py-2 text-sm font-black text-black transition hover:bg-emerald-300">
@@ -2444,7 +2479,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                   <textarea className={`${inputClass} min-h-[220px] font-mono leading-6`} value={galleryImagesForm} onChange={(e) => setGalleryImagesForm(e.target.value)} placeholder="/my-electronics-blog/images/galerie/bild.webp" />
                   <p className="mt-2 text-xs leading-5 text-zinc-500">{t.galleryImagesHelp}</p>
                   <div className="mt-2">
-                    <ImageUploadButton label={t.addImageButton} subfolder="galerie" uploadImage={uploadImageToGithub} onUploaded={(url) => setGalleryImagesForm((current) => current ? `${current}\n${url}` : url)} />
+                    <ImageUploadButton label={t.addImageButton} subfolder="galerie" uploadImage={uploadImageToGithub} loadingLabel={t.uploadingLabel} onUploaded={(url) => setGalleryImagesForm((current) => current ? `${current}\n${url}` : url)} />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -2632,14 +2667,14 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                   <label className={labelClass}>{t.image1Label}</label>
                   <div className="flex gap-2">
                     <input className={inputClass} value={personalWayForm.image_1} onChange={(e) => setPersonalWayForm((current) => ({ ...current, image_1: e.target.value }))} />
-                    <ImageUploadButton label={t.uploadButton} subfolder="personal-way" uploadImage={uploadImageToGithub} onUploaded={(url) => setPersonalWayForm((current) => ({ ...current, image_1: url }))} />
+                    <ImageUploadButton label={t.uploadButton} subfolder="personal-way" uploadImage={uploadImageToGithub} loadingLabel={t.uploadingLabel} onUploaded={(url) => setPersonalWayForm((current) => ({ ...current, image_1: url }))} />
                   </div>
                 </div>
                 <div>
                   <label className={labelClass}>{t.image2Label}</label>
                   <div className="flex gap-2">
                     <input className={inputClass} value={personalWayForm.image_2} onChange={(e) => setPersonalWayForm((current) => ({ ...current, image_2: e.target.value }))} />
-                    <ImageUploadButton label={t.uploadButton} subfolder="personal-way" uploadImage={uploadImageToGithub} onUploaded={(url) => setPersonalWayForm((current) => ({ ...current, image_2: url }))} />
+                    <ImageUploadButton label={t.uploadButton} subfolder="personal-way" uploadImage={uploadImageToGithub} loadingLabel={t.uploadingLabel} onUploaded={(url) => setPersonalWayForm((current) => ({ ...current, image_2: url }))} />
                   </div>
                 </div>
                 <div>
@@ -2767,14 +2802,14 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
               <label className={labelClass}>{t.mainImageLabel}</label>
               <div className="flex gap-2">
                 <input className={inputClass} value={form.image_url} onChange={(e) => update("image_url", e.target.value)} placeholder="/my-electronics-blog/images/posts/bild.webp" />
-                <ImageUploadButton label={t.uploadButton} subfolder="posts" uploadImage={uploadImageToGithub} onUploaded={(url) => update("image_url", url)} />
+                <ImageUploadButton label={t.uploadButton} subfolder="posts" uploadImage={uploadImageToGithub} loadingLabel={t.uploadingLabel} onUploaded={(url) => update("image_url", url)} />
               </div>
             </div>
             <div className="sm:col-span-2">
               <label className={labelClass}>{t.galleryImagesLabel}</label>
               <textarea className={inputClass} rows={3} value={form.image_gallery} onChange={(e) => update("image_gallery", e.target.value)} />
               <div className="mt-2">
-                <ImageUploadButton label={t.addImageButton} subfolder="posts" uploadImage={uploadImageToGithub} onUploaded={(url) => update("image_gallery", form.image_gallery ? `${form.image_gallery}\n${url}` : url)} />
+                <ImageUploadButton label={t.addImageButton} subfolder="posts" uploadImage={uploadImageToGithub} loadingLabel={t.uploadingLabel} onUploaded={(url) => update("image_gallery", form.image_gallery ? `${form.image_gallery}\n${url}` : url)} />
               </div>
             </div>
             <div>
