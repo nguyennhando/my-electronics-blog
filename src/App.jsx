@@ -2345,7 +2345,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
       </header>
       {showPasswordModal && <AdminPasswordModal onClose={() => setShowPasswordModal(false)} language={uiLanguage} />}
 
-      <main className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-5 lg:grid-cols-[0.9fr_1.1fr]">
+      <main className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-5 lg:grid-cols-[1fr_0.95fr]">
         <section className="space-y-5">
           <div className="rounded-2xl border border-sky-400/20 bg-sky-400/5 p-5">
             <button type="button" onClick={() => setShowGithubToken((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
