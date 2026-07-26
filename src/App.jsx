@@ -2292,6 +2292,28 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     downloadTextFile(output.filename, output.markdown);
   };
 
+  const deleteResumeFromGithub = async () => {
+    const previousResumeUrl = siteSettingsForm.resume_url;
+    if (!previousResumeUrl) return;
+
+    const confirmed = window.confirm(t.deleteConfirm(t.resumeLabel, previousResumeUrl));
+    if (!confirmed) return;
+
+    const nextForm = { ...siteSettingsForm, resume_url: "" };
+    setSiteSettingsForm(nextForm);
+
+    const saved = await saveMarkdownToGitHub({ filename: "site-settings.md", markdown: createSiteSettingsFile(nextForm) });
+    if (!saved) return;
+
+    const repoPath = previousResumeUrl.replace("/my-electronics-blog/", "public/");
+    try {
+      await deleteGithubFile(repoPath, `Delete ${repoPath}`);
+      setSaveMessage((current) => `${current}${t.renameRemovedOldFile(repoPath)}`);
+    } catch (error) {
+      setSaveMessage((current) => `${current}${t.renameRemoveFailedNote(repoPath, error.message)}`);
+    }
+  };
+
   const getGallerySettingsExport = () => ({
     filename: "gallery-settings.md",
     markdown: createGallerySettingsFile(galleryImagesForm.split("\n").map((item) => item.trim()).filter(Boolean)),
@@ -2438,6 +2460,11 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                   <div className="flex gap-2">
                     <input className={inputClass} value={siteSettingsForm.resume_url || ""} onChange={(e) => setSiteSettingsForm((current) => ({ ...current, resume_url: e.target.value }))} placeholder="/my-electronics-blog/documents/lebenslauf.pdf" />
                     <ImageUploadButton label={t.uploadButton} loadingLabel={t.uploadingLabel} icon={FileText} accept="application/pdf" uploadImage={(file) => uploadFileToGithub(file, "documents")} onUploaded={(url) => setSiteSettingsForm((current) => ({ ...current, resume_url: url }))} />
+                    {siteSettingsForm.resume_url && (
+                      <button type="button" onClick={deleteResumeFromGithub} className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-red-400/30 px-4 py-3 text-sm font-bold text-red-200 transition hover:bg-red-400/10">
+                        <X className="h-4 w-4" /> {t.deleteButton}
+                      </button>
+                    )}
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2">
