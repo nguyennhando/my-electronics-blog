@@ -1839,6 +1839,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   const [personalWayForm, setPersonalWayForm] = useState(PERSONAL_WAY);
   const [showSiteSettingsEditor, setShowSiteSettingsEditor] = useState(false);
   const [siteSettingsForm, setSiteSettingsForm] = useState(SITE_SETTINGS);
+  const [savedResumeUrl, setSavedResumeUrl] = useState(SITE_SETTINGS.resume_url || "");
   const [showGalleryEditor, setShowGalleryEditor] = useState(false);
   const [galleryImagesForm, setGalleryImagesForm] = useState((GALLERY_IMAGES.length ? GALLERY_IMAGES : DEFAULT_GALLERY_IMAGES).join("\n"));
   const [showProjectOrderEditor, setShowProjectOrderEditor] = useState(false);
@@ -2284,7 +2285,20 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   });
 
   const saveSiteSettingsToDirectory = async () => {
-    await saveMarkdownToGitHub(getSiteSettingsExport());
+    const saved = await saveMarkdownToGitHub(getSiteSettingsExport());
+    if (!saved) return;
+
+    const newResumeUrl = siteSettingsForm.resume_url || "";
+    if (savedResumeUrl && savedResumeUrl !== newResumeUrl) {
+      const repoPath = savedResumeUrl.replace("/my-electronics-blog/", "public/");
+      try {
+        await deleteGithubFile(repoPath, `Delete old resume ${repoPath}`);
+        setSaveMessage((current) => `${current}${t.renameRemovedOldFile(repoPath)}`);
+      } catch (error) {
+        setSaveMessage((current) => `${current}${t.renameRemoveFailedNote(repoPath, error.message)}`);
+      }
+    }
+    setSavedResumeUrl(newResumeUrl);
   };
 
   const exportSiteSettings = () => {
@@ -2304,6 +2318,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
 
     const saved = await saveMarkdownToGitHub({ filename: "site-settings.md", markdown: createSiteSettingsFile(nextForm) });
     if (!saved) return;
+    setSavedResumeUrl("");
 
     const repoPath = previousResumeUrl.replace("/my-electronics-blog/", "public/");
     try {
