@@ -2308,6 +2308,22 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     downloadTextFile(output.filename, output.markdown);
   };
 
+  const handleResumeUploaded = async (url) => {
+    const previousResumeUrl = siteSettingsForm.resume_url;
+    setSiteSettingsForm((current) => ({ ...current, resume_url: url }));
+
+    // Only safe to delete right away if the previous file was never the saved/live one -
+    // otherwise wait for the next save, so the live site is never left pointing at a deleted file.
+    if (previousResumeUrl && previousResumeUrl !== url && previousResumeUrl !== savedResumeUrl) {
+      const repoPath = previousResumeUrl.replace("/my-electronics-blog/", "public/");
+      try {
+        await deleteGithubFile(repoPath, `Delete superseded resume upload ${repoPath}`);
+      } catch {
+        // best-effort cleanup; a stray file here is harmless and can be removed manually if it fails
+      }
+    }
+  };
+
   const deleteResumeFromGithub = async () => {
     const previousResumeUrl = siteSettingsForm.resume_url;
     if (!previousResumeUrl) return;
@@ -2476,7 +2492,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                   <label className={labelClass}>{t.resumeLabel}</label>
                   <div className="flex gap-2">
                     <input className={inputClass} value={siteSettingsForm.resume_url || ""} onChange={(e) => setSiteSettingsForm((current) => ({ ...current, resume_url: e.target.value }))} placeholder="/my-electronics-blog/documents/lebenslauf.pdf" />
-                    <ImageUploadButton label={t.uploadButton} loadingLabel={t.uploadingLabel} icon={FileText} accept="application/pdf" uploadImage={(file) => uploadFileToGithub(file, "documents")} onUploaded={(url) => setSiteSettingsForm((current) => ({ ...current, resume_url: url }))} />
+                    <ImageUploadButton label={t.uploadButton} loadingLabel={t.uploadingLabel} icon={FileText} accept="application/pdf" uploadImage={(file) => uploadFileToGithub(file, "documents")} onUploaded={handleResumeUploaded} />
                     {siteSettingsForm.resume_url && (
                       <button type="button" onClick={deleteResumeFromGithub} className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-red-400/30 px-4 py-3 text-sm font-bold text-red-200 transition hover:bg-red-400/10">
                         <X className="h-4 w-4" /> {t.deleteButton}
