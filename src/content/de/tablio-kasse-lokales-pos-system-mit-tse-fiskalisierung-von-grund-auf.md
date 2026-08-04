@@ -6,11 +6,12 @@ language: de
 content_type: project
 title: TABLIO Kasse — Lokales POS-System mit TSE-Fiskalisierung von Grund auf
 category: Softwareentwicklung
-image_url: /my-electronics-blog/images/posts/1785878091127-screenshot-2026-08-04-230901.png
+image_url: /my-electronics-blog/images/posts/1785878544700-screenshot-2026-08-04-231005.png
 image_gallery:
-- /my-electronics-blog/images/posts/1785878076997-screenshot-2026-08-04-230914.png
-- /my-electronics-blog/images/posts/1785878276665-screenshot-2026-08-04-230927.png
-- /my-electronics-blog/images/posts/1785878283768-screenshot-2026-08-04-231005.png
+- /my-electronics-blog/images/posts/1785878562041-screenshot-2026-08-04-230901.png
+- /my-electronics-blog/images/posts/1785878568627-screenshot-2026-08-04-230914.png
+- /my-electronics-blog/images/posts/1785878575589-screenshot-2026-08-04-230927.png
+- /my-electronics-blog/images/posts/1785878581909-screenshot-2026-08-04-230955.png
 excerpt: Lokales Kassensystem für deutsche Gastronomie — mit TSE-Fiskalisierung und DSFinV-K als Kernarchitektur, nicht als Nachrüstung.
 tags:
 []
