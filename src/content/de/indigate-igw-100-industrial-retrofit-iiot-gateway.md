@@ -23,7 +23,7 @@ published: true
 created_at: '2026-10-26T17:01:57.523Z'
 external_link: 
 project_status: done
-sort_order: 20
+sort_order: 100
 ---
 
 # INDIGATE IGW-100
@@ -35,8 +35,6 @@ sort_order: 20
 **Plattform:** STM32H573  
 **Entwicklung:** KiCad 10.0  
 **Projektstatus:** Hardwareentwicklung abgeschlossen, Prototypenfertigung und Validierung ausstehend
-
-[English](README.md) | **Deutsch** | [Tiếng Việt](README.vi.md)
 
 ---
 
