@@ -19,7 +19,7 @@ published: true
 created_at: '2026-05-28T09:27:49.574Z'
 external_link: https://drive.google.com/drive/folders/1XwbZqMA_neR7FqreJCQsHW4ddtIEpOKi?usp=drive_link
 project_status: done
-sort_order: 60
+sort_order: 70
 ---
 
 # WinCC Fischertechnik Model - Automatic and Manual Operation with HMI
