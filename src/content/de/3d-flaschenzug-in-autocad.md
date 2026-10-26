@@ -21,7 +21,7 @@ published: true
 created_at: '2026-05-28T09:29:56.593Z'
 external_link: https://drive.google.com/drive/folders/1fN_hc6jaddMzTqEt0iIS4YxpiPdT8JFR?usp=drive_link
 project_status: done
-sort_order: 70
+sort_order: 80
 ---
 
 # 3D-Flaschenzug in AutoCAD
