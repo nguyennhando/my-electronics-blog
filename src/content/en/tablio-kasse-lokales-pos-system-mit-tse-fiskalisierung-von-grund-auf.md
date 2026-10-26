@@ -20,7 +20,7 @@ published: true
 created_at: '2026-08-04T21:03:35.667Z'
 external_link: https://github.com/nguyennhando/Tablio-Android-APK/releases/tag/v0.3.19
 project_status: done
-sort_order: 100
+sort_order: 110
 ---
 
 # TABLIO Kasse — A POS System That Takes German Fiscal Law Seriously
