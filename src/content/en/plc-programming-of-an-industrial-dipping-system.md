@@ -20,7 +20,7 @@ published: true
 created_at: '2026-04-29T12:00:00Z'
 external_link: https://drive.google.com/drive/folders/1WgBLk6R1F-_J_oisAxwNgQyFdcKVzb-m
 project_status: done
-sort_order: 50
+sort_order: 60
 ---
 
 # PLC Programming of an Industrial Dipping System
