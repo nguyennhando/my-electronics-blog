@@ -17,7 +17,7 @@ published: true
 created_at: '2026-06-12T21:50:19.939Z'
 external_link: https://drive.google.com/file/d/1X4DAh1dQHq8UpHyEUYdbxj6Lt7kWsuEt/view?usp=drive_link
 project_status: done
-sort_order: 100
+sort_order: 130
 ---
 
 # Voice Transcriber
