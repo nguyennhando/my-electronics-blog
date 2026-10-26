@@ -19,7 +19,7 @@ published: true
 created_at: '2026-06-19T06:29:08.495Z'
 external_link: 
 project_status: done
-sort_order: 100
+sort_order: 120
 ---
 
 # Neuer Beitrag
