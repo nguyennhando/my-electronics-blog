@@ -6,10 +6,11 @@ language: de
 content_type: project
 title: ProvisionPro – Warenwirtschaft für Restaurants als Web-App (SaaS)
 category: Web, Software
-image_url: /my-electronics-blog/images/posts/provisionpro-recipes-de.webp
+image_url: /my-electronics-blog/images/posts/provisionpro-reports-1.webp
 image_gallery:
-- /my-electronics-blog/images/posts/provisionpro-ingredients-de.webp
-- /my-electronics-blog/images/posts/provisionpro-warehouse-de.webp
+- /my-electronics-blog/images/posts/provisionpro-reports-2.webp
+- /my-electronics-blog/images/posts/provisionpro-reports-3.webp
+- /my-electronics-blog/images/posts/provisionpro-reports-4.webp
 excerpt: Eine mandantenfähige Web-Anwendung für Restaurants: Zutaten, Rezepte mit Kalkulation, Lagerchargen nach FIFO und FEFO, Einkauf mit Bestellungen und Wareneingang, Nachbestellvorschläge und mobiles Scannen per Barcode oder QR-Code. Läuft im Browser, mit Testphase und Lizenzmodell, in Deutsch, Englisch, Vietnamesisch und Chinesisch.
 tags:
 - SaaS
@@ -159,7 +160,7 @@ Eine Demo mit Beispieldaten eines Sushi-Restaurants läuft online: [provisionpro
 
 Die Testphase der Demo kann abgelaufen sein. Dann zeigt die Anwendung das an, und einzelne Funktionen sind eingeschränkt.
 
-Die Bilder oben zeigen Rezepte, Zutaten und die Telefonansicht „Scan & Lager“ aus dieser Demo.
+Die Bilder oben zeigen die Berichte der Anwendung mit Beispieldaten eines Sushi-Restaurants: Umsatz und meistverkaufte Gerichte, Wareneinsatzquote, Rentabilität je Gericht, Lagerwert nach Kategorie, Ablaufrisiko, Schwund, Ausgaben nach Lieferant und Umsatz nach Wochentag.
 
 ---
 

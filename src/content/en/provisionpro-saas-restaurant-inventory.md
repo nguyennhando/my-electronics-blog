@@ -6,10 +6,11 @@ language: en
 content_type: project
 title: ProvisionPro – Restaurant Inventory Management as a Web App (SaaS)
 category: Web, Software
-image_url: /my-electronics-blog/images/posts/provisionpro-recipes-en.webp
+image_url: /my-electronics-blog/images/posts/provisionpro-reports-1.webp
 image_gallery:
-- /my-electronics-blog/images/posts/provisionpro-ingredients-en.webp
-- /my-electronics-blog/images/posts/provisionpro-warehouse-en.webp
+- /my-electronics-blog/images/posts/provisionpro-reports-2.webp
+- /my-electronics-blog/images/posts/provisionpro-reports-3.webp
+- /my-electronics-blog/images/posts/provisionpro-reports-4.webp
 excerpt: A multi-tenant web application for restaurants: ingredients, recipes with costing, stock batches by FIFO and FEFO, purchasing with orders and goods receipts, reorder suggestions and mobile scanning by barcode or QR code. It runs in the browser, with a trial period and licensing, in German, English, Vietnamese and Chinese.
 tags:
 - SaaS
@@ -159,7 +160,7 @@ A demo with sample data from a sushi restaurant runs online: [provisionpro.tavri
 
 The demo's trial period may have expired. The application then shows this, and some functions are limited.
 
-The images above show recipes, ingredients and the phone view "Scan & Stock" from this demo.
+The images above show the application's reports with sample data from a sushi restaurant: revenue and best-selling dishes, cost-of-goods ratio, profitability per dish, stock value by category, expiry risk, waste, spending by supplier and revenue by weekday. (The interface is shown in German.)
 
 ---
 

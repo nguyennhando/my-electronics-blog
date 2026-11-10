@@ -6,10 +6,11 @@ language: vi
 content_type: project
 title: ProvisionPro – Quản lý kho nhà hàng dạng ứng dụng web (SaaS)
 category: Web, Software
-image_url: /my-electronics-blog/images/posts/provisionpro-recipes-vi.webp
+image_url: /my-electronics-blog/images/posts/provisionpro-reports-1.webp
 image_gallery:
-- /my-electronics-blog/images/posts/provisionpro-ingredients-vi.webp
-- /my-electronics-blog/images/posts/provisionpro-warehouse-vi.webp
+- /my-electronics-blog/images/posts/provisionpro-reports-2.webp
+- /my-electronics-blog/images/posts/provisionpro-reports-3.webp
+- /my-electronics-blog/images/posts/provisionpro-reports-4.webp
 excerpt: Ứng dụng web nhiều khách thuê cho nhà hàng. Gồm nguyên liệu, công thức có tính giá vốn, lô hàng theo FIFO và FEFO, mua hàng với đơn đặt và nhập kho, gợi ý bổ sung hàng và quét mã vạch hoặc QR trên điện thoại. Chạy trong trình duyệt, có thời gian dùng thử và giấy phép, bằng tiếng Đức, Anh, Việt và Trung.
 tags:
 - SaaS
@@ -159,7 +160,7 @@ Bản demo với dữ liệu mẫu của một nhà hàng sushi đang chạy tr�
 
 Thời gian dùng thử của bản demo có thể đã hết. Khi đó ứng dụng sẽ hiển thị như vậy và một số chức năng bị giới hạn.
 
-Các hình ở trên là trang công thức, nguyên liệu và giao diện điện thoại "Quét mã & Kho" từ bản demo này.
+Các hình ở trên là phần báo cáo của ứng dụng với dữ liệu mẫu của một nhà hàng sushi: doanh thu và món bán chạy, tỷ lệ giá vốn, mức sinh lời từng món, giá trị tồn kho theo danh mục, rủi ro hết hạn, hao hụt, chi tiêu theo nhà cung cấp và doanh thu theo ngày trong tuần. (Giao diện hiển thị bằng tiếng Đức.)
 
 ---
 
