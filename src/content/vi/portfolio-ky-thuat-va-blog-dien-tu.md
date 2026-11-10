@@ -23,7 +23,7 @@ published: true
 created_at: '2026-05-28T09:30:47.159Z'
 external_link: https://github.com/nguyennhando/my-electronics-blog
 project_status: done
-sort_order: 20
+sort_order: 30
 ---
 
 # Portfolio kỹ thuật & Blog điện tử
