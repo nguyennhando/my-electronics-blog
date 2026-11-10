@@ -27,7 +27,7 @@ published: true
 created_at: '2026-11-10T21:30:00.000Z'
 external_link: 
 project_status: in_progress
-sort_order: 80
+sort_order: 100
 ---
 
 # SOLUNA
