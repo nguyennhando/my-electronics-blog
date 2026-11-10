@@ -4,15 +4,18 @@ slug: gem-restaurant-nen-tang-dat-mon
 translation_id: gem-restaurant-platform
 language: vi
 content_type: project
-title: GEM Restaurant – Nền tảng tự lưu trữ cho đặt món online và đặt bàn
+title: Sao Mai Mainz – Đặt món online và đặt bàn cho nhà hàng
 category: Web, Software
-image_url: /my-electronics-blog/images/posts/gem-restaurant-home-desktop.webp
+image_url: /my-electronics-blog/images/posts/sao-mai-home-desktop.webp
 image_gallery:
-- /my-electronics-blog/images/posts/gem-restaurant-order-desktop.webp
-- /my-electronics-blog/images/posts/gem-restaurant-admin-dashboard.webp
-- /my-electronics-blog/images/posts/gem-restaurant-home-mobile.webp
-- /my-electronics-blog/images/posts/gem-restaurant-order-mobile.webp
-excerpt: Ứng dụng PHP tự lưu trữ dành cho nhà hàng: website khách hàng ba ngôn ngữ, đặt món lấy tại quán, đặt bàn, cùng khu quản trị có màn hình bếp và quầy, thông báo qua e-mail và push. Chạy bằng Docker.
+- /my-electronics-blog/images/posts/sao-mai-order-page.webp
+- /my-electronics-blog/images/posts/sao-mai-product-dialog.webp
+- /my-electronics-blog/images/posts/sao-mai-home-mobile.webp
+- /my-electronics-blog/images/posts/sao-mai-reservation.webp
+- /my-electronics-blog/images/posts/sao-mai-admin-dashboard.webp
+- /my-electronics-blog/images/posts/sao-mai-admin-orders.webp
+- /my-electronics-blog/images/posts/sao-mai-admin-menu.webp
+excerpt: Nền tảng tự phát triển, tự lưu trữ cho nhà hàng Việt Sao Mai tại Mainz: website khách hàng ba ngôn ngữ, đặt món lấy tại quán, đặt bàn, màn hình bếp và quầy, e-mail và web push. Đang chạy thật.
 tags:
 - PHP
 - MySQL
@@ -23,13 +26,13 @@ tags:
 read_time: 10 phút
 published: true
 created_at: '2026-11-10T20:30:00.000Z'
-external_link: 
+external_link: https://online.tavrion.de/
 project_status: in_progress
 sort_order: 17
 ---
 
-# GEM Restaurant
-### Nền tảng tự lưu trữ cho đặt món online và đặt bàn
+# Sao Mai Mainz
+### Đặt món online và đặt bàn với nền tảng GEM Restaurant
 
 **Một website và một hệ thống vận hành trong cùng một ứng dụng: khách đặt món và đặt bàn, nhân viên xử lý mọi thứ trực tiếp ở bếp và quầy.**
 
@@ -37,7 +40,8 @@ sort_order: 17
 **Ngôn ngữ:** Đức, Anh, Việt  
 **Chức năng:** đặt món lấy tại quán, đặt bàn, màn hình bếp và quầy, e-mail và web push  
 **Phiên bản hiện tại:** 2026.11.10-staffpush  
-**Trạng thái dự án:** đang phát triển tích cực và đang vận hành với các bản phát hành đều đặn
+**Trạng thái dự án:** đang chạy thật cho nhà hàng Sao Mai tại Mainz, vẫn tiếp tục phát triển  
+**Xem trực tiếp:** [online.tavrion.de](https://online.tavrion.de/)
 
 ---
 
@@ -52,11 +56,15 @@ GEM Restaurant là một **ứng dụng web tự lưu trữ dành cho nhà hàng
 
 Tất cả chạy trong một ứng dụng duy nhất, có thể vận hành trên máy chủ hoặc VPS riêng. Không phụ thuộc vào nền tảng đặt món của bên thứ ba và không mất hoa hồng cho mỗi đơn.
 
+### Đang dùng tại Sao Mai
+
+Nền tảng đang chạy thật cho **nhà hàng Sao Mai tại Mainz** (ẩm thực Việt Nam và sushi). Khách đặt món online để lấy tại quán và đặt bàn, còn nhân viên làm việc trong khu quản trị. Bạn có thể xem trực tiếp hệ thống: [online.tavrion.de](https://online.tavrion.de/).
+
 ### Ý tưởng cốt lõi
 
 **Nhà hàng nên tự nắm giữ khách hàng, thực đơn và dữ liệu của mình, đồng thời vận hành công việc hằng ngày ở bếp và quầy mà không cần giấy tờ.**
 
-Các hình trên trang này là bản cài đặt demo với dữ liệu thử. Không có dữ liệu khách hay đơn hàng thật nào được hiển thị.
+Các hình trên trang này là hệ thống thật của Sao Mai Mainz. Thông tin liên hệ của khách đã được che đi.
 
 ---
 
@@ -165,15 +173,15 @@ Với một thực đơn lớn có sẵn script đồng bộ. Script này **idem
 
 Bản phát hành ứng viên được kiểm tra gần nhất đạt **389 trên 389 bài kiểm thử tích hợp** và **83 trên 84 bài kiểm thử trình duyệt**. Bài còn lại được ghi nhận là trường hợp đặc biệt đã biết (lỗi thời gian với một nhãn checkbox).
 
-Với web push có 13 kịch bản trình duyệt dùng service worker thật và một dịch vụ push giả lập. **Việc thử trên thiết bị thật vẫn còn mở.**
+Với web push có 13 kịch bản trình duyệt dùng service worker thật và một dịch vụ push giả lập. **Khi chạy thật trên thiết bị thật, web push hoạt động ổn định.**
 
 ---
 
 ## 9. Trạng thái hiện tại và các bước tiếp theo
 
-- Nền tảng đang hoạt động và được mở rộng liên tục bằng các bản phát hành nhỏ, có tài liệu.
-- Web push đã được hiện thực và kiểm thử tự động, nhưng chưa được xác nhận trên một ma trận thiết bị thật.
-- Còn mở, trong số khác: thử thêm trên thiết bị, tiếp tục phát triển giao diện quản trị và tách các file trang lớn thành module.
+- Nền tảng đang chạy thật tại Sao Mai và được mở rộng liên tục bằng các bản phát hành nhỏ, có tài liệu.
+- Web push đã được hiện thực, kiểm thử tự động và hoạt động ổn định khi chạy thật.
+- Còn mở, trong số khác: tiếp tục phát triển giao diện quản trị và tách các file trang lớn thành module.
 - Chưa gán giấy phép; mã nguồn là độc quyền.
 
 ---
@@ -188,4 +196,4 @@ GEM Restaurant cho thấy phía sau một trang đặt món và đặt bàn “�
 
 **Phát triển bởi Nguyen Nhan Do**
 
-Các hình là bản cài đặt demo với dữ liệu thử. Dự án độc quyền, bảo lưu mọi quyền.
+Các hình là hệ thống thật của Sao Mai Mainz, thông tin liên hệ của khách đã được che đi. Dự án độc quyền, bảo lưu mọi quyền.

@@ -4,15 +4,18 @@ slug: gem-restaurant-online-ordering-platform
 translation_id: gem-restaurant-platform
 language: en
 content_type: project
-title: GEM Restaurant – Self-Hosted Platform for Online Ordering and Reservations
+title: Sao Mai Mainz – Online Ordering and Reservations for a Restaurant
 category: Web, Software
-image_url: /my-electronics-blog/images/posts/gem-restaurant-home-desktop.webp
+image_url: /my-electronics-blog/images/posts/sao-mai-home-desktop.webp
 image_gallery:
-- /my-electronics-blog/images/posts/gem-restaurant-order-desktop.webp
-- /my-electronics-blog/images/posts/gem-restaurant-admin-dashboard.webp
-- /my-electronics-blog/images/posts/gem-restaurant-home-mobile.webp
-- /my-electronics-blog/images/posts/gem-restaurant-order-mobile.webp
-excerpt: A self-hosted PHP application for restaurants: a guest website in three languages, pickup orders, table reservations and an admin area with kitchen and counter displays, e-mail and push notifications. It runs on Docker.
+- /my-electronics-blog/images/posts/sao-mai-order-page.webp
+- /my-electronics-blog/images/posts/sao-mai-product-dialog.webp
+- /my-electronics-blog/images/posts/sao-mai-home-mobile.webp
+- /my-electronics-blog/images/posts/sao-mai-reservation.webp
+- /my-electronics-blog/images/posts/sao-mai-admin-dashboard.webp
+- /my-electronics-blog/images/posts/sao-mai-admin-orders.webp
+- /my-electronics-blog/images/posts/sao-mai-admin-menu.webp
+excerpt: A self-developed, self-hosted platform for the Vietnamese restaurant Sao Mai in Mainz: a guest website in three languages, pickup orders, table reservations, kitchen and counter displays, e-mail and web push. It is live in production.
 tags:
 - PHP
 - MySQL
@@ -23,13 +26,13 @@ tags:
 read_time: 10 min
 published: true
 created_at: '2026-11-10T20:30:00.000Z'
-external_link: 
+external_link: https://online.tavrion.de/
 project_status: in_progress
 sort_order: 17
 ---
 
-# GEM Restaurant
-### Self-Hosted Platform for Online Ordering and Reservations
+# Sao Mai Mainz
+### Online Ordering and Reservations with the GEM Restaurant Platform
 
 **A website and an operations system in one application: guests order and reserve, and the staff handle everything live in the kitchen and at the counter.**
 
@@ -37,7 +40,8 @@ sort_order: 17
 **Languages:** German, English, Vietnamese  
 **Features:** pickup orders, reservations, kitchen and counter displays, e-mail and web push  
 **Current version:** 2026.11.10-staffpush  
-**Project status:** under active development and in operation with regular releases
+**Project status:** live in production for the restaurant Sao Mai in Mainz, under active development  
+**See it live:** [online.tavrion.de](https://online.tavrion.de/)
 
 ---
 
@@ -52,11 +56,15 @@ GEM Restaurant is a **self-hosted web application for small and medium-sized res
 
 Everything runs in one application that can be operated on your own server or VPS. There is no dependency on a third-party ordering platform and no commission per order.
 
+### In use at Sao Mai
+
+The platform runs live for the **restaurant Sao Mai in Mainz** (Vietnamese cuisine and sushi). Guests order online for pickup and reserve tables, while the staff work in the admin area. You can look at the system directly: [online.tavrion.de](https://online.tavrion.de/).
+
 ### Basic idea
 
 **A restaurant should keep its guests, its menu and its data in its own hands, and be able to run day-to-day service in the kitchen and at the counter without paper.**
 
-The images on this page show the demo installation with test data. No real guest or order data is visible.
+The images on this page show the live system of Sao Mai Mainz. Guest contact details have been blurred out.
 
 ---
 
@@ -165,15 +173,15 @@ For a large menu there is a synchronization script. It is **idempotent**, never 
 
 The most recently checked release candidate passed **389 of 389 integration tests** and **83 of 84 browser tests**. The remaining test is documented as a known special case (a timing issue with a checkbox label).
 
-For web push there are 13 browser scenarios with a real service worker and a simulated push service. **Tests on real devices are still open.**
+For web push there are 13 browser scenarios with a real service worker and a simulated push service. **In production on real devices, web push works reliably.**
 
 ---
 
 ## 9. Current Status and Next Steps
 
-- The platform is working and is continuously extended in small, documented releases.
-- Web push is implemented and automatically tested, but has not yet been confirmed on a matrix of real devices.
-- Still open are, among other things, further device testing, further development of the admin interface and splitting large page files into modules.
+- The platform is live at Sao Mai and is continuously extended in small, documented releases.
+- Web push is implemented, automatically tested and works reliably in production.
+- Still open are, among other things, further development of the admin interface and splitting large page files into modules.
 - No license is assigned; the code is proprietary.
 
 ---
@@ -188,4 +196,4 @@ GEM Restaurant shows how much operation is hidden in a "simple" ordering and res
 
 **Developed by Nguyen Nhan Do**
 
-The images show a demo installation with test data. Proprietary project, all rights reserved.
+The images show the live system of Sao Mai Mainz, with guest contact details blurred out. Proprietary project, all rights reserved.
