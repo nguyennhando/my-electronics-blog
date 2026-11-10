@@ -3210,7 +3210,7 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
 
   const FIELD_FILTERS = [["all", w.f_all], ["hw", w.f_hw], ["sw", w.f_sw]];
   const stats = [
-    [String(posts.length) + "+", w.s1], ["3", w.s2], ["2", w.s3], ["1", w.s4],
+    [String(posts.length) + "+", w.s1], ["3", w.s2], ["3", w.s3], ["1", w.s4],
   ];
 
   const renderCard = (post) => {
