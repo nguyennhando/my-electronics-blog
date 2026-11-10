@@ -18,7 +18,7 @@ tags:
 read_time: 5 Min.
 published: true
 created_at: '2026-08-04T21:03:35.667Z'
-external_link: https://github.com/nguyennhando/Tablio-Android-APK/releases
+external_link: https://demo.tavrion.de/
 project_status: done
 sort_order: 50
 ---

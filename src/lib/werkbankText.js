@@ -1,0 +1,66 @@
+// Texte der Werkbank-Startseite (DE / EN / VI). Die Kopfzeile (Badge, Titel, Text)
+// und der Kontaktblock kommen weiterhin aus src/content/<sprache>/home-content.md.
+export const WB_TEXT = {
+  de: {
+    nav_projects: "Projekte", nav_skills: "Kompetenzen", nav_path: "Mein Weg", nav_contact: "Kontakt", nav_gallery: "Galerie",
+    cta_projects: "Projekte ansehen", cta_contact: "Kontakt aufnehmen", available: "Offen für Zusammenarbeit",
+    chip_live: "Live", chip_live_sub: "Sao Mai · Mainz", chip_board: "Platine gefertigt", chip_board_sub: "AMP-D50-V2-LITE",
+    s1: "Projekte und Beiträge", s2: "Leiterplatten-Designs", s3: "Apps im Microsoft Store", s4: "System live im Restaurant",
+    sec_projects: "Ausgewählte Projekte", f_all: "Alle", f_hw: "Hardware & PCB", f_sw: "Software & Web",
+    search: "Projekte durchsuchen", more: "Weitere Projekte anzeigen", featured: "Im Fokus", read: "Projekt lesen", none: "Keine Projekte gefunden.",
+    sec_live: "Live und zum Ausprobieren", live_sub: "Diese Projekte laufen wirklich. Öffnen Sie sie und probieren Sie selbst.", open: "Öffnen",
+    demo_hint: "Demo-Zugang: Kellner 1, PIN 2222",
+    sec_skills: "Kompetenzen", sk_hw: "Hardware und Konstruktion", sk_emb: "Embedded und Automatisierung", sk_sw: "Software und Web",
+    sec_path: "Mein Weg", path_lead: "Von der Gastronomie zurück zur Technik.",
+    path: ["2013: Umzug nach Deutschland", "Gastronomie, Management und Selbstständigkeit", "Bewusste Rückkehr zur Technik: Elektronik, Messtechnik, Automatisierung", "Praxis in Kalibrierung, Fehlersuche, Prüfung und Entwicklung", "Weiterbildung in SPS, C++/Qt, AutoCAD und EPLAN", "Heute: eigene Produkte, vom Entwurf bis zum Betrieb"],
+    read_more: "Ausführlich lesen",
+    sec_know: "Wissen und Forschung", know_text: "Technische Notizen, Schaltungsanalysen und Lernmaterial, gesammelt und durchsuchbar.", know_cta: "Zur Wissensbibliothek",
+    sec_contact: "Zusammenarbeit", contact_note: "Der Quellcode meiner Projekte ist auf Anfrage einsehbar, zum Beispiel um meine Arbeitsweise zu beurteilen.", contact_label: "E-Mail schreiben",
+    foot: "Bilder von Laboren und Arbeitsplätzen dienen der Veranschaulichung und zeigen keinen realen Unternehmensstandort.",
+    st_live: "Live", st_store: "Microsoft Store", st_demo: "Demo online",
+  },
+  en: {
+    nav_projects: "Projects", nav_skills: "Skills", nav_path: "My path", nav_contact: "Contact", nav_gallery: "Gallery",
+    cta_projects: "View projects", cta_contact: "Get in touch", available: "Open to collaboration",
+    chip_live: "Live", chip_live_sub: "Sao Mai · Mainz", chip_board: "PCB manufactured", chip_board_sub: "AMP-D50-V2-LITE",
+    s1: "Projects and posts", s2: "PCB designs", s3: "Apps in the Microsoft Store", s4: "System live in a restaurant",
+    sec_projects: "Selected projects", f_all: "All", f_hw: "Hardware & PCB", f_sw: "Software & Web",
+    search: "Search projects", more: "Show more projects", featured: "In focus", read: "Read project", none: "No projects found.",
+    sec_live: "Live and ready to try", live_sub: "These projects really run. Open them and try them yourself.", open: "Open",
+    demo_hint: "Demo access: waiter 1, PIN 2222",
+    sec_skills: "Skills", sk_hw: "Hardware and design", sk_emb: "Embedded and automation", sk_sw: "Software and web",
+    sec_path: "My path", path_lead: "From hospitality back to engineering.",
+    path: ["2013: moved to Germany", "Hospitality, management and self-employment", "Deliberate return to engineering: electronics, measurement, automation", "Hands-on work in calibration, troubleshooting, testing and development", "Further training in PLC, C++/Qt, AutoCAD and EPLAN", "Today: my own products, from design to operation"],
+    read_more: "Read in full",
+    sec_know: "Knowledge and research", know_text: "Technical notes, circuit analyses and learning material, collected and searchable.", know_cta: "Open the knowledge library",
+    sec_contact: "Collaboration", contact_note: "The source code of my projects is available on request, for example to assess how I work.", contact_label: "Send an e-mail",
+    foot: "Images of labs and workplaces are for illustration and do not show a real company site.",
+    st_live: "Live", st_store: "Microsoft Store", st_demo: "Demo online",
+  },
+  vi: {
+    nav_projects: "Dự án", nav_skills: "Năng lực", nav_path: "Hành trình", nav_contact: "Liên hệ", nav_gallery: "Thư viện ảnh",
+    cta_projects: "Xem dự án", cta_contact: "Liên hệ", available: "Sẵn sàng hợp tác",
+    chip_live: "Đang chạy", chip_live_sub: "Sao Mai · Mainz", chip_board: "Đã chế tạo bo", chip_board_sub: "AMP-D50-V2-LITE",
+    s1: "Dự án và bài viết", s2: "Thiết kế bo mạch", s3: "Ứng dụng trên Microsoft Store", s4: "Hệ thống chạy thật tại nhà hàng",
+    sec_projects: "Dự án chọn lọc", f_all: "Tất cả", f_hw: "Phần cứng & PCB", f_sw: "Phần mềm & Web",
+    search: "Tìm dự án", more: "Xem thêm dự án", featured: "Nổi bật", read: "Đọc dự án", none: "Không tìm thấy dự án.",
+    sec_live: "Chạy thật và dùng thử được", live_sub: "Những dự án này đang chạy thật. Hãy mở và tự trải nghiệm.", open: "Mở",
+    demo_hint: "Truy cập demo: phục vụ 1, PIN 2222",
+    sec_skills: "Năng lực", sk_hw: "Phần cứng và thiết kế", sk_emb: "Nhúng và tự động hóa", sk_sw: "Phần mềm và web",
+    sec_path: "Hành trình", path_lead: "Từ ngành nhà hàng trở lại với kỹ thuật.",
+    path: ["2013: đến Đức", "Nhà hàng, quản lý và tự kinh doanh", "Chủ động quay lại kỹ thuật: điện tử, đo lường, tự động hóa", "Thực hành hiệu chuẩn, tìm lỗi, kiểm thử và phát triển", "Đào tạo thêm về PLC, C++/Qt, AutoCAD và EPLAN", "Hôm nay: sản phẩm riêng, từ thiết kế đến vận hành"],
+    read_more: "Đọc đầy đủ",
+    sec_know: "Kiến thức và nghiên cứu", know_text: "Ghi chú kỹ thuật, phân tích mạch và tài liệu học tập, được sắp xếp và tìm kiếm được.", know_cta: "Mở thư viện kiến thức",
+    sec_contact: "Hợp tác", contact_note: "Mã nguồn các dự án của tôi có thể xem khi có yêu cầu, chẳng hạn để đánh giá cách tôi làm việc.", contact_label: "Gửi e-mail",
+    foot: "Hình ảnh phòng thí nghiệm và nơi làm việc chỉ nhằm minh họa, không thể hiện địa điểm thật của một doanh nghiệp.",
+    st_live: "Đang chạy", st_store: "Microsoft Store", st_demo: "Demo online",
+  },
+};
+
+export const WB_SKILLS = {
+  hw: ["KiCad", "LTspice", "EPLAN", "AutoCAD", "PCB layout", "Measurement"],
+  emb: ["STM32", "ESP32", "PLC", "WinCC", "MQTT", "RS-485 · CAN-FD"],
+  sw: ["React", "TypeScript", "NestJS", "PHP", "C++ / Qt", "PostgreSQL · Docker"],
+};
+
+export const getWbText = (language = "de") => WB_TEXT[language] || WB_TEXT.de;

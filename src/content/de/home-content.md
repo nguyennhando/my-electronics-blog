@@ -2,8 +2,8 @@
 type: home_content
 language: de
 hero_badge: Elektrokonstruktion · Prüftechnik · Software
-hero_title: Technik. Dokumentation. Entwicklung.
-hero_text: Diese Website habe ich selbst entwickelt, um technische Projekte, Lernfortschritte und praktische Erfahrungen im Bereich Elektronik, Embedded Systems, Messtechnik und technischer Softwareentwicklung zu dokumentieren.
+hero_title: Ich baue Elektronik und Software, die im Betrieb besteht.
+hero_text: Vom Schaltplan und der Leiterplatte bis zur Web-App im Restaurant: Projekte aus Elektronik, Automatisierung und Softwareentwicklung, dokumentiert und überprüfbar.
 transparency_title: Projektinformationen & Transparenz
 transparency_text: Die auf dieser Website gezeigten Fotos von Laborumgebungen, technischen Arbeitsplätzen und elektronischen Geräten dienen ausschließlich der Veranschaulichung meiner technischen Interessen und praktischen Erfahrungen.
 transparency_strong: Sie zeigen weder meinen tatsächlichen Arbeitsplatz noch interne Bereiche oder reale Arbeitsumgebungen eines Unternehmens.
@@ -17,6 +17,6 @@ feature_4_title: Eigene Entwicklung
 feature_4_text: Diese Website dient als persönliche Plattform, um Projekte, Ideen und technische Fortschritte übersichtlich festzuhalten.
 warning_one: Projekte mit der Kennzeichnung „Konzept“ befinden sich noch in der Ideen- bzw. Konzeptphase und wurden bisher noch nicht praktisch umgesetzt.
 warning_two: Alle anderen Projekte können über „Beitrag lesen“ geöffnet werden. Am Ende der jeweiligen Projektseite befindet sich die Schaltfläche „Zum Projekt“ mit projektbezogenen Dateien.
-collaboration_title: Zusammenarbeit an modernen Elektronikprojekten.
-collaboration_text: Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder individuelle Entwicklungen.
+collaboration_title: Lassen Sie uns an Ihrem Projekt arbeiten.
+collaboration_text: Sie suchen Unterstützung für Embedded-Systeme, Leiterplatten, Automatisierung oder Software? Schreiben Sie mir kurz, worum es geht.
 ---

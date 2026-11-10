@@ -1,8 +1,9 @@
 import CookieBanner from "./components/CookieBanner";
 import { createElement, useEffect, useMemo, useState, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { CONTENT_POSTS, GALLERY_IMAGES, HOME_CONTENTS, PERSONAL_WAY, PERSONAL_WAYS, SITE_SETTINGS, getLocalizedContentPosts, getLocalizedHomeContent, getLocalizedPersonalWay, getTranslationLanguages } from "./lib/posts";
+import { getWbText, WB_SKILLS } from "./lib/werkbankText";
 
 import {
   CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X,
@@ -17,7 +18,6 @@ import {
 // ─────────────────────────────────────────────
 // CONSTANTS
 // ─────────────────────────────────────────────
-const SLIDE_INTERVAL = 5000;
 const LANGUAGES = ["de", "en", "vi"];
 const UI_TEXT = {
   de: {
@@ -808,26 +808,6 @@ const postToEditorForm = (post) => ({
 // ─────────────────────────────────────────────
 // DEMO DATA
 // ─────────────────────────────────────────────
-const FEATURES = {
-  de: [
-    { icon: Cpu, title: "Elektronik & Embedded Systems", text: "Eigene Lernprojekte rund um Mikrocontroller, Sensorik und hardwarenahe Entwicklung zur praktischen Erweiterung meines technischen Wissens." },
-    { icon: Workflow, title: "Automatisierung & Steuerung", text: "Praktische Übungen und kleinere Projekte, um industrielle Abläufe, Steuerungstechnik und technische Prozesse besser zu verstehen." },
-    { icon: ShieldCheck, title: "Technisches Lernen", text: "Dokumentation meines Lernwegs, technischer Erfahrungen und neuer Themen, mit denen ich mich kontinuierlich beschäftige." },
-    { icon: MonitorSmartphone, title: "Eigene Entwicklung", text: "Diese Website dient als persönliche Plattform, um Projekte, Ideen und technische Fortschritte übersichtlich festzuhalten." },
-  ],
-  en: [
-    { icon: Cpu, title: "Electronics & Embedded Systems", text: "Personal learning projects involving microcontrollers, sensors and hardware-oriented development to expand my technical knowledge through practice." },
-    { icon: Workflow, title: "Automation & Control", text: "Practical exercises and smaller projects to better understand industrial workflows, control technology and technical processes." },
-    { icon: ShieldCheck, title: "Technical Learning", text: "Documentation of my learning journey, technical experience and new topics that I continuously explore." },
-    { icon: MonitorSmartphone, title: "Personal Development", text: "This website is my personal platform for documenting projects, ideas and technical progress in a clear format." },
-  ],
-  vi: [
-    { icon: Cpu, title: "Điện tử & Hệ thống nhúng", text: "Các dự án học tập cá nhân về vi điều khiển, cảm biến và phát triển gần phần cứng nhằm mở rộng kiến thức kỹ thuật qua thực hành." },
-    { icon: Workflow, title: "Tự động hóa & Điều khiển", text: "Các bài thực hành và dự án nhỏ để hiểu rõ hơn quy trình công nghiệp, kỹ thuật điều khiển và các quá trình kỹ thuật." },
-    { icon: ShieldCheck, title: "Học tập kỹ thuật", text: "Ghi lại hành trình học tập, kinh nghiệm kỹ thuật và những chủ đề mới mà tôi liên tục tìm hiểu." },
-    { icon: MonitorSmartphone, title: "Phát triển cá nhân", text: "Website này là nền tảng cá nhân để lưu lại dự án, ý tưởng và tiến bộ kỹ thuật một cách rõ ràng." },
-  ],
-};
 
 const PERSONAL_WAY_TRANSLATIONS = {
   en: {
@@ -870,18 +850,6 @@ const getPersonalWay = (language) => getLocalizedPersonalWay(language) || {
 };
 
 const FEATURE_ICONS = [Cpu, Workflow, ShieldCheck, MonitorSmartphone];
-
-const getFeatures = (language) => {
-  const homeContent = getLocalizedHomeContent(language);
-
-  if (!homeContent) return FEATURES[language] || FEATURES.de;
-
-  return FEATURE_ICONS.map((icon, index) => ({
-    icon,
-    title: homeContent[`feature_${index + 1}_title`],
-    text: homeContent[`feature_${index + 1}_text`],
-  }));
-};
 
 // ─────────────────────────────────────────────
 // REUSABLE COMPONENTS
@@ -1248,6 +1216,8 @@ function AdminPasswordModal({ onClose, language = "de" }) {
 function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange = () => {}, onAdminAccess = null, isAdminAuthenticated = false }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const t = getUiText(language);
+  const w = getWbText(language);
+  const light = currentPage === "home";
 
   const scrollTo = (id) => {
     setMenuOpen(false);
@@ -1258,187 +1228,71 @@ function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange
   const goHome = () => { setMenuOpen(false); onNavigate("home"); window.scrollTo({ top: 0, behavior: "smooth" }); };
   const goKnowledge = () => { setMenuOpen(false); onNavigate("knowledge"); window.scrollTo({ top: 0, behavior: "smooth" }); };
 
+  const navItems = [["projekte", w.nav_projects], ["kompetenzen", w.nav_skills], ["weg", w.nav_path], ["kontakt", w.nav_contact]];
+  const langButton = (item, compact) => (
+    <button key={item} type="button" onClick={() => onLanguageChange(item)} className={`${compact ? "rounded-lg px-3 py-1.5 text-xs" : "rounded-full px-2.5 py-1 text-[11px]"} font-black uppercase transition ${language === item ? (light ? "bg-[#0B5A44] text-white" : "bg-cyan-400 text-black") : (light ? "text-[#4A5A54] hover:text-[#0F1A17]" : "text-zinc-400 hover:text-white")}`}>{item}</button>
+  );
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-5 sm:py-4">
+    <header className={`fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-xl ${light ? "border-[#C9D3CD] bg-[#F3F5F2]/90" : "border-white/10 bg-[#050816]/85"}`}>
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-5">
         <button type="button" onClick={goHome} className="flex items-center gap-3 text-left">
-          <div className="flex h-12 w-12 overflow-hidden rounded-2xl sm:h-14 sm:w-14">
-            <img src="/my-electronics-blog/images/logo.webp" alt="Logo" className="h-full w-full scale-110 object-contain brightness-110 contrast-110" />
-          </div>
+          {light ? (
+            <span className="wb-head flex h-10 w-10 items-center justify-center rounded-lg bg-[#0B5A44] text-sm font-bold tracking-tight text-white sm:h-11 sm:w-11">NND</span>
+          ) : (
+            <div className="flex h-12 w-12 overflow-hidden rounded-2xl sm:h-14 sm:w-14">
+              <img src="/my-electronics-blog/images/logo.webp" alt="Logo" className="h-full w-full scale-110 object-contain brightness-110 contrast-110" />
+            </div>
+          )}
           <div>
-            <h1 className="text-base font-black text-white sm:text-xl">Nguyen Nhan Do</h1>
-            <p className="text-[10px] leading-tight text-zinc-400 sm:text-xs">{t.tagline}</p>
+            <p className={`text-base font-black sm:text-lg ${light ? "wb-head text-[#0F1A17]" : "text-white sm:text-xl"}`}>Nguyen Nhan Do</p>
+            <p className={`text-[10px] leading-tight sm:text-xs ${light ? "text-[#4A5A54]" : "text-zinc-400"}`}>{t.tagline}</p>
           </div>
         </button>
 
-        <div className="hidden items-center gap-8 md:flex">
-          {[["blog", "Blog"], ["projekte", t.gallery], ["kontakt", t.contact]].map(([id, label]) => (
-            <button key={id} type="button" onClick={() => scrollTo(id)} className="text-sm text-zinc-300 transition hover:text-cyan-300">{label}</button>
+        <div className="hidden items-center gap-7 md:flex">
+          {navItems.map(([id, label]) => (
+            <button key={id} type="button" onClick={() => scrollTo(id)} className={`text-sm font-medium transition ${light ? "text-[#33423C] hover:text-[#0B5A44]" : "text-zinc-300 hover:text-cyan-300"}`}>{label}</button>
           ))}
-          <button type="button" onClick={goKnowledge} className="inline-flex items-center gap-2 rounded-full border border-slate-300/30 bg-slate-300/10 px-4 py-2 text-sm font-bold text-slate-200 transition hover:border-slate-200/60 hover:bg-slate-300/20">
+          <button type="button" onClick={goKnowledge} className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-bold transition ${light ? "border-[#C9D3CD] bg-white text-[#0F1A17] hover:border-[#0B5A44]" : "border-slate-300/30 bg-slate-300/10 text-slate-200 hover:border-slate-200/60 hover:bg-slate-300/20"}`}>
             <BookOpen className="h-4 w-4" /> {t.knowledge}
           </button>
-          <div className="flex rounded-full border border-white/10 bg-white/5 p-1">
-            {LANGUAGES.map((item) => <button key={item} type="button" onClick={() => onLanguageChange(item)} className={`rounded-full px-2 py-1 text-[11px] font-black uppercase transition ${language === item ? "bg-cyan-400 text-black" : "text-zinc-400 hover:text-white"}`}>{item}</button>)}
+          <div className={`flex rounded-full border p-1 ${light ? "border-[#C9D3CD] bg-white" : "border-white/10 bg-white/5"}`}>
+            {LANGUAGES.map((item) => langButton(item, false))}
           </div>
           {onAdminAccess && (
-            <button type="button" onClick={() => { setMenuOpen(false); onAdminAccess(); }} className="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2 text-sm font-bold text-cyan-100 transition hover:border-cyan-200/60 hover:bg-cyan-300/20">
+            <button type="button" onClick={() => { setMenuOpen(false); onAdminAccess(); }} className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-bold transition ${light ? "border-[#0B5A44]/30 bg-[#0B5A44]/10 text-[#0B5A44] hover:bg-[#0B5A44]/20" : "border-cyan-300/30 bg-cyan-300/10 text-cyan-100 hover:border-cyan-200/60 hover:bg-cyan-300/20"}`}>
               <LogIn className="h-4 w-4" /> {isAdminAuthenticated ? "Admin" : "Login"}
             </button>
           )}
         </div>
 
-        <button type="button" className="rounded-xl border border-white/10 p-2 text-white hover:bg-white/10 md:hidden" onClick={() => setMenuOpen(v => !v)}>
+        <button type="button" aria-label="Menu" className={`rounded-xl border p-2 md:hidden ${light ? "border-[#C9D3CD] bg-white text-[#0F1A17]" : "border-white/10 text-white hover:bg-white/10"}`} onClick={() => setMenuOpen(v => !v)}>
           {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </nav>
 
       {menuOpen && (
-        <div className="border-t border-white/10 bg-[#050816]/95 px-5 py-4 text-white md:hidden">
+        <div className={`border-t px-5 py-4 md:hidden ${light ? "border-[#C9D3CD] bg-[#F3F5F2] text-[#0F1A17]" : "border-white/10 bg-[#050816]/95 text-white"}`}>
           <div className="grid gap-2">
-            {[["blog", "Blog"], ["projekte", t.projects], ["kontakt", t.contact]].map(([id, label]) => (
-              <button key={id} type="button" onClick={() => scrollTo(id)} className="rounded-xl px-3 py-2 text-left text-zinc-200 hover:bg-white/10 hover:text-cyan-300">{label}</button>
+            {navItems.map(([id, label]) => (
+              <button key={id} type="button" onClick={() => scrollTo(id)} className={`rounded-xl px-3 py-2 text-left ${light ? "text-[#0F1A17] hover:bg-white" : "text-zinc-200 hover:bg-white/10 hover:text-cyan-300"}`}>{label}</button>
             ))}
-            <button type="button" onClick={goKnowledge} className="mt-2 inline-flex items-center gap-2 rounded-xl border border-slate-300/30 bg-slate-300/10 px-3 py-2 text-left font-bold text-slate-200">
+            <button type="button" onClick={goKnowledge} className={`mt-2 inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-left font-bold ${light ? "border-[#C9D3CD] bg-white" : "border-slate-300/30 bg-slate-300/10 text-slate-200"}`}>
               <BookOpen className="h-4 w-4" /> {t.knowledge}
             </button>
             {onAdminAccess && (
-              <button type="button" onClick={() => { setMenuOpen(false); onAdminAccess(); }} className="mt-2 inline-flex items-center gap-2 rounded-xl border border-cyan-300/30 bg-cyan-300/10 px-3 py-2 text-left font-bold text-cyan-100">
+              <button type="button" onClick={() => { setMenuOpen(false); onAdminAccess(); }} className={`mt-2 inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-left font-bold ${light ? "border-[#0B5A44]/30 bg-[#0B5A44]/10 text-[#0B5A44]" : "border-cyan-300/30 bg-cyan-300/10 text-cyan-100"}`}>
                 <LogIn className="h-4 w-4" /> {isAdminAuthenticated ? "Admin" : "Login"}
               </button>
             )}
-            <div className="mt-2 flex w-fit rounded-xl border border-white/10 bg-white/5 p-1">
-              {LANGUAGES.map((item) => <button key={item} type="button" onClick={() => onLanguageChange(item)} className={`rounded-lg px-3 py-1.5 text-xs font-black uppercase transition ${language === item ? "bg-cyan-400 text-black" : "text-zinc-400"}`}>{item}</button>)}
+            <div className={`mt-2 flex w-fit rounded-xl border p-1 ${light ? "border-[#C9D3CD] bg-white" : "border-white/10 bg-white/5"}`}>
+              {LANGUAGES.map((item) => langButton(item, true))}
             </div>
           </div>
         </div>
       )}
     </header>
-  );
-}
-
-// ─────────────────────────────────────────────
-// HERO SLIDESHOW
-// ─────────────────────────────────────────────
-const textContainerVariants = {
-  hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } }, exit: { transition: { staggerChildren: 0.04, staggerDirection: -1 } },
-};
-const textItemVariants = {
-  hidden: { opacity: 0, y: 22 }, visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } }, exit: { opacity: 0, y: -14, transition: { duration: 0.25, ease: "easeIn" } },
-};
-const cardVariants = {
-  hidden: { opacity: 0, x: 48, scale: 0.96 }, visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.15 } }, exit: { opacity: 0, x: -32, scale: 0.97, transition: { duration: 0.28, ease: "easeIn" } },
-};
-
-function HeroSlideshow({ slides, onDiscover, onOpenPost, language }) {
-  const [current, setCurrent] = useState(0);
-  const timerRef = useRef(null);
-  const t = getUiText(language);
-
-  const startTimer = useCallback(() => {
-    clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => setCurrent(p => (p + 1) % slides.length), SLIDE_INTERVAL);
-  }, [slides.length]);
-
-  useEffect(() => { startTimer(); return () => clearInterval(timerRef.current); }, [startTimer]);
-
-  const goTo = (idx) => { setCurrent(idx); startTimer(); };
-
-  if (!slides.length) return null;
-  const slide = slides[current];
-
-  return (
-    <section className="relative mx-auto grid max-w-7xl items-center gap-8 px-4 py-10 sm:px-5 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-24">
-      <div className="relative z-10">
-        <div className="mb-6 flex flex-wrap items-center gap-3">
-          <div className="inline-flex items-center gap-3 rounded-full border border-cyan-400/20 bg-cyan-400/5 px-4 py-2 backdrop-blur-sm">
-            <CircuitBoard className="h-4 w-4 text-cyan-400" />
-            <span className="text-sm font-medium text-cyan-300">{t.heroBadge}</span>
-          </div>
-          {SITE_SETTINGS.resume_url && (
-            <a
-              href={SITE_SETTINGS.resume_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-emerald-400 to-lime-300 px-4 py-2 text-sm font-black text-black shadow-lg shadow-emerald-500/40 transition hover:from-emerald-300 hover:to-lime-200"
-            >
-              <motion.span
-                className="pointer-events-none absolute inset-0 rounded-full bg-white/50"
-                initial={{ opacity: 0.6, scale: 1 }}
-                animate={{ opacity: 0, scale: 1.8 }}
-                transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
-              />
-              <FileText className="relative h-4 w-4" />
-              <span className="relative">{t.resumeButton}</span>
-            </a>
-          )}
-        </div>
-        <h2 className="max-w-4xl text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">{t.heroTitle}</h2>
-        <p className="mt-5 max-w-2xl text-[15px] leading-7 text-zinc-300 sm:mt-8 sm:text-lg sm:leading-9">{t.heroText}</p>
-        <div className="mt-7 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
-          <button type="button" onClick={onDiscover} className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-cyan-400 px-5 py-3.5 text-sm font-bold text-black shadow-xl shadow-cyan-500/30 transition hover:bg-cyan-300 sm:w-auto sm:px-7 sm:py-4 sm:text-base">
-            {t.discover} <ArrowRight className="h-5 w-5" />
-          </button>
-        </div>
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:gap-4">
-          <a href="https://drive.google.com/drive/folders/1y6MZUhoZJCIou-SL9BHbkA-CjpXxKGz5?usp=sharing" target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center justify-center gap-2 rounded-2xl border border-zinc-600/40 bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 px-3 py-4 text-center text-sm font-bold text-zinc-100 shadow-xl shadow-black/40 transition hover:border-zinc-400/50 sm:gap-3 sm:px-6 sm:text-base">
-            <ExternalLink className="h-5 w-5" /> {t.docs}
-          </a>
-          <a href="https://github.com/nguyennhando?tab=repositories" target="_blank" rel="noopener noreferrer" className="inline-flex min-w-0 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-3 py-4 text-center text-sm font-bold text-black shadow-xl shadow-orange-500/30 transition hover:from-orange-400 hover:to-amber-300 sm:gap-3 sm:px-6 sm:text-base">
-            <Code2 className="h-5 w-5" /> {t.sourceCode}
-          </a>
-        </div>
-      </div>
-
-      {/* Slide Card */}
-      <div className="relative flex flex-col items-center">
-        <motion.div animate={{ scale: [1, 1.12, 1], opacity: [0.6, 0.85, 0.6], transition: { duration: 4, repeat: Infinity } }} className="pointer-events-none absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-cyan-400/10 blur-3xl" />
-        <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] shadow-2xl shadow-cyan-500/10 lg:max-w-none">
-          <div className="relative overflow-hidden rounded-[1.95rem] bg-[#080d1f]" style={{ height: "720px" }}>
-            <AnimatePresence mode="wait">
-              <motion.div key={current} variants={cardVariants} initial="hidden" animate="visible" exit="exit"
-                whileHover={{ scale: 1.015 }}
-                onClick={() => onOpenPost && slide.id && onOpenPost(slide.id)}
-                onMouseEnter={() => clearInterval(timerRef.current)} onMouseLeave={startTimer}
-                className="flex flex-col h-full cursor-pointer">
-                <div className="relative h-[360px] lg:h-[420px] shrink-0 overflow-hidden">
-                  <motion.img src={slide.image} alt={slide.title} className="h-full w-full object-cover" initial={{ scale: 1.06 }} animate={{ scale: 1 }} transition={{ duration: 0.7 }} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#080d1f]/60 via-transparent to-transparent" />
-                  <div className="absolute left-4 top-4 flex items-center gap-2">
-                    <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black text-black shadow-lg">{getCategoryLabel(slide.category, language)}</span>
-                    <span className="rounded-full bg-black/40 px-3 py-1.5 text-xs text-zinc-300 backdrop-blur-sm">{slide.readTime}</span>
-                  </div>
-                </div>
-                <AnimatePresence mode="wait">
-                  <motion.div key={`text-${current}`} variants={textContainerVariants} initial="hidden" animate="visible" exit="exit" className="flex-1 overflow-hidden p-5 sm:p-6">
-                    <motion.h3 variants={textItemVariants} className="text-xl font-black leading-tight text-white sm:text-2xl lg:text-xl xl:text-2xl">{slide.title}</motion.h3>
-                    <motion.p variants={textItemVariants} className="mt-3 line-clamp-2 text-sm leading-6 text-zinc-400 sm:text-base sm:leading-7">{slide.text}</motion.p>
-                    <motion.div variants={textItemVariants} className="mt-4 flex flex-wrap gap-2">
-                      {(slide.tags || []).slice(0, 3).map(tag => <span key={tag} className="rounded-full border border-cyan-400/20 bg-cyan-400/8 px-3 py-1 text-xs text-cyan-300">#{tag}</span>)}
-                    </motion.div>
-                    <motion.div variants={textItemVariants} className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-cyan-300">{t.openProject} <ArrowRight className="h-4 w-4" /></motion.div>
-                  </motion.div>
-                </AnimatePresence>
-              </motion.div>
-            </AnimatePresence>
-            {/* Progress bars */}
-            <div className="absolute bottom-0 left-0 right-0 flex gap-[3px] px-5 pb-5">
-              {slides.map((_, idx) => (
-                <button key={idx} type="button" onClick={() => goTo(idx)} className="relative h-[3px] flex-1 overflow-hidden rounded-full bg-white/10">
-                  {idx === current && <motion.span key={current} className="absolute inset-y-0 left-0 rounded-full bg-cyan-400" initial={{ width: "0%" }} animate={{ width: "100%" }} transition={{ duration: SLIDE_INTERVAL / 1000, ease: "linear" }} />}
-                  {idx < current && <span className="absolute inset-0 rounded-full bg-cyan-400/40" />}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className="mt-4 flex gap-3">
-          <button type="button" onClick={() => goTo((current - 1 + slides.length) % slides.length)} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-400 transition hover:border-cyan-400/40 hover:text-cyan-300"><ChevronLeft className="h-5 w-5" /></button>
-          <span className="flex items-center gap-1 text-xs text-zinc-600"><span className="font-bold text-zinc-400">{current + 1}</span>/{slides.length}</span>
-          <button type="button" onClick={() => goTo((current + 1) % slides.length)} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-400 transition hover:border-cyan-400/40 hover:text-cyan-300"><ChevronRight className="h-5 w-5" /></button>
-        </div>
-      </div>
-    </section>
   );
 }
 
@@ -3322,357 +3176,370 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
 // ─────────────────────────────────────────────
 // HOME PAGE
 // ─────────────────────────────────────────────
-function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum, onGoDatenschutz, language }) {
-  const POSTS_PER_PAGE = 15;
+// ─────────────────────────────────────────────
+// HOME PAGE — "Werkbank"
+// ─────────────────────────────────────────────
+const WB_LIVE_TILES = [
+  { id: "gem-restaurant-platform", host: "online.tavrion.de", kind: "live" },
+  { id: "tablio-kasse-lokales-pos-system-mit-tse-fiskalisierung-von-grund-auf", host: "demo.tavrion.de", kind: "demo", hint: true },
+  { id: "local-post-1779957810945", host: "Microsoft Store", kind: "store" },
+  { id: "voice-transcriber-privacy-policy", host: "Microsoft Store", kind: "store" },
+];
+
+const WB_PILL = {
+  live: "bg-[#DDF3E8] text-[#0A5A3A]",
+  store: "bg-[#DCE8FA] text-[#1C4A94]",
+  demo: "bg-[#FBE7D3] text-[#8A4410]",
+  idea: "bg-[#E4E8E5] text-[#33423C]",
+  in_progress: "bg-[#FFF1BF] text-[#6B5200]",
+  done: "bg-[#E1F0E8] text-[#0B5A44]",
+};
+
+const getWbField = (post) => (/web|software/i.test(String(post.category || "")) ? "sw" : "hw");
+
+const getWbPill = (post, w, language) => {
+  const link = String(post.external_link || "");
+  if (link.includes("online.tavrion.de")) return { label: w.st_live, cls: WB_PILL.live };
+  if (link.includes("demo.tavrion.de")) return { label: w.st_demo, cls: WB_PILL.demo };
+  if (link.includes("microsoft.com")) return { label: w.st_store, cls: WB_PILL.store };
+  const status = normalizeStatus(post.project_status);
+  return { label: getStatusLabel(status, language), cls: WB_PILL[status] };
+};
+
+function WbSectionHead({ eyebrow, title, lead }) {
+  return (
+    <div className="mb-8 sm:mb-10">
+      <p className="wb-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#C8691F]">{eyebrow}</p>
+      <h2 className="wb-head mt-2 text-3xl font-bold leading-tight text-[#0F1A17] sm:text-4xl">{title}</h2>
+      {lead && <p className="mt-3 max-w-2xl text-[15px] leading-7 text-[#4A5A54] sm:text-base">{lead}</p>}
+    </div>
+  );
+}
+
+function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum, onGoDatenschutz, onGoKnowledge, language }) {
+  const INITIAL_COUNT = 9;
   const t = getUiText(language);
+  const w = getWbText(language);
   const personalWay = getPersonalWay(language);
+  const email = "donguyennhan.de@gmail.com";
 
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("__all__");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [lightbox, setLightbox] = useState(null); // { images, index }
+  const [field, setField] = useState("all");
+  const [visible, setVisible] = useState(INITIAL_COUNT);
   const [galleryLightbox, setGalleryLightbox] = useState(null);
   const [selectedGalleryIndex, setSelectedGalleryIndex] = useState(0);
-  const gallerySideImages = galleryImages.map((image, index) => ({ image, index })).filter(({ index }) => index !== selectedGalleryIndex).slice(0, 2);
+  const [pathOpen, setPathOpen] = useState(false);
 
-  const heroSlides = useMemo(() =>
-    [...posts].sort((a, b) => {
-      const oA = isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
-      const oB = isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
-      return oA !== oB ? oA - oB : new Date(b.created_at || 0) - new Date(a.created_at || 0);
-    }).slice(0, 6).map(p => ({ id: p.id, image: p.image_url, category: p.category, readTime: p.read_time || "5 Min.", title: p.title, text: p.excerpt, tags: Array.isArray(p.tags) ? p.tags : [] })),
-    [posts]
-  );
-
-  const categories = useMemo(() => [...new Set(posts.map(p => p.category))], [posts]);
+  const sortedPosts = useMemo(() => [...posts].sort((a, b) => {
+    const oA = isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
+    const oB = isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
+    return oA !== oB ? oA - oB : new Date(b.created_at || 0) - new Date(a.created_at || 0);
+  }), [posts]);
 
   const filteredPosts = useMemo(() => {
-    const q = search.toLowerCase();
-    return posts.filter(p => {
+    const q = search.trim().toLowerCase();
+    return sortedPosts.filter((p) => {
       const tags = Array.isArray(p.tags) ? p.tags : [];
-      return (category === "__all__" || p.category === category)
-        && (p.title.toLowerCase().includes(q) || p.excerpt.toLowerCase().includes(q) || p.content.toLowerCase().includes(q) || tags.some(t => t.toLowerCase().includes(q)));
-    }).sort((a, b) => {
-      const oA = isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
-      const oB = isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;
-      return oA !== oB ? oA - oB : new Date(b.created_at || 0) - new Date(a.created_at || 0);
+      const matchField = field === "all" || getWbField(p) === field;
+      const matchText = !q || p.title.toLowerCase().includes(q) || p.excerpt.toLowerCase().includes(q) || p.content.toLowerCase().includes(q) || tags.some((tag) => tag.toLowerCase().includes(q));
+      return matchField && matchText;
     });
-  }, [posts, search, category]);
+  }, [sortedPosts, search, field]);
 
-  const totalPages = Math.max(
-  1,
-  Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
-);
+  const liveTiles = WB_LIVE_TILES.map((tile) => ({ ...tile, post: posts.find((p) => p.id === tile.id) })).filter((tile) => tile.post);
+  const featured = filteredPosts.find((p) => !["Über mich", "Grundlagen"].includes(p.category));
+  const showFeatured = Boolean(featured) && !search.trim();
+  const restPosts = showFeatured ? filteredPosts.filter((p) => p.id !== featured.id) : filteredPosts;
+  const gridPosts = restPosts.slice(0, visible);
+  const hiddenCount = restPosts.length - gridPosts.length;
+  const gallerySideImages = galleryImages.map((image, index) => ({ image, index })).filter(({ index }) => index !== selectedGalleryIndex).slice(0, 2);
 
-const paginatedPosts = filteredPosts.slice(
-  (currentPage - 1) * POSTS_PER_PAGE,
-  currentPage * POSTS_PER_PAGE
-);
+  const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const openPostLink = (post) => (event) => {
+    if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+      event.preventDefault();
+      onOpenPost(post.id);
+    }
+  };
+
+  const FIELD_FILTERS = [["all", w.f_all], ["hw", w.f_hw], ["sw", w.f_sw]];
+  const stats = [
+    [String(posts.length) + "+", w.s1], ["3", w.s2], ["2", w.s3], ["1", w.s4],
+  ];
+
+  const renderCard = (post) => {
+    const pill = getWbPill(post, w, language);
+    const idea = isIdea(post);
+    return (
+      <a key={post.id} href={getPostUrl(post.id)} onClick={openPostLink(post)} className="group flex flex-col overflow-hidden rounded-2xl border border-[#C9D3CD] bg-white transition duration-200 hover:-translate-y-1 hover:border-[#0B5A44] hover:shadow-[0_18px_34px_-22px_rgba(11,90,68,0.55)]">
+        <div className="relative h-48 overflow-hidden bg-[#E9EEEA]">
+          <img src={post.image_url} alt={post.title} loading="lazy" className={`h-full w-full object-cover transition duration-500 group-hover:scale-[1.04] ${idea ? "grayscale opacity-80" : ""}`} />
+          <span className={`absolute left-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-semibold shadow-sm ${pill.cls}`}>{pill.label}</span>
+        </div>
+        <div className="flex flex-1 flex-col p-5">
+          <div className="wb-mono text-[11px] uppercase tracking-wider text-[#4A5A54]">{getCategoryLabel(post.category, language)} · {post.created_at ? new Date(post.created_at).getFullYear() : ""}</div>
+          <h3 className="wb-head mt-2 text-xl font-bold leading-snug text-[#0F1A17]">{post.title}</h3>
+          <p className="mt-2 line-clamp-3 text-sm leading-6 text-[#33423C]">{post.excerpt}</p>
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {(post.tags || []).slice(0, 4).map((tag) => <span key={tag} className="wb-mono rounded-md border border-[#D5DDD8] bg-[#F3F5F2] px-2 py-0.5 text-[11px] text-[#33423C]">{tag}</span>)}
+          </div>
+          <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-[#0B5A44]">{w.read} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span>
+        </div>
+      </a>
+    );
+  };
 
   return (
-    <div className="min-h-screen overflow-x-hidden text-white">
-      <Background />
-      <main className="pt-[90px]">
+    <div className="wb min-h-screen overflow-x-hidden">
+      <main className="pt-[72px] sm:pt-[80px]">
         {/* Hero */}
-        <HeroSlideshow slides={heroSlides} onDiscover={() => document.getElementById("blog")?.scrollIntoView({ behavior: "smooth" })} onOpenPost={onOpenPost} language={language} />
-
-        {/* Transparency Notice */}
-        <section className="mx-auto max-w-7xl px-4 pt-5 pb-2 sm:px-5">
-          <div className="relative overflow-hidden rounded-[2rem] border border-yellow-400/30 bg-gradient-to-br from-yellow-500/10 via-orange-500/10 to-red-500/10 p-[2px]">
-            <div className="relative rounded-[1.9rem] bg-[#07111f]/95 p-5 sm:p-6 backdrop-blur-xl">
-              <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-yellow-400/30 bg-yellow-400/10 text-yellow-300">
-                  <AlertTriangle className="h-9 w-9 stroke-[2.5]" />
-                </div>
-                <div>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3 py-1 text-xs font-black uppercase tracking-widest text-yellow-300">{t.transparency}</span>
-                    <h2 className="text-2xl font-black text-white sm:text-3xl">{t.transparencyTitle}</h2>
-                  </div>
-                  <p className="mt-5 text-sm leading-7 text-zinc-300 sm:text-base">
-                    {t.transparencyText}
-                    <span className="mt-4 block font-semibold text-yellow-200">{t.transparencyStrong}</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* About */}
-        <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5">
-          <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[2rem]" innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl">
-            <div className="grid items-stretch gap-6 p-4 sm:p-6 lg:grid-cols-2 lg:gap-8">
-              <div className="grid min-h-full gap-4 lg:grid-rows-2">
-                <img src={personalWay.image_1} alt="Nguyen Nhan Do" className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]" />
-                <img src={personalWay.image_2} alt="Elektronik" className="h-56 w-full rounded-[1.5rem] object-cover sm:h-72 lg:h-full lg:min-h-[260px]" />
-              </div>
-              <div className="flex flex-col justify-center">
-                <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">{t.personalWay}</p>
-                <h2 className="mt-3 text-2xl font-black leading-tight sm:text-4xl">{personalWay.title}</h2>
-                <div className="prose prose-invert mt-5 max-w-none text-sm leading-7 text-zinc-300 prose-p:my-4 prose-p:text-zinc-300 sm:text-base sm:leading-8">
-                  <ReactMarkdown>{personalWay.content}</ReactMarkdown>
-                </div>
-              </div>
-            </div>
-          </GradientBorder>
-        </section>
-
-        {/* Features */}
-        <section className="mx-auto max-w-7xl px-4 py-6 sm:px-5 sm:py-10">
-          <div className="grid gap-3 min-[520px]:grid-cols-2 lg:grid-cols-4 lg:gap-5">
-            {getFeatures(language).map(f => {
-              const Icon = f.icon;
-              return (
-                <motion.div whileHover={{ y: -5 }} key={f.title} className="group flex flex-col">
-                  <GradientBorder gradient="from-cyan-400 via-cyan-500 to-cyan-400" rounded="rounded-[1.4rem] sm:rounded-[2rem]" className="flex-1" stretch innerClassName="rounded-[1.35rem] sm:rounded-[1.95rem] bg-[#07111f]/95 p-4 sm:p-5 backdrop-blur-xl transition group-hover:bg-[#07111f] shadow-xl shadow-blue-500/20">
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-400/15 text-cyan-300 sm:h-14 sm:w-14"><Icon className="h-7 w-7" /></div>
-                    <h3 className="text-lg font-black sm:text-xl">{f.title}</h3>
-                    <p className="mt-2 text-sm leading-5 text-zinc-400 sm:text-[15px] sm:leading-6">{f.text}</p>
-                  </GradientBorder>
-                </motion.div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Warning card */}
-        <section className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-5">
-          <div className="w-full rounded-[2rem] p-[1.5px] bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-400">
-            <div className="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl">
-              <div className="grid lg:grid-cols-[0.28fr_0.72fr]">
-                <div className="relative h-28 sm:h-32 lg:h-auto">
-                  <img src="/my-electronics-blog/images/project-warning.webp" alt="Hinweis" className="h-full w-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
-                </div>
-                <div className="flex flex-col justify-center p-4 sm:p-5">
-                  <div className="inline-flex w-fit items-center gap-2 rounded-full border border-yellow-400/20 bg-yellow-400/10 px-3 py-1.5 text-sm font-bold text-yellow-300">
-                    <AlertTriangle className="h-4 w-4" /> {t.importantNotice}
-                  </div>
-                  <h2 className="mt-3 text-2xl font-black text-white sm:text-3xl">{t.importantTitle}</h2>
-                  <div className="mt-3 space-y-2 text-sm leading-6 text-zinc-300 sm:text-base sm:leading-6">
-                    <p><span className="font-bold text-yellow-300">{t.importantNotice}:</span> {t.warningOne}</p>
-                    <p>{t.warningTwo}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Blog Section ── */}
-        <section id="blog" className="mx-auto max-w-7xl px-4 py-10 sm:px-5 sm:py-16">
-          <div className="mb-7 flex flex-col justify-between gap-5 sm:mb-10 lg:flex-row lg:items-end">
+        <section className="relative overflow-hidden border-b border-[#D5DDD8]">
+          <div className="wb-grid wb-grid-fade absolute inset-0 opacity-70" aria-hidden="true" />
+          <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-5 sm:py-16 lg:grid-cols-[1.15fr_0.85fr] lg:py-24">
             <div>
-              <p className="text-sm font-bold uppercase tracking-widest text-cyan-300">{t.technicalBlog}</p>
-              <h2 className="mt-2 text-[1.75rem] font-black leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">{t.blogTitle}</h2>
+              <span className="wb-mono inline-flex items-center gap-2 rounded-full border border-[#C9D3CD] bg-white px-3.5 py-1.5 text-xs font-medium text-[#0B5A44]">
+                <CircuitBoard className="h-3.5 w-3.5" /> {t.heroBadge}
+              </span>
+              <h1 className="wb-head mt-5 text-[2.2rem] font-bold leading-[1.05] text-[#0F1A17] sm:text-5xl lg:text-[3.5rem]">{t.heroTitle}</h1>
+              <p className="mt-5 max-w-xl text-base leading-7 text-[#33423C] sm:text-lg sm:leading-8">{t.heroText}</p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <button type="button" onClick={() => go("projekte")} className="inline-flex items-center gap-2 rounded-xl bg-[#0B5A44] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#083D2F]">{w.cta_projects} <ArrowRight className="h-4 w-4" /></button>
+                <button type="button" onClick={() => go("kontakt")} className="inline-flex items-center gap-2 rounded-xl border border-[#0F1A17] bg-white px-6 py-3.5 text-sm font-semibold text-[#0F1A17] transition hover:bg-[#0F1A17] hover:text-white">{w.cta_contact}</button>
+              </div>
+              <p className="mt-6 inline-flex items-center gap-2 text-sm text-[#4A5A54]"><span className="h-2.5 w-2.5 rounded-full bg-[#1FA971] shadow-[0_0_0_4px_rgba(31,169,113,0.18)]" /> {w.available}</p>
             </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
+
+            <div className="relative mx-auto w-full max-w-sm lg:max-w-none">
+              <div className="overflow-hidden rounded-3xl border border-[#C9D3CD] bg-white p-3 shadow-[0_30px_60px_-34px_rgba(11,90,68,0.5)]">
+                <img src="/my-electronics-blog/images/posts/Nguyen-main.webp" alt="Nguyen Nhan Do" className="aspect-[4/5] w-full rounded-2xl object-cover object-top" />
+              </div>
+              <div className="absolute -left-2 top-8 flex items-center gap-2.5 rounded-xl border border-[#C9D3CD] bg-white px-3.5 py-2.5 shadow-lg sm:-left-6">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#1FA971]" />
+                <div><p className="text-xs font-bold text-[#0F1A17]">{w.chip_live}</p><p className="wb-mono text-[11px] text-[#4A5A54]">{w.chip_live_sub}</p></div>
+              </div>
+              <div className="absolute -right-2 bottom-10 flex items-center gap-2.5 rounded-xl border border-[#0B5A44] bg-[#0B5A44] px-3.5 py-2.5 text-white shadow-lg sm:-right-6">
+                <CircuitBoard className="h-4 w-4 text-[#F2B279]" />
+                <div><p className="text-xs font-bold">{w.chip_board}</p><p className="wb-mono text-[11px] text-white/75">{w.chip_board_sub}</p></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Proof strip */}
+        <section className="border-b border-[#D5DDD8] bg-white">
+          <div className="mx-auto grid max-w-7xl grid-cols-2 gap-y-6 px-4 py-7 sm:px-5 lg:grid-cols-4">
+            {stats.map(([value, label], index) => (
+              <div key={label} className={`px-2 sm:px-6 ${index > 0 ? "lg:border-l lg:border-[#D5DDD8]" : ""}`}>
+                <p className="wb-head text-4xl font-bold text-[#0B5A44]">{value}</p>
+                <p className="mt-1 text-sm text-[#4A5A54]">{label}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Projects */}
+        <section id="projekte" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-14 sm:px-5 sm:py-20">
+          <div className="mb-8 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+            <WbSectionHead eyebrow={t.technicalBlog} title={w.sec_projects} />
+            <div className="-mt-4 flex flex-col gap-3 sm:flex-row sm:items-center lg:mt-0 lg:mb-10">
+              <div className="flex flex-wrap gap-2">
+                {FIELD_FILTERS.map(([key, label]) => (
+                  <button key={key} type="button" onClick={() => { setField(key); setVisible(INITIAL_COUNT); }} className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${field === key ? "border-[#0B5A44] bg-[#0B5A44] text-white" : "border-[#C9D3CD] bg-white text-[#33423C] hover:border-[#0B5A44]"}`}>{label}</button>
+                ))}
+              </div>
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
-                <input value={search} onChange={e => { setSearch(e.target.value); setCurrentPage(1); }} placeholder={t.search} className="w-full rounded-2xl border border-white/10 bg-white/[0.05] py-3 pl-11 pr-4 text-sm outline-none ring-cyan-400/30 placeholder:text-zinc-500 focus:ring-4 sm:w-72" />
+                <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#4A5A54]" />
+                <input value={search} onChange={(e) => { setSearch(e.target.value); setVisible(INITIAL_COUNT); }} placeholder={w.search} aria-label={w.search} className="w-full rounded-full border border-[#C9D3CD] bg-white py-2.5 pl-10 pr-4 text-sm text-[#0F1A17] outline-none placeholder:text-[#7A8A84] focus:border-[#0B5A44] focus:ring-4 focus:ring-[#0B5A44]/15 sm:w-60" />
               </div>
-              <select value={category} onChange={e => { setCategory(e.target.value); setCurrentPage(1); }} className="rounded-2xl border border-white/10 bg-[#050816] px-5 py-3 outline-none ring-cyan-400/30 focus:ring-4">
-                <option value="__all__">{t.all}</option>
-                {categories.map(c => <option key={c} value={c}>{getCategoryLabel(c, language)}</option>)}
-              </select>
             </div>
           </div>
 
-          {filteredPosts.length === 0 && (
-            <div className="py-20 text-center text-zinc-500">{t.noPosts}</div>
+          {filteredPosts.length === 0 && <div className="rounded-2xl border border-dashed border-[#C9D3CD] bg-white py-16 text-center text-[#4A5A54]">{w.none}</div>}
+
+          {showFeatured && (() => {
+            const pill = getWbPill(featured, w, language);
+            return (
+              <a href={getPostUrl(featured.id)} onClick={openPostLink(featured)} className="group mb-6 grid overflow-hidden rounded-3xl border border-[#C9D3CD] bg-white transition duration-200 hover:border-[#0B5A44] hover:shadow-[0_22px_44px_-26px_rgba(11,90,68,0.55)] md:grid-cols-[1.1fr_1fr]">
+                <div className="relative min-h-[240px] overflow-hidden bg-[#E9EEEA]">
+                  <img src={featured.image_url} alt={featured.title} className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
+                  <span className="wb-mono absolute left-4 top-4 rounded-full bg-[#C8691F] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white">{w.featured}</span>
+                </div>
+                <div className="flex flex-col justify-center p-6 sm:p-9">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${pill.cls}`}>{pill.label}</span>
+                    <span className="wb-mono text-[11px] uppercase tracking-wider text-[#4A5A54]">{getCategoryLabel(featured.category, language)}</span>
+                  </div>
+                  <h3 className="wb-head mt-4 text-2xl font-bold leading-tight text-[#0F1A17] sm:text-3xl">{featured.title}</h3>
+                  <p className="mt-3 line-clamp-4 text-[15px] leading-7 text-[#33423C]">{featured.excerpt}</p>
+                  <div className="mt-5 flex flex-wrap gap-1.5">
+                    {(featured.tags || []).slice(0, 5).map((tag) => <span key={tag} className="wb-mono rounded-md border border-[#D5DDD8] bg-[#F3F5F2] px-2 py-0.5 text-[11px] text-[#33423C]">{tag}</span>)}
+                  </div>
+                  <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[#0B5A44]">{w.read} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span>
+                </div>
+              </a>
+            );
+          })()}
+
+          <div className="grid gap-5 min-[620px]:grid-cols-2 lg:grid-cols-3">{gridPosts.map(renderCard)}</div>
+
+          {hiddenCount > 0 && (
+            <div className="mt-9 text-center">
+              <button type="button" onClick={() => setVisible((v) => v + INITIAL_COUNT)} className="rounded-full border border-[#0F1A17] bg-white px-7 py-3 text-sm font-semibold text-[#0F1A17] transition hover:bg-[#0F1A17] hover:text-white">{w.more} ({hiddenCount})</button>
+            </div>
           )}
-
-          <div className="grid gap-4 min-[620px]:grid-cols-2 xl:grid-cols-3 xl:gap-6">
-            {paginatedPosts.map(post => {
-              const Icon = getCategoryIcon(post.category);
-              const idea = isIdea(post);
-              return (
-                <motion.div whileHover={idea ? undefined : { y: -5 }} key={post.id} className="group flex min-[620px]:h-full">
-                  <GradientBorder
-                    gradient={idea ? "from-zinc-600 via-zinc-500 to-zinc-600" : "from-cyan-400 via-cyan-500 to-cyan-400"}
-                    rounded="rounded-[1.4rem] sm:rounded-[2rem]"
-                    className="flex flex-1"
-                    innerClassName="flex flex-1 flex-col overflow-hidden rounded-[1.35rem] bg-[#07111f]/95 backdrop-blur-xl sm:rounded-[1.95rem]"
-                  >
-                    <img src={post.image_url} alt={post.title}
-                      onClick={() => setLightbox({ images: [post.image_url, ...normalizeImageList(post.image_gallery)], index: 0 })}
-                      className={`h-44 w-full shrink-0 cursor-zoom-in object-cover transition duration-300 hover:brightness-110 sm:h-56 ${idea ? "grayscale opacity-70" : ""}`} />
-                    <div className="flex flex-1 flex-col p-4 sm:p-6">
-                      <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
-                        <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black"><Icon className="h-3.5 w-3.5" /> {getCategoryLabel(post.category, language)}</span>
-                        <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getStatusClasses(post.project_status)}`}>{getStatusLabel(post.project_status, language)}</span>
-                        {post.is_translation_fallback && <span className="inline-flex rounded-full border border-yellow-400/25 bg-yellow-400/10 px-3 py-1 font-bold text-yellow-200">{t.translationFallbackShort}</span>}
-                        <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at, language)}</span>
-                      </div>
-                      <h3 className="text-lg font-black leading-tight sm:text-2xl">{post.title}</h3>
-                      <p className="mt-3 line-clamp-3 text-sm leading-6 text-zinc-400 sm:text-base sm:leading-7">{post.excerpt}</p>
-                      <div className="mt-5 flex flex-wrap gap-2">
-                        {(post.tags || []).map(tag => <span key={tag} className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-400">#{tag}</span>)}
-                      </div>
-                      <div className="flex gap-2 pt-6 sm:mt-auto sm:gap-3">
-                        <a href={getPostUrl(post.id)} onClick={(event) => {
-                          if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-                            event.preventDefault();
-                            onOpenPost(post.id);
-                          }
-                        }} className="flex-1 rounded-2xl bg-cyan-400 px-4 py-3 text-center text-sm font-bold text-black transition hover:bg-cyan-300 sm:px-5 sm:text-base">
-                          {t.readPost}
-                        </a>
-                      </div>
-                    </div>
-                  </GradientBorder>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {totalPages > 1 && (
-  <div className="mt-10 flex flex-col items-center justify-center gap-4">
-    <div className="text-sm font-semibold text-zinc-400">
-      {t.page} {currentPage} {t.of} {totalPages}
-    </div>
-
-    <div className="flex flex-wrap items-center justify-center gap-2">
-      <button
-        type="button"
-        disabled={currentPage === 1}
-        onClick={() => {
-          setCurrentPage((page) => Math.max(page - 1, 1));
-          document.getElementById("blog")?.scrollIntoView({ behavior: "smooth" });
-        }}
-        className="rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
-      >
-        {t.previous}
-      </button>
-
-      {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
-        <button
-          key={page}
-          type="button"
-          onClick={() => {
-            setCurrentPage(page);
-            document.getElementById("blog")?.scrollIntoView({ behavior: "smooth" });
-          }}
-          className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black transition ${
-            currentPage === page
-              ? "bg-cyan-400 text-black"
-              : "border border-white/10 text-zinc-300 hover:bg-white/10"
-          }`}
-        >
-          {page}
-        </button>
-      ))}
-
-      <button
-        type="button"
-        disabled={currentPage === totalPages}
-        onClick={() => {
-          setCurrentPage((page) => Math.min(page + 1, totalPages));
-          document.getElementById("blog")?.scrollIntoView({ behavior: "smooth" });
-        }}
-        className="rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
-      >
-        {t.next}
-      </button>
-    </div>
-  </div>
-)}
+          <p className="mt-8 max-w-3xl text-sm leading-6 text-[#4A5A54]">{t.warningOne}</p>
         </section>
 
-        {/* ── Gallery ── */}
-        <section id="projekte" className="mx-auto max-w-7xl px-4 py-16 sm:px-5 sm:py-24">
-          <div className="mb-10 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
+        {/* Live */}
+        {liveTiles.length > 0 && (
+          <section className="bg-[#083D2F] text-white">
+            <div className="mx-auto max-w-7xl px-4 py-14 sm:px-5 sm:py-16">
+              <p className="wb-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#F2B279]">{w.sec_live}</p>
+              <h2 className="wb-head mt-2 text-3xl font-bold sm:text-4xl">{w.sec_live}</h2>
+              <p className="mt-3 max-w-2xl text-[15px] leading-7 text-white/75">{w.live_sub}</p>
+              <div className="mt-9 grid gap-4 min-[620px]:grid-cols-2 lg:grid-cols-4">
+                {liveTiles.map(({ post, host, kind, hint }) => (
+                  <a key={post.id} href={post.external_link || getPostUrl(post.id)} target="_blank" rel="noopener noreferrer" className="group flex flex-col rounded-2xl border border-white/15 bg-white/[0.06] p-5 transition hover:border-[#F2B279] hover:bg-white/[0.1]">
+                    <div className="flex items-center justify-between">
+                      <span className="wb-mono inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-white/70"><span className={`h-2 w-2 rounded-full ${kind === "store" ? "bg-[#7FB2F5]" : "bg-[#38D39A]"}`} /> {kind === "live" ? w.st_live : kind === "demo" ? w.st_demo : w.st_store}</span>
+                      <ExternalLink className="h-4 w-4 text-white/60 transition group-hover:text-[#F2B279]" />
+                    </div>
+                    <h3 className="wb-head mt-6 text-xl font-bold leading-snug">{post.title.split(/\s[–—-]\s/)[0]}</h3>
+                    <p className="wb-mono mt-2 text-xs text-[#F2B279]">{host}</p>
+                    {hint && <p className="mt-3 text-xs leading-5 text-white/70">{w.demo_hint}</p>}
+                    <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold">{w.open} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Skills */}
+        <section id="kompetenzen" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-14 sm:px-5 sm:py-20">
+          <WbSectionHead eyebrow={w.nav_skills} title={w.sec_skills} />
+          <div className="grid gap-5 lg:grid-cols-3">
+            {[["hw", w.sk_hw, CircuitBoard], ["emb", w.sk_emb, Cpu], ["sw", w.sk_sw, Code2]].map(([key, title, Icon]) => (
+              <div key={key} className="rounded-2xl border border-[#C9D3CD] bg-white p-6">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E1F0E8] text-[#0B5A44]"><Icon className="h-5 w-5" /></div>
+                <h3 className="wb-head mt-5 text-xl font-bold">{title}</h3>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {WB_SKILLS[key].map((skill) => <span key={skill} className="wb-mono rounded-md border border-[#D5DDD8] bg-[#F3F5F2] px-2.5 py-1 text-xs text-[#33423C]">{skill}</span>)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Path + Knowledge */}
+        <section id="weg" className="scroll-mt-24 border-y border-[#D5DDD8] bg-white">
+          <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-5 sm:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.25em] text-cyan-300">{t.gallery}</p>
-              <h2 className="mt-3 text-4xl font-black sm:text-5xl">{t.projectImages}</h2>
+              <WbSectionHead eyebrow={w.nav_path} title={w.sec_path} lead={w.path_lead} />
+              <ol className="relative ml-3 space-y-6 border-l-2 border-[#D5DDD8] pl-7">
+                {w.path.map((step, index) => (
+                  <li key={step} className="relative">
+                    <span className={`absolute -left-[37px] top-1 h-4 w-4 rounded-full border-[3px] border-white ${index === w.path.length - 1 ? "bg-[#C8691F]" : "bg-[#0B5A44]"} shadow-[0_0_0_1.5px_#C9D3CD]`} />
+                    <p className="text-[15px] font-medium leading-6 text-[#0F1A17] sm:text-base">{step}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div className="flex flex-col gap-5">
+              <div className="overflow-hidden rounded-2xl border border-[#C9D3CD] bg-[#F3F5F2]">
+                {personalWay.image_1 && <img src={personalWay.image_1} alt="Nguyen Nhan Do" loading="lazy" className="h-56 w-full object-cover sm:h-64" />}
+                <div className="p-6">
+                  <h3 className="wb-head text-xl font-bold">{personalWay.title}</h3>
+                  <div className={`prose mt-3 max-w-none text-sm leading-7 text-[#33423C] prose-p:my-3 ${pathOpen ? "" : "max-h-32 overflow-hidden"}`} style={pathOpen ? undefined : { maskImage: "linear-gradient(#000 55%, transparent)", WebkitMaskImage: "linear-gradient(#000 55%, transparent)" }}>
+                    <ReactMarkdown>{personalWay.content}</ReactMarkdown>
+                  </div>
+                  <button type="button" onClick={() => setPathOpen((v) => !v)} className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[#0B5A44]">
+                    {pathOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />} {w.read_more}
+                  </button>
+                </div>
+              </div>
+
+              <div className="rounded-2xl bg-[#083D2F] p-6 text-white">
+                <BookOpen className="h-6 w-6 text-[#F2B279]" />
+                <h3 className="wb-head mt-4 text-xl font-bold">{w.sec_know}</h3>
+                <p className="mt-2 text-sm leading-6 text-white/75">{w.know_text}</p>
+                <button type="button" onClick={onGoKnowledge} className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-[#083D2F] transition hover:bg-[#F2B279]">{w.know_cta} <ArrowRight className="h-4 w-4" /></button>
+              </div>
             </div>
           </div>
+        </section>
 
-          {galleryImages.length > 0 && (
-            <div className="rounded-[2rem] border border-white/10 bg-[#07111f]/90 p-3 shadow-2xl shadow-cyan-950/20 sm:p-4">
-              <div className="grid gap-3 lg:h-[430px] lg:grid-cols-[1.85fr_1fr]">
-                <button type="button" onClick={() => setGalleryLightbox({ images: galleryImages, index: selectedGalleryIndex })} className="group relative block h-[260px] w-full overflow-hidden rounded-[1.55rem] text-left sm:h-[380px] lg:h-full">
-                  <img src={galleryImages[selectedGalleryIndex] || galleryImages[0]} alt="Galeriebild" className="h-full w-full object-cover object-center transition duration-700 group-hover:scale-[1.025] group-hover:brightness-110" />
-                  <div className="absolute bottom-4 left-4 flex flex-wrap items-center gap-2 sm:bottom-5 sm:left-5">
-                    <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black uppercase tracking-widest text-black">{t.gallery}</span>
-                    <span className="rounded-full border border-white/15 bg-black/55 px-3 py-1.5 text-xs font-bold text-zinc-200 backdrop-blur">
-                      {t.image} {selectedGalleryIndex + 1} / {galleryImages.length}
-                    </span>
-                  </div>
-                  <span className="absolute bottom-4 right-4 rounded-full border border-white/15 bg-black/55 px-3 py-1.5 text-xs font-bold text-zinc-200 backdrop-blur sm:bottom-5 sm:right-5">{t.enlarge}</span>
+        {/* Gallery */}
+        {galleryImages.length > 0 && (
+          <section id="galerie" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-14 sm:px-5 sm:py-20">
+            <WbSectionHead eyebrow={t.gallery} title={t.projectImages} />
+            <div className="rounded-3xl border border-[#C9D3CD] bg-white p-3 sm:p-4">
+              <div className="grid gap-3 lg:h-[420px] lg:grid-cols-[1.85fr_1fr]">
+                <button type="button" onClick={() => setGalleryLightbox({ images: galleryImages, index: selectedGalleryIndex })} className="group relative block h-[240px] w-full overflow-hidden rounded-2xl text-left sm:h-[360px] lg:h-full">
+                  <img src={galleryImages[selectedGalleryIndex] || galleryImages[0]} alt={`${t.image} ${selectedGalleryIndex + 1}`} className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.025]" />
+                  <span className="wb-mono absolute bottom-4 left-4 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-[#0F1A17]">{t.image} {selectedGalleryIndex + 1} / {galleryImages.length}</span>
+                  <span className="absolute bottom-4 right-4 rounded-full bg-[#0B5A44] px-3 py-1.5 text-xs font-semibold text-white">{t.enlarge}</span>
                 </button>
-
                 <div className="hidden min-h-0 gap-3 lg:grid lg:grid-rows-2">
                   {gallerySideImages.map(({ image, index }) => (
-                    <button key={`${image}-${index}`} type="button" onClick={() => setSelectedGalleryIndex(index)} className="group relative min-h-0 overflow-hidden rounded-[1.35rem] border border-white/10 bg-black/30 transition hover:border-cyan-400/50">
-                      <img src={image} alt={`Galeriebild ${index + 1}`} className="h-full w-full object-cover transition duration-500 group-hover:scale-105 group-hover:brightness-110" />
-                      <span className="absolute bottom-3 right-3 rounded-full border border-white/15 bg-black/55 px-2.5 py-1 text-xs font-bold text-zinc-200 backdrop-blur">{t.image} {index + 1}</span>
+                    <button key={`${image}-${index}`} type="button" onClick={() => setSelectedGalleryIndex(index)} className="group relative min-h-0 overflow-hidden rounded-xl border border-[#C9D3CD]">
+                      <img src={image} alt={`${t.image} ${index + 1}`} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                     </button>
                   ))}
                 </div>
               </div>
-
-              <div className="mt-5 flex gap-3 overflow-x-auto border-t border-white/10 pt-4 pb-1">
+              <div className="mt-4 flex gap-3 overflow-x-auto border-t border-[#D5DDD8] pt-4 pb-1">
                 {galleryImages.map((image, index) => (
-                  <button key={`${image}-${index}`} type="button" onClick={() => setSelectedGalleryIndex(index)} className={`relative h-20 w-28 shrink-0 overflow-hidden rounded-xl border-2 transition sm:h-24 sm:w-36 ${selectedGalleryIndex === index ? "border-cyan-300 shadow-lg shadow-cyan-500/20" : "border-white/10 opacity-70 hover:border-cyan-400/50 hover:opacity-100"}`}>
-                    <img src={image} alt={`Galeriebild ${index + 1}`} className="h-full w-full object-cover" />
-                    <span className="absolute bottom-1 right-1 rounded bg-black/65 px-1.5 py-0.5 text-[10px] font-bold text-zinc-200">{index + 1}</span>
+                  <button key={`${image}-${index}`} type="button" onClick={() => setSelectedGalleryIndex(index)} className={`relative h-20 w-28 shrink-0 overflow-hidden rounded-lg border-2 transition sm:h-24 sm:w-36 ${selectedGalleryIndex === index ? "border-[#0B5A44]" : "border-transparent opacity-70 hover:opacity-100"}`}>
+                    <img src={image} alt={`${t.image} ${index + 1}`} className="h-full w-full object-cover" />
                   </button>
                 ))}
               </div>
             </div>
-          )}
-        </section>
+          </section>
+        )}
 
-        {/* ── Contact ── */}
-        <section id="kontakt" className="mx-auto max-w-7xl px-4 pb-12 sm:px-5 sm:pb-24">
-          <div className="rounded-[1.5rem] bg-cyan-400 p-4 text-black shadow-2xl shadow-cyan-500/30 sm:rounded-[2.5rem] sm:p-8 lg:p-12">
-            <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
+        {/* Contact */}
+        <section id="kontakt" className="mx-auto max-w-7xl scroll-mt-24 px-4 pb-14 sm:px-5 sm:pb-20">
+          <div className="relative overflow-hidden rounded-3xl bg-[#0B5A44] p-6 text-white sm:p-10 lg:p-14">
+            <div className="wb-grid absolute inset-0 opacity-[0.07] [filter:invert(1)]" aria-hidden="true" />
+            <div className="relative grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
               <div>
-                <p className="text-sm font-black uppercase tracking-widest">{t.contact}</p>
-                <h2 className="mt-3 text-[1.85rem] font-black leading-tight sm:text-5xl lg:text-6xl">{t.collaborationTitle}</h2>
-                <p className="mt-4 max-w-2xl text-[15px] leading-7 text-black/80 sm:text-lg">{t.collaborationText}</p>
+                <p className="wb-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#F2B279]">{w.sec_contact}</p>
+                <h2 className="wb-head mt-3 text-3xl font-bold leading-tight sm:text-5xl">{t.collaborationTitle}</h2>
+                <p className="mt-4 max-w-xl text-[15px] leading-7 text-white/80 sm:text-lg sm:leading-8">{t.collaborationText}</p>
+                <p className="mt-4 max-w-xl text-sm leading-6 text-white/70">{w.contact_note}</p>
+                <a href={`mailto:${email}`} className="mt-7 inline-flex items-center gap-2.5 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-[#083D2F] transition hover:bg-[#F2B279]"><Mail className="h-4 w-4" /> {w.contact_label}</a>
+                <p className="wb-mono mt-3 break-all text-xs text-white/70">{email}</p>
               </div>
-              <div className="rounded-[1.25rem] sm:rounded-[2rem] p-[1.5px] bg-gradient-to-br from-cyan-400/60 via-cyan-500/40 to-cyan-400/60">
-                <div className="rounded-[1.2rem] sm:rounded-[1.95rem] bg-[#050816] p-3 sm:p-8 text-white">
-                  <div className="grid gap-5">
-                    {[
-                      {icon: Code2, label: "GitHub", value: "github.com/nguyennhando"},
-                      { icon: Globe, label: t.location, value: t.country },
-                      { icon: CircuitBoard, label: t.focus, value: t.focusValue },
-                      { icon: Wrench, label: t.tools, value: t.toolsValue },
-                    ].map(({ icon: Icon, label, value }) => (
-                      <div key={label} className="flex items-center gap-3 rounded-2xl border border-white/10 p-3 sm:gap-4 sm:p-4">
-                        <Icon className="h-6 w-6 text-cyan-300" />
-                        <div>
-                          <p className="text-sm text-zinc-400">{label}</p>
-                          <p className="break-all text-sm font-bold sm:text-base">{value}</p>
-                        </div>
-                      </div>
-                    ))}
+              <div className="grid gap-3">
+                {[[Globe, t.location, t.country], [CircuitBoard, t.focus, t.focusValue], [Wrench, t.tools, t.toolsValue]].map(([Icon, label, value]) => (
+                  <div key={label} className="flex items-center gap-4 rounded-xl border border-white/20 bg-white/[0.07] p-4">
+                    <Icon className="h-5 w-5 shrink-0 text-[#F2B279]" />
+                    <div className="min-w-0"><p className="text-xs text-white/65">{label}</p><p className="text-sm font-semibold">{value}</p></div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-cyan-500/10 bg-black py-10 text-center text-zinc-400">
-        <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
-          <button type="button" onClick={onGoImpressum} className="transition hover:text-cyan-400">{t.legalNotice}</button>
-          <button type="button" onClick={onGoDatenschutz} className="transition hover:text-cyan-400">{t.privacy}</button>
+      <footer className="border-t border-[#C9D3CD] bg-white">
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 text-sm text-[#4A5A54] sm:px-5 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="max-w-xl text-xs leading-5">{w.foot}</p>
+            <p className="mt-2 text-xs">© {new Date().getFullYear()} Nguyen Nhan Do</p>
+          </div>
+          <div className="flex gap-6">
+            <button type="button" onClick={onGoImpressum} className="font-medium transition hover:text-[#0B5A44]">{t.legalNotice}</button>
+            <button type="button" onClick={onGoDatenschutz} className="font-medium transition hover:text-[#0B5A44]">{t.privacy}</button>
+          </div>
         </div>
-        <p className="mt-4 text-xs text-zinc-500">{t.footer}</p>
       </footer>
 
-      {/* Lightboxes */}
-      {lightbox && <Lightbox images={lightbox.images} index={lightbox.index} onClose={() => setLightbox(null)} />}
-      {galleryLightbox && (
-        <Lightbox images={galleryLightbox.images} index={galleryLightbox.index} onClose={() => setGalleryLightbox(null)} />
-      )}
-
+      {galleryLightbox && <Lightbox images={galleryLightbox.images} index={galleryLightbox.index} onClose={() => setGalleryLightbox(null)} />}
     </div>
   );
 }
@@ -4250,6 +4117,7 @@ if (page === "datenschutz") {
           getPostUrl={getPostUrl}
           onGoImpressum={goImpressum}
           onGoDatenschutz={goDatenschutz}
+          onGoKnowledge={() => { navigate("knowledge"); window.scrollTo({ top: 0 }); }}
           language={language}
         />
       )}
