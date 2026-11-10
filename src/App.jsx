@@ -2859,8 +2859,8 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
         <div className="grid gap-4 sm:grid-cols-2">
           <AdminField label={t.contentTypeLabel}>
             <select className={inputClass} value={form.content_type} onChange={(event) => update("content_type", event.target.value)}>
-              <option value="project">{t.contentTypeProjectOption}</option>
-              <option value="knowledge">{t.contentTypeKnowledgeOption}</option>
+              <option value="project">{ui.filterProjects}</option>
+              <option value="knowledge">{ui.filterKnowledge}</option>
             </select>
           </AdminField>
           {form.content_type !== "knowledge" ? (
