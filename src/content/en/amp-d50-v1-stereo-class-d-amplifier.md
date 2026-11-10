@@ -28,7 +28,7 @@ published: true
 created_at: '2026-11-10T18:00:00.000Z'
 external_link: 
 project_status: in_progress
-sort_order: 20
+sort_order: 30
 ---
 
 # AMP-D50-V1
