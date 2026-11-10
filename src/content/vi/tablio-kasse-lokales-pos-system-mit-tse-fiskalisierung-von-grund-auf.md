@@ -15,7 +15,7 @@ image_gallery:
 - /my-electronics-blog/images/posts/tablio-kitchen-display.webp
 - /my-electronics-blog/images/posts/tablio-tables-mobile.webp
 - /my-electronics-blog/images/posts/1785878581909-screenshot-2026-08-04-230955.png
-excerpt: Hệ thống bán hàng chạy cục bộ cho nhà hàng ở Đức, có sơ đồ bàn, màn hình bếp thời gian thực, thanh toán, sổ quỹ và báo cáo. Kiến trúc tài chính với lớp TSE và DSFinV-K được xây sẵn từ đầu, còn việc chứng nhận thì chưa xong.
+excerpt: Hệ thống bán hàng chạy cục bộ cho nhà hàng ở Đức, có sơ đồ bàn, màn hình bếp thời gian thực, thanh toán, sổ quỹ và báo cáo. Kiến trúc tài chính với lớp TSE và DSFinV-K được xây sẵn từ đầu. Sản phẩm đã hoàn thành và sẽ được dùng ngay khi gắn được TSE đã chứng nhận.
 tags:
 - POS
 - Máy tính tiền
@@ -27,7 +27,7 @@ read_time: 11 phút
 published: true
 created_at: '2026-08-04T21:03:35.667Z'
 external_link: 
-project_status: in_progress
+project_status: done
 sort_order: 50
 ---
 
@@ -39,7 +39,7 @@ sort_order: 50
 **Công nghệ:** React 19, NestJS 11, PostgreSQL 16, TypeScript  
 **Ngôn ngữ:** tiếng Đức, Anh, Việt  
 **Triển khai:** bộ cài Windows, thiết bị Linux, Docker khi phát triển  
-**Trạng thái dự án:** đang chạy được và tiếp tục phát triển, **việc chứng nhận tài chính chưa xong**
+**Trạng thái dự án:** sản phẩm đã hoàn thành, **chưa đưa vào sử dụng thực tế vì chưa gắn TSE đã chứng nhận**
 
 ---
 
@@ -205,7 +205,7 @@ Máy tính tiền cố ý chỉ truy cập được trong mạng nội bộ. Vì
 
 ## 10. Trạng thái hiện tại và bước tiếp theo
 
-- Máy tính tiền đang chạy được và được mở rộng liên tục (bộ cài Windows phiên bản 0.2.x).
+- Sản phẩm đã hoàn thành (bộ cài Windows phiên bản 0.2.x). Hiện chưa dùng thực tế vì chưa gắn TSE đã chứng nhận.
 - **Còn mở để dùng thật hợp pháp:** tích hợp TSE đã chứng nhận, kiểm chứng bản xuất DSFinV-K và được cố vấn thuế duyệt.
 - Với bản Android, còn thiếu SDK chính thức của hãng và các bài kiểm tra phần cứng thật.
 - Chưa có giấy phép công khai. Dự án là mã nguồn độc quyền.
@@ -220,7 +220,7 @@ TABLIO Kasse cho thấy một chiếc máy tính tiền tưởng đơn giản c�
 
 ## Mã nguồn
 
-Mã nguồn của dự án này nằm trên GitHub nhưng không được chia sẻ công khai. Nếu bạn quan tâm, hãy liên hệ với tôi qua e-mail donguyennhan.de@gmail.com để tôi chia sẻ.
+Mã nguồn nằm trên GitHub nhưng không được chia sẻ công khai để bảo vệ dự án. Nếu bạn cần xem mã nguồn, chẳng hạn để đánh giá năng lực của người thực hiện dự án, vui lòng liên hệ với tôi qua e-mail donguyennhan.de@gmail.com.
 
 ---
 

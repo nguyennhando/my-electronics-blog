@@ -15,7 +15,7 @@ image_gallery:
 - /my-electronics-blog/images/posts/tablio-kitchen-display.webp
 - /my-electronics-blog/images/posts/tablio-tables-mobile.webp
 - /my-electronics-blog/images/posts/1785878581909-screenshot-2026-08-04-230955.png
-excerpt: Ein lokal betriebenes Kassensystem für die deutsche Gastronomie mit Tischplan, Küchenmonitor in Echtzeit, Zahlungen, Kassenbuch und Berichten. Die Fiskal-Architektur mit TSE-Schicht und DSFinV-K ist von Anfang an eingebaut, die Zertifizierung steht noch aus.
+excerpt: Ein lokal betriebenes Kassensystem für die deutsche Gastronomie mit Tischplan, Küchenmonitor in Echtzeit, Zahlungen, Kassenbuch und Berichten. Die Fiskal-Architektur mit TSE-Schicht und DSFinV-K ist von Anfang an eingebaut. Das Produkt ist fertig und wird eingesetzt, sobald eine zertifizierte TSE angebunden ist.
 tags:
 - POS
 - Kassensystem
@@ -27,7 +27,7 @@ read_time: 11 Min.
 published: true
 created_at: '2026-08-04T21:03:35.667Z'
 external_link: 
-project_status: in_progress
+project_status: done
 sort_order: 50
 ---
 
@@ -39,7 +39,7 @@ sort_order: 50
 **Technik:** React 19, NestJS 11, PostgreSQL 16, TypeScript  
 **Sprachen:** Deutsch, Englisch, Vietnamesisch  
 **Betrieb:** Windows-Installer, Linux-Gerät, Docker für die Entwicklung  
-**Projektstatus:** funktionsfähig und in Weiterentwicklung, **Fiskal-Zertifizierung noch ausstehend**
+**Projektstatus:** Produkt fertiggestellt, **noch nicht im Praxiseinsatz, weil noch keine zertifizierte TSE angebunden ist**
 
 ---
 
@@ -205,7 +205,7 @@ Die Kasse bleibt bewusst nur im lokalen Netz erreichbar. Anbindungen an das Inte
 
 ## 10. Aktueller Stand und nächste Schritte
 
-- Die Kasse ist funktionsfähig und wird laufend erweitert (Windows-Installer in Version 0.2.x).
+- Das Produkt ist fertiggestellt (Windows-Installer in Version 0.2.x). Im Praxiseinsatz ist es noch nicht, weil noch keine zertifizierte TSE angebunden ist.
 - **Offen für den rechtskonformen Echtbetrieb:** Anbindung einer zertifizierten TSE, Prüfung des DSFinV-K-Exports und die Abnahme durch einen Steuerberater.
 - Für die Android-Version fehlt das offizielle Hersteller-SDK samt echten Hardware-Tests.
 - Es gibt keine öffentliche Lizenz. Das Projekt ist proprietär.
@@ -220,7 +220,7 @@ TABLIO Kasse zeigt, wie viel Sorgfalt in einem scheinbar einfachen Kassensystem 
 
 ## Quellcode
 
-Der Quellcode dieses Projekts liegt auf GitHub, wird aber nicht öffentlich geteilt. Wenn Sie sich dafür interessieren, schreiben Sie mir gern eine E-Mail an donguyennhan.de@gmail.com, dann teile ich ihn mit Ihnen.
+Der Quellcode liegt auf GitHub, wird aber zum Schutz des Projekts nicht öffentlich geteilt. Wer den Quellcode sehen möchte, zum Beispiel um die fachlichen Fähigkeiten des Entwicklers zu beurteilen, schreibt mir bitte eine E-Mail an donguyennhan.de@gmail.com.
 
 ---
 

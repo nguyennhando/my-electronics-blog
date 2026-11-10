@@ -15,7 +15,7 @@ image_gallery:
 - /my-electronics-blog/images/posts/tablio-kitchen-display.webp
 - /my-electronics-blog/images/posts/tablio-tables-mobile.webp
 - /my-electronics-blog/images/posts/1785878581909-screenshot-2026-08-04-230955.png
-excerpt: A local-first point-of-sale system for German restaurants with a floor plan, a real-time kitchen display, payments, a cashbook and reports. The fiscal architecture with a TSE layer and DSFinV-K is built in from day one, while certification is still pending.
+excerpt: A local-first point-of-sale system for German restaurants with a floor plan, a real-time kitchen display, payments, a cashbook and reports. The fiscal architecture with a TSE layer and DSFinV-K is built in from day one. The product is finished and will go into use as soon as a certified TSE is attached.
 tags:
 - POS
 - Cash register
@@ -27,7 +27,7 @@ read_time: 11 min
 published: true
 created_at: '2026-08-04T21:03:35.667Z'
 external_link: 
-project_status: in_progress
+project_status: done
 sort_order: 50
 ---
 
@@ -39,7 +39,7 @@ sort_order: 50
 **Technology:** React 19, NestJS 11, PostgreSQL 16, TypeScript  
 **Languages:** German, English, Vietnamese  
 **Deployment:** Windows installer, Linux appliance, Docker for development  
-**Project status:** working and under further development, **fiscal certification still pending**
+**Project status:** product finished, **not yet in practical use because no certified TSE is attached yet**
 
 ---
 
@@ -205,7 +205,7 @@ The till is deliberately reachable only on the local network. Connections to the
 
 ## 10. Current Status and Next Steps
 
-- The till is working and continuously extended (Windows installer at version 0.2.x).
+- The product is finished (Windows installer at version 0.2.x). It is not yet in practical use because no certified TSE is attached yet.
 - **Still open for legally compliant live use:** integrating a certified TSE, validating the DSFinV-K export and sign-off by a tax advisor.
 - For the Android version, the official vendor SDK and real hardware tests are missing.
 - There is no public license. The project is proprietary.
@@ -220,7 +220,7 @@ TABLIO Kasse shows how much care goes into a seemingly simple cash register: con
 
 ## Source code
 
-The source code of this project is on GitHub but is not shared publicly. If you are interested, please contact me at donguyennhan.de@gmail.com and I will share it with you.
+The source code is on GitHub but is not shared publicly, in order to protect the project. If you would like to see the source code, for example to assess the developer's skills, please contact me by e-mail at donguyennhan.de@gmail.com.
 
 ---
 

@@ -259,4 +259,4 @@ Sử dụng GeldPilot để kiểm soát tài chính và chủ động xây dự
 
 ## Mã nguồn
 
-Mã nguồn của dự án này nằm trên GitHub nhưng không được chia sẻ công khai. Nếu bạn quan tâm, hãy liên hệ với tôi qua e-mail donguyennhan.de@gmail.com để tôi chia sẻ.
+Mã nguồn nằm trên GitHub nhưng không được chia sẻ công khai để bảo vệ dự án. Nếu bạn cần xem mã nguồn, chẳng hạn để đánh giá năng lực của người thực hiện dự án, vui lòng liên hệ với tôi qua e-mail donguyennhan.de@gmail.com.
