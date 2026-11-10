@@ -192,12 +192,6 @@ GEM Restaurant zeigt, wie viel Betrieb in einer „einfachen“ Bestell- und Res
 
 ---
 
-## Quellcode
-
-Der Quellcode liegt auf GitHub, wird aber zum Schutz des Projekts nicht öffentlich geteilt. Wer den Quellcode sehen möchte, zum Beispiel um die fachlichen Fähigkeiten des Entwicklers zu beurteilen, schreibt mir bitte eine E-Mail an donguyennhan.de@gmail.com.
-
----
-
 ### GEM Restaurant
 
 **Entwickelt von Nguyen Nhan Do**
