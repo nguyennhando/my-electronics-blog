@@ -22,7 +22,8 @@ const parseValue = (value) => {
   if (v === "null") return null;
   if (v === "") return "";
 
-  return v.replace(/^["']|["']$/g, "");
+  const quoted = v.length > 1 ? v.match(/^(["'])([\s\S]*)\1$/) : null;
+  return quoted ? quoted[2] : v;
 };
 
 const parseFrontmatter = (raw) => {

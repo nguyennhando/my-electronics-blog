@@ -2,6 +2,7 @@ import CookieBanner from "./components/CookieBanner";
 import { createElement, useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { CONTENT_POSTS, GALLERY_IMAGES, HOME_CONTENTS, PERSONAL_WAY, PERSONAL_WAYS, SITE_SETTINGS, getLocalizedContentPosts, getLocalizedHomeContent, getLocalizedPersonalWay, getSiteTextOverrides, getTranslationLanguages } from "./lib/posts";
 import { getWbText, getWbSkills } from "./lib/werkbankText";
 import { COOKIE_TEXT, WB_TEXT_GROUPS, UI_TEXT_GROUPS, LONG_TEXT_KEYS, getWbDefaults } from "./lib/siteTexts";
@@ -1366,12 +1367,16 @@ const WB_MD = {
   h2: ({ children }) => <h3 className="wb-head mb-3 mt-8 text-xl font-bold text-[#0B5A44] sm:text-2xl">{children}</h3>,
   h3: ({ children }) => <h4 className="wb-head mb-2 mt-6 text-lg font-bold text-[#0F1A17]">{children}</h4>,
   p: ({ children }) => <p className="mb-4">{children}</p>,
-  ul: ({ children }) => <ul className="mb-5 ml-6 list-disc space-y-2 marker:text-[#C8691F]">{children}</ul>,
+  ul: ({ children }) => <ul className="mb-5 ml-6 list-disc space-y-2 marker:text-[#A8540F]">{children}</ul>,
   ol: ({ children }) => <ol className="mb-5 ml-6 list-decimal space-y-2 marker:font-semibold marker:text-[#0B5A44]">{children}</ol>,
   li: ({ children }) => <li className="pl-1">{children}</li>,
   strong: ({ children }) => <strong className="font-bold text-[#0F1A17]">{children}</strong>,
   hr: () => <hr className="my-8 border-[#D5DDD8]" />,
-  blockquote: ({ children }) => <blockquote className="mb-5 border-l-4 border-[#C8691F] bg-[#F3F5F2] px-5 py-3 text-[#33423C]">{children}</blockquote>,
+  table: ({ children }) => <div className="mb-6 overflow-x-auto rounded-xl border border-[#C9D3CD]"><table className="w-full min-w-[420px] border-collapse text-left text-sm leading-6">{children}</table></div>,
+  thead: ({ children }) => <thead className="bg-[#E1F0E8] text-[#083D2F]">{children}</thead>,
+  th: ({ children }) => <th className="border-b border-[#C9D3CD] px-4 py-2.5 font-bold">{children}</th>,
+  td: ({ children }) => <td className="border-t border-[#E3E9E5] px-4 py-2.5 align-top">{children}</td>,
+  blockquote: ({ children }) => <blockquote className="mb-5 border-l-4 border-[#A8540F] bg-[#F3F5F2] px-5 py-3 text-[#33423C]">{children}</blockquote>,
   a: ({ children, href }) => <a href={href} target={String(href || "").startsWith("mailto:") ? undefined : "_blank"} rel="noopener noreferrer" className="font-semibold text-[#0B5A44] underline decoration-[#0B5A44]/40 underline-offset-4 hover:text-[#083D2F]">{children}</a>,
   code: ({ children }) => <code className="wb-mono rounded-md border border-[#D5DDD8] bg-[#F3F5F2] px-1.5 py-0.5 text-[0.9em] text-[#083D2F]">{children}</code>,
   pre: ({ children }) => <pre className="wb-mono mb-5 overflow-x-auto rounded-xl border border-[#C9D3CD] bg-[#F3F5F2] p-4 text-sm leading-7 text-[#0F1A17]">{children}</pre>,
@@ -1413,7 +1418,7 @@ function PostDetailPage({ post, onBack, language }) {
 
           {gallery.length > 0 && (
             <div className="border-b border-[#E3E9E5] px-5 pb-6 pt-6 sm:px-8 lg:px-10">
-              <p className="wb-mono mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#C8691F]">{t.projectImages}</p>
+              <p className="wb-mono mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#A8540F]">{t.projectImages}</p>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {gallery.map((url, i) => (
                   <img key={url} src={url} alt={`${t.image} ${i + 1}`} onClick={() => setLightboxIndex(i + 1)}
@@ -1433,10 +1438,10 @@ function PostDetailPage({ post, onBack, language }) {
             </div>
 
             <h1 className="wb-head text-3xl font-bold leading-tight text-[#0F1A17] sm:text-4xl lg:text-5xl">{post.title}</h1>
-            <p className="mt-5 border-l-4 border-[#C8691F] pl-4 text-base font-medium leading-8 text-[#33423C] sm:text-lg">{post.excerpt}</p>
+            <p className="mt-5 border-l-4 border-[#A8540F] pl-4 text-base font-medium leading-8 text-[#33423C] sm:text-lg">{post.excerpt}</p>
 
             <div className="mt-8 max-w-3xl text-[15px] leading-8 text-[#33423C] sm:text-base sm:leading-9">
-              <ReactMarkdown components={WB_MD}>{post.content}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkGfm]} components={WB_MD}>{post.content}</ReactMarkdown>
             </div>
 
             {!!(Array.isArray(post.tags) ? post.tags : []).length && (
@@ -1530,7 +1535,7 @@ function KnowledgePage({ posts, onOpenPost, getPostUrl, language }) {
         <section className="mt-8 grid gap-3 sm:grid-cols-[1fr_auto]">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#4A5A54]" />
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t.knowledgeSearch} className="w-full rounded-full border border-[#C9D3CD] bg-white py-3 pl-11 pr-4 text-sm text-[#0F1A17] outline-none placeholder:text-[#7A8A84] focus:border-[#0B5A44] focus:ring-4 focus:ring-[#0B5A44]/15" />
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t.knowledgeSearch} className="w-full rounded-full border border-[#C9D3CD] bg-white py-3 pl-11 pr-4 text-sm text-[#0F1A17] outline-none placeholder:text-[#66756F] focus:border-[#0B5A44] focus:ring-4 focus:ring-[#0B5A44]/15" />
           </div>
           <select value={category} onChange={(e) => setCategory(e.target.value)} className="rounded-full border border-[#C9D3CD] bg-white px-5 py-3 text-sm text-[#0F1A17] outline-none focus:border-[#0B5A44] focus:ring-4 focus:ring-[#0B5A44]/15">
             <option value="__all__">{t.allTopics}</option>
@@ -1547,7 +1552,7 @@ function KnowledgePage({ posts, onOpenPost, getPostUrl, language }) {
         ) : (
           <>
             <section className="mt-8">
-              <p className="wb-mono mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#C8691F]">{t.selectedPost}</p>
+              <p className="wb-mono mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#A8540F]">{t.selectedPost}</p>
               <a href={getPostUrl(featuredPost.id)} onClick={openLink(featuredPost)} className="group grid w-full overflow-hidden rounded-3xl border border-[#C9D3CD] bg-white text-left transition hover:border-[#0B5A44] hover:shadow-[0_22px_44px_-26px_rgba(11,90,68,0.55)] lg:grid-cols-[0.42fr_0.58fr]">
                 <div className="h-56 overflow-hidden bg-[#E9EEEA] lg:h-auto">
                   {featuredPost.image_url ? <img src={featuredPost.image_url} alt="" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><FlaskConical className="h-14 w-14 text-[#0B5A44]/50" /></div>}
@@ -1567,7 +1572,7 @@ function KnowledgePage({ posts, onOpenPost, getPostUrl, language }) {
 
             {listPosts.length > 0 && <section className="mt-10">
               <div className="mb-4 flex items-end justify-between gap-4">
-                <div><p className="wb-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#C8691F]">{t.archive}</p><h2 className="wb-head mt-2 text-2xl font-bold">{t.morePosts}</h2></div>
+                <div><p className="wb-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#A8540F]">{t.archive}</p><h2 className="wb-head mt-2 text-2xl font-bold">{t.morePosts}</h2></div>
                 <span className="text-sm text-[#4A5A54]">{filteredPosts.length} {t.posts}</span>
               </div>
               <div className="grid gap-3">
@@ -1614,9 +1619,9 @@ function KnowledgeDetailPage({ post, onBack, language }) {
               <span className="inline-flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {post.read_time || "5 Min."}</span>
             </div>
             <h1 className="wb-head mt-5 text-3xl font-bold leading-tight text-[#0F1A17] sm:text-5xl">{post.title}</h1>
-            <p className="mt-5 border-l-4 border-[#C8691F] pl-4 text-base font-medium leading-8 text-[#33423C] sm:text-lg">{post.excerpt}</p>
+            <p className="mt-5 border-l-4 border-[#A8540F] pl-4 text-base font-medium leading-8 text-[#33423C] sm:text-lg">{post.excerpt}</p>
             <div className="mt-8 text-[15px] leading-8 text-[#33423C] sm:text-base sm:leading-9">
-              <ReactMarkdown components={WB_MD}>{post.content}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkGfm]} components={WB_MD}>{post.content}</ReactMarkdown>
             </div>
             {post.external_link && <a href={post.external_link} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#0B5A44] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#083D2F]">{t.externalSource} <ExternalLink className="h-4 w-4" /></a>}
           </div>
@@ -3374,7 +3379,7 @@ const getWbPill = (post, w, language) => {
 function WbSectionHead({ eyebrow, title, lead }) {
   return (
     <div className="mb-8 sm:mb-10">
-      <p className="wb-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#C8691F]">{eyebrow}</p>
+      <p className="wb-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#A8540F]">{eyebrow}</p>
       <h2 className="wb-head mt-2 text-3xl font-bold leading-tight text-[#0F1A17] sm:text-4xl">{title}</h2>
       {lead && <p className="mt-3 max-w-2xl text-[15px] leading-7 text-[#4A5A54] sm:text-base">{lead}</p>}
     </div>
@@ -3524,7 +3529,7 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
               </div>
               <div className="relative">
                 <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#4A5A54]" />
-                <input value={search} onChange={(e) => { setSearch(e.target.value); setVisible(INITIAL_COUNT); }} placeholder={w.search} aria-label={w.search} className="w-full rounded-full border border-[#C9D3CD] bg-white py-2.5 pl-10 pr-4 text-sm text-[#0F1A17] outline-none placeholder:text-[#7A8A84] focus:border-[#0B5A44] focus:ring-4 focus:ring-[#0B5A44]/15 sm:w-60" />
+                <input value={search} onChange={(e) => { setSearch(e.target.value); setVisible(INITIAL_COUNT); }} placeholder={w.search} aria-label={w.search} className="w-full rounded-full border border-[#C9D3CD] bg-white py-2.5 pl-10 pr-4 text-sm text-[#0F1A17] outline-none placeholder:text-[#66756F] focus:border-[#0B5A44] focus:ring-4 focus:ring-[#0B5A44]/15 sm:w-60" />
               </div>
             </div>
           </div>
@@ -3537,7 +3542,7 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
               <a href={getPostUrl(featured.id)} onClick={openPostLink(featured)} className="group mb-6 grid overflow-hidden rounded-3xl border border-[#C9D3CD] bg-white transition duration-200 hover:border-[#0B5A44] hover:shadow-[0_22px_44px_-26px_rgba(11,90,68,0.55)] md:grid-cols-[1.1fr_1fr]">
                 <div className="relative min-h-[240px] overflow-hidden bg-[#E9EEEA]">
                   <img src={featured.image_url} alt={featured.title} className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
-                  <span className="wb-mono absolute left-4 top-4 rounded-full bg-[#C8691F] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white">{w.featured}</span>
+                  <span className="wb-mono absolute left-4 top-4 rounded-full bg-[#A8540F] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white">{w.featured}</span>
                 </div>
                 <div className="flex flex-col justify-center p-6 sm:p-9">
                   <div className="flex flex-wrap items-center gap-2">
@@ -3614,7 +3619,7 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
               <ol className="relative ml-3 space-y-6 border-l-2 border-[#D5DDD8] pl-7">
                 {w.path.map((step, index) => (
                   <li key={step} className="relative">
-                    <span className={`absolute -left-[37px] top-1 h-4 w-4 rounded-full border-[3px] border-white ${index === w.path.length - 1 ? "bg-[#C8691F]" : "bg-[#0B5A44]"} shadow-[0_0_0_1.5px_#C9D3CD]`} />
+                    <span className={`absolute -left-[37px] top-1 h-4 w-4 rounded-full border-[3px] border-white ${index === w.path.length - 1 ? "bg-[#A8540F]" : "bg-[#0B5A44]"} shadow-[0_0_0_1.5px_#C9D3CD]`} />
                     <p className="text-[15px] font-medium leading-6 text-[#0F1A17] sm:text-base">{step}</p>
                   </li>
                 ))}
@@ -3632,7 +3637,7 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
                 <div className="p-6">
                   <h3 className="wb-head text-xl font-bold">{personalWay.title}</h3>
                   <div className={`prose mt-3 max-w-none text-sm leading-7 text-[#33423C] prose-p:my-3 ${pathOpen ? "" : "max-h-32 overflow-hidden"}`} style={pathOpen ? undefined : { maskImage: "linear-gradient(#000 55%, transparent)", WebkitMaskImage: "linear-gradient(#000 55%, transparent)" }}>
-                    <ReactMarkdown>{personalWay.content}</ReactMarkdown>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{personalWay.content}</ReactMarkdown>
                   </div>
                   <button type="button" onClick={() => setPathOpen((v) => !v)} className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[#0B5A44]">
                     {pathOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />} {w.read_more}

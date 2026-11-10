@@ -61,43 +61,9 @@ GeldPilot is a user-friendly application for managing income and expenses. Its i
 
 ## Installation
 
-### Precompiled Windows Version
+GeldPilot is available in the **Microsoft Store** (see the "Open project" button at the end of the page). Install it from there like any other Windows app and start it from the Start menu.
 
-1. Download the latest version from the Releases page.
-2. Extract the archive to a folder of your choice.
-3. Start `GeldPilot.exe`.
-
-### Build from Source
-
-Requirements:
-
-- Qt 6.9 or newer
-- CMake 3.16 or newer
-- A C++17-compatible compiler:
-  - Windows: MinGW-w64 or MSVC 2019+
-  - macOS: Xcode 12+
-  - Linux: GCC 9+ or Clang 10+
-
-Build steps:
-
-```bash
-git clone https://github.com/username/geldpilot.git
-cd geldpilot
-mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build . --config Release
-```
-
-Start the application:
-
-```bash
-# Windows
-./Release/GeldPilot.exe
-
-# Linux or macOS
-./GeldPilot
-```
+The source code is not public. If you want to assess how I work, you can see it **on request**: [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)
 
 ## Getting Started
 

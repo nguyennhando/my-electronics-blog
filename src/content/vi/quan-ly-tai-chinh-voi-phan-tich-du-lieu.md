@@ -61,43 +61,9 @@ GeldPilot là ứng dụng thân thiện để quản lý thu nhập và chi ti�
 
 ## Cài đặt
 
-### Phiên bản Windows đã biên dịch
+GeldPilot có trên **Microsoft Store** (xem nút "Mở dự án" ở cuối trang). Hãy cài từ đó như mọi ứng dụng Windows khác và mở từ menu Start.
 
-1. Tải phiên bản mới nhất từ trang Releases.
-2. Giải nén vào thư mục mong muốn.
-3. Chạy `GeldPilot.exe`.
-
-### Biên dịch từ mã nguồn
-
-Yêu cầu:
-
-- Qt 6.9 trở lên
-- CMake 3.16 trở lên
-- Trình biên dịch tương thích C++17:
-  - Windows: MinGW-w64 hoặc MSVC 2019+
-  - macOS: Xcode 12+
-  - Linux: GCC 9+ hoặc Clang 10+
-
-Các bước biên dịch:
-
-```bash
-git clone https://github.com/username/geldpilot.git
-cd geldpilot
-mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build . --config Release
-```
-
-Khởi chạy ứng dụng:
-
-```bash
-# Windows
-./Release/GeldPilot.exe
-
-# Linux hoặc macOS
-./GeldPilot
-```
+Mã nguồn không công khai. Nếu bạn muốn đánh giá cách tôi làm việc, bạn có thể xem **khi có yêu cầu**: [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)
 
 ## Bắt đầu sử dụng
 
