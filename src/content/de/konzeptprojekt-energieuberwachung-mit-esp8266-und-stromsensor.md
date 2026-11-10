@@ -21,7 +21,7 @@ published: true
 created_at: '2026-05-28T09:34:36.705Z'
 external_link: 
 project_status: in_progress
-sort_order: 160
+sort_order: 180
 ---
 
 # Konzeptprojekt: Energieüberwachung mit ESP8266 und Stromsensor
