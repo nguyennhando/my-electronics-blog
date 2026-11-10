@@ -8,6 +8,8 @@ title: AMP-D50-V2-LITE – Ampli Class-D TPA3255 với USB-C Audio
 category: Audio, PCB
 image_url: /my-electronics-blog/images/posts/amp-d50-v2-lite-3d-iso.webp
 image_gallery:
+- /my-electronics-blog/images/posts/amp-d50-v2-lite-real-top.webp
+- /my-electronics-blog/images/posts/amp-d50-v2-lite-real-bottom.webp
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-3d-top.webp
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-pcb-top.webp
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-pcb-bottom.webp
@@ -15,7 +17,7 @@ image_gallery:
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-placement.webp
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-heatsink-fit.webp
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-simulation.webp
-excerpt: Bộ khuếch đại Class-D stereo nhỏ gọn với TPA3255, ngõ vào USB-C audio và nguồn 24 V riêng, thiết kế bằng KiCad. Thiết kế đã hoàn chỉnh và qua DRC, nhưng chưa có bo nào được lắp ráp hay đo đạc.
+excerpt: Bộ khuếch đại Class-D stereo nhỏ gọn với TPA3255, ngõ vào USB-C audio và nguồn 24 V riêng, thiết kế bằng KiCad. Thiết kế đã hoàn chỉnh và bo PCB trần đã được chế tạo, nhưng chưa lắp linh kiện và chưa đo đạc gì.
 tags:
 - Class-D
 - TPA3255
@@ -41,7 +43,7 @@ sort_order: 16
 **Nguồn:** 24 V DC, tách biệt với đường USB  
 **PCB:** 2 lớp, đồng 2 oz, 182,1 × 145,6 mm  
 **Phát triển:** KiCad 10, LTspice  
-**Trạng thái dự án:** Thiết kế hoàn tất, đã chuẩn bị hồ sơ sản xuất, chưa lắp ráp và chưa đo
+**Trạng thái dự án:** Thiết kế hoàn tất, bo PCB trần đã chế tạo, chưa lắp linh kiện và chưa đo
 
 ---
 
@@ -134,7 +136,7 @@ Bộ chuyển đổi RECOM R-78HB12-0.5 tạo đường phụ 12 V cho tầng an
 - **Độ rộng đường mạch:** đường 24 V chính 1,4 mm, net loa và nút đóng cắt 0,8 mm
 - **Kiểm tra (KiCad DRC, 18 tháng 10 năm 2026):** 0 lỗi, 0 net chưa nối, đối chiếu sơ đồ nguyên lý 0 sai lệch, 4 cảnh báo được chấp nhận có chủ ý
 
-Tất cả hình ảnh là **bản dựng CAD từ dự án KiCad**, không phải ảnh chụp bo đã chế tạo.
+**Hai ảnh đầu tiên trong thư viện là ảnh chụp bo PCB thật đã chế tạo, chưa lắp linh kiện.** Các ảnh còn lại là **bản dựng CAD từ dự án KiCad**.
 
 ### Đi dây công suất
 
@@ -189,15 +191,15 @@ Tất cả IC đều là **mô hình hành vi, không phải mô hình của nh�
 
 Cho JLCPCB có file Gerber, BOM và CPL cho 43 linh kiện SMD, cùng danh sách **150 linh kiện xuyên lỗ** phải tự hàn. Có thể tùy chọn chỉ nhờ lắp TPA3255.
 
-Bộ hồ sơ này **chưa được đặt hàng** và chưa được JLCPCB rà soát. Mã linh kiện, tồn kho và khoảng cách đồng ở 2 oz (0,2 mm quanh TPA3255) phải được xác nhận ở bước báo giá và kiểm tra thiết kế.
+**Bo PCB trần hiện đã được chế tạo** (xem ảnh trong thư viện). Với phần lắp SMD, mã linh kiện và tồn kho vẫn cần được xác nhận.
 
 ---
 
 ## 9. Hướng dẫn lắp ráp (khuyến nghị)
 
-Chưa có bo nào được lắp ráp.
+Đã có bo PCB trần trong tay, nhưng chưa lắp gì cả.
 
-1. Đặt chế tạo PCB (2 lớp, 2 oz, 1,6 mm).
+1. Kiểm tra PCB (2 lớp, 2 oz, 1,6 mm) xem có lỗi chế tạo không.
 2. Gắn các linh kiện SMD trước (TPA3255, TPS26633, PCM2704C, TPS3802, linh kiện ESD, MOSFET, thạch anh, đầu cắm USB-C, tụ điện).
 3. Hàn TPA3255 cẩn thận (HTSSOP-44, bước chân 0,635 mm, nhạy ẩm) và kiểm tra cầu chập.
 4. Sau đó đến linh kiện xuyên lỗ: loại thấp trước, rồi đế, tụ hóa, cuộn cảm, đầu nối và cầu chì.
@@ -210,15 +212,15 @@ Chưa có bo nào được lắp ráp.
 
 ## 10. Trạng thái hiện tại và hạn chế
 
-**Quan trọng:** hiện **chưa có bo nào được lắp ráp** và **chưa có phép đo nào**.
+**Quan trọng:** bo PCB **đã chế tạo nhưng chưa lắp linh kiện**. **Chưa có phép đo nào**.
 
 - Sơ đồ nguyên lý và PCB đã hoàn chỉnh và qua DRC của KiCad.
-- Dữ liệu sản xuất đã tạo nhưng chưa đặt hàng.
+- Bo PCB trần đã được chế tạo (ảnh trong thư viện).
 - **USB:** việc nhận thiết bị và phát nhạc chưa được xác minh. Có thể có tiếng “bụp” khi máy tính vào chế độ ngủ hoặc thức dậy, vì tín hiệu suspend của DAC chưa được nối vào mạch mute.
 - **Nguồn:** chưa chọn adapter, việc khởi động với adapter thật chưa được thử. Hành vi cắm nóng và khởi động đến từ các mô hình gần đúng.
 - **Tản nhiệt:** nhà sản xuất không công bố dung sai vị trí và khe hở tiếp xúc chưa biết. Khoảng cách giữa đồng GVDD và chân tản nhiệt là 0,7 mm, còn rất ít dư địa.
 - **BOM:** nhiều mã điện trở và tụ điện vẫn là “TBD”.
-- **Sản xuất:** mã JLCPCB, tồn kho, góc xoay và khoảng cách 2 oz chưa được xác minh.
+- **Lắp ráp:** mã linh kiện, tồn kho và góc xoay cho phần lắp SMD chưa được xác minh.
 - **Hiệu năng:** không có phép đo nào về công suất, méo, nhiễu, nhiệt hay EMC.
 - Không tuyên bố chứng nhận nào. Repository hiện chưa gán giấy phép.
 
@@ -226,8 +228,8 @@ Chưa có bo nào được lắp ráp.
 
 ## 11. Các bước tiếp theo
 
-1. Rà soát dữ liệu JLCPCB, xác nhận mã linh kiện và đặt PCB.
-2. Lắp ráp và hàn bo.
+1. Mua linh kiện và xác nhận mã linh kiện.
+2. Gắn linh kiện và hàn bo.
 3. Cấp điện có kiểm soát với giới hạn dòng và không nối loa.
 4. Thử việc nhận USB và phát nhạc trên Windows, macOS và Linux.
 5. Chọn vật liệu dẫn nhiệt và đo hành vi nhiệt.
@@ -246,4 +248,4 @@ AMP-D50-V2-LITE là một thiết kế ampli được ghi tài liệu đầy đ�
 
 **Thiết kế bởi Nguyen Nhan Do**
 
-Tất cả hình ảnh là bản dựng CAD, không phải ảnh chụp. Phần cứng chưa được chế tạo hay thử nghiệm.
+Hai ảnh chụp thể hiện bo PCB thật đã chế tạo, chưa lắp linh kiện; các ảnh còn lại là bản dựng CAD. Phần cứng chưa được lắp linh kiện hay thử nghiệm.

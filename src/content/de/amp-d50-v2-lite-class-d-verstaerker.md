@@ -8,6 +8,8 @@ title: AMP-D50-V2-LITE – TPA3255-Class-D-Verstärker mit USB-C-Audio
 category: Audio, PCB
 image_url: /my-electronics-blog/images/posts/amp-d50-v2-lite-3d-iso.webp
 image_gallery:
+- /my-electronics-blog/images/posts/amp-d50-v2-lite-real-top.webp
+- /my-electronics-blog/images/posts/amp-d50-v2-lite-real-bottom.webp
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-3d-top.webp
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-pcb-top.webp
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-pcb-bottom.webp
@@ -15,7 +17,7 @@ image_gallery:
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-placement.webp
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-heatsink-fit.webp
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-simulation.webp
-excerpt: Ein kompakter Stereo-Class-D-Verstärker mit TPA3255, USB-C-Audioeingang und getrennter 24-V-Versorgung, entwickelt in KiCad. Das Design ist vollständig und besteht den DRC, aber es wurde noch keine Platine aufgebaut oder gemessen.
+excerpt: Ein kompakter Stereo-Class-D-Verstärker mit TPA3255, USB-C-Audioeingang und getrennter 24-V-Versorgung, entwickelt in KiCad. Das Design ist vollständig, die unbestückte Leiterplatte ist gefertigt, bestückt und gemessen wurde noch nichts.
 tags:
 - Class-D
 - TPA3255
@@ -41,7 +43,7 @@ sort_order: 16
 **Versorgung:** 24 V DC, getrennt vom USB-Weg  
 **Leiterplatte:** 2 Lagen, 2 oz Kupfer, 182,1 × 145,6 mm  
 **Entwicklung:** KiCad 10, LTspice  
-**Projektstatus:** Design abgeschlossen, Fertigungsdaten vorbereitet, noch nicht aufgebaut und nicht gemessen
+**Projektstatus:** Design abgeschlossen, unbestückte Leiterplatte gefertigt, noch nicht bestückt und nicht gemessen
 
 ---
 
@@ -134,7 +136,7 @@ Ein Wandler RECOM R-78HB12-0.5 erzeugt die 12-V-Hilfsspannung für die Analogstu
 - **Leiterbahnbreiten:** 24-V-Hauptpfad 1,4 mm, Lautsprecher- und Schaltknotennetze 0,8 mm
 - **Prüfung (KiCad-DRC, 18. Oktober 2026):** 0 Fehler, 0 nicht verbundene Netze, Schaltplan-Parität 0, 4 bewusst akzeptierte Warnungen
 
-Alle gezeigten Bilder sind **CAD-Darstellungen aus dem KiCad-Projekt**, keine Fotos einer gefertigten Platine.
+Die **ersten beiden Bilder der Galerie sind Fotos der gefertigten, noch unbestückten Leiterplatte**. Alle übrigen Bilder sind **CAD-Darstellungen aus dem KiCad-Projekt**.
 
 ### Leistungsrouting
 
@@ -189,15 +191,15 @@ Alle ICs sind **Verhaltensmodelle und keine Herstellermodelle**. Die Ergebnisse 
 
 Für JLCPCB liegen vor: Gerber-Dateien, BOM und CPL für 43 SMD-Teile sowie eine Liste der **150 bedrahteten Teile**, die von Hand gelötet werden. Optional kann nur der TPA3255 bestückt werden.
 
-Das Paket wurde **nicht bestellt** und von JLCPCB nicht geprüft. Teilenummern, Lagerbestand und der Kupferabstand bei 2 oz (0,2 mm im Bereich des TPA3255) müssen bei Angebot und Design-Check bestätigt werden.
+Die **unbestückte Leiterplatte wurde inzwischen gefertigt** (siehe Fotos in der Galerie). Für die SMD-Bestückung müssen Teilenummern und Lagerbestand noch bestätigt werden.
 
 ---
 
 ## 9. Aufbauanleitung (Empfehlung)
 
-Es wurde noch keine Platine aufgebaut.
+Die unbestückte Leiterplatte liegt vor, bestückt wurde noch nichts.
 
-1. Leiterplatte fertigen lassen (2 Lagen, 2 oz, 1,6 mm).
+1. Leiterplatte (2 Lagen, 2 oz, 1,6 mm) auf Fertigungsfehler prüfen.
 2. Zuerst die SMD-Teile bestücken (TPA3255, TPS26633, PCM2704C, TPS3802, ESD-Baustein, MOSFETs, Quarz, USB-C-Buchse, Kondensatoren).
 3. Den TPA3255 sorgfältig löten (HTSSOP-44, 0,635 mm Raster, feuchteempfindlich) und auf Brücken prüfen.
 4. Danach die bedrahteten Teile: flache zuerst, dann Fassungen, Elkos, Drosseln, Steckverbinder und Sicherung.
@@ -210,15 +212,15 @@ Es wurde noch keine Platine aufgebaut.
 
 ## 10. Aktueller Status und Einschränkungen
 
-**Wichtig:** Es existiert **keine aufgebaute Platine** und **keine Messung**.
+**Wichtig:** Die Leiterplatte ist **gefertigt, aber noch nicht bestückt**. Es gibt **keine Messung**.
 
 - Schaltplan und Leiterplatte sind fertig und bestehen den KiCad-DRC.
-- Die Fertigungsdaten sind erstellt, aber nicht bestellt.
+- Die unbestückte Leiterplatte wurde gefertigt (Fotos in der Galerie).
 - **USB:** Erkennung und Wiedergabe sind nicht verifiziert. Beim Standby oder Aufwachen des PCs ist ein Knacken möglich, weil das Suspend-Signal des DACs nicht mit der Mute-Logik verbunden ist.
 - **Netzteil:** Es ist kein Netzteil ausgewählt, der Start mit einem echten Netzteil ist ungetestet. Hot-Plug und Einschalten stammen aus Näherungsmodellen.
 - **Kühlkörper:** Der Hersteller nennt keine Lagetoleranz und der Kontaktspalt ist unbekannt. Der Abstand zwischen GVDD-Kupfer und Kühlkörperfuß beträgt 0,7 mm und lässt wenig Reserve.
 - **Stückliste:** Viele Widerstands- und Kondensatortypen stehen auf „TBD“.
-- **Fertigung:** JLCPCB-Nummern, Lagerbestand, Drehung und 2-oz-Abstand sind nicht verifiziert.
+- **Bestückung:** Teilenummern, Lagerbestand und Drehung für die SMD-Bestückung sind nicht verifiziert.
 - **Leistung:** Es gibt keine Messung von Leistung, Klirrfaktor, Rauschen, Wärme oder EMV.
 - Es wird keine Zertifizierung behauptet. Für das Repository wurde noch keine Lizenz vergeben.
 
@@ -226,7 +228,7 @@ Es wurde noch keine Platine aufgebaut.
 
 ## 11. Nächste Schritte
 
-1. JLCPCB-Daten prüfen, Teilenummern bestätigen und die Platine bestellen.
+1. Bauteile beschaffen und Teilenummern bestätigen.
 2. Platine bestücken und löten.
 3. Kontrollierte Inbetriebnahme mit Strombegrenzung, ohne Lautsprecher.
 4. USB-Erkennung und Wiedergabe an Windows, macOS und Linux testen.
@@ -246,4 +248,4 @@ AMP-D50-V2-LITE ist ein vollständig dokumentierter Verstärkerentwurf mit einem
 
 **Entworfen von Nguyen Nhan Do**
 
-Alle Bilder sind CAD-Darstellungen, keine Fotografien. Die Hardware wurde noch nicht aufgebaut oder getestet.
+Zwei Fotos zeigen die gefertigte, unbestückte Leiterplatte, alle anderen Bilder sind CAD-Darstellungen. Die Hardware ist noch nicht bestückt oder getestet.

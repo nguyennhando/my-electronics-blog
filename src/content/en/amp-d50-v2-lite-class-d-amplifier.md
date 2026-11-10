@@ -8,6 +8,8 @@ title: AMP-D50-V2-LITE – TPA3255 Class-D Amplifier with USB-C Audio
 category: Audio, PCB
 image_url: /my-electronics-blog/images/posts/amp-d50-v2-lite-3d-iso.webp
 image_gallery:
+- /my-electronics-blog/images/posts/amp-d50-v2-lite-real-top.webp
+- /my-electronics-blog/images/posts/amp-d50-v2-lite-real-bottom.webp
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-3d-top.webp
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-pcb-top.webp
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-pcb-bottom.webp
@@ -15,7 +17,7 @@ image_gallery:
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-placement.webp
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-heatsink-fit.webp
 - /my-electronics-blog/images/posts/amp-d50-v2-lite-simulation.webp
-excerpt: A compact stereo Class-D amplifier with a TPA3255, a USB-C audio input and a separate 24 V supply, designed in KiCad. The design is complete and passes DRC, but no board has been assembled or measured yet.
+excerpt: A compact stereo Class-D amplifier with a TPA3255, a USB-C audio input and a separate 24 V supply, designed in KiCad. The design is complete and the bare PCB has been manufactured, but nothing has been assembled or measured yet.
 tags:
 - Class-D
 - TPA3255
@@ -41,7 +43,7 @@ sort_order: 16
 **Supply:** 24 V DC, separate from the USB path  
 **PCB:** 2 layers, 2 oz copper, 182.1 × 145.6 mm  
 **Development:** KiCad 10, LTspice  
-**Project status:** Design complete, manufacturing data prepared, not yet assembled and not measured
+**Project status:** Design complete, bare PCB manufactured, not yet assembled and not measured
 
 ---
 
@@ -134,7 +136,7 @@ A RECOM R-78HB12-0.5 converter generates the 12 V auxiliary rail for the analog 
 - **Track widths:** 24 V main path 1.4 mm, speaker and switching-node nets 0.8 mm
 - **Check (KiCad DRC, 18 October 2026):** 0 errors, 0 unconnected nets, schematic parity 0, 4 deliberately accepted warnings
 
-All images shown are **CAD renders from the KiCad project**, not photographs of a manufactured board.
+The **first two gallery images are photographs of the manufactured, still unpopulated PCB**. All other images are **CAD renders from the KiCad project**.
 
 ### Power routing
 
@@ -189,15 +191,15 @@ All ICs are **behavioural models, not manufacturer models**. The results are the
 
 For JLCPCB there are Gerber files, a BOM and CPL for 43 SMD parts, and a list of the **150 through-hole parts** to be soldered by hand. Optionally, only the TPA3255 can be assembled.
 
-The package has **not been ordered** and has not been reviewed by JLCPCB. Part numbers, stock and the copper spacing at 2 oz (0.2 mm around the TPA3255) must be confirmed in the quotation and design-check steps.
+The **bare PCB has since been manufactured** (see the photos in the gallery). For SMD assembly, part numbers and stock still have to be confirmed.
 
 ---
 
 ## 9. Assembly Guide (Recommendation)
 
-No board has been assembled yet.
+The bare PCB is in hand, but nothing has been assembled yet.
 
-1. Have the PCB manufactured (2 layers, 2 oz, 1.6 mm).
+1. Inspect the PCB (2 layers, 2 oz, 1.6 mm) for manufacturing defects.
 2. Place the SMD parts first (TPA3255, TPS26633, PCM2704C, TPS3802, ESD device, MOSFETs, crystal, USB-C receptacle, capacitors).
 3. Solder the TPA3255 carefully (HTSSOP-44, 0.635 mm pitch, moisture sensitive) and inspect for bridges.
 4. Then the through-hole parts: low-profile ones first, then sockets, electrolytics, inductors, connectors and the fuse.
@@ -210,15 +212,15 @@ No board has been assembled yet.
 
 ## 10. Current Status and Limitations
 
-**Important:** there is **no assembled board** and **no measurement**.
+**Important:** the PCB is **manufactured but not yet populated**. There is **no measurement**.
 
 - The schematic and the PCB are complete and pass the KiCad DRC.
-- The manufacturing data is created but not ordered.
+- The bare PCB has been manufactured (photos in the gallery).
 - **USB:** enumeration and playback are unverified. There may be an audible pop when the PC suspends or resumes, because the DAC suspend signal is not wired to the mute logic.
 - **Power supply:** no adapter has been selected, and start-up with a real adapter is untested. Hot-plug and start-up behaviour come from approximate models.
 - **Heatsink:** the manufacturer publishes no positional tolerance and the contact gap is unknown. The distance between the GVDD copper and the heatsink foot is 0.7 mm, which leaves little margin.
 - **BOM:** many resistor and capacitor part numbers are "TBD".
-- **Manufacturing:** JLCPCB part numbers, stock, rotation and the 2 oz spacing are unverified.
+- **Assembly:** part numbers, stock and rotation for SMD assembly are unverified.
 - **Performance:** there are no measurements of power, distortion, noise, thermal behaviour or EMC.
 - No certification is claimed. No license has been assigned to the repository yet.
 
@@ -226,8 +228,8 @@ No board has been assembled yet.
 
 ## 11. Next Steps
 
-1. Review the JLCPCB data, confirm part numbers and order the PCB.
-2. Assemble and solder the board.
+1. Source the components and confirm part numbers.
+2. Populate and solder the board.
 3. Controlled bring-up with current limiting and no speakers.
 4. Test USB enumeration and playback on Windows, macOS and Linux.
 5. Choose a thermal interface and measure the thermal behaviour.
@@ -246,4 +248,4 @@ AMP-D50-V2-LITE is a fully documented amplifier design with a focus on manufactu
 
 **Designed by Nguyen Nhan Do**
 
-All images are CAD renders, not photographs. The hardware has not yet been built or tested.
+Two photographs show the manufactured, unpopulated PCB; all other images are CAD renders. The hardware has not yet been populated or tested.
