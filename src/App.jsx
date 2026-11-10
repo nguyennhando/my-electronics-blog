@@ -3146,7 +3146,7 @@ const getWbField = (post) => (/web|software/i.test(String(post.category || "")) 
 const getWbPill = (post, w, language) => {
   const link = String(post.external_link || "");
   if (link.includes("online.tavrion.de")) return { label: w.st_live, cls: WB_PILL.live };
-  if (link.includes("demo.tavrion.de")) return { label: w.st_demo, cls: WB_PILL.demo };
+  if (link.includes("demo.tavrion.de") || link.includes("provisionpro.tavrion.de")) return { label: w.st_demo, cls: WB_PILL.demo };
   if (link.includes("microsoft.com")) return { label: w.st_store, cls: WB_PILL.store };
   const status = normalizeStatus(post.project_status);
   return { label: getStatusLabel(status, language), cls: WB_PILL[status] };
