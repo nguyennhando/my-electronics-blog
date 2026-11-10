@@ -12,20 +12,20 @@ image_gallery:
 - /my-electronics-blog/images/posts/finanzmanager-2.webp
 - /my-electronics-blog/images/posts/finanzmanager-3.webp
 - /my-electronics-blog/images/posts/finanzmanager-4.webp
-excerpt: Die Software ermöglicht die Verwaltung persönlicher Einnahmen und Ausgaben, unterstützt CSV-Import und -Export sowie Echtzeit-Datenanalysen über eine moderne grafische Benutzeroberfläche. GeldPilot ist im Microsoft Store erhältlich.
+excerpt: Die Software ermöglicht die Verwaltung persönlicher Einnahmen und Ausgaben, unterstützt CSV-Import und -Export sowie Echtzeit-Datenanalysen über eine moderne grafische Benutzeroberfläche. Über den Button „Zum Projekt“ am Ende der Seite erhalten Sie Zugriff auf den vollständigen Quellcode des Projekts „Finanzmanager“.
 tags:
 - C++
 - Qt 6.9
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T08:43:30.945Z'
-external_link: https://www.microsoft.com/store/productId/9NQQXN4P7DJJ?ocid=libraryshare
+external_link: https://github.com/nguyennhando/finanzmanager
 project_status: done
 sort_order: 70
 ---
 
 💰 GeldPilot – Persönliche Finanzverwaltung
-GeldPilot ist eine moderne Desktop-Anwendung zur Verwaltung persönlicher Finanzen, entwickelt mit C++, Qt 6 und SQLite. Die Software ermöglicht die Verwaltung von Einnahmen und Ausgaben, den CSV-Import und -Export sowie die Analyse finanzieller Daten über eine benutzerfreundliche Oberfläche. GeldPilot ist im Microsoft Store erhältlich, der Button „Zum Projekt“ am Ende der Seite öffnet die Store-Seite.
+GeldPilot ist eine moderne Desktop-Anwendung zur Verwaltung persönlicher Finanzen, entwickelt mit C++, Qt 6 und SQLite. Die Software ermöglicht die Verwaltung von Einnahmen und Ausgaben, den CSV-Import und -Export sowie die Analyse finanzieller Daten über eine benutzerfreundliche Oberfläche. Der vollständige Quellcode ist über den Button „Zum Projekt“ am Ende der Seite verfügbar.
 ✨ Hauptfunktionen
 💵 Einnahmen- und Ausgabenverwaltung
 Erfassen, bearbeiten und verwalten Sie Ihre finanziellen Transaktionen schnell und einfach.
@@ -66,9 +66,3 @@ Die Anwendung basiert auf einer klar strukturierten Architektur mit Qt Widgets f
 
 🎯 Ziel des Projekts
 Mit GeldPilot behalten Nutzer ihre Finanzen jederzeit im Blick, analysieren Einnahmen und Ausgaben effizient und treffen fundierte finanzielle Entscheidungen für die Zukunft.
-
----
-
-## Quellcode
-
-Der Quellcode liegt auf GitHub, wird aber zum Schutz des Projekts nicht öffentlich geteilt. Wer den Quellcode sehen möchte, zum Beispiel um die fachlichen Fähigkeiten des Entwicklers zu beurteilen, schreibt mir bitte eine E-Mail an donguyennhan.de@gmail.com.
