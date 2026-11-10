@@ -969,12 +969,12 @@ function Lightbox({ images, index, onClose }) {
         initial={{ opacity: 0, scale: 0.88 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.25 }}
-        className="relative max-h-[90vh] w-full max-w-5xl"
+        className="relative flex max-h-[94vh] w-full max-w-5xl flex-col items-center"
         onClick={e => e.stopPropagation()}
       >
-        <img src={imageUrl} alt="Bild" className="max-h-[85vh] w-full rounded-2xl object-contain shadow-2xl" />
+        <img src={imageUrl} alt="Bild" className="min-h-0 max-h-[80vh] w-full rounded-2xl object-contain shadow-2xl" />
         {images.length > 1 && (
-          <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-3">
+          <div className="mt-4 flex shrink-0 items-center gap-3">
             <button onClick={() => setCurrent(p => (p - 1 + images.length) % images.length)} aria-label="Previous" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/70 bg-white text-[#0B5A44] shadow-lg transition hover:bg-[#F2B279] hover:text-[#0F1A17]"><ChevronLeft className="h-5 w-5 stroke-[3]" /></button>
             <span className="rounded-full border border-white/70 bg-[#F2B279] px-4 py-2 text-sm font-extrabold tabular-nums text-[#0F1A17] shadow-lg">{current + 1} / {images.length}</span>
             <button onClick={() => setCurrent(p => (p + 1) % images.length)} aria-label="Next" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/70 bg-white text-[#0B5A44] shadow-lg transition hover:bg-[#F2B279] hover:text-[#0F1A17]"><ChevronRight className="h-5 w-5 stroke-[3]" /></button>
