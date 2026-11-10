@@ -139,6 +139,7 @@ const SITE_DEFAULTS = {
   logo_text: "NND",
   site_name: "Nguyen Nhan Do",
   hero_image: "/my-electronics-blog/images/posts/Nguyen-main.webp",
+  hero_focus: "top",
   contact_email: "donguyennhan.de@gmail.com",
   live_tiles: "gem-restaurant-platform|Sao Mai Mainz, tablio-kasse-lokales-pos-system-mit-tse-fiskalisierung-von-grund-auf|TABLIO Kasse, provisionpro-saas-restaurant-inventory|ProvisionPro, electrical-engineering-toolbox-privacy-policy|Electrical Engineering Toolbox, local-post-1779957810945|GeldPilot, voice-transcriber-privacy-policy|Voice Transcriber",
   live_autoplay: "on",
@@ -150,6 +151,7 @@ const getSiteConfig = (settings = SITE_SETTINGS) => {
     logoText: pick("logo_text"),
     siteName: pick("site_name"),
     heroImage: pick("hero_image"),
+    heroFocus: ["top", "center", "bottom"].includes(String(settings?.hero_focus ?? "").trim()) ? String(settings.hero_focus).trim() : "top",
     email: pick("contact_email"),
     liveTiles: pick("live_tiles").split(",").map((item) => item.trim()).filter(Boolean).map((item) => {
       const [id, ...nameParts] = item.split("|");
@@ -813,6 +815,7 @@ logo_image: ${singleLine(siteSettings.logo_image)}
 logo_text: ${singleLine(siteSettings.logo_text)}
 site_name: ${singleLine(siteSettings.site_name)}
 hero_image: ${singleLine(siteSettings.hero_image)}
+hero_focus: ${singleLine(siteSettings.hero_focus)}
 contact_email: ${singleLine(siteSettings.contact_email)}
 live_tiles: ${singleLine(siteSettings.live_tiles)}
 live_autoplay: ${singleLine(siteSettings.live_autoplay)}
@@ -1754,7 +1757,7 @@ const SITE_TEXT_UI = {
     search: "Feld oder Text suchen…", reset: "Zurücksetzen", none: "Keine passenden Felder.",
     groups: { groupNav: "Menü", groupHero: "Kopfbereich: Schaltflächen und Hinweise", groupProjects: "Projekte", groupLive: "Live und zum Ausprobieren", groupSkills: "Kompetenzen (Listen mit Komma getrennt)", groupPath: "Mein Weg (Zeitleiste)", groupKnowledge: "Wissen und Forschung (Startseite)", groupContact: "Kontakt und Fußzeile", groupSite: "Allgemein", groupPostPage: "Projektseite", groupKnowledgePage: "Wissensbibliothek", groupContactInfo: "Kontakt-Angaben", groupLegal: "Rechtliches und Zurück", groupCookie: "Datenschutzhinweis (Cookie-Banner)" },
     logoTitle: "Logo und Name", logoImage: "Logo-Bild", logoImageHint: "Leer = Textlogo", logoText: "Text im Logo (ohne Bild)", siteName: "Name in der Kopfzeile", logoRemove: "Logo-Bild entfernen",
-    heroTitle: "Porträt im Kopfbereich", heroRemove: "Standardbild verwenden",
+    heroTitle: "Porträt im Kopfbereich", heroRemove: "Standardbild verwenden", heroHint: "Am besten im Hochformat (4:5), mindestens 1000 Pixel breit. Das Bild wird im Rahmen zugeschnitten.", heroFocus: "Bildausschnitt", heroFocusTop: "oben (für Porträts)", heroFocusCenter: "Mitte", heroFocusBottom: "unten",
     contactTitle: "Kontakt und Live-Kacheln", contactEmail: "Kontakt-E-Mail", liveTiles: "Live-Kacheln (ID oder ID|Kurzname, mit Komma getrennt)", liveAutoplay: "Live-Kacheln langsam automatisch weiterlaufen lassen (6 Sekunden, stoppt bei Mausberührung)", liveTilesHint: "Die ID steht im Beitrag unter „Erweitert“ (gemeinsame Beitrags-ID). Mit „ID|Kurzname“ legen Sie den angezeigten Namen fest, zum Beispiel local-post-1779957810945|GeldPilot. Reihenfolge = Reihenfolge auf der Startseite.",
     legalNote: "Impressum und Datenschutzerklärung sind rechtliche Texte und stehen fest im Programm.",
   },
@@ -1764,7 +1767,7 @@ const SITE_TEXT_UI = {
     search: "Search field or text…", reset: "Reset", none: "No matching fields.",
     groups: { groupNav: "Menu", groupHero: "Hero: buttons and notes", groupProjects: "Projects", groupLive: "Live and ready to try", groupSkills: "Skills (comma-separated lists)", groupPath: "My path (timeline)", groupKnowledge: "Knowledge and research (home page)", groupContact: "Contact and footer", groupSite: "General", groupPostPage: "Project page", groupKnowledgePage: "Knowledge library", groupContactInfo: "Contact details", groupLegal: "Legal and back", groupCookie: "Privacy notice (cookie banner)" },
     logoTitle: "Logo and name", logoImage: "Logo image", logoImageHint: "Empty = text logo", logoText: "Text in the logo (without image)", siteName: "Name in the header", logoRemove: "Remove logo image",
-    heroTitle: "Portrait in the hero", heroRemove: "Use the default image",
+    heroTitle: "Portrait in the hero", heroRemove: "Use the default image", heroHint: "Best in portrait format (4:5), at least 1000 pixels wide. The image is cropped to fit the frame.", heroFocus: "Image crop", heroFocusTop: "top (for portraits)", heroFocusCenter: "middle", heroFocusBottom: "bottom",
     contactTitle: "Contact and live tiles", contactEmail: "Contact e-mail", liveTiles: "Live tiles (ID or ID|short name, comma-separated)", liveAutoplay: "Let the live tiles advance slowly by themselves (6 seconds, stops on mouse-over)", liveTilesHint: "The ID is shown in the post under \"Advanced\" (shared post ID). With \"ID|short name\" you set the displayed name, for example local-post-1779957810945|GeldPilot. Order = order on the home page.",
     legalNote: "The legal notice and privacy policy are legal texts and are fixed in the program.",
   },
@@ -1774,7 +1777,7 @@ const SITE_TEXT_UI = {
     search: "Tìm ô hoặc nội dung…", reset: "Đặt lại", none: "Không có ô phù hợp.",
     groups: { groupNav: "Menu", groupHero: "Đầu trang: nút và ghi chú", groupProjects: "Dự án", groupLive: "Chạy thật và dùng thử", groupSkills: "Năng lực (danh sách cách nhau bằng dấu phẩy)", groupPath: "Hành trình (dòng thời gian)", groupKnowledge: "Kiến thức và nghiên cứu (trang chủ)", groupContact: "Liên hệ và chân trang", groupSite: "Chung", groupPostPage: "Trang dự án", groupKnowledgePage: "Thư viện kiến thức", groupContactInfo: "Thông tin liên hệ", groupLegal: "Pháp lý và quay lại", groupCookie: "Thông báo quyền riêng tư (cookie)" },
     logoTitle: "Logo và tên", logoImage: "Ảnh logo", logoImageHint: "Để trống = logo chữ", logoText: "Chữ trong logo (khi không có ảnh)", siteName: "Tên ở thanh đầu trang", logoRemove: "Gỡ ảnh logo",
-    heroTitle: "Ảnh chân dung ở đầu trang", heroRemove: "Dùng ảnh mặc định",
+    heroTitle: "Ảnh chân dung ở đầu trang", heroRemove: "Dùng ảnh mặc định", heroHint: "Tốt nhất là ảnh dọc (tỷ lệ 4:5), rộng ít nhất 1000 px. Ảnh sẽ được cắt vừa khung.", heroFocus: "Vị trí cắt ảnh", heroFocusTop: "phía trên (cho ảnh chân dung)", heroFocusCenter: "ở giữa", heroFocusBottom: "phía dưới",
     contactTitle: "Liên hệ và các ô chạy thật", contactEmail: "E-mail liên hệ", liveTiles: "Các ô chạy thật (ID hoặc ID|tên ngắn, cách nhau bằng dấu phẩy)", liveAutoplay: "Cho các ô chạy thật tự chuyển chậm (6 giây, dừng khi rê chuột)", liveTilesHint: "ID nằm trong bài viết, mục \"Nâng cao\" (ID bài viết chung). Dùng \"ID|tên ngắn\" để đặt tên hiển thị, ví dụ local-post-1779957810945|GeldPilot. Thứ tự = thứ tự trên trang chủ.",
     legalNote: "Thông tin pháp lý và chính sách quyền riêng tư là văn bản pháp lý và được cố định trong chương trình.",
   },
@@ -1798,7 +1801,7 @@ const ADMIN_UI = {
     greet: "Willkommen zurück", greetSub: "Wählen Sie eine Aufgabe. Alles andere finden Sie links in der Navigation.",
     tileNew: "Neuen Beitrag schreiben", tileNewSub: "Projekt oder Wissen, in 3 Sprachen",
     tileHome: "Startseite bearbeiten", tileHomeSub: "Texte, Galerie, persönlicher Weg",
-    tileLook: "Hintergrund oder Lebenslauf ändern", tileLookSub: "Eine Datei ablegen, fertig",
+    tileLook: "Logo, Porträt oder Lebenslauf ändern", tileLookSub: "Eine Datei ablegen, fertig",
     tileOrder: "Beiträge sortieren", tileOrderSub: "Welcher Beitrag steht oben?",
     recent: "Zuletzt erstellt", viewAll: "Alle anzeigen",
     searchPosts: "Beitrag suchen…", filterAll: "Alle", filterProjects: "Projekte", filterKnowledge: "Wissen", newPost: "Neuer Beitrag", noPostsFound: "Keine Beiträge gefunden.", edit: "Bearbeiten",
@@ -1839,7 +1842,7 @@ const ADMIN_UI = {
     greet: "Welcome back", greetSub: "Pick a task. Everything else is in the navigation on the left.",
     tileNew: "Write a new post", tileNewSub: "Project or knowledge, in 3 languages",
     tileHome: "Edit the home page", tileHomeSub: "Text, gallery, personal journey",
-    tileLook: "Change background or resume", tileLookSub: "Drop one file and you are done",
+    tileLook: "Change logo, portrait or resume", tileLookSub: "Drop one file and you are done",
     tileOrder: "Sort posts", tileOrderSub: "Which post goes first?",
     recent: "Recently created", viewAll: "View all",
     searchPosts: "Search posts…", filterAll: "All", filterProjects: "Projects", filterKnowledge: "Knowledge", newPost: "New post", noPostsFound: "No posts found.", edit: "Edit",
@@ -1880,7 +1883,7 @@ const ADMIN_UI = {
     greet: "Chào mừng quay lại", greetSub: "Chọn một việc. Mọi thứ khác nằm ở thanh bên trái.",
     tileNew: "Viết bài mới", tileNewSub: "Dự án hoặc kiến thức, 3 ngôn ngữ",
     tileHome: "Sửa trang chủ", tileHomeSub: "Chữ, gallery, hành trình",
-    tileLook: "Đổi ảnh nền hoặc CV", tileLookSub: "Thả một file là xong",
+    tileLook: "Đổi logo, ảnh chân dung hoặc CV", tileLookSub: "Thả một file là xong",
     tileOrder: "Sắp xếp bài", tileOrderSub: "Bài nào lên đầu?",
     recent: "Bài mới nhất", viewAll: "Xem tất cả",
     searchPosts: "Tìm bài…", filterAll: "Tất cả", filterProjects: "Dự án", filterKnowledge: "Kiến thức", newPost: "Bài mới", noPostsFound: "Không tìm thấy bài viết.", edit: "Sửa",
@@ -3147,12 +3150,22 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
       <section className={cardClass}>
         <h3 className="mb-3 font-black">{stui.heroTitle}</h3>
         <div className="mb-3 h-44 overflow-hidden rounded-xl border border-white/10 bg-[#07111f]">
-          <img src={siteSettingsForm.hero_image || SITE_DEFAULTS.hero_image} alt="" className="h-full w-full object-cover object-top" />
+          <img src={siteSettingsForm.hero_image || SITE_DEFAULTS.hero_image} alt="" className="h-full w-full object-cover" style={{ objectPosition: ["top", "center", "bottom"].includes(siteSettingsForm.hero_focus) ? siteSettingsForm.hero_focus : "top" }} />
         </div>
         <DropUpload compact label={ui.dropImage} hint={ui.dropHint} subfolder="portrait" uploadImage={uploadImageToGithub} busyLabel={ui.uploading} onUploaded={(url) => setSiteSettingsForm((current) => ({ ...current, hero_image: url }))} />
         {siteSettingsForm.hero_image && (
           <button type="button" onClick={() => setSiteSettingsForm((current) => ({ ...current, hero_image: "" }))} className={`${secondaryButton} mt-3 !py-1.5 text-xs`}>{stui.heroRemove}</button>
         )}
+        <p className="mt-3 text-xs text-zinc-500">{stui.heroHint}</p>
+        <div className="mt-3">
+          <AdminField label={stui.heroFocus}>
+            <select className={inputClass} value={["top", "center", "bottom"].includes(siteSettingsForm.hero_focus) ? siteSettingsForm.hero_focus : "top"} onChange={(event) => setSiteSettingsForm((current) => ({ ...current, hero_focus: event.target.value }))}>
+              <option value="top">{stui.heroFocusTop}</option>
+              <option value="center">{stui.heroFocusCenter}</option>
+              <option value="bottom">{stui.heroFocusBottom}</option>
+            </select>
+          </AdminField>
+        </div>
       </section>
       <section className={`${cardClass} md:col-span-2`}>
         <h3 className="mb-3 font-black">{stui.contactTitle}</h3>
@@ -3592,7 +3605,7 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
 
             <div className="relative mx-auto w-full max-w-sm lg:max-w-none">
               <div className="overflow-hidden rounded-3xl border border-[#C9D3CD] bg-white p-3 shadow-[0_30px_60px_-34px_rgba(11,90,68,0.5)]">
-                <img src={site.heroImage} alt={site.siteName} className="aspect-[4/5] w-full rounded-2xl object-cover object-top" />
+                <img src={site.heroImage} alt={site.siteName} className="aspect-[4/5] w-full rounded-2xl object-cover" style={{ objectPosition: site.heroFocus }} />
               </div>
               <div className="absolute -left-2 top-8 flex items-center gap-2.5 rounded-xl border border-[#C9D3CD] bg-white px-3.5 py-2.5 shadow-lg sm:-left-6">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#1FA971]" />
