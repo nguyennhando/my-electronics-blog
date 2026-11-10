@@ -8,7 +8,7 @@ import { getWbText, WB_SKILLS } from "./lib/werkbankText";
 import {
   CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X,
   CalendarDays, ArrowRight, ShieldCheck,
-  Wrench, Mail, MonitorSmartphone, Workflow, AlertTriangle, ExternalLink,
+  Wrench, Mail, MonitorSmartphone, AlertTriangle, ExternalLink,
   ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock, Download, FileText, Pencil, Save,
   BookOpen, Library, FlaskConical, GraduationCap, ChevronUp, ChevronDown,
   LogIn, LogOut, LockKeyhole, KeyRound,
@@ -848,8 +848,6 @@ const getPersonalWay = (language) => getLocalizedPersonalWay(language) || {
   ...PERSONAL_WAY,
   ...(PERSONAL_WAY_TRANSLATIONS[language] || {}),
 };
-
-const FEATURE_ICONS = [Cpu, Workflow, ShieldCheck, MonitorSmartphone];
 
 // ─────────────────────────────────────────────
 // REUSABLE COMPONENTS
@@ -1816,9 +1814,7 @@ const ADMIN_UI = {
 
 const HOME_TEXT_GROUPS = [
   ["groupHero", ["hero_badge", "hero_title", "hero_text"]],
-  ["groupTransparency", ["transparency_title", "transparency_text", "transparency_strong"]],
-  ["groupCards", ["feature_1_title", "feature_1_text", "feature_2_title", "feature_2_text", "feature_3_title", "feature_3_text", "feature_4_title", "feature_4_text"]],
-  ["groupNotice", ["warning_one", "warning_two"]],
+  ["groupNotice", ["warning_one"]],
   ["groupCollab", ["collaboration_title", "collaboration_text"]],
 ];
 
@@ -2872,7 +2868,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
 
   const homeLangTabs = LANGUAGES.map((language) => ({ language, state: homeLang === language ? "current" : "exists" }));
   const wayLangTabs = LANGUAGES.map((language) => ({ language, state: wayLang === language ? "current" : "exists" }));
-  const longTextFields = new Set(["hero_text", "transparency_text", "transparency_strong", "warning_one", "warning_two", "collaboration_text", "feature_1_text", "feature_2_text", "feature_3_text", "feature_4_text"]);
+  const longTextFields = new Set(["hero_text", "warning_one", "collaboration_text"]);
 
   const renderHomeText = () => (
     <div className="grid lg:grid-cols-2">
@@ -2896,33 +2892,18 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
       </div>
       <div className="bg-[#07101f] p-4 sm:p-6">
         <p className="mb-3 text-xs font-bold uppercase text-zinc-500">{t.livePreviewLabel}</p>
-        <div className="space-y-4 rounded-xl border border-white/10 bg-[#07111f]/95 p-4">
+        <div className="wb space-y-4 rounded-xl border border-[#C9D3CD] p-4">
           <div>
-            <p data-preview-badge className="text-xs font-bold uppercase tracking-widest text-cyan-300">{homeContentForm.hero_badge}</p>
-            <h2 data-preview-hero-title className="mt-2 text-2xl font-black leading-tight">{homeContentForm.hero_title}</h2>
-            <p className="mt-2 text-sm leading-6 text-zinc-300">{homeContentForm.hero_text}</p>
+            <p data-preview-badge className="wb-mono text-xs font-semibold uppercase tracking-widest text-[#0B5A44]">{homeContentForm.hero_badge}</p>
+            <h2 data-preview-hero-title className="wb-head mt-2 text-2xl font-bold leading-tight text-[#0F1A17]">{homeContentForm.hero_title}</h2>
+            <p className="mt-2 text-sm leading-6 text-[#33423C]">{homeContentForm.hero_text}</p>
           </div>
-          <div className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-3">
-            <h3 className="font-black text-yellow-200">{homeContentForm.transparency_title}</h3>
-            <p className="mt-2 text-sm leading-6 text-zinc-300">{homeContentForm.transparency_text}</p>
-            <p className="mt-2 text-sm font-semibold leading-6 text-yellow-200">{homeContentForm.transparency_strong}</p>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {FEATURE_ICONS.map((Icon, index) => (
-              <div key={index} className="rounded-xl border border-cyan-400/20 bg-cyan-400/5 p-3">
-                <Icon className="h-5 w-5 text-cyan-300" />
-                <h3 className="mt-2 font-black">{homeContentForm[`feature_${index + 1}_title`]}</h3>
-                <p className="mt-1 text-sm leading-6 text-zinc-400">{homeContentForm[`feature_${index + 1}_text`]}</p>
-              </div>
-            ))}
-          </div>
-          <div className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-3 text-sm leading-6 text-zinc-300">
+          <div className="rounded-xl border border-[#C9D3CD] bg-white p-3 text-sm leading-6 text-[#4A5A54]">
             <p>{homeContentForm.warning_one}</p>
-            <p className="mt-2">{homeContentForm.warning_two}</p>
           </div>
-          <div className="rounded-xl bg-cyan-300 p-3 text-black">
-            <h3 className="font-black">{homeContentForm.collaboration_title}</h3>
-            <p className="mt-1 text-sm leading-6 text-black/75">{homeContentForm.collaboration_text}</p>
+          <div className="rounded-xl bg-[#0B5A44] p-4 text-white">
+            <h3 className="wb-head font-bold">{homeContentForm.collaboration_title}</h3>
+            <p className="mt-1 text-sm leading-6 text-white/80">{homeContentForm.collaboration_text}</p>
           </div>
         </div>
       </div>
@@ -3448,7 +3429,12 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
 
             <div className="flex flex-col gap-5">
               <div className="overflow-hidden rounded-2xl border border-[#C9D3CD] bg-[#F3F5F2]">
-                {personalWay.image_1 && <img src={personalWay.image_1} alt="Nguyen Nhan Do" loading="lazy" className="h-56 w-full object-cover sm:h-64" />}
+                {(personalWay.image_1 || personalWay.image_2) && (
+                  <div className={`grid ${personalWay.image_1 && personalWay.image_2 ? "grid-cols-2" : "grid-cols-1"}`}>
+                    {personalWay.image_1 && <img src={personalWay.image_1} alt="Nguyen Nhan Do" loading="lazy" className="h-56 w-full object-cover sm:h-64" />}
+                    {personalWay.image_2 && <img src={personalWay.image_2} alt="" loading="lazy" className="h-56 w-full object-cover sm:h-64" />}
+                  </div>
+                )}
                 <div className="p-6">
                   <h3 className="wb-head text-xl font-bold">{personalWay.title}</h3>
                   <div className={`prose mt-3 max-w-none text-sm leading-7 text-[#33423C] prose-p:my-3 ${pathOpen ? "" : "max-h-32 overflow-hidden"}`} style={pathOpen ? undefined : { maskImage: "linear-gradient(#000 55%, transparent)", WebkitMaskImage: "linear-gradient(#000 55%, transparent)" }}>
