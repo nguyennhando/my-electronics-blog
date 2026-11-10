@@ -8,9 +8,10 @@ import {
   CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X,
   CalendarDays, ArrowRight, ShieldCheck,
   Wrench, Mail, MonitorSmartphone, Workflow, AlertTriangle, ExternalLink,
-  ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock, Download, FileText, Image as ImageIcon, Pencil, Save,
+  ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock, Download, FileText, Pencil, Save,
   BookOpen, Library, FlaskConical, GraduationCap, ChevronUp, ChevronDown,
   LogIn, LogOut, LockKeyhole, KeyRound,
+  LayoutDashboard, Newspaper, ListOrdered, PenLine, Images, Route, Palette, Settings, Plus, Upload, Ellipsis, Trash2, Check,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────
@@ -305,12 +306,6 @@ const ADMIN_TEXT = {
     savePasswordButton: "Lưu mật khẩu mới",
   },
 };
-
-function CodeText({ tokens, codeClassName }) {
-  return tokens.map((token, index) => (typeof token === "string"
-    ? <span key={index}>{token}</span>
-    : <code key={index} className={codeClassName}>{token.code}</code>));
-}
 
 const EDITOR_TEXT = {
   de: {
@@ -1743,31 +1738,54 @@ function KnowledgeDetailPage({ post, onBack, language }) {
   );
 }
 
-function ImageUploadButton({ label = "Bild hochladen", loadingLabel = "...", subfolder, accept = "image/*", icon: Icon = ImageIcon, uploadImage, onUploaded }) {
+function DropUpload({ label, hint, subfolder, accept = "image/*", icon: Icon = Upload, uploadImage, onUploaded, multiple = false, busyLabel = "...", compact = false, className = "" }) {
   const inputRef = useRef(null);
   const [busy, setBusy] = useState(false);
+  const [over, setOver] = useState(false);
 
-  const handleChange = async (event) => {
-    const file = event.target.files?.[0];
-    event.target.value = "";
-    if (!file) return;
+  const accepts = (file) => (accept === "image/*" ? file.type.startsWith("image/") : accept.split(",").some((type) => file.type === type.trim()));
+
+  const handleFiles = async (fileList) => {
+    const files = Array.from(fileList || []).filter(accepts);
+    if (!files.length || busy) return;
 
     setBusy(true);
-    const url = await uploadImage(file, subfolder);
-    setBusy(false);
-    if (url) onUploaded(url);
+    try {
+      for (const file of multiple ? files : files.slice(0, 1)) {
+        const url = await uploadImage(file, subfolder);
+        if (url) onUploaded(url);
+      }
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
     <>
-      <input ref={inputRef} type="file" accept={accept} className="hidden" onChange={handleChange} />
+      <input
+        ref={inputRef}
+        type="file"
+        accept={accept}
+        multiple={multiple}
+        className="hidden"
+        onChange={(event) => {
+          const files = event.target.files;
+          handleFiles(files);
+          event.target.value = "";
+        }}
+      />
       <button
         type="button"
         disabled={busy}
         onClick={() => inputRef.current?.click()}
-        className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-white/10 px-4 py-3 text-sm font-bold text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
+        onDragOver={(event) => { event.preventDefault(); setOver(true); }}
+        onDragLeave={() => setOver(false)}
+        onDrop={(event) => { event.preventDefault(); setOver(false); handleFiles(event.dataTransfer.files); }}
+        className={`flex w-full flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed text-center text-sm font-bold transition disabled:cursor-wait disabled:opacity-60 ${compact ? "px-3 py-3" : "px-4 py-5"} ${over ? "border-cyan-300 bg-cyan-300/10 text-cyan-100" : "border-white/15 text-zinc-300 hover:border-cyan-300/60 hover:text-white"} ${className}`}
       >
-        <Icon className="h-4 w-4" /> {busy ? loadingLabel : label}
+        <Icon className="h-5 w-5 text-cyan-300" />
+        <span>{busy ? busyLabel : label}</span>
+        {hint && !busy && <span className="text-xs font-normal text-zinc-500">{hint}</span>}
       </button>
     </>
   );
@@ -1816,6 +1834,221 @@ function DeployStatusBanner({ state, onDismiss, language = "de" }) {
   );
 }
 
+const ADMIN_UI = {
+  de: {
+    navOverview: "Übersicht", navContent: "Inhalte", navPosts: "Beiträge", navOrder: "Reihenfolge", navHomepage: "Startseite",
+    navHomeText: "Startseiten-Texte", navGallery: "Galerie", navJourney: "Persönlicher Weg", navSite: "Gesamte Website", navLook: "Hintergrund & Lebenslauf", navSettings: "Einstellungen",
+    pages: {
+      home: ["Übersicht", "Was möchten Sie heute tun?"],
+      posts: ["Beiträge", "Beitrag zum Bearbeiten wählen oder neu schreiben"],
+      editorSub: "Änderungen werden erst mit „Veröffentlichen“ live",
+      order: ["Reihenfolge", "Der oberste Beitrag erscheint zuerst im Blog"],
+      hometext: ["Startseiten-Texte", "Titel, Einleitung und Feature-Karten"],
+      gallery: ["Galerie", "Bilder im Showcase der Startseite"],
+      journey: ["Persönlicher Weg", "Die Karte über Sie auf der Startseite"],
+      look: ["Hintergrund & Lebenslauf", "Hintergrundbild und Lebenslauf-Button"],
+      settings: ["Einstellungen", "GitHub-Verbindung, Passwort, Sprache"],
+    },
+    greet: "Willkommen zurück", greetSub: "Wählen Sie eine Aufgabe. Alles andere finden Sie links in der Navigation.",
+    tileNew: "Neuen Beitrag schreiben", tileNewSub: "Projekt oder Wissen, in 3 Sprachen",
+    tileHome: "Startseite bearbeiten", tileHomeSub: "Texte, Galerie, persönlicher Weg",
+    tileLook: "Hintergrund oder Lebenslauf ändern", tileLookSub: "Eine Datei ablegen, fertig",
+    tileOrder: "Beiträge sortieren", tileOrderSub: "Welcher Beitrag steht oben?",
+    recent: "Zuletzt erstellt", viewAll: "Alle anzeigen",
+    searchPosts: "Beitrag suchen…", filterAll: "Alle", filterProjects: "Projekte", filterKnowledge: "Wissen", newPost: "Neuer Beitrag", noPostsFound: "Keine Beiträge gefunden.", edit: "Bearbeiten",
+    newPostTitle: "Neuer Beitrag", publish: "Veröffentlichen", publishing: "Wird gespeichert…", upToDate: "Alles ist live",
+    pending: (n) => `${n} ungespeicherte Änderung${n === 1 ? "" : "en"}`,
+    menuExport: "Als .md exportieren", menuDiscard: "Alle Änderungen verwerfen", menuLogout: "Abmelden",
+    discardConfirm: "Ungespeicherte Änderungen an diesem Beitrag gehen verloren. Fortfahren?",
+    discardAllConfirm: "Wirklich alle ungespeicherten Änderungen verwerfen?",
+    githubOk: "GitHub verbunden", githubMissing: "GitHub nicht verbunden", viewSite: "Website ansehen", reload: "Neu laden",
+    dropImage: "Bild hier ablegen oder klicken", dropHint: "Wird automatisch hochgeladen", dropPdf: "PDF hier ablegen oder klicken", dropMulti: "Bilder hier ablegen oder klicken",
+    uploading: "Lädt hoch…", remove: "Entfernen", mainImageBadge: "Hauptbild", moveLeft: "Nach vorne", moveRight: "Nach hinten",
+    addLanguageHint: "Noch nicht übersetzt – klicken, um die Version anzulegen", saveFirstHint: "Erst den Beitrag veröffentlichen, dann können weitere Sprachen angelegt werden.",
+    descHelp: "Erscheint auf der Blog-Karte, maximal 3 Zeilen.", bodyHelp: "In Markdown schreiben. Rechts sehen Sie die echte Vorschau.",
+    slugHelp: "Wird aus dem Titel erzeugt. Nur ändern, wenn nötig.", translationHelp: "Verbindet die Sprachversionen desselben Beitrags.",
+    orderHint: "Mit den Pfeilen verschieben. Die Reihenfolge gilt für alle drei Sprachen.", galleryHint: "Mehrere Bilder gleichzeitig ablegen. Das erste Bild ist das große Hauptbild.",
+    homeTextHint: "Rechts sehen Sie sofort, wie die Startseite aussieht.", journeyHint: "Bilder und Text der Karte über Ihren Weg.",
+    groupHero: "Kopfbereich", groupTransparency: "Transparenz", groupCards: "Feature-Karten", groupNotice: "Projekt-Hinweis", groupCollab: "Zusammenarbeit",
+    bgTitle: "Hintergrundbild", bgRemove: "Hintergrund entfernen", resumeTitle: "Lebenslauf (PDF)", resumeLive: "Auf der Website sichtbar", resumeOpen: "Datei öffnen",
+    resumeReplace: "Ersetzen", resumeRemove: "Entfernen", resumeNote: "Beim Ersetzen wird die alte Datei automatisch von GitHub gelöscht.",
+    setGithubOk: "Verbunden", setGithubMissing: "Nicht verbunden", changeToken: "Token ändern", enterToken: "Token eintragen", hideToken: "Schließen",
+    passwordTitle: "Admin-Passwort", passwordDesc: "Wird nur in diesem Browser gespeichert.", passwordBtn: "Passwort ändern", uiLangTitle: "Sprache der Admin-Oberfläche",
+    typeLabel: "Typ", openNav: "Menü öffnen",
+  },
+  en: {
+    navOverview: "Overview", navContent: "Content", navPosts: "Posts", navOrder: "Order", navHomepage: "Home page",
+    navHomeText: "Home page text", navGallery: "Gallery", navJourney: "Personal journey", navSite: "Whole site", navLook: "Background & resume", navSettings: "Settings",
+    pages: {
+      home: ["Overview", "What would you like to do today?"],
+      posts: ["Posts", "Pick a post to edit or write a new one"],
+      editorSub: "Changes only go live when you press Publish",
+      order: ["Order", "The top post appears first on the blog"],
+      hometext: ["Home page text", "Title, intro and feature cards"],
+      gallery: ["Gallery", "Images in the home page showcase"],
+      journey: ["Personal journey", "The card about you on the home page"],
+      look: ["Background & resume", "Background image and resume button"],
+      settings: ["Settings", "GitHub connection, password, language"],
+    },
+    greet: "Welcome back", greetSub: "Pick a task. Everything else is in the navigation on the left.",
+    tileNew: "Write a new post", tileNewSub: "Project or knowledge, in 3 languages",
+    tileHome: "Edit the home page", tileHomeSub: "Text, gallery, personal journey",
+    tileLook: "Change background or resume", tileLookSub: "Drop one file and you are done",
+    tileOrder: "Sort posts", tileOrderSub: "Which post goes first?",
+    recent: "Recently created", viewAll: "View all",
+    searchPosts: "Search posts…", filterAll: "All", filterProjects: "Projects", filterKnowledge: "Knowledge", newPost: "New post", noPostsFound: "No posts found.", edit: "Edit",
+    newPostTitle: "New post", publish: "Publish", publishing: "Saving…", upToDate: "Everything is live",
+    pending: (n) => `${n} unsaved change${n === 1 ? "" : "s"}`,
+    menuExport: "Export as .md", menuDiscard: "Discard all changes", menuLogout: "Log out",
+    discardConfirm: "Unsaved changes to this post will be lost. Continue?",
+    discardAllConfirm: "Really discard all unsaved changes?",
+    githubOk: "GitHub connected", githubMissing: "GitHub not connected", viewSite: "View website", reload: "Reload",
+    dropImage: "Drop an image here or click", dropHint: "Uploads automatically", dropPdf: "Drop a PDF here or click", dropMulti: "Drop images here or click",
+    uploading: "Uploading…", remove: "Remove", mainImageBadge: "Main", moveLeft: "Move earlier", moveRight: "Move later",
+    addLanguageHint: "Not translated yet – click to create this version", saveFirstHint: "Publish the post first, then you can add more languages.",
+    descHelp: "Shown on the blog card, up to 3 lines.", bodyHelp: "Write in Markdown. The real preview is on the right.",
+    slugHelp: "Generated from the title. Only change if needed.", translationHelp: "Links the language versions of the same post.",
+    orderHint: "Move with the arrows. The order applies to all three languages.", galleryHint: "Drop several images at once. The first image is the large main image.",
+    homeTextHint: "The preview on the right updates as you type.", journeyHint: "Images and text of the card about your path.",
+    groupHero: "Hero", groupTransparency: "Transparency", groupCards: "Feature cards", groupNotice: "Project notice", groupCollab: "Collaboration",
+    bgTitle: "Background image", bgRemove: "Remove background", resumeTitle: "Resume (PDF)", resumeLive: "Visible on the website", resumeOpen: "Open file",
+    resumeReplace: "Replace", resumeRemove: "Remove", resumeNote: "Replacing the file deletes the old one from GitHub automatically.",
+    setGithubOk: "Connected", setGithubMissing: "Not connected", changeToken: "Change token", enterToken: "Enter token", hideToken: "Close",
+    passwordTitle: "Admin password", passwordDesc: "Stored only in this browser.", passwordBtn: "Change password", uiLangTitle: "Admin interface language",
+    typeLabel: "Type", openNav: "Open menu",
+  },
+  vi: {
+    navOverview: "Tổng quan", navContent: "Nội dung", navPosts: "Bài viết", navOrder: "Thứ tự bài", navHomepage: "Trang chủ",
+    navHomeText: "Chữ trang chủ", navGallery: "Gallery", navJourney: "Hành trình", navSite: "Toàn site", navLook: "Nền & CV", navSettings: "Cài đặt",
+    pages: {
+      home: ["Tổng quan", "Hôm nay bạn muốn làm gì?"],
+      posts: ["Bài viết", "Chọn một bài để sửa hoặc viết bài mới"],
+      editorSub: "Thay đổi chỉ lên web khi bạn bấm Đăng lên web",
+      order: ["Thứ tự bài", "Bài ở trên cùng sẽ hiện đầu trang blog"],
+      hometext: ["Chữ trang chủ", "Tiêu đề, giới thiệu và các thẻ tính năng"],
+      gallery: ["Gallery", "Ảnh hiện ở khu trình diễn trang chủ"],
+      journey: ["Hành trình", "Thẻ giới thiệu bản thân trên trang chủ"],
+      look: ["Nền & CV", "Ảnh nền toàn site và nút tải CV"],
+      settings: ["Cài đặt", "Kết nối GitHub, mật khẩu, ngôn ngữ"],
+    },
+    greet: "Chào mừng quay lại", greetSub: "Chọn một việc. Mọi thứ khác nằm ở thanh bên trái.",
+    tileNew: "Viết bài mới", tileNewSub: "Dự án hoặc kiến thức, 3 ngôn ngữ",
+    tileHome: "Sửa trang chủ", tileHomeSub: "Chữ, gallery, hành trình",
+    tileLook: "Đổi ảnh nền hoặc CV", tileLookSub: "Thả một file là xong",
+    tileOrder: "Sắp xếp bài", tileOrderSub: "Bài nào lên đầu?",
+    recent: "Bài mới nhất", viewAll: "Xem tất cả",
+    searchPosts: "Tìm bài…", filterAll: "Tất cả", filterProjects: "Dự án", filterKnowledge: "Kiến thức", newPost: "Bài mới", noPostsFound: "Không tìm thấy bài viết.", edit: "Sửa",
+    newPostTitle: "Bài mới", publish: "Đăng lên web", publishing: "Đang lưu…", upToDate: "Mọi thứ đã lên web",
+    pending: (n) => `${n} thay đổi chưa đăng`,
+    menuExport: "Xuất file .md", menuDiscard: "Hủy mọi thay đổi", menuLogout: "Đăng xuất",
+    discardConfirm: "Các thay đổi chưa lưu của bài này sẽ mất. Tiếp tục?",
+    discardAllConfirm: "Hủy toàn bộ thay đổi chưa lưu?",
+    githubOk: "GitHub đã kết nối", githubMissing: "GitHub chưa kết nối", viewSite: "Xem trang web", reload: "Tải lại",
+    dropImage: "Thả ảnh vào đây hoặc bấm chọn", dropHint: "Tự động tải lên", dropPdf: "Thả file PDF vào đây hoặc bấm chọn", dropMulti: "Thả nhiều ảnh vào đây hoặc bấm chọn",
+    uploading: "Đang tải lên…", remove: "Gỡ", mainImageBadge: "Ảnh chính", moveLeft: "Đưa lên trước", moveRight: "Đưa ra sau",
+    addLanguageHint: "Chưa dịch – bấm để tạo bản này", saveFirstHint: "Hãy đăng bài trước, sau đó mới thêm được ngôn ngữ khác.",
+    descHelp: "Hiện trên thẻ blog, tối đa 3 dòng.", bodyHelp: "Viết bằng Markdown. Bên phải là bản xem trước thật.",
+    slugHelp: "Tự tạo từ tiêu đề. Chỉ sửa khi cần.", translationHelp: "Nối các bản ngôn ngữ của cùng một bài.",
+    orderHint: "Dùng mũi tên để đổi chỗ. Thứ tự áp dụng cho cả 3 ngôn ngữ.", galleryHint: "Thả nhiều ảnh cùng lúc. Ảnh đầu tiên là ảnh lớn ở khu trình diễn.",
+    homeTextHint: "Bên phải cập nhật ngay khi bạn gõ.", journeyHint: "Ảnh và nội dung của thẻ giới thiệu bản thân.",
+    groupHero: "Đầu trang", groupTransparency: "Minh bạch", groupCards: "Thẻ tính năng", groupNotice: "Lưu ý dự án", groupCollab: "Hợp tác",
+    bgTitle: "Ảnh nền", bgRemove: "Gỡ ảnh nền", resumeTitle: "CV (PDF)", resumeLive: "Đang hiện trên web", resumeOpen: "Mở file",
+    resumeReplace: "Thay file", resumeRemove: "Gỡ CV", resumeNote: "Khi thay file, bản cũ tự bị xóa khỏi GitHub.",
+    setGithubOk: "Đã kết nối", setGithubMissing: "Chưa kết nối", changeToken: "Đổi token", enterToken: "Nhập token", hideToken: "Đóng",
+    passwordTitle: "Mật khẩu admin", passwordDesc: "Chỉ lưu trong trình duyệt này.", passwordBtn: "Đổi mật khẩu", uiLangTitle: "Ngôn ngữ giao diện admin",
+    typeLabel: "Loại", openNav: "Mở menu",
+  },
+};
+
+const HOME_TEXT_GROUPS = [
+  ["groupHero", ["hero_badge", "hero_title", "hero_text"]],
+  ["groupTransparency", ["transparency_title", "transparency_text", "transparency_strong"]],
+  ["groupCards", ["feature_1_title", "feature_1_text", "feature_2_title", "feature_2_text", "feature_3_title", "feature_3_text", "feature_4_title", "feature_4_text"]],
+  ["groupNotice", ["warning_one", "warning_two"]],
+  ["groupCollab", ["collaboration_title", "collaboration_text"]],
+];
+
+function HelpTip({ text }) {
+  return (
+    <span tabIndex={0} aria-label={text} className="group relative inline-flex h-4 w-4 shrink-0 cursor-help items-center justify-center rounded-full border border-white/25 text-[10px] font-bold text-zinc-400 outline-none focus-visible:ring-2 focus-visible:ring-cyan-300">
+      ?
+      <span role="tooltip" className="pointer-events-none absolute left-5 top-0 z-30 hidden w-56 rounded-lg bg-zinc-100 px-2.5 py-1.5 text-left text-xs font-normal normal-case leading-5 text-zinc-900 shadow-xl group-hover:block group-focus:block">{text}</span>
+    </span>
+  );
+}
+
+function AdminField({ label, help, children, className = "", plain = false }) {
+  const head = (
+    <span className="mb-1.5 flex items-center gap-1.5 text-xs font-bold text-zinc-400">{label}{help && <HelpTip text={help} />}</span>
+  );
+  if (plain) return <div className={className}>{head}{children}</div>;
+  return <label className={`block ${className}`}>{head}{children}</label>;
+}
+
+function AdminLangTabs({ tabs, onSelect }) {
+  return (
+    <div className="flex flex-wrap gap-2" role="tablist">
+      {tabs.map((tab) => (
+        <button
+          key={tab.language}
+          type="button"
+          role="tab"
+          aria-selected={tab.state === "current"}
+          data-lang-tab={tab.language}
+          disabled={tab.state === "locked"}
+          title={tab.title}
+          onClick={() => onSelect(tab.language)}
+          className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-bold transition disabled:cursor-not-allowed disabled:opacity-40 ${tab.state === "current" ? "border-cyan-300 bg-cyan-300/15 text-white" : "border-white/10 text-zinc-400 hover:border-white/30 hover:text-white"}`}
+        >
+          {tab.language.toUpperCase()}
+          {tab.state === "missing" || tab.state === "locked"
+            ? <Plus className="h-3.5 w-3.5 text-zinc-500" />
+            : <Check className="h-3.5 w-3.5 text-emerald-300" />}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function ImageListEditor({ images, onChange, onAdd, uploadImage, subfolder, ui, hint }) {
+  const move = (index, direction) => {
+    const target = index + direction;
+    if (target < 0 || target >= images.length) return;
+    const next = [...images];
+    [next[index], next[target]] = [next[target], next[index]];
+    onChange(next);
+  };
+
+  return (
+    <div className="grid gap-3">
+      {images.length > 0 && (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {images.map((image, index) => (
+            <div key={`${image}-${index}`} data-gallery-item className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-white/10 bg-black/30">
+              <img src={image} alt="" className="h-full w-full object-cover" />
+              {index === 0 && <span className="absolute left-2 top-2 rounded-full bg-cyan-400 px-2 py-0.5 text-[10px] font-black text-black">{ui.mainImageBadge}</span>}
+              <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-1 bg-gradient-to-t from-black/85 to-transparent p-1.5 sm:opacity-0 sm:transition sm:group-focus-within:opacity-100 sm:group-hover:opacity-100">
+                <div className="flex gap-1">
+                  <button type="button" disabled={index === 0} onClick={() => move(index, -1)} aria-label={ui.moveLeft} className="rounded-md bg-black/60 p-1 text-white disabled:opacity-30"><ChevronLeft className="h-4 w-4" /></button>
+                  <button type="button" disabled={index === images.length - 1} onClick={() => move(index, 1)} aria-label={ui.moveRight} className="rounded-md bg-black/60 p-1 text-white disabled:opacity-30"><ChevronRight className="h-4 w-4" /></button>
+                </div>
+                <button type="button" onClick={() => onChange(images.filter((_, i) => i !== index))} aria-label={ui.remove} className="rounded-md bg-red-500/85 p-1 text-white"><X className="h-4 w-4" /></button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      <DropUpload multiple label={ui.dropMulti} hint={hint} subfolder={subfolder} uploadImage={uploadImage} busyLabel={ui.uploading} onUploaded={onAdd} />
+    </div>
+  );
+}
+
+const splitLines = (value) => String(value || "").split("\n").map((item) => item.trim()).filter(Boolean);
+
+const buildLanguageDrafts = (entries, getLocalized) => Object.fromEntries(
+  LANGUAGES.map((language) => [language, { ...(entries.find((entry) => entry.language === language) || getLocalized(language)), language }]),
+);
+
 function MarkdownEditorPage({ onLogout = () => {} }) {
   const [uiLanguage, setUiLanguage] = useState(() => {
     const saved = window.localStorage.getItem(ADMIN_UI_LANGUAGE_KEY);
@@ -1827,29 +2060,50 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     window.localStorage.setItem(ADMIN_UI_LANGUAGE_KEY, language);
   };
   const [form, setForm] = useState(emptyEditorForm);
-  const [selectedSlug, setSelectedSlug] = useState("");
   const [slugEdited, setSlugEdited] = useState(false);
-  const [contentDirectory, setContentDirectory] = useState(null);
   const [saveMessage, setSaveMessage] = useState("");
   const [githubToken, setGithubToken] = useState(() => window.localStorage.getItem(GITHUB_TOKEN_KEY) || "");
   const [showGithubToken, setShowGithubToken] = useState(() => !window.localStorage.getItem(GITHUB_TOKEN_KEY));
-  const [showHomeContentEditor, setShowHomeContentEditor] = useState(false);
-  const [homeContentForm, setHomeContentForm] = useState(() => getLocalizedHomeContent("de"));
-  const [showPersonalWayEditor, setShowPersonalWayEditor] = useState(false);
-  const [personalWayForm, setPersonalWayForm] = useState(PERSONAL_WAY);
-  const [showSiteSettingsEditor, setShowSiteSettingsEditor] = useState(false);
+  const [tokenSaved, setTokenSaved] = useState(() => !!window.localStorage.getItem(GITHUB_TOKEN_KEY));
+  const [view, setView] = useState("home");
+  const [navOpen, setNavOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [publishing, setPublishing] = useState(false);
+  const [postFilter, setPostFilter] = useState("all");
+  const [postSearch, setPostSearch] = useState("");
+  const [postBase, setPostBase] = useState(() => JSON.stringify(form));
+  const [homeLang, setHomeLang] = useState("de");
+  const [homeDrafts, setHomeDrafts] = useState(() => buildLanguageDrafts(HOME_CONTENTS, getLocalizedHomeContent));
+  const [homeBase, setHomeBase] = useState(() => buildLanguageDrafts(HOME_CONTENTS, getLocalizedHomeContent));
+  const homeContentForm = homeDrafts[homeLang];
+  const setHomeContentForm = (updater) => setHomeDrafts((current) => ({
+    ...current,
+    [homeLang]: typeof updater === "function" ? updater(current[homeLang]) : updater,
+  }));
+  const [wayLang, setWayLang] = useState("de");
+  const [wayDrafts, setWayDrafts] = useState(() => buildLanguageDrafts(PERSONAL_WAYS, getLocalizedPersonalWay));
+  const [wayBase, setWayBase] = useState(() => buildLanguageDrafts(PERSONAL_WAYS, getLocalizedPersonalWay));
+  const personalWayForm = wayDrafts[wayLang];
+  const setPersonalWayForm = (updater) => setWayDrafts((current) => ({
+    ...current,
+    [wayLang]: typeof updater === "function" ? updater(current[wayLang]) : updater,
+  }));
   const [siteSettingsForm, setSiteSettingsForm] = useState(SITE_SETTINGS);
+  const [siteBase, setSiteBase] = useState(SITE_SETTINGS);
   const [savedResumeUrl, setSavedResumeUrl] = useState(SITE_SETTINGS.resume_url || "");
-  const [showGalleryEditor, setShowGalleryEditor] = useState(false);
-  const [galleryImagesForm, setGalleryImagesForm] = useState((GALLERY_IMAGES.length ? GALLERY_IMAGES : DEFAULT_GALLERY_IMAGES).join("\n"));
-  const [showProjectOrderEditor, setShowProjectOrderEditor] = useState(false);
+  const initialGallery = (GALLERY_IMAGES.length ? GALLERY_IMAGES : DEFAULT_GALLERY_IMAGES).join("\n");
+  const [galleryImagesForm, setGalleryImagesForm] = useState(initialGallery);
+  const [galleryBase, setGalleryBase] = useState(initialGallery);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showAdvancedFields, setShowAdvancedFields] = useState(false);
   const [deployState, setDeployState] = useState(null);
   const [projectOrderLanguage, setProjectOrderLanguage] = useState("de");
-  const [projectOrderIds, setProjectOrderIds] = useState(() => getLocalizedContentPosts("de")
+  const initialOrderIds = getLocalizedContentPosts("de")
     .filter((post) => post.content_type !== "knowledge")
-    .map((post) => post.translation_id));
+    .map((post) => post.translation_id);
+  const [projectOrderIds, setProjectOrderIds] = useState(initialOrderIds);
+  const [orderBase, setOrderBase] = useState(initialOrderIds.join("|"));
+  const ui = ADMIN_UI[uiLanguage] || ADMIN_UI.de;
 
   const update = (key, value) => {
     setForm((current) => {
@@ -1859,7 +2113,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     });
   };
 
-  const getMarkdownExport = () => {
+  const getMarkdownExport = (overrides = {}) => {
     const slug = form.slug || slugify(form.title);
     if (!slug || !form.title.trim() || !form.excerpt.trim() || !form.content.trim()) {
       window.alert(t.validationRequiredFields);
@@ -1868,6 +2122,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
 
     const markdown = createMarkdownFile({
       ...form,
+      ...overrides,
       slug,
       translation_id: form.translation_id || slug,
       image_gallery: form.image_gallery.split("\n").map((item) => item.trim()).filter(Boolean),
@@ -1886,11 +2141,13 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     const token = githubToken.trim();
     if (!token) {
       window.localStorage.removeItem(GITHUB_TOKEN_KEY);
+      setTokenSaved(false);
       setSaveMessage(t.tokenRemovedMessage);
       return;
     }
 
     window.localStorage.setItem(GITHUB_TOKEN_KEY, token);
+    setTokenSaved(true);
     setShowGithubToken(false);
     setSaveMessage(t.tokenSavedMessage);
   };
@@ -1908,6 +2165,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     const token = githubToken.trim() || window.localStorage.getItem(GITHUB_TOKEN_KEY);
     if (!token) {
       setShowGithubToken(true);
+      setView("settings");
       setSaveMessage(t.noTokenMessage);
       return;
     }
@@ -1939,6 +2197,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     const token = githubToken.trim() || window.localStorage.getItem(GITHUB_TOKEN_KEY);
     if (!token) {
       setShowGithubToken(true);
+      setView("settings");
       setSaveMessage(t.noTokenMessage);
       return null;
     }
@@ -2116,45 +2375,6 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
 
   const uploadImageToGithub = (file, subfolder) => uploadFileToGithub(file, `images/${subfolder}`);
 
-  const getContentDirectory = async () => {
-    if (!window.showDirectoryPicker) {
-      window.alert(t.directorySaveUnsupported);
-      return null;
-    }
-
-    const directory = contentDirectory || await window.showDirectoryPicker({ mode: "readwrite" });
-    if (directory.name !== "content") {
-      setContentDirectory(null);
-      window.alert(t.wrongDirectoryAlert);
-      return null;
-    }
-    if (!contentDirectory) setContentDirectory(directory);
-    return directory;
-  };
-
-  const writeMarkdownToDirectory = async (directory, output) => {
-    const targetDirectory = output.directory
-      ? await directory.getDirectoryHandle(output.directory, { create: true })
-      : directory;
-      const file = await targetDirectory.getFileHandle(output.filename, { create: true });
-      const writable = await file.createWritable();
-      await writable.write(output.markdown);
-      await writable.close();
-  };
-
-  const saveMarkdownToDirectory = async (output) => {
-    try {
-      const directory = await getContentDirectory();
-      if (!directory) return;
-      await writeMarkdownToDirectory(directory, output);
-      setSaveMessage(t.directorySavedMessage(`${output.directory ? `${output.directory}/` : ""}${output.filename}`));
-    } catch (error) {
-      if (error.name !== "AbortError") {
-        window.alert(t.directorySaveFailedAlert);
-      }
-    }
-  };
-
   const moveProjectOrder = (translationId, direction) => {
     setProjectOrderIds((current) => {
       const index = current.indexOf(translationId);
@@ -2164,49 +2384,6 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
       [next[index], next[targetIndex]] = [next[targetIndex], next[index]];
       return next;
     });
-  };
-
-  const saveProjectOrderToDirectory = async () => {
-    try {
-      const orderByTranslationId = new Map(projectOrderIds.map((translationId, index) => [translationId, (index + 1) * 10]));
-      const projectVariants = CONTENT_POSTS.filter((post) => post.content_type !== "knowledge" && orderByTranslationId.has(post.translation_id));
-
-      const outputs = projectVariants.map((post) => ({
-        filename: `${post.slug}.md`,
-        directory: post.language,
-        markdown: createMarkdownFile({ ...post, sort_order: orderByTranslationId.get(post.translation_id) }),
-      }));
-
-      await saveOutputsToGitHub(outputs, "Update project card order");
-
-    } catch (error) {
-      if (error.name !== "AbortError") {
-        window.alert(t.orderSaveFailedAlert);
-      }
-    }
-  };
-
-  const savePostToDirectory = async () => {
-    const output = getMarkdownExport();
-    if (!output) return;
-
-    const previousSourcePath = form.source_path;
-    const newSourcePath = `${output.directory}/${output.filename}`;
-
-    const saved = await saveMarkdownToGitHub(output);
-    if (!saved) return;
-
-    setForm((current) => ({ ...current, source_path: newSourcePath }));
-    setSelectedSlug(newSourcePath);
-
-    if (previousSourcePath && previousSourcePath !== newSourcePath) {
-      try {
-        await deleteGithubFile(`src/content/${previousSourcePath}`, `Remove old file after rename to ${newSourcePath}`);
-        setSaveMessage((current) => `${current}${t.renameRemovedOldFile(`src/content/${previousSourcePath}`)}`);
-      } catch (error) {
-        setSaveMessage((current) => `${current}${t.renameRemoveFailedNote(`src/content/${previousSourcePath}`, error.message)}`);
-      }
-    }
   };
 
   const deletePostFromGitHub = async () => {
@@ -2220,19 +2397,12 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     try {
       await deleteGithubFile(`src/content/${form.source_path}`, `Delete ${form.source_path}`);
       setSaveMessage(t.postDeletedMessage(`src/content/${form.source_path}`));
-      setForm(emptyEditorForm());
-      setSelectedSlug("");
-      setSlugEdited(false);
+      loadForm(emptyEditorForm(), false);
+      setView("posts");
       watchDeployment(previousRun?.id ?? null);
     } catch (error) {
       setSaveMessage(t.deleteFailedMessage(error.message));
     }
-  };
-
-  const selectHomeContentLanguage = (language) => {
-    const localizedContent = HOME_CONTENTS.find((entry) => entry.language === language)
-      || getLocalizedHomeContent(language);
-    setHomeContentForm({ ...localizedContent, language });
   };
 
   const getHomeContentExport = () => ({
@@ -2241,19 +2411,9 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     markdown: createHomeContentFile(homeContentForm),
   });
 
-  const saveHomeContentToDirectory = async () => {
-    await saveMarkdownToGitHub(getHomeContentExport());
-  };
-
   const exportHomeContent = () => {
     const output = getHomeContentExport();
     downloadTextFile(output.filename, output.markdown);
-  };
-
-  const selectPersonalWayLanguage = (language) => {
-    const localizedPersonalWay = PERSONAL_WAYS.find((entry) => entry.language === language)
-      || getLocalizedPersonalWay(language);
-    setPersonalWayForm({ ...localizedPersonalWay, language });
   };
 
   const getPersonalWayExport = () => {
@@ -2269,12 +2429,6 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     };
   };
 
-  const savePersonalWayToDirectory = async () => {
-    const output = getPersonalWayExport();
-    if (!output) return;
-    await saveMarkdownToGitHub(output);
-  };
-
   const exportPersonalWay = () => {
     const output = getPersonalWayExport();
     if (!output) return;
@@ -2285,23 +2439,6 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     filename: "site-settings.md",
     markdown: createSiteSettingsFile(siteSettingsForm),
   });
-
-  const saveSiteSettingsToDirectory = async () => {
-    const saved = await saveMarkdownToGitHub(getSiteSettingsExport());
-    if (!saved) return;
-
-    const newResumeUrl = siteSettingsForm.resume_url || "";
-    if (savedResumeUrl && savedResumeUrl !== newResumeUrl) {
-      const repoPath = savedResumeUrl.replace("/my-electronics-blog/", "public/");
-      try {
-        await deleteGithubFile(repoPath, `Delete old resume ${repoPath}`);
-        setSaveMessage((current) => `${current}${t.renameRemovedOldFile(repoPath)}`);
-      } catch (error) {
-        setSaveMessage((current) => `${current}${t.renameRemoveFailedNote(repoPath, error.message)}`);
-      }
-    }
-    setSavedResumeUrl(newResumeUrl);
-  };
 
   const exportSiteSettings = () => {
     const output = getSiteSettingsExport();
@@ -2352,31 +2489,20 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     markdown: createGallerySettingsFile(galleryImagesForm.split("\n").map((item) => item.trim()).filter(Boolean)),
   });
 
-  const saveGallerySettingsToDirectory = async () => {
-    await saveMarkdownToGitHub(getGallerySettingsExport());
-  };
-
   const exportGallerySettings = () => {
     const output = getGallerySettingsExport();
     downloadTextFile(output.filename, output.markdown);
   };
 
-  const selectPost = (sourcePath) => {
-    setSelectedSlug(sourcePath);
-    if (!sourcePath) {
-      setForm(emptyEditorForm());
-      setSlugEdited(false);
-      return;
-    }
-
-    const post = CONTENT_POSTS.find((item) => item.source_path === sourcePath);
-    if (!post) return;
-    setForm(postToEditorForm(post));
-    setSlugEdited(true);
+  const loadForm = (nextForm, nextSlugEdited) => {
+    setForm(nextForm);
+    setPostBase(JSON.stringify(nextForm));
+    setSlugEdited(nextSlugEdited);
   };
 
-  const inputClass = "w-full rounded-xl border border-white/10 bg-[#07111f] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 placeholder:text-zinc-600 focus:ring-4";
-  const labelClass = "mb-2 block text-xs font-bold uppercase text-zinc-400";
+  const inputClass = "w-full rounded-xl border border-white/10 bg-[#07111f] px-4 py-2.5 text-sm text-white outline-none ring-cyan-400/30 placeholder:text-zinc-600 focus:border-cyan-300/60 focus:ring-4";
+  const cardClass = "rounded-2xl border border-white/10 bg-[#0a1424] p-5";
+  const secondaryButton = "inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40";
   const PreviewIcon = getCategoryIcon(form.category);
   const previewTags = form.tags.split(",").map((item) => item.trim()).filter(Boolean);
   const previewIsIdea = form.content_type !== "knowledge" && isIdea(form);
@@ -2388,593 +2514,807 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
       || variants[0];
   }).filter(Boolean);
 
-  return (
-    <div className="min-h-screen text-white">
-      <Background />
-      <header className="sticky top-0 z-30 border-b border-white/10 bg-[#050816]/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-5">
-          <div className="flex items-center gap-3">
-            <FileText className="h-6 w-6 text-cyan-300" />
-            <div>
-              <h1 className="font-black">{t.headerTitle}</h1>
-              <p className="text-xs text-zinc-500">ElektronikLab</p>
+  // ── Unsaved-change tracking (compares every editor against what is currently live) ──
+  const postDirty = JSON.stringify(form) !== postBase;
+  const homeDirtyLanguages = LANGUAGES.filter((language) => JSON.stringify(homeDrafts[language]) !== JSON.stringify(homeBase[language]));
+  const wayDirtyLanguages = LANGUAGES.filter((language) => JSON.stringify(wayDrafts[language]) !== JSON.stringify(wayBase[language]));
+  const siteDirty = JSON.stringify(siteSettingsForm) !== JSON.stringify(siteBase);
+  const galleryDirty = splitLines(galleryImagesForm).join("\n") !== splitLines(galleryBase).join("\n");
+  const orderDirty = projectOrderIds.join("|") !== orderBase;
+  const navDirty = {
+    posts: postDirty,
+    order: orderDirty,
+    hometext: homeDirtyLanguages.length > 0,
+    gallery: galleryDirty,
+    journey: wayDirtyLanguages.length > 0,
+    look: siteDirty,
+  };
+  const dirtyCount = Object.values(navDirty).filter(Boolean).length;
+
+  useEffect(() => {
+    if (!dirtyCount) return undefined;
+    const warn = (event) => { event.preventDefault(); event.returnValue = ""; };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirtyCount]);
+
+  useEffect(() => {
+    if (!saveMessage) return undefined;
+    const timer = window.setTimeout(() => setSaveMessage(""), 9000);
+    return () => window.clearTimeout(timer);
+  }, [saveMessage]);
+
+  const postGroups = useMemo(() => {
+    const groups = new Map();
+    CONTENT_POSTS.forEach((post) => {
+      const id = `${post.content_type}:${post.translation_id || post.slug}`;
+      if (!groups.has(id)) groups.set(id, { id, variants: {} });
+      groups.get(id).variants[post.language] = post;
+    });
+    return [...groups.values()]
+      .map((group) => ({ ...group, main: group.variants.de || Object.values(group.variants)[0] }))
+      .sort((a, b) => (a.main.sort_order ?? 100) - (b.main.sort_order ?? 100));
+  }, []);
+
+  const visibleGroups = postGroups.filter((group) => {
+    if (postFilter === "project" && group.main.content_type === "knowledge") return false;
+    if (postFilter === "knowledge" && group.main.content_type !== "knowledge") return false;
+    const needle = postSearch.trim().toLowerCase();
+    return !needle || Object.values(group.variants).some((post) => post.title.toLowerCase().includes(needle));
+  });
+  const recentGroups = [...postGroups]
+    .sort((a, b) => new Date(b.main.created_at || 0) - new Date(a.main.created_at || 0))
+    .slice(0, 3);
+
+  const confirmDiscardPost = () => !postDirty || window.confirm(ui.discardConfirm);
+
+  const openPostVariant = (post) => {
+    if (!confirmDiscardPost()) return;
+    loadForm(postToEditorForm(post), true);
+    setShowAdvancedFields(false);
+    setView("editor");
+  };
+
+  const startNewPost = () => {
+    if (view === "editor" && !form.source_path && !postDirty) return;
+    if (!confirmDiscardPost()) return;
+    loadForm(emptyEditorForm(), false);
+    setShowAdvancedFields(false);
+    setView("editor");
+  };
+
+  const switchPostLanguage = (language) => {
+    if (language === form.language) return;
+    if (!form.source_path && !form.translation_id) {
+      update("language", language);
+      return;
+    }
+    if (!confirmDiscardPost()) return;
+    const variant = CONTENT_POSTS.find((post) => post.translation_id === form.translation_id && post.language === language);
+    if (variant) {
+      loadForm(postToEditorForm(variant), true);
+      return;
+    }
+    loadForm({
+      ...emptyEditorForm(),
+      content_type: form.content_type,
+      translation_id: form.translation_id,
+      language,
+      category: form.category,
+      image_url: form.image_url,
+      image_gallery: form.image_gallery,
+      tags: form.tags,
+      read_time: form.read_time,
+      external_link: form.external_link,
+      project_status: form.project_status,
+      sort_order: form.sort_order,
+      content: "",
+    }, false);
+  };
+
+  const getProjectOrderOutputs = () => {
+    const orderByTranslationId = new Map(projectOrderIds.map((translationId, index) => [translationId, (index + 1) * 10]));
+    return CONTENT_POSTS
+      .filter((post) => post.content_type !== "knowledge" && orderByTranslationId.has(post.translation_id))
+      .map((post) => ({
+        filename: `${post.slug}.md`,
+        directory: post.language,
+        markdown: createMarkdownFile({ ...post, sort_order: orderByTranslationId.get(post.translation_id) }),
+      }));
+  };
+
+  // One button saves everything that changed, in a single batch of commits.
+  const publishAll = async () => {
+    if (publishing || !dirtyCount) return;
+
+    const outputs = new Map();
+    const addOutput = (output) => outputs.set(`${output.directory || ""}/${output.filename}`, output);
+    const orderByTranslationId = new Map(projectOrderIds.map((translationId, index) => [translationId, (index + 1) * 10]));
+
+    if (orderDirty) getProjectOrderOutputs().forEach(addOutput);
+
+    let postOverrides = {};
+    let postOutput = null;
+    if (postDirty) {
+      const postKey = form.translation_id || form.slug || slugify(form.title);
+      if (orderDirty && form.content_type !== "knowledge" && orderByTranslationId.has(postKey)) {
+        postOverrides = { sort_order: orderByTranslationId.get(postKey) };
+      }
+      postOutput = getMarkdownExport(postOverrides);
+      if (!postOutput) {
+        setView("editor");
+        return;
+      }
+      addOutput(postOutput);
+    }
+
+    homeDirtyLanguages.forEach((language) => addOutput({
+      filename: "home-content.md",
+      directory: language,
+      markdown: createHomeContentFile({ ...homeDrafts[language], language }),
+    }));
+
+    for (const language of wayDirtyLanguages) {
+      const draft = { ...wayDrafts[language], language };
+      if (!draft.title?.trim() || !draft.content?.trim()) {
+        window.alert(t.personalWayValidation);
+        setWayLang(language);
+        setView("journey");
+        return;
+      }
+      addOutput({ filename: "personal-way.md", directory: language, markdown: createPersonalWayFile(draft) });
+    }
+
+    if (siteDirty) addOutput(getSiteSettingsExport());
+    if (galleryDirty) addOutput(getGallerySettingsExport());
+
+    setPublishing(true);
+    const saved = await saveOutputsToGitHub([...outputs.values()], `Update ${outputs.size} file${outputs.size === 1 ? "" : "s"} via admin`)
+      .finally(() => setPublishing(false));
+    if (!saved) return;
+
+    setHomeBase(homeDrafts);
+    setWayBase(wayDrafts);
+    setSiteBase(siteSettingsForm);
+    setGalleryBase(galleryImagesForm);
+    setOrderBase(projectOrderIds.join("|"));
+
+    if (postOutput) {
+      const previousSourcePath = form.source_path;
+      const newSourcePath = `${postOutput.directory}/${postOutput.filename}`;
+      const slug = postOutput.filename.replace(/\.md$/, "");
+      const savedForm = { ...form, ...postOverrides, slug, translation_id: form.translation_id || slug, source_path: newSourcePath };
+      loadForm(savedForm, true);
+
+      if (previousSourcePath && previousSourcePath !== newSourcePath) {
+        try {
+          await deleteGithubFile(`src/content/${previousSourcePath}`, `Remove old file after rename to ${newSourcePath}`);
+          setSaveMessage((current) => `${current}${t.renameRemovedOldFile(`src/content/${previousSourcePath}`)}`);
+        } catch (error) {
+          setSaveMessage((current) => `${current}${t.renameRemoveFailedNote(`src/content/${previousSourcePath}`, error.message)}`);
+        }
+      }
+    }
+
+    if (siteDirty) {
+      const newResumeUrl = siteSettingsForm.resume_url || "";
+      if (savedResumeUrl && savedResumeUrl !== newResumeUrl) {
+        const repoPath = savedResumeUrl.replace("/my-electronics-blog/", "public/");
+        try {
+          await deleteGithubFile(repoPath, `Delete old resume ${repoPath}`);
+          setSaveMessage((current) => `${current}${t.renameRemovedOldFile(repoPath)}`);
+        } catch (error) {
+          setSaveMessage((current) => `${current}${t.renameRemoveFailedNote(repoPath, error.message)}`);
+        }
+      }
+      setSavedResumeUrl(newResumeUrl);
+    }
+  };
+
+  const discardAll = () => {
+    setMoreOpen(false);
+    if (!dirtyCount || !window.confirm(ui.discardAllConfirm)) return;
+    setHomeDrafts(homeBase);
+    setWayDrafts(wayBase);
+    setSiteSettingsForm(siteBase);
+    setGalleryImagesForm(galleryBase);
+    setProjectOrderIds(orderBase ? orderBase.split("|") : []);
+    const baseForm = JSON.parse(postBase);
+    setForm(baseForm);
+    setSlugEdited(Boolean(baseForm.source_path));
+  };
+
+  const canExport = ["editor", "hometext", "journey", "look", "gallery"].includes(view);
+  const exportCurrent = () => {
+    setMoreOpen(false);
+    if (view === "editor") exportPost();
+    else if (view === "hometext") exportHomeContent();
+    else if (view === "journey") exportPersonalWay();
+    else if (view === "look") exportSiteSettings();
+    else if (view === "gallery") exportGallerySettings();
+  };
+
+  const goTo = (nextView) => {
+    setView(nextView);
+    setNavOpen(false);
+    setMoreOpen(false);
+  };
+
+  const navGroups = [
+    { items: [{ id: "home", icon: LayoutDashboard, label: ui.navOverview }] },
+    { title: ui.navContent, items: [
+      { id: "posts", icon: Newspaper, label: ui.navPosts, badge: postGroups.length },
+      { id: "order", icon: ListOrdered, label: ui.navOrder },
+    ] },
+    { title: ui.navHomepage, items: [
+      { id: "hometext", icon: PenLine, label: ui.navHomeText },
+      { id: "gallery", icon: Images, label: ui.navGallery, badge: splitLines(galleryImagesForm).length },
+      { id: "journey", icon: Route, label: ui.navJourney },
+    ] },
+    { title: ui.navSite, items: [
+      { id: "look", icon: Palette, label: ui.navLook },
+      { id: "settings", icon: Settings, label: ui.navSettings },
+    ] },
+  ];
+
+  const [pageTitle, pageSub] = view === "editor"
+    ? [form.title || ui.newPostTitle, ui.pages.editorSub]
+    : ui.pages[view];
+
+  const isGalleryEditorPost = splitLines(form.image_gallery);
+
+  // ── Views ──
+  const renderPostRows = (groups) => (
+    <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#0a1424]">
+      {groups.length === 0 && <p className="p-6 text-center text-sm text-zinc-500">{ui.noPostsFound}</p>}
+      {groups.map((group) => {
+        const post = group.main;
+        const isKnowledge = post.content_type === "knowledge";
+        return (
+          <div key={group.id} data-post-row className="flex flex-wrap items-center gap-3 border-t border-white/10 px-4 py-3 first:border-t-0 hover:bg-white/[0.03] sm:flex-nowrap">
+            {post.image_url
+              ? <img src={post.image_url} alt="" className="h-11 w-16 shrink-0 rounded-lg object-cover" />
+              : <div className="flex h-11 w-16 shrink-0 items-center justify-center rounded-lg bg-cyan-400/10 text-[10px] font-black text-cyan-200">{String(post.category || "").slice(0, 4).toUpperCase()}</div>}
+            <div className="min-w-0 flex-1">
+              <p className="truncate font-bold">{post.title}</p>
+              <p className="text-xs text-zinc-500">{isKnowledge ? ui.filterKnowledge : ui.filterProjects} · {getCategoryLabel(post.category, uiLanguage)}</p>
             </div>
-          </div>
-          <div className="flex flex-wrap items-center justify-end gap-2">
-            <div className="flex rounded-full border border-white/10 bg-white/5 p-1">
-              {LANGUAGES.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => changeUiLanguage(item)}
-                  className={`rounded-full px-3 py-1.5 text-xs font-black uppercase transition ${uiLanguage === item ? "bg-cyan-400 text-black" : "text-zinc-400 hover:text-white"}`}
-                >
-                  {item}
-                </button>
-              ))}
+            <div className="flex gap-1">
+              {LANGUAGES.map((language) => {
+                const variant = group.variants[language];
+                return variant ? (
+                  <button key={language} type="button" onClick={() => openPostVariant(variant)} className="rounded-md border border-emerald-400/40 px-1.5 py-0.5 text-[10px] font-black text-emerald-300 hover:bg-emerald-400/10">{language.toUpperCase()}</button>
+                ) : (
+                  <span key={language} className="rounded-md border border-white/10 px-1.5 py-0.5 text-[10px] font-black text-zinc-600">{language.toUpperCase()}</span>
+                );
+              })}
             </div>
-            <button type="button" onClick={() => setShowPasswordModal(true)} className="inline-flex items-center gap-2 rounded-xl border border-cyan-300/20 px-4 py-2 text-sm font-bold text-cyan-100 transition hover:bg-cyan-300/10">
-              <KeyRound className="h-4 w-4" /> {t.passwordButton}
-            </button>
-            <button type="button" onClick={onLogout} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
-              <LogOut className="h-4 w-4" /> {t.logoutButton}
-            </button>
-            <a href="/my-electronics-blog/" className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
-              <ArrowLeft className="h-4 w-4" /> {t.blogButton}
-            </a>
+            {!isKnowledge && <span className={`hidden rounded-full border px-2.5 py-0.5 text-xs font-bold sm:inline ${getStatusClasses(post.project_status)}`}>{getStatusLabel(post.project_status, uiLanguage)}</span>}
+            <button type="button" onClick={() => openPostVariant(group.variants.de || post)} className={secondaryButton}>{ui.edit}</button>
           </div>
+        );
+      })}
+    </div>
+  );
+
+  const renderHome = () => (
+    <div className="mx-auto max-w-5xl p-4 sm:p-6">
+      <h2 className="text-2xl font-black">{ui.greet}</h2>
+      <p className="mt-1 text-sm text-zinc-400">{ui.greetSub}</p>
+      <div className="my-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {[
+          { id: "new", icon: Pencil, title: ui.tileNew, sub: ui.tileNewSub, main: true, action: startNewPost },
+          { id: "home", icon: PenLine, title: ui.tileHome, sub: ui.tileHomeSub, action: () => goTo("hometext") },
+          { id: "look", icon: Palette, title: ui.tileLook, sub: ui.tileLookSub, action: () => goTo("look") },
+          { id: "order", icon: ListOrdered, title: ui.tileOrder, sub: ui.tileOrderSub, action: () => goTo("order") },
+        ].map((tile) => (
+          <button key={tile.id} type="button" data-tile={tile.id} onClick={tile.action} className={`flex min-h-[8.5rem] flex-col items-start gap-2 rounded-2xl border p-5 text-left transition hover:-translate-y-0.5 ${tile.main ? "border-cyan-300 bg-cyan-300 text-black" : "border-white/10 bg-[#0a1424] hover:border-cyan-300/60"}`}>
+            <tile.icon className={`h-6 w-6 ${tile.main ? "text-black" : "text-cyan-300"}`} />
+            <span className="font-black">{tile.title}</span>
+            <span className={`text-xs ${tile.main ? "text-black/70" : "text-zinc-400"}`}>{tile.sub}</span>
+          </button>
+        ))}
+      </div>
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="font-black">{ui.recent}</h3>
+        <button type="button" onClick={() => goTo("posts")} className={`${secondaryButton} !py-1 text-xs`}>{ui.viewAll}</button>
+      </div>
+      {renderPostRows(recentGroups)}
+    </div>
+  );
+
+  const renderPosts = () => (
+    <div className="mx-auto max-w-5xl p-4 sm:p-6">
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        <input aria-label={ui.searchPosts} className={`${inputClass} !w-64 max-w-full`} placeholder={ui.searchPosts} value={postSearch} onChange={(event) => setPostSearch(event.target.value)} />
+        <div className="flex rounded-full border border-white/10 bg-white/5 p-1">
+          {[["all", ui.filterAll], ["project", ui.filterProjects], ["knowledge", ui.filterKnowledge]].map(([id, label]) => (
+            <button key={id} type="button" onClick={() => setPostFilter(id)} className={`rounded-full px-3 py-1 text-xs font-bold ${postFilter === id ? "bg-cyan-400 text-black" : "text-zinc-400 hover:text-white"}`}>{label}</button>
+          ))}
         </div>
-        <DeployStatusBanner state={deployState} onDismiss={() => setDeployState(null)} language={uiLanguage} />
-      </header>
-      {showPasswordModal && <AdminPasswordModal onClose={() => setShowPasswordModal(false)} language={uiLanguage} />}
+        <button type="button" onClick={startNewPost} className="ml-auto inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2 text-sm font-black text-black hover:bg-cyan-300"><Plus className="h-4 w-4" /> {ui.newPost}</button>
+      </div>
+      {renderPostRows(visibleGroups)}
+    </div>
+  );
 
-      <main className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-5 lg:grid-cols-[1fr_0.95fr]">
-        <section className="space-y-5">
-          <div className="rounded-2xl border border-sky-400/20 bg-sky-400/5 p-5">
-            <button type="button" onClick={() => setShowGithubToken((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
-              <span>
-                <span className="block text-xs font-bold uppercase text-sky-300">GitHub</span>
-                <span className="mt-1 block font-black">{t.githubSectionTitle}</span>
-              </span>
-              <Code2 className="h-5 w-5 text-sky-300" />
-            </button>
-            {showGithubToken && (
-              <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
-                <p className="text-sm leading-6 text-zinc-300">
-                  {t.githubTokenIntroPre}<span className="font-bold text-white">Contents: Read and write</span>{t.githubTokenIntroMid}<span className="font-bold text-white">nguyennhando/my-electronics-blog</span>{t.githubTokenIntroPost}
-                </p>
-                <div className="grid gap-3 sm:grid-cols-[1fr_auto_auto]">
-                  <input
-                    type="password"
-                    value={githubToken}
-                    onChange={(event) => setGithubToken(event.target.value)}
-                    className={inputClass}
-                    placeholder="github_pat_..."
-                  />
-                  <button type="button" onClick={saveGithubToken} className="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-400 px-4 py-3 text-sm font-black text-black transition hover:bg-sky-300">
-                    <Save className="h-4 w-4" /> {t.saveTokenButton}
-                  </button>
-                  <button type="button" onClick={testGithubToken} className="inline-flex items-center justify-center gap-2 rounded-xl border border-sky-300/30 px-4 py-3 text-sm font-bold text-sky-100 transition hover:bg-sky-300/10">
-                    <Code2 className="h-4 w-4" /> {t.testTokenButton}
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+  const editorLangTabs = LANGUAGES.map((language) => {
+    const isCurrent = form.language === language;
+    const exists = CONTENT_POSTS.some((post) => post.translation_id === form.translation_id && post.language === language);
+    const freeChoice = !form.source_path && !form.translation_id;
+    return {
+      language,
+      state: isCurrent ? "current" : exists ? "exists" : freeChoice ? "missing" : "missing",
+      title: isCurrent || exists || freeChoice ? undefined : ui.addLanguageHint,
+    };
+  });
 
-          <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/5 p-5">
-            <button type="button" onClick={() => setShowSiteSettingsEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
-              <span>
-                <span className="block text-xs font-bold uppercase text-emerald-300">{t.badgeWebsite}</span>
-                <span className="mt-1 block font-black">{t.websiteSectionTitle}</span>
-              </span>
-              <ImageIcon className="h-5 w-5 text-emerald-300" />
-            </button>
-
-            {showSiteSettingsEditor && (
-              <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
-                <div>
-                  <label className={labelClass}>{t.backgroundImageLabel}</label>
-                  <div className="flex gap-2">
-                    <input className={inputClass} value={siteSettingsForm.background_image} onChange={(e) => setSiteSettingsForm((current) => ({ ...current, background_image: e.target.value }))} placeholder="/my-electronics-blog/images/background.webp" />
-                    <ImageUploadButton label={t.uploadButton} subfolder="background" uploadImage={uploadImageToGithub} loadingLabel={t.uploadingLabel} onUploaded={(url) => setSiteSettingsForm((current) => ({ ...current, background_image: url }))} />
-                  </div>
-                </div>
-                <div className="relative h-44 overflow-hidden rounded-xl border border-white/10 bg-[#07111f]">
-                  {siteSettingsForm.background_image ? (
-                    <img src={siteSettingsForm.background_image} alt="" className="h-full w-full object-cover opacity-60" />
-                  ) : (
-                    <div className="flex h-full items-center justify-center text-sm text-zinc-500">{t.noBackgroundText}</div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-900/30 to-fuchsia-600/20" />
-                </div>
-                <div>
-                  <label className={labelClass}>{t.resumeLabel}</label>
-                  <div className="flex gap-2">
-                    <input className={inputClass} value={siteSettingsForm.resume_url || ""} onChange={(e) => setSiteSettingsForm((current) => ({ ...current, resume_url: e.target.value }))} placeholder="/my-electronics-blog/documents/lebenslauf.pdf" />
-                    <ImageUploadButton label={t.uploadButton} loadingLabel={t.uploadingLabel} icon={FileText} accept="application/pdf" uploadImage={(file) => uploadFileToGithub(file, "documents")} onUploaded={handleResumeUploaded} />
-                    {siteSettingsForm.resume_url && (
-                      <button type="button" onClick={deleteResumeFromGithub} className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-red-400/30 px-4 py-3 text-sm font-bold text-red-200 transition hover:bg-red-400/10">
-                        <X className="h-4 w-4" /> {t.deleteButton}
-                      </button>
-                    )}
-                  </div>
-                </div>
-                {siteSettingsForm.resume_url && (
-                  <div>
-                    <p className="mb-3 text-xs font-bold uppercase text-zinc-500">{t.livePreviewLabel}</p>
-                    <div className="flex items-center justify-center rounded-xl border border-white/10 bg-[#07111f]/95 p-6">
-                      <a
-                        href={siteSettingsForm.resume_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-emerald-400 to-lime-300 px-4 py-2 text-sm font-black text-black shadow-lg shadow-emerald-500/40 transition hover:from-emerald-300 hover:to-lime-200"
-                      >
-                        <motion.span
-                          className="pointer-events-none absolute inset-0 rounded-full bg-white/50"
-                          initial={{ opacity: 0.6, scale: 1 }}
-                          animate={{ opacity: 0, scale: 1.8 }}
-                          transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
-                        />
-                        <FileText className="relative h-4 w-4" />
-                        <span className="relative">{t.resumeButton}</span>
-                      </a>
-                    </div>
-                  </div>
-                )}
-                <div className="flex flex-wrap gap-2">
-                  <button type="button" onClick={saveSiteSettingsToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-emerald-400 px-4 py-2 text-sm font-black text-black transition hover:bg-emerald-300">
-                    <Code2 className="h-4 w-4" /> {t.saveGithubButton}
-                  </button>
-                  <button type="button" onClick={exportSiteSettings} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
-                    <Download className="h-4 w-4" /> {t.exportMdButton}
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-5">
-            <button type="button" onClick={() => setShowGalleryEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
-              <span>
-                <span className="block text-xs font-bold uppercase text-cyan-300">{t.badgeStartseite}</span>
-                <span className="mt-1 block font-black">{t.gallerySectionTitle}</span>
-              </span>
-              <ImageIcon className="h-5 w-5 text-cyan-300" />
-            </button>
-
-            {showGalleryEditor && (
-              <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
-                <div className="rounded-xl border border-cyan-400/20 bg-cyan-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
-                  <p className="font-black text-cyan-200">{t.galleryInstructionsTitle}</p>
-                  <ol className="mt-2 ml-5 list-decimal space-y-1">
-                    <li>{t.galleryStep1Pre}<code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">public/images/galerie</code>{t.galleryStep1Post}</li>
-                    <li>{t.galleryStep2Pre}<code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">/my-electronics-blog/images/galerie/dateiname.webp</code>{t.galleryStep2Post}</li>
-                    <li>{t.galleryStep3}</li>
-                    <li>{t.galleryStep4}</li>
-                    <li>{t.galleryStep5Pre}<code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content</code>{t.galleryStep5Post}</li>
-                  </ol>
-                  <p className="mt-3 text-xs text-zinc-400">{t.galleryPositionNote}</p>
-                </div>
-                <div>
-                  <label className={labelClass}>{t.galleryImagesLabel}</label>
-                  <textarea className={`${inputClass} min-h-[220px] font-mono leading-6`} value={galleryImagesForm} onChange={(e) => setGalleryImagesForm(e.target.value)} placeholder="/my-electronics-blog/images/galerie/bild.webp" />
-                  <p className="mt-2 text-xs leading-5 text-zinc-500">{t.galleryImagesHelp}</p>
-                  <div className="mt-2">
-                    <ImageUploadButton label={t.addImageButton} subfolder="galerie" uploadImage={uploadImageToGithub} loadingLabel={t.uploadingLabel} onUploaded={(url) => setGalleryImagesForm((current) => current ? `${current}\n${url}` : url)} />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {galleryImagesForm.split("\n").map((item) => item.trim()).filter(Boolean).slice(0, 6).map((image) => <img key={image} src={image} alt="" className="h-28 w-full rounded-xl object-cover" />)}
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <button type="button" onClick={saveGallerySettingsToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2 text-sm font-black text-black transition hover:bg-cyan-300">
-                    <Code2 className="h-4 w-4" /> {t.saveGithubButton}
-                  </button>
-                  <button type="button" onClick={exportGallerySettings} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
-                    <Download className="h-4 w-4" /> {t.exportMdButton}
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="rounded-2xl border border-orange-400/20 bg-orange-400/5 p-5">
-            <button type="button" onClick={() => setShowProjectOrderEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
-              <span>
-                <span className="block text-xs font-bold uppercase text-orange-300">{t.badgeBlog}</span>
-                <span className="mt-1 block font-black">{t.orderSectionTitle}</span>
-              </span>
-              <ChevronUp className="h-5 w-5 text-orange-300" />
-            </button>
-
-            {showProjectOrderEditor && (
-              <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
-                <div className="rounded-xl border border-orange-400/20 bg-orange-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
-                  <p className="font-black text-orange-200">{t.orderInstructionsTitle}</p>
-                  <p className="mt-2">{t.orderInstructions1}</p>
-                  <p className="mt-2 text-xs text-zinc-400">{t.orderInstructions2}</p>
-                </div>
-                <div>
-                  <label className={labelClass}>{t.previewLanguageLabel}</label>
-                  <select className={inputClass} value={projectOrderLanguage} onChange={(e) => setProjectOrderLanguage(e.target.value)}>
-                    <option value="de">DE - Deutsch</option>
-                    <option value="en">EN - English</option>
-                    <option value="vi">VI - Tiếng Việt</option>
-                  </select>
-                </div>
-                <div className="grid gap-3">
-                  {projectOrderPosts.map((post, index) => (
-                    <div key={post.translation_id} className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#07111f]/95 p-3">
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-400/10 text-sm font-black text-orange-200">{index + 1}</span>
-                      {post.image_url && <img src={post.image_url} alt="" className="h-14 w-20 shrink-0 rounded-lg object-cover" />}
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate font-black text-white">{post.title}</p>
-                        <p className="mt-1 text-xs text-zinc-500">{getCategoryLabel(post.category, projectOrderLanguage)} · {getStatusLabel(post.project_status, projectOrderLanguage)}</p>
-                      </div>
-                      <div className="flex shrink-0 flex-col gap-1">
-                        <button type="button" disabled={index === 0} onClick={() => moveProjectOrder(post.translation_id, -1)} className="rounded-lg border border-white/10 p-1.5 text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30" aria-label={t.moveUpAria}>
-                          <ChevronUp className="h-4 w-4" />
-                        </button>
-                        <button type="button" disabled={index === projectOrderPosts.length - 1} onClick={() => moveProjectOrder(post.translation_id, 1)} className="rounded-lg border border-white/10 p-1.5 text-zinc-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30" aria-label={t.moveDownAria}>
-                          <ChevronDown className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <button type="button" onClick={saveProjectOrderToDirectory} className="inline-flex w-fit items-center gap-2 rounded-xl bg-orange-400 px-4 py-2 text-sm font-black text-black transition hover:bg-orange-300">
-                  <Code2 className="h-4 w-4" /> {t.saveOrderButton}
-                </button>
-                {saveMessage && <p className="text-xs font-bold text-emerald-300">{saveMessage}</p>}
-              </div>
-            )}
-          </div>
-
-          <div className="rounded-2xl border border-blue-400/20 bg-blue-400/5 p-5">
-            <button type="button" onClick={() => setShowHomeContentEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
-              <span>
-                <span className="block text-xs font-bold uppercase text-blue-300">{t.badgeStartseite}</span>
-                <span className="mt-1 block font-black">{t.homeContentSectionTitle}</span>
-              </span>
-              <Pencil className="h-5 w-5 text-blue-300" />
-            </button>
-
-            {showHomeContentEditor && (
-              <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
-                <div className="rounded-xl border border-blue-400/20 bg-blue-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
-                  <p className="font-black text-blue-200">{t.fileLocationTitle}</p>
-                  <p className="mt-2">{t.fileLocationIntro}</p>
-                  <ul className="mt-2 ml-5 list-disc space-y-1">
-                    <li>{t.langDeutsch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/de/home-content.md</code></li>
-                    <li>{t.langEnglisch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/en/home-content.md</code></li>
-                    <li>{t.langVietnamesisch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content/vi/home-content.md</code></li>
-                  </ul>
-                  <p className="mt-3 text-xs text-zinc-400">{t.homeContentSaveNotePre}<code className="rounded bg-black/30 px-1.5 py-0.5 text-blue-100">src/content</code>{t.homeContentSaveNotePost}</p>
-                  <p className="mt-2 text-xs text-zinc-400">{t.homeContentReloadNote}</p>
-                </div>
-                <div>
-                  <label className={labelClass}>{t.languageLabel}</label>
-                  <select className={inputClass} value={homeContentForm.language} onChange={(e) => selectHomeContentLanguage(e.target.value)}>
-                    <option value="de">DE - Deutsch</option>
-                    <option value="en">EN - English</option>
-                    <option value="vi">VI - Tiếng Việt</option>
-                  </select>
-                </div>
-                {HOME_CONTENT_FIELDS.map(([key]) => (
-                  <div key={key}>
-                    <label className={labelClass}>{getHomeContentFieldLabel(key, uiLanguage)}</label>
-                    <textarea className={`${inputClass} min-h-[88px] leading-6`} value={homeContentForm[key] || ""} onChange={(e) => setHomeContentForm((current) => ({ ...current, [key]: e.target.value }))} />
-                  </div>
-                ))}
-                <div className="flex flex-wrap gap-2">
-                  <button type="button" onClick={saveHomeContentToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-blue-400 px-4 py-2 text-sm font-black text-black transition hover:bg-blue-300">
-                    <Code2 className="h-4 w-4" /> {t.saveGithubButton}
-                  </button>
-                  <button type="button" onClick={exportHomeContent} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
-                    <Download className="h-4 w-4" /> {t.exportMdButton}
-                  </button>
-                </div>
-                {saveMessage && <p className="text-xs font-bold text-emerald-300">{saveMessage}</p>}
-                <div className="border-t border-white/10 pt-5">
-                  <p className="mb-3 text-xs font-bold uppercase text-zinc-500">{t.livePreviewLabel}</p>
-                  <div className="space-y-4 rounded-xl border border-white/10 bg-[#07111f]/95 p-4">
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-widest text-cyan-300">{homeContentForm.hero_badge}</p>
-                      <h2 className="mt-2 text-2xl font-black leading-tight">{homeContentForm.hero_title}</h2>
-                      <p className="mt-2 text-sm leading-6 text-zinc-300">{homeContentForm.hero_text}</p>
-                    </div>
-                    <div className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-3">
-                      <h3 className="font-black text-yellow-200">{homeContentForm.transparency_title}</h3>
-                      <p className="mt-2 text-sm leading-6 text-zinc-300">{homeContentForm.transparency_text}</p>
-                      <p className="mt-2 text-sm font-semibold leading-6 text-yellow-200">{homeContentForm.transparency_strong}</p>
-                    </div>
-                    <div className="grid gap-3 sm:grid-cols-2">
-                      {FEATURE_ICONS.map((Icon, index) => (
-                        <div key={index} className="rounded-xl border border-cyan-400/20 bg-cyan-400/5 p-3">
-                          <Icon className="h-5 w-5 text-cyan-300" />
-                          <h3 className="mt-2 font-black">{homeContentForm[`feature_${index + 1}_title`]}</h3>
-                          <p className="mt-1 text-sm leading-6 text-zinc-400">{homeContentForm[`feature_${index + 1}_text`]}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-3 text-sm leading-6 text-zinc-300">
-                      <p>{homeContentForm.warning_one}</p>
-                      <p className="mt-2">{homeContentForm.warning_two}</p>
-                    </div>
-                    <div className="rounded-xl bg-cyan-300 p-3 text-black">
-                      <h3 className="font-black">{homeContentForm.collaboration_title}</h3>
-                      <p className="mt-1 text-sm leading-6 text-black/75">{homeContentForm.collaboration_text}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="rounded-2xl border border-fuchsia-400/20 bg-fuchsia-400/5 p-5">
-            <button type="button" onClick={() => setShowPersonalWayEditor((current) => !current)} className="flex w-full items-center justify-between gap-3 text-left">
-              <span>
-                <span className="block text-xs font-bold uppercase text-fuchsia-300">{t.badgeStartseite}</span>
-                <span className="mt-1 block font-black">{t.personalWaySectionTitle}</span>
-              </span>
-              <Pencil className="h-5 w-5 text-fuchsia-300" />
-            </button>
-
-            {showPersonalWayEditor && (
-              <div className="mt-5 grid gap-4 border-t border-white/10 pt-5">
-                <div className="rounded-xl border border-fuchsia-400/20 bg-fuchsia-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
-                  <p className="font-black text-fuchsia-200">{t.fileLocationTitle}</p>
-                  <p className="mt-2">{t.fileLocationIntro}</p>
-                  <ul className="mt-2 ml-5 list-disc space-y-1">
-                    <li>{t.langDeutsch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/de/personal-way.md</code></li>
-                    <li>{t.langEnglisch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/en/personal-way.md</code></li>
-                    <li>{t.langVietnamesisch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content/vi/personal-way.md</code></li>
-                  </ul>
-                  <p className="mt-3 text-xs text-zinc-400">{t.personalWaySaveNotePre}<code className="rounded bg-black/30 px-1.5 py-0.5 text-fuchsia-100">src/content</code>{t.personalWaySaveNotePost}</p>
-                </div>
-                <div>
-                  <label className={labelClass}>{t.languageLabel}</label>
-                  <select className={inputClass} value={personalWayForm.language || "de"} onChange={(e) => selectPersonalWayLanguage(e.target.value)}>
-                    <option value="de">DE - Deutsch</option>
-                    <option value="en">EN - English</option>
-                    <option value="vi">VI - Tiếng Việt</option>
-                  </select>
-                </div>
-                <div>
-                  <label className={labelClass}>{t.titleLabelRequired}</label>
-                  <input className={inputClass} value={personalWayForm.title} onChange={(e) => setPersonalWayForm((current) => ({ ...current, title: e.target.value }))} />
-                </div>
-                <div>
-                  <label className={labelClass}>{t.image1Label}</label>
-                  <div className="flex gap-2">
-                    <input className={inputClass} value={personalWayForm.image_1} onChange={(e) => setPersonalWayForm((current) => ({ ...current, image_1: e.target.value }))} />
-                    <ImageUploadButton label={t.uploadButton} subfolder="personal-way" uploadImage={uploadImageToGithub} loadingLabel={t.uploadingLabel} onUploaded={(url) => setPersonalWayForm((current) => ({ ...current, image_1: url }))} />
-                  </div>
-                </div>
-                <div>
-                  <label className={labelClass}>{t.image2Label}</label>
-                  <div className="flex gap-2">
-                    <input className={inputClass} value={personalWayForm.image_2} onChange={(e) => setPersonalWayForm((current) => ({ ...current, image_2: e.target.value }))} />
-                    <ImageUploadButton label={t.uploadButton} subfolder="personal-way" uploadImage={uploadImageToGithub} loadingLabel={t.uploadingLabel} onUploaded={(url) => setPersonalWayForm((current) => ({ ...current, image_2: url }))} />
-                  </div>
-                </div>
-                <div>
-                  <label className={labelClass}>{t.markdownContentLabelRequired}</label>
-                  <textarea className={`${inputClass} min-h-[320px] font-mono leading-6`} value={personalWayForm.content} onChange={(e) => setPersonalWayForm((current) => ({ ...current, content: e.target.value }))} />
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <button type="button" onClick={savePersonalWayToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-fuchsia-400 px-4 py-2 text-sm font-black text-black transition hover:bg-fuchsia-300">
-                    <Code2 className="h-4 w-4" /> {t.saveGithubButton}
-                  </button>
-                  <button type="button" onClick={exportPersonalWay} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
-                    <Download className="h-4 w-4" /> {t.exportMdButton}
-                  </button>
-                </div>
-                <div className="border-t border-white/10 pt-5">
-                  <p className="mb-3 text-xs font-bold uppercase text-zinc-500">{t.previewLabel}</p>
-                  <div className="grid gap-4 lg:grid-cols-2">
-                    <div className="grid gap-3">
-                      <img src={personalWayForm.image_1} alt="" className="h-40 w-full rounded-xl object-cover" />
-                      <img src={personalWayForm.image_2} alt="" className="h-40 w-full rounded-xl object-cover" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold uppercase text-cyan-300">{t.personalWayPreviewLabel}</p>
-                      <h2 className="mt-2 text-xl font-black leading-tight">{personalWayForm.title}</h2>
-                      <div className="prose prose-invert mt-4 max-w-none text-sm leading-6 prose-p:my-3 prose-p:text-zinc-300">
-                        <ReactMarkdown>{personalWayForm.content}</ReactMarkdown>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-5">
-            <label className={labelClass}>{t.loadPostLabel}</label>
-            <div className="flex gap-2">
-              <select className={inputClass} value={selectedSlug} onChange={(e) => selectPost(e.target.value)}>
-                <option value="">{t.newPostOption}</option>
-                {CONTENT_POSTS.map((post) => <option key={post.source_path} value={post.source_path}>[{post.language.toUpperCase()}] {post.content_type === "knowledge" ? t.knowledgeTag : t.projectTag} {post.title}</option>)}
-              </select>
-              {form.source_path && (
-                <button type="button" onClick={deletePostFromGitHub} className="inline-flex shrink-0 items-center gap-2 rounded-xl border border-red-400/30 px-4 py-3 text-sm font-bold text-red-200 transition hover:bg-red-400/10">
-                  <X className="h-4 w-4" /> {t.deleteButton}
-                </button>
-              )}
-            </div>
-          </div>
-
-          <div className="grid gap-4 rounded-2xl border border-white/10 bg-black/20 p-5 sm:grid-cols-2">
-            <div className="sm:col-span-2 rounded-xl border border-cyan-400/20 bg-cyan-400/[0.07] p-4 text-sm leading-6 text-zinc-300">
-              <p className="font-black text-cyan-200">{t.multilingualNoticeTitle}</p>
-              <p className="mt-2">
-                <CodeText codeClassName="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100" tokens={[
-                  t.multilingualP1, { code: "translation_id" }, t.multilingualP2, { code: "src/content" }, t.multilingualP3,
-                  { code: "de" }, t.multilingualP4, { code: "en" }, t.multilingualP5, { code: "vi" }, t.multilingualP6,
-                ]} />
-              </p>
-              <p className="mt-3 font-bold text-cyan-100">{t.multilingualLocationIntro}</p>
-              <ul className="mt-2 ml-5 list-disc space-y-1">
-                <li>{t.langDeutsch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content/de/slug.md</code></li>
-                <li>{t.langEnglisch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content/en/slug.md</code></li>
-                <li>{t.langVietnamesisch}: <code className="rounded bg-black/30 px-1.5 py-0.5 text-cyan-100">src/content/vi/slug.md</code></li>
-              </ul>
-              <p className="mt-3 text-xs text-zinc-400">{t.exportNote}</p>
-            </div>
-            <div className="sm:col-span-2">
-              <label className={labelClass}>{t.contentTypeLabel}</label>
-              <select className={inputClass} value={form.content_type} onChange={(e) => update("content_type", e.target.value)}>
-                <option value="project">{t.contentTypeProjectOption}</option>
-                <option value="knowledge">{t.contentTypeKnowledgeOption}</option>
-              </select>
-            </div>
-            <div>
-              <label className={labelClass}>{t.languageLabel}</label>
-              <select className={inputClass} value={form.language} onChange={(e) => update("language", e.target.value)}>
-                <option value="de">DE - Deutsch</option>
-                <option value="en">EN - English</option>
-                <option value="vi">VI - Tiếng Việt</option>
-              </select>
-            </div>
-            <div>
-              <label className={labelClass}>{t.categoryLabel}</label>
-              <input className={inputClass} value={form.category} onChange={(e) => update("category", e.target.value)} />
-            </div>
-            <div className="sm:col-span-2">
-              <label className={labelClass}>{t.titleLabelRequired}</label>
-              <input className={inputClass} value={form.title} onChange={(e) => update("title", e.target.value)} placeholder={t.titlePlaceholder} />
-            </div>
-            {form.content_type !== "knowledge" && <div>
-              <label className={labelClass}>{t.statusLabel}</label>
-              <select className={inputClass} value={form.project_status} onChange={(e) => update("project_status", e.target.value)}>
+  const renderEditor = () => (
+    <div className="grid gap-0 lg:grid-cols-2">
+      <div className="space-y-4 border-white/10 p-4 sm:p-6 lg:border-r">
+        <AdminLangTabs tabs={editorLangTabs} onSelect={switchPostLanguage} />
+        <AdminField label={t.titleLabelRequired}>
+          <input id="post-title" className={inputClass} value={form.title} onChange={(event) => update("title", event.target.value)} placeholder={t.titlePlaceholder} />
+        </AdminField>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <AdminField label={t.contentTypeLabel}>
+            <select className={inputClass} value={form.content_type} onChange={(event) => update("content_type", event.target.value)}>
+              <option value="project">{t.contentTypeProjectOption}</option>
+              <option value="knowledge">{t.contentTypeKnowledgeOption}</option>
+            </select>
+          </AdminField>
+          {form.content_type !== "knowledge" ? (
+            <AdminField label={t.statusLabel}>
+              <select className={inputClass} value={form.project_status} onChange={(event) => update("project_status", event.target.value)}>
                 <option value="idea">{getStatusLabel("idea", uiLanguage)}</option>
                 <option value="in_progress">{getStatusLabel("in_progress", uiLanguage)}</option>
                 <option value="done">{getStatusLabel("done", uiLanguage)}</option>
               </select>
-            </div>}
-            <div className="sm:col-span-2">
-              <button type="button" onClick={() => setShowAdvancedFields((current) => !current)} className="inline-flex items-center gap-2 text-xs font-bold uppercase text-zinc-500 transition hover:text-zinc-300">
-                {showAdvancedFields ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />} {t.advancedToggleLabel}
-              </button>
+            </AdminField>
+          ) : (
+            <AdminField label={t.categoryLabel}>
+              <input className={inputClass} value={form.category} onChange={(event) => update("category", event.target.value)} />
+            </AdminField>
+          )}
+        </div>
+        {form.content_type !== "knowledge" && (
+          <AdminField label={t.categoryLabel}>
+            <input className={inputClass} value={form.category} onChange={(event) => update("category", event.target.value)} />
+          </AdminField>
+        )}
+        <AdminField label={t.excerptLabel} help={ui.descHelp}>
+          <textarea className={inputClass} rows={3} value={form.excerpt} onChange={(event) => update("excerpt", event.target.value)} />
+        </AdminField>
+        <AdminField label={t.mainImageLabel} plain>
+          {form.image_url && (
+            <div className="relative mb-2 h-36 overflow-hidden rounded-xl border border-white/10">
+              <img src={form.image_url} alt="" className="h-full w-full object-cover" />
+              <button type="button" onClick={() => update("image_url", "")} aria-label={ui.remove} className="absolute right-2 top-2 rounded-md bg-black/70 p-1"><X className="h-4 w-4" /></button>
             </div>
-            {showAdvancedFields && (
+          )}
+          <DropUpload label={ui.dropImage} hint={ui.dropHint} subfolder="posts" uploadImage={uploadImageToGithub} busyLabel={ui.uploading} compact={Boolean(form.image_url)} onUploaded={(url) => update("image_url", url)} />
+        </AdminField>
+        <AdminField label={t.galleryImagesLabel} plain>
+          <ImageListEditor
+            images={isGalleryEditorPost}
+            ui={ui}
+            subfolder="posts"
+            uploadImage={uploadImageToGithub}
+            onChange={(list) => update("image_gallery", list.join("\n"))}
+            onAdd={(url) => setForm((current) => ({ ...current, image_gallery: current.image_gallery ? `${current.image_gallery}\n${url}` : url }))}
+          />
+        </AdminField>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <AdminField label={t.tagsLabel}>
+            <input className={inputClass} value={form.tags} onChange={(event) => update("tags", event.target.value)} placeholder={t.tagsPlaceholder} />
+          </AdminField>
+          <AdminField label={t.readTimeLabel}>
+            <input className={inputClass} value={form.read_time} onChange={(event) => update("read_time", event.target.value)} />
+          </AdminField>
+        </div>
+        <AdminField label={form.content_type === "knowledge" ? t.externalLinkLabelKnowledge : t.externalLinkLabelProject}>
+          <input className={inputClass} value={form.external_link} onChange={(event) => update("external_link", event.target.value)} placeholder="https://..." />
+        </AdminField>
+        <AdminField label={t.markdownContentLabelRequired} help={ui.bodyHelp}>
+          <textarea id="post-content" className={`${inputClass} min-h-[380px] font-mono leading-6`} value={form.content} onChange={(event) => update("content", event.target.value)} />
+        </AdminField>
+        <button type="button" onClick={() => setShowAdvancedFields((current) => !current)} className="inline-flex items-center gap-2 text-xs font-bold text-zinc-400 hover:text-white">
+          {showAdvancedFields ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />} {t.advancedToggleLabel}
+        </button>
+        {showAdvancedFields && (
+          <div className="grid gap-4 sm:grid-cols-2">
+            <AdminField label={t.translationIdLabel} help={ui.translationHelp}>
+              <input className={inputClass} value={form.translation_id} onChange={(event) => update("translation_id", slugify(event.target.value))} placeholder={t.translationIdPlaceholder} />
+              <span className="mt-1 block text-xs text-zinc-500">{t.translationIdAvailable}{translationLanguages.length ? translationLanguages.map((item) => item.toUpperCase()).join(", ") : t.translationIdNone}</span>
+            </AdminField>
+            <AdminField label={t.slugLabel} help={ui.slugHelp}>
+              <input className={inputClass} value={form.slug} onChange={(event) => { setSlugEdited(true); update("slug", slugify(event.target.value)); }} placeholder={t.slugPlaceholder} />
+            </AdminField>
+            <AdminField label={t.sortOrderLabel}>
+              <input className={inputClass} type="number" value={form.sort_order} onChange={(event) => update("sort_order", event.target.value)} />
+            </AdminField>
+          </div>
+        )}
+        <label className="flex items-center gap-3 text-sm font-bold text-zinc-300">
+          <input type="checkbox" checked={form.published} onChange={(event) => update("published", event.target.checked)} />
+          {t.publishedLabel}
+        </label>
+        {form.source_path && (
+          <button type="button" onClick={deletePostFromGitHub} className="inline-flex items-center gap-2 rounded-xl border border-red-400/30 px-4 py-2 text-sm font-bold text-red-200 hover:bg-red-400/10">
+            <Trash2 className="h-4 w-4" /> {t.deleteButton}
+          </button>
+        )}
+      </div>
+
+      <div className="space-y-5 bg-[#07101f] p-4 sm:p-6">
+        <p className="text-xs font-bold uppercase text-zinc-500">{t.blogCardLabel}</p>
+        <GradientBorder
+          gradient={previewIsIdea ? "from-zinc-600 via-zinc-500 to-zinc-600" : "from-cyan-400 via-cyan-500 to-cyan-400"}
+          rounded="rounded-[1.4rem] sm:rounded-[2rem]"
+          className="flex"
+          innerClassName="flex flex-1 flex-col overflow-hidden rounded-[1.35rem] sm:rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl"
+        >
+          <div className="h-44 w-full shrink-0 bg-black/30 sm:h-52">
+            {form.image_url ? (
+              <img src={form.image_url} alt="" className={`h-full w-full object-cover ${previewIsIdea ? "grayscale opacity-70" : ""}`} />
+            ) : (
+              <div className="flex h-full items-center justify-center text-sm text-zinc-600">{t.noMainImageText}</div>
+            )}
+          </div>
+          <div className="flex flex-1 flex-col p-4 sm:p-6">
+            <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
+              <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">{createElement(PreviewIcon, { className: "h-3.5 w-3.5" })} {form.category || t.categoryPlaceholder}</span>
+              {form.content_type !== "knowledge" && <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getStatusClasses(form.project_status)}`}>{getStatusLabel(form.project_status, form.language)}</span>}
+              <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(form.created_at)}</span>
+            </div>
+            <h3 data-preview-title className="text-lg font-black leading-tight sm:text-2xl">{form.title || t.titlePlaceholderPreview}</h3>
+            <p className="mt-3 line-clamp-3 text-sm leading-6 text-zinc-400">{form.excerpt || t.excerptPlaceholderPreview}</p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {previewTags.map((tag) => <span key={tag} className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-400">#{tag}</span>)}
+            </div>
+            <div className="mt-auto pt-6">
+              <span className="block rounded-2xl bg-cyan-400 px-5 py-3 text-center text-sm font-bold text-black">{t.readPostButtonPreview}</span>
+            </div>
+          </div>
+        </GradientBorder>
+        <div className="border-t border-white/10 pt-5">
+          <p className="mb-3 text-xs font-bold uppercase text-zinc-500">{t.markdownContentLabel}</p>
+          <div data-preview-content className="prose prose-invert max-w-none prose-headings:text-white prose-p:text-zinc-300 prose-strong:text-white prose-li:text-zinc-300">
+            <ReactMarkdown>{form.content}</ReactMarkdown>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderOrder = () => (
+    <div className="mx-auto max-w-3xl p-4 sm:p-6">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-zinc-400">{ui.orderHint}</p>
+        <div className="flex rounded-full border border-white/10 bg-white/5 p-1">
+          {LANGUAGES.map((language) => (
+            <button key={language} type="button" onClick={() => setProjectOrderLanguage(language)} className={`rounded-full px-3 py-1 text-xs font-black uppercase ${projectOrderLanguage === language ? "bg-cyan-400 text-black" : "text-zinc-400 hover:text-white"}`}>{language}</button>
+          ))}
+        </div>
+      </div>
+      <div className="grid gap-2">
+        {projectOrderPosts.map((post, index) => (
+          <div key={post.translation_id} data-order-item className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#0a1424] p-3">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/5 text-sm font-black">{index + 1}</span>
+            {post.image_url && <img src={post.image_url} alt="" className="h-12 w-[4.5rem] shrink-0 rounded-lg object-cover" />}
+            <div className="min-w-0 flex-1">
+              <p className="truncate font-bold">{post.title}</p>
+              <p className="text-xs text-zinc-500">{getCategoryLabel(post.category, projectOrderLanguage)} · {getStatusLabel(post.project_status, projectOrderLanguage)}</p>
+            </div>
+            <div className="flex shrink-0 flex-col gap-1">
+              <button type="button" disabled={index === 0} onClick={() => moveProjectOrder(post.translation_id, -1)} className="rounded-md border border-white/10 p-1 text-zinc-300 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30" aria-label={t.moveUpAria}><ChevronUp className="h-4 w-4" /></button>
+              <button type="button" disabled={index === projectOrderPosts.length - 1} onClick={() => moveProjectOrder(post.translation_id, 1)} className="rounded-md border border-white/10 p-1 text-zinc-300 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30" aria-label={t.moveDownAria}><ChevronDown className="h-4 w-4" /></button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const homeLangTabs = LANGUAGES.map((language) => ({ language, state: homeLang === language ? "current" : "exists" }));
+  const wayLangTabs = LANGUAGES.map((language) => ({ language, state: wayLang === language ? "current" : "exists" }));
+  const longTextFields = new Set(["hero_text", "transparency_text", "transparency_strong", "warning_one", "warning_two", "collaboration_text", "feature_1_text", "feature_2_text", "feature_3_text", "feature_4_text"]);
+
+  const renderHomeText = () => (
+    <div className="grid lg:grid-cols-2">
+      <div className="space-y-4 border-white/10 p-4 sm:p-6 lg:border-r">
+        <AdminLangTabs tabs={homeLangTabs} onSelect={setHomeLang} />
+        <p className="text-sm text-zinc-400">{ui.homeTextHint}</p>
+        {HOME_TEXT_GROUPS.map(([groupKey, keys], groupIndex) => (
+          <details key={groupKey} open={groupIndex === 0} className="rounded-2xl border border-white/10 bg-[#0a1424] p-4">
+            <summary className="cursor-pointer select-none font-black">{ui[groupKey]}</summary>
+            <div className="mt-4 grid gap-4">
+              {keys.map((key) => (
+                <AdminField key={key} label={getHomeContentFieldLabel(key, uiLanguage)}>
+                  {longTextFields.has(key)
+                    ? <textarea className={`${inputClass} leading-6`} rows={3} value={homeContentForm[key] || ""} onChange={(event) => setHomeContentForm((current) => ({ ...current, [key]: event.target.value }))} />
+                    : <input className={inputClass} value={homeContentForm[key] || ""} onChange={(event) => setHomeContentForm((current) => ({ ...current, [key]: event.target.value }))} />}
+                </AdminField>
+              ))}
+            </div>
+          </details>
+        ))}
+      </div>
+      <div className="bg-[#07101f] p-4 sm:p-6">
+        <p className="mb-3 text-xs font-bold uppercase text-zinc-500">{t.livePreviewLabel}</p>
+        <div className="space-y-4 rounded-xl border border-white/10 bg-[#07111f]/95 p-4">
+          <div>
+            <p data-preview-badge className="text-xs font-bold uppercase tracking-widest text-cyan-300">{homeContentForm.hero_badge}</p>
+            <h2 data-preview-hero-title className="mt-2 text-2xl font-black leading-tight">{homeContentForm.hero_title}</h2>
+            <p className="mt-2 text-sm leading-6 text-zinc-300">{homeContentForm.hero_text}</p>
+          </div>
+          <div className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-3">
+            <h3 className="font-black text-yellow-200">{homeContentForm.transparency_title}</h3>
+            <p className="mt-2 text-sm leading-6 text-zinc-300">{homeContentForm.transparency_text}</p>
+            <p className="mt-2 text-sm font-semibold leading-6 text-yellow-200">{homeContentForm.transparency_strong}</p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {FEATURE_ICONS.map((Icon, index) => (
+              <div key={index} className="rounded-xl border border-cyan-400/20 bg-cyan-400/5 p-3">
+                <Icon className="h-5 w-5 text-cyan-300" />
+                <h3 className="mt-2 font-black">{homeContentForm[`feature_${index + 1}_title`]}</h3>
+                <p className="mt-1 text-sm leading-6 text-zinc-400">{homeContentForm[`feature_${index + 1}_text`]}</p>
+              </div>
+            ))}
+          </div>
+          <div className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-3 text-sm leading-6 text-zinc-300">
+            <p>{homeContentForm.warning_one}</p>
+            <p className="mt-2">{homeContentForm.warning_two}</p>
+          </div>
+          <div className="rounded-xl bg-cyan-300 p-3 text-black">
+            <h3 className="font-black">{homeContentForm.collaboration_title}</h3>
+            <p className="mt-1 text-sm leading-6 text-black/75">{homeContentForm.collaboration_text}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const galleryList = splitLines(galleryImagesForm);
+  const renderGallery = () => (
+    <div className="mx-auto max-w-4xl space-y-4 p-4 sm:p-6">
+      <p className="text-sm text-zinc-400">{ui.galleryHint}</p>
+      <ImageListEditor
+        images={galleryList}
+        ui={ui}
+        subfolder="galerie"
+        uploadImage={uploadImageToGithub}
+        onChange={(list) => setGalleryImagesForm(list.join("\n"))}
+        onAdd={(url) => setGalleryImagesForm((current) => (current.trim() ? `${current}\n${url}` : url))}
+      />
+    </div>
+  );
+
+  const renderJourney = () => (
+    <div className="grid lg:grid-cols-2">
+      <div className="space-y-4 border-white/10 p-4 sm:p-6 lg:border-r">
+        <AdminLangTabs tabs={wayLangTabs} onSelect={setWayLang} />
+        <p className="text-sm text-zinc-400">{ui.journeyHint}</p>
+        <AdminField label={t.titleLabelRequired}>
+          <input className={inputClass} value={personalWayForm.title} onChange={(event) => setPersonalWayForm((current) => ({ ...current, title: event.target.value }))} />
+        </AdminField>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {[["image_1", t.image1Label], ["image_2", t.image2Label]].map(([key, label]) => (
+            <AdminField key={key} label={label} plain>
+              {personalWayForm[key] && (
+                <div className="relative mb-2 h-28 overflow-hidden rounded-xl border border-white/10">
+                  <img src={personalWayForm[key]} alt="" className="h-full w-full object-cover" />
+                </div>
+              )}
+              <DropUpload compact label={ui.dropImage} subfolder="personal-way" uploadImage={uploadImageToGithub} busyLabel={ui.uploading} onUploaded={(url) => setPersonalWayForm((current) => ({ ...current, [key]: url }))} />
+            </AdminField>
+          ))}
+        </div>
+        <AdminField label={t.markdownContentLabelRequired} help={ui.bodyHelp}>
+          <textarea className={`${inputClass} min-h-[320px] font-mono leading-6`} value={personalWayForm.content} onChange={(event) => setPersonalWayForm((current) => ({ ...current, content: event.target.value }))} />
+        </AdminField>
+      </div>
+      <div className="bg-[#07101f] p-4 sm:p-6">
+        <p className="mb-3 text-xs font-bold uppercase text-zinc-500">{t.previewLabel}</p>
+        <div className="grid gap-4">
+          <div className="grid grid-cols-2 gap-3">
+            {personalWayForm.image_1 && <img src={personalWayForm.image_1} alt="" className="h-36 w-full rounded-xl object-cover" />}
+            {personalWayForm.image_2 && <img src={personalWayForm.image_2} alt="" className="h-36 w-full rounded-xl object-cover" />}
+          </div>
+          <div>
+            <p className="text-xs font-bold uppercase text-cyan-300">{t.personalWayPreviewLabel}</p>
+            <h2 className="mt-2 text-xl font-black leading-tight">{personalWayForm.title}</h2>
+            <div className="prose prose-invert mt-4 max-w-none text-sm leading-6 prose-p:my-3 prose-p:text-zinc-300">
+              <ReactMarkdown>{personalWayForm.content}</ReactMarkdown>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderLook = () => (
+    <div className="mx-auto grid max-w-4xl gap-6 p-4 sm:p-6 md:grid-cols-2">
+      <section className={cardClass}>
+        <h3 className="mb-3 font-black">{ui.bgTitle}</h3>
+        <div className="relative mb-3 h-40 overflow-hidden rounded-xl border border-white/10 bg-[#07111f]">
+          {siteSettingsForm.background_image
+            ? <img src={siteSettingsForm.background_image} alt="" className="h-full w-full object-cover opacity-70" />
+            : <div className="flex h-full items-center justify-center px-3 text-center text-sm text-zinc-500">{t.noBackgroundText}</div>}
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-900/30 to-fuchsia-600/20" />
+        </div>
+        <DropUpload compact label={ui.dropImage} hint={ui.dropHint} subfolder="background" uploadImage={uploadImageToGithub} busyLabel={ui.uploading} onUploaded={(url) => setSiteSettingsForm((current) => ({ ...current, background_image: url }))} />
+        {siteSettingsForm.background_image && (
+          <button type="button" onClick={() => setSiteSettingsForm((current) => ({ ...current, background_image: "" }))} className={`${secondaryButton} mt-3 !py-1.5 text-xs`}>{ui.bgRemove}</button>
+        )}
+      </section>
+      <section className={cardClass}>
+        <h3 className="mb-3 font-black">{ui.resumeTitle}</h3>
+        {siteSettingsForm.resume_url ? (
+          <div className="grid gap-3">
+            <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#07111f] p-3">
+              <FileText className="h-8 w-8 shrink-0 text-cyan-300" />
+              <div className="min-w-0 flex-1">
+                <p data-resume-name className="truncate text-sm font-bold">{siteSettingsForm.resume_url.split("/").pop()}</p>
+                <span className="mt-1 inline-block rounded-full bg-emerald-400/15 px-2 py-0.5 text-[11px] font-bold text-emerald-300">{ui.resumeLive}</span>
+              </div>
+              <a href={siteSettingsForm.resume_url} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} !px-3 !py-1.5 text-xs`}><ExternalLink className="h-3.5 w-3.5" /> {ui.resumeOpen}</a>
+            </div>
+            <DropUpload compact icon={FileText} accept="application/pdf" label={ui.resumeReplace} hint={ui.dropPdf} uploadImage={(file) => uploadFileToGithub(file, "documents")} busyLabel={ui.uploading} onUploaded={handleResumeUploaded} />
+            <button type="button" onClick={deleteResumeFromGithub} className="inline-flex w-fit items-center gap-2 rounded-xl border border-red-400/30 px-3 py-1.5 text-xs font-bold text-red-200 hover:bg-red-400/10"><Trash2 className="h-3.5 w-3.5" /> {ui.resumeRemove}</button>
+            <p className="text-xs text-zinc-500">{ui.resumeNote}</p>
+            <a href={siteSettingsForm.resume_url} target="_blank" rel="noopener noreferrer" className="inline-flex w-fit items-center gap-2 rounded-full bg-gradient-to-r from-emerald-400 to-lime-300 px-4 py-2 text-sm font-black text-black"><FileText className="h-4 w-4" /> {t.resumeButton}</a>
+          </div>
+        ) : (
+          <DropUpload icon={FileText} accept="application/pdf" label={ui.dropPdf} hint={ui.dropHint} uploadImage={(file) => uploadFileToGithub(file, "documents")} busyLabel={ui.uploading} onUploaded={handleResumeUploaded} />
+        )}
+      </section>
+    </div>
+  );
+
+  const renderSettings = () => (
+    <div className="mx-auto grid max-w-3xl gap-4 p-4 sm:p-6">
+      <section className={cardClass}>
+        <div className="flex flex-wrap items-center gap-3">
+          <span className={`h-2.5 w-2.5 rounded-full ${tokenSaved ? "bg-emerald-400" : "bg-red-400"}`} />
+          <div className="flex-1">
+            <h3 className="font-black">GitHub</h3>
+            <p data-github-status className="text-xs text-zinc-400">{tokenSaved ? ui.setGithubOk : ui.setGithubMissing}</p>
+          </div>
+          <button type="button" onClick={() => setShowGithubToken((current) => !current)} className={secondaryButton}>
+            {showGithubToken ? ui.hideToken : tokenSaved ? ui.changeToken : ui.enterToken}
+          </button>
+          <button type="button" onClick={testGithubToken} className={secondaryButton}><Code2 className="h-4 w-4" /> {t.testTokenButton}</button>
+        </div>
+        {showGithubToken && (
+          <div className="mt-4 grid gap-3 border-t border-white/10 pt-4">
+            <p className="text-sm leading-6 text-zinc-300">
+              {t.githubTokenIntroPre}<span className="font-bold text-white">Contents: Read and write</span>{t.githubTokenIntroMid}<span className="font-bold text-white">{GITHUB_REPO_OWNER}/{GITHUB_REPO_NAME}</span>{t.githubTokenIntroPost}
+            </p>
+            <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
+              <input type="password" aria-label="GitHub token" value={githubToken} onChange={(event) => setGithubToken(event.target.value)} className={inputClass} placeholder="github_pat_..." />
+              <button type="button" onClick={saveGithubToken} className="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-400 px-4 py-2 text-sm font-black text-black hover:bg-sky-300"><Save className="h-4 w-4" /> {t.saveTokenButton}</button>
+            </div>
+          </div>
+        )}
+      </section>
+      <section className={`${cardClass} flex flex-wrap items-center gap-3`}>
+        <KeyRound className="h-5 w-5 text-cyan-300" />
+        <div className="flex-1">
+          <h3 className="font-black">{ui.passwordTitle}</h3>
+          <p className="text-xs text-zinc-400">{ui.passwordDesc}</p>
+        </div>
+        <button type="button" onClick={() => setShowPasswordModal(true)} className={secondaryButton}>{ui.passwordBtn}</button>
+      </section>
+      <section className={`${cardClass} flex flex-wrap items-center gap-3`}>
+        <h3 className="flex-1 font-black">{ui.uiLangTitle}</h3>
+        <div className="flex rounded-full border border-white/10 bg-white/5 p-1">
+          {LANGUAGES.map((language) => (
+            <button key={language} type="button" onClick={() => changeUiLanguage(language)} className={`rounded-full px-3 py-1.5 text-xs font-black uppercase ${uiLanguage === language ? "bg-cyan-400 text-black" : "text-zinc-400 hover:text-white"}`}>{language}</button>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+
+  const viewBody = {
+    home: renderHome,
+    posts: renderPosts,
+    editor: renderEditor,
+    order: renderOrder,
+    hometext: renderHomeText,
+    gallery: renderGallery,
+    journey: renderJourney,
+    look: renderLook,
+    settings: renderSettings,
+  }[view]();
+
+  return (
+    <div className="flex h-screen overflow-hidden bg-[#050816] text-white">
+      {navOpen && <button type="button" aria-label="Close menu" className="fixed inset-0 z-30 bg-black/60 lg:hidden" onClick={() => setNavOpen(false)} />}
+      <aside className={`fixed inset-y-0 left-0 z-40 flex w-64 shrink-0 flex-col gap-1 overflow-y-auto border-r border-white/10 bg-[#07101f] p-3 transition-transform lg:static lg:translate-x-0 ${navOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        <div className="flex items-center gap-3 px-2 pb-4 pt-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-400 text-black"><CircuitBoard className="h-5 w-5" /></div>
+          <span className="font-black">ElektronikLab</span>
+          <button type="button" onClick={() => setNavOpen(false)} aria-label="Close menu" className="ml-auto rounded-md p-1 text-zinc-400 lg:hidden"><X className="h-5 w-5" /></button>
+        </div>
+        {navGroups.map((group, groupIndex) => (
+          <div key={groupIndex} className="grid gap-0.5">
+            {group.title && <p className="px-3 pb-1 pt-4 text-[10.5px] font-bold uppercase tracking-wider text-zinc-500">{group.title}</p>}
+            {group.items.map((item) => {
+              const active = item.id === view || (item.id === "posts" && view === "editor");
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  data-nav={item.id}
+                  aria-current={active ? "page" : undefined}
+                  onClick={() => goTo(item.id)}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium transition ${active ? "bg-cyan-400/15 font-bold text-white" : "text-zinc-400 hover:bg-white/5 hover:text-white"}`}
+                >
+                  <item.icon className="h-[18px] w-[18px] shrink-0" />
+                  <span className="flex-1 truncate">{item.label}</span>
+                  {navDirty[item.id] && <span title={ui.pending(1)} className="h-2 w-2 shrink-0 rounded-full bg-amber-400" />}
+                  {item.badge !== undefined && <span className="rounded-full border border-white/10 px-2 text-[11px] text-zinc-400">{item.badge}</span>}
+                </button>
+              );
+            })}
+          </div>
+        ))}
+        <div className="mt-auto grid gap-1 border-t border-white/10 px-2 pt-3 text-xs text-zinc-400">
+          <button type="button" onClick={() => goTo("settings")} className="flex items-center gap-2 text-left hover:text-white">
+            <span className={`h-2 w-2 rounded-full ${tokenSaved ? "bg-emerald-400" : "bg-red-400"}`} />
+            {tokenSaved ? ui.githubOk : ui.githubMissing}
+          </button>
+          <a href={`/${GITHUB_REPO_NAME}/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-bold text-cyan-300 hover:text-cyan-200">{ui.viewSite} <ExternalLink className="h-3 w-3" /></a>
+        </div>
+      </aside>
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="relative z-20 flex flex-wrap items-center gap-3 border-b border-white/10 bg-[#07101f] px-4 py-3 sm:px-6">
+          <button type="button" onClick={() => setNavOpen(true)} aria-label={ui.openNav} className="rounded-lg border border-white/10 p-2 lg:hidden"><Menu className="h-5 w-5" /></button>
+          <div className="min-w-0 flex-1">
+            <h1 data-page-title className="truncate text-lg font-black">{pageTitle}</h1>
+            <p className="truncate text-xs text-zinc-400">{pageSub}</p>
+          </div>
+          <span data-dirty-state={dirtyCount ? "dirty" : "clean"} className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-bold ${dirtyCount ? "border-amber-400/40 text-amber-300" : "border-white/10 text-zinc-400"}`}>
+            <span className={`h-2 w-2 rounded-full ${dirtyCount ? "bg-amber-400" : "bg-emerald-400"}`} />
+            {dirtyCount ? ui.pending(dirtyCount) : ui.upToDate}
+          </span>
+          <div className="relative">
+            <button type="button" aria-label="More" aria-expanded={moreOpen} onClick={() => setMoreOpen((current) => !current)} className="rounded-xl border border-white/10 p-2 hover:bg-white/10"><Ellipsis className="h-5 w-5" /></button>
+            {moreOpen && (
               <>
-                <div>
-                  <label className={labelClass}>{t.translationIdLabel}</label>
-                  <input className={inputClass} value={form.translation_id} onChange={(e) => update("translation_id", slugify(e.target.value))} placeholder={t.translationIdPlaceholder} />
-                  <p className="mt-2 text-xs leading-5 text-zinc-500">{t.translationIdAvailable}{translationLanguages.length ? translationLanguages.map((item) => item.toUpperCase()).join(", ") : t.translationIdNone}</p>
-                </div>
-                <div>
-                  <label className={labelClass}>{t.slugLabel}</label>
-                  <input className={inputClass} value={form.slug} onChange={(e) => { setSlugEdited(true); update("slug", slugify(e.target.value)); }} placeholder={t.slugPlaceholder} />
-                </div>
-                <div>
-                  <label className={labelClass}>{t.sortOrderLabel}</label>
-                  <input className={inputClass} type="number" value={form.sort_order} onChange={(e) => update("sort_order", e.target.value)} />
+                <button type="button" aria-label="Close" className="fixed inset-0 z-10 cursor-default" onClick={() => setMoreOpen(false)} />
+                <div className="absolute right-0 top-full z-20 mt-2 grid w-60 gap-0.5 rounded-xl border border-white/10 bg-[#0c1627] p-1.5 shadow-2xl">
+                  {canExport && <button type="button" onClick={exportCurrent} className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"><Download className="h-4 w-4" /> {ui.menuExport}</button>}
+                  <button type="button" disabled={!dirtyCount} onClick={discardAll} className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10 disabled:opacity-40"><X className="h-4 w-4" /> {ui.menuDiscard}</button>
+                  <button type="button" onClick={onLogout} className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"><LogOut className="h-4 w-4" /> {ui.menuLogout}</button>
                 </div>
               </>
             )}
-            <div className="sm:col-span-2">
-              <label className={labelClass}>{t.excerptLabel}</label>
-              <textarea className={inputClass} rows={3} value={form.excerpt} onChange={(e) => update("excerpt", e.target.value)} />
-            </div>
-            <div className="sm:col-span-2">
-              <label className={labelClass}>{t.mainImageLabel}</label>
-              <div className="flex gap-2">
-                <input className={inputClass} value={form.image_url} onChange={(e) => update("image_url", e.target.value)} placeholder="/my-electronics-blog/images/posts/bild.webp" />
-                <ImageUploadButton label={t.uploadButton} subfolder="posts" uploadImage={uploadImageToGithub} loadingLabel={t.uploadingLabel} onUploaded={(url) => update("image_url", url)} />
-              </div>
-            </div>
-            <div className="sm:col-span-2">
-              <label className={labelClass}>{t.galleryImagesLabel}</label>
-              <textarea className={inputClass} rows={3} value={form.image_gallery} onChange={(e) => update("image_gallery", e.target.value)} />
-              <div className="mt-2">
-                <ImageUploadButton label={t.addImageButton} subfolder="posts" uploadImage={uploadImageToGithub} loadingLabel={t.uploadingLabel} onUploaded={(url) => update("image_gallery", form.image_gallery ? `${form.image_gallery}\n${url}` : url)} />
-              </div>
-            </div>
-            <div>
-              <label className={labelClass}>{t.tagsLabel}</label>
-              <input className={inputClass} value={form.tags} onChange={(e) => update("tags", e.target.value)} placeholder={t.tagsPlaceholder} />
-            </div>
-            <div>
-              <label className={labelClass}>{t.readTimeLabel}</label>
-              <input className={inputClass} value={form.read_time} onChange={(e) => update("read_time", e.target.value)} />
-            </div>
-            <div className="sm:col-span-2">
-              <label className={labelClass}>{form.content_type === "knowledge" ? t.externalLinkLabelKnowledge : t.externalLinkLabelProject}</label>
-              <input className={inputClass} value={form.external_link} onChange={(e) => update("external_link", e.target.value)} placeholder="https://..." />
-            </div>
-            <label className="flex items-center gap-3 text-sm font-bold text-zinc-300">
-              <input type="checkbox" checked={form.published} onChange={(e) => update("published", e.target.checked)} />
-              {t.publishedLabel}
-            </label>
           </div>
+          <button
+            type="button"
+            data-publish
+            disabled={!dirtyCount || publishing}
+            onClick={publishAll}
+            className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2 text-sm font-black text-black transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            <Upload className="h-4 w-4" /> {publishing ? ui.publishing : ui.publish}{dirtyCount > 0 && !publishing ? ` (${dirtyCount})` : ""}
+          </button>
+        </header>
+        <DeployStatusBanner state={deployState} onDismiss={() => setDeployState(null)} language={uiLanguage} />
+        <main className="min-h-0 flex-1 overflow-y-auto">{viewBody}</main>
+      </div>
 
-          <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
-            <label className={labelClass}>{t.markdownContentLabelRequired}</label>
-            <textarea className={`${inputClass} min-h-[420px] font-mono leading-6`} value={form.content} onChange={(e) => update("content", e.target.value)} />
-          </div>
-        </section>
-
-        <aside className="lg:sticky lg:top-[90px] lg:self-start">
-          <div className="space-y-5 rounded-2xl border border-white/10 bg-[#07111f]/95 p-5">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 className="font-black text-cyan-300">{t.previewLabel}</h2>
-              <div className="flex flex-wrap justify-end gap-2">
-                <button type="button" onClick={savePostToDirectory} className="inline-flex items-center gap-2 rounded-xl bg-cyan-400 px-4 py-2 text-sm font-black text-black transition hover:bg-cyan-300">
-                  <Code2 className="h-4 w-4" /> {t.saveGithubButton}
-                </button>
-                <button type="button" onClick={exportPost} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10">
-                  <Download className="h-4 w-4" /> {t.exportMdButton}
-                </button>
-              </div>
-            </div>
-            {saveMessage && <p className="text-xs font-bold text-emerald-300">{saveMessage}</p>}
-
-            <div>
-              <p className="mb-3 text-xs font-bold uppercase text-zinc-500">{t.blogCardLabel}</p>
-              <GradientBorder
-                gradient={previewIsIdea ? "from-zinc-600 via-zinc-500 to-zinc-600" : "from-cyan-400 via-cyan-500 to-cyan-400"}
-                rounded="rounded-[1.4rem] sm:rounded-[2rem]"
-                className="flex"
-                innerClassName="flex flex-1 flex-col overflow-hidden rounded-[1.35rem] sm:rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl"
-              >
-                <div className="h-44 w-full shrink-0 bg-black/30 sm:h-56">
-                  {form.image_url ? (
-                    <img src={form.image_url} alt="" className={`h-full w-full object-cover ${previewIsIdea ? "grayscale opacity-70" : ""}`} />
-                  ) : (
-                    <div className="flex h-full items-center justify-center text-sm text-zinc-600">{t.noMainImageText}</div>
-                  )}
-                </div>
-                <div className="flex flex-1 flex-col p-4 sm:p-6">
-                  <div className="mb-4 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
-                    <span className="inline-flex items-center gap-2 rounded-full bg-cyan-400 px-3 py-1 font-black text-black">{createElement(PreviewIcon, { className: "h-3.5 w-3.5" })} {form.category || t.categoryPlaceholder}</span>
-                    {form.content_type !== "knowledge" && <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 font-bold ${getStatusClasses(form.project_status)}`}>{getStatusLabel(form.project_status, form.language)}</span>}
-                    <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(form.created_at)}</span>
-                  </div>
-                  <h3 className="text-lg font-black leading-tight sm:text-2xl">{form.title || t.titlePlaceholderPreview}</h3>
-                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-zinc-400 sm:text-base sm:leading-7">{form.excerpt || t.excerptPlaceholderPreview}</p>
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {previewTags.map((tag) => <span key={tag} className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-400">#{tag}</span>)}
-                  </div>
-                  <div className="mt-auto pt-6">
-                    <span className="block rounded-2xl bg-cyan-400 px-5 py-3 text-center text-sm font-bold text-black sm:text-base">{t.readPostButtonPreview}</span>
-                  </div>
-                </div>
-              </GradientBorder>
-            </div>
-
-            <div className="border-t border-white/10 pt-5">
-              <p className="mb-3 text-xs font-bold uppercase text-zinc-500">{t.markdownContentLabel}</p>
-              <div className="prose prose-invert max-w-none prose-headings:text-white prose-p:text-zinc-300 prose-strong:text-white prose-li:text-zinc-300">
-                <ReactMarkdown>{form.content}</ReactMarkdown>
-              </div>
-            </div>
-          </div>
-        </aside>
-      </main>
+      {saveMessage && (
+        <div role="status" data-toast className="fixed bottom-4 left-1/2 z-50 flex w-[min(92vw,34rem)] -translate-x-1/2 items-start gap-3 rounded-xl border border-cyan-300/40 bg-[#0c1627] px-4 py-3 text-sm shadow-2xl">
+          <span className="flex-1 leading-6">{saveMessage}</span>
+          <button type="button" aria-label="Close" onClick={() => setSaveMessage("")} className="rounded-md p-1 hover:bg-white/10"><X className="h-4 w-4" /></button>
+        </div>
+      )}
+      {showPasswordModal && <AdminPasswordModal onClose={() => setShowPasswordModal(false)} language={uiLanguage} />}
     </div>
   );
 }
