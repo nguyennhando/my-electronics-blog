@@ -15,9 +15,9 @@ tags:
 read_time: 5 Min.
 published: true
 created_at: '2026-06-12T21:50:19.939Z'
-external_link: https://www.microsoft.com/store/productId/9N8M3J7R0W6Z?ocid=libraryshare
+external_link: https://drive.google.com/file/d/1X4DAh1dQHq8UpHyEUYdbxj6Lt7kWsuEt/view?usp=drive_link
 project_status: done
-sort_order: 200
+sort_order: 100
 ---
 
 # Voice Transcriber
