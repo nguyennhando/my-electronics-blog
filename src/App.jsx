@@ -3452,14 +3452,14 @@ function LiveCarousel({ tiles, w, getPostUrl, autoplay }) {
     <div data-live-carousel className="mt-9" onMouseEnter={() => { hoverRef.current = true; }} onMouseLeave={() => { hoverRef.current = false; }} onFocus={() => { hoverRef.current = true; }} onBlur={() => { hoverRef.current = false; }} onTouchStart={() => { hoverRef.current = true; }} onTouchEnd={() => { setTimeout(() => { hoverRef.current = false; }, 4000); }}>
       <div ref={trackRef} data-live-track onScroll={onScroll} className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {tiles.map(({ post, name, host, kind, hint }) => (
-          <a key={post.id} href={post.external_link || getPostUrl(post.id)} target="_blank" rel="noopener noreferrer" className="group flex shrink-0 basis-[88%] snap-start items-center gap-4 rounded-2xl border border-white/20 bg-white/[0.06] p-4 transition hover:border-[#F2B279] hover:bg-white/[0.1] min-[620px]:basis-[calc(50%-8px)] lg:basis-[calc(25%-12px)]">
-            <img src={post.image_url} alt="" loading="lazy" className="h-[84px] w-[84px] shrink-0 rounded-xl object-cover" />
-            <span className="flex min-w-0 flex-1 flex-col gap-1">
-              <span className="wb-mono inline-flex items-center gap-2 text-[10.5px] uppercase tracking-wider text-white/70"><span className={`h-2 w-2 shrink-0 rounded-full ${kind === "store" ? "bg-[#7FB2F5]" : "bg-[#38D39A]"}`} />{kind === "live" ? w.st_live : kind === "demo" ? w.st_demo : w.st_store}</span>
-              <span className="wb-head text-lg font-bold leading-snug">{name}</span>
-              <span className="wb-mono break-all text-[11px] text-[#F2B279]">{host}</span>
-              {hint && <span className="text-[11px] leading-4 text-white/70">{w.demo_hint}</span>}
-              <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold">{w.open} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span>
+          <a key={post.id} href={post.external_link || getPostUrl(post.id)} target="_blank" rel="noopener noreferrer" className="group flex h-[128px] shrink-0 basis-[88%] snap-start items-center gap-3.5 rounded-2xl border border-white/20 bg-white/[0.06] p-3 transition hover:border-[#F2B279] hover:bg-white/[0.1] min-[620px]:basis-[calc(50%-8px)] lg:basis-[calc(33.333%-11px)]">
+            <img src={post.image_url} alt="" loading="lazy" className="h-[100px] w-[132px] shrink-0 rounded-xl border border-white/15 object-cover object-top" />
+            <span className="flex min-w-0 flex-1 flex-col justify-center gap-0.5">
+              <span className="wb-mono inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-white/70"><span className={`h-1.5 w-1.5 shrink-0 rounded-full ${kind === "store" ? "bg-[#7FB2F5]" : "bg-[#38D39A]"}`} />{kind === "live" ? w.st_live : kind === "demo" ? w.st_demo : w.st_store}</span>
+              <span className="wb-head line-clamp-2 text-base font-bold leading-tight">{name}</span>
+              <span className="wb-mono truncate text-[11px] text-[#F2B279]">{host}</span>
+              {hint && <span className="truncate text-[10.5px] text-white/65" title={w.demo_hint}>{w.demo_hint}</span>}
+              <span className="mt-0.5 inline-flex items-center gap-1 text-[13px] font-semibold">{w.open} <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-1" /></span>
             </span>
           </a>
         ))}
