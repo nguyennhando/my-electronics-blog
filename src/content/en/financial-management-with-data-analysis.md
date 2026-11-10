@@ -11,14 +11,14 @@ image_gallery:
 - /my-electronics-blog/images/posts/finanzmanager-1.webp
 - /my-electronics-blog/images/posts/finanzmanager-2.webp
 - /my-electronics-blog/images/posts/finanzmanager-3.webp
-excerpt: Personal income and expense management with CSV import and export, real-time data analysis and a modern graphical interface. The complete source code is available through the project link.
+excerpt: Personal income and expense management with CSV import and export, real-time data analysis and a modern graphical interface. The app is available in the Microsoft Store.
 tags:
 - C++
 - Qt 6.9
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T08:43:30.945Z'
-external_link: https://github.com/nguyennhando/finanzmanager
+external_link: https://www.microsoft.com/store/productId/9NQQXN4P7DJJ?ocid=libraryshare
 project_status: done
 sort_order: 70
 ---
@@ -29,7 +29,7 @@ sort_order: 70
 
 GeldPilot is a modern desktop application for managing personal finances, developed with C++, Qt 6 and SQLite. It supports income and expense tracking, CSV import and export, and real-time data analysis through a modern graphical interface.
 
-The `Open project` button at the end of the page provides access to the complete source code.
+GeldPilot is available in the Microsoft Store. The `Open project` button at the end of the page opens the Store page.
 
 ## Overview
 
@@ -61,43 +61,11 @@ GeldPilot is a user-friendly application for managing income and expenses. Its i
 
 ## Installation
 
-### Precompiled Windows Version
+### Windows (Microsoft Store)
 
-1. Download the latest version from the Releases page.
-2. Extract the archive to a folder of your choice.
-3. Start `GeldPilot.exe`.
-
-### Build from Source
-
-Requirements:
-
-- Qt 6.9 or newer
-- CMake 3.16 or newer
-- A C++17-compatible compiler:
-  - Windows: MinGW-w64 or MSVC 2019+
-  - macOS: Xcode 12+
-  - Linux: GCC 9+ or Clang 10+
-
-Build steps:
-
-```bash
-git clone https://github.com/username/geldpilot.git
-cd geldpilot
-mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build . --config Release
-```
-
-Start the application:
-
-```bash
-# Windows
-./Release/GeldPilot.exe
-
-# Linux or macOS
-./GeldPilot
-```
+1. Open the [GeldPilot page in the Microsoft Store](https://www.microsoft.com/store/productId/9NQQXN4P7DJJ?ocid=libraryshare).
+2. Click **Install**.
+3. Start GeldPilot from the Start menu.
 
 ## Getting Started
 
@@ -260,14 +228,6 @@ Code style:
 - Descriptive German variable names
 - Extensive comments
 
-To contribute:
-
-1. Fork the repository.
-2. Create a feature branch.
-3. Make your changes.
-4. Test thoroughly.
-5. Create a pull request.
-
 Known topics:
 
 - Multiple selection for deletion is implemented.
@@ -278,8 +238,6 @@ Known topics:
 
 Need help?
 
-- Documentation: read the complete README.
-- Issues: report bugs on GitHub.
 - E-mail: `support@geldpilot.de`
 
 Frequently asked questions:
@@ -296,3 +254,9 @@ Developer: Nguyen Nhan Do
 Build: Qt 6.9, MinGW-w64, CMake
 
 Use GeldPilot to keep track of your finances and shape your financial future with confidence.
+
+---
+
+## Source code
+
+The source code of this project is on GitHub but is not shared publicly. If you are interested, please contact me at donguyennhan.de@gmail.com and I will share it with you.

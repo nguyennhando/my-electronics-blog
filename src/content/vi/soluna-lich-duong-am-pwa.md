@@ -187,6 +187,12 @@ SOLUNA cho thấy ngay cả một công cụ tưởng đơn giản như cuốn l
 
 ---
 
+## Mã nguồn
+
+Mã nguồn của dự án này nằm trên GitHub nhưng không được chia sẻ công khai. Nếu bạn quan tâm, hãy liên hệ với tôi qua e-mail donguyennhan.de@gmail.com để tôi chia sẻ.
+
+---
+
 ### SOLUNA
 
 **Phát triển bởi Nguyen Nhan Do**

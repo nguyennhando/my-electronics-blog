@@ -192,6 +192,12 @@ GEM Restaurant shows how much operation is hidden in a "simple" ordering and res
 
 ---
 
+## Source code
+
+The source code of this project is on GitHub but is not shared publicly. If you are interested, please contact me at donguyennhan.de@gmail.com and I will share it with you.
+
+---
+
 ### GEM Restaurant
 
 **Developed by Nguyen Nhan Do**

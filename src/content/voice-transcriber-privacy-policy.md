@@ -15,7 +15,7 @@ tags:
 read_time: 5 Min.
 published: true
 created_at: '2026-06-12T21:50:19.939Z'
-external_link: 
+external_link: https://www.microsoft.com/store/productId/9N8M3J7R0W6Z?ocid=libraryshare
 project_status: done
 sort_order: 100
 ---

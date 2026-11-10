@@ -187,6 +187,12 @@ SOLUNA zeigt, dass sich auch ein scheinbar einfaches Werkzeug wie ein Kalender s
 
 ---
 
+## Quellcode
+
+Der Quellcode dieses Projekts liegt auf GitHub, wird aber nicht öffentlich geteilt. Wenn Sie sich dafür interessieren, schreiben Sie mir gern eine E-Mail an donguyennhan.de@gmail.com, dann teile ich ihn mit Ihnen.
+
+---
+
 ### SOLUNA
 
 **Entwickelt von Nguyen Nhan Do**

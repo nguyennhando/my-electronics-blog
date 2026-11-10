@@ -18,7 +18,7 @@ tags:
 read_time: 5 Min.
 published: true
 created_at: '2026-08-04T21:03:35.667Z'
-external_link: https://github.com/nguyennhando/Tablio-Android-APK/releases/tag/v0.3.19
+external_link: 
 project_status: done
 sort_order: 50
 ---
@@ -90,3 +90,9 @@ flowchart TB
     API --> DB[(PostgreSQL + Prisma)]
     API --> Printer[ESC/POS printer layer]
     API --> TSE[TSE provider layer]
+
+---
+
+## Source code
+
+The source code of this project is on GitHub but is not shared publicly. If you are interested, please contact me at donguyennhan.de@gmail.com and I will share it with you.

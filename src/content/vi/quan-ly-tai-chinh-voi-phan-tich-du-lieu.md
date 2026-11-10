@@ -11,14 +11,14 @@ image_gallery:
 - /my-electronics-blog/images/posts/finanzmanager-1.webp
 - /my-electronics-blog/images/posts/finanzmanager-2.webp
 - /my-electronics-blog/images/posts/finanzmanager-3.webp
-excerpt: Quản lý thu nhập và chi tiêu cá nhân với nhập xuất CSV, phân tích dữ liệu theo thời gian thực và giao diện đồ họa hiện đại. Mã nguồn đầy đủ có trong liên kết dự án.
+excerpt: Quản lý thu nhập và chi tiêu cá nhân với nhập xuất CSV, phân tích dữ liệu theo thời gian thực và giao diện đồ họa hiện đại. Ứng dụng có trên Microsoft Store.
 tags:
 - C++
 - Qt 6.9
 read_time: 5 phút
 published: true
 created_at: '2026-05-28T08:43:30.945Z'
-external_link: https://github.com/nguyennhando/finanzmanager
+external_link: https://www.microsoft.com/store/productId/9NQQXN4P7DJJ?ocid=libraryshare
 project_status: done
 sort_order: 70
 ---
@@ -29,7 +29,7 @@ sort_order: 70
 
 GeldPilot là ứng dụng desktop hiện đại để quản lý tài chính cá nhân, được phát triển bằng C++, Qt 6 và SQLite. Phần mềm hỗ trợ theo dõi thu nhập và chi tiêu, nhập xuất CSV và phân tích dữ liệu theo thời gian thực thông qua giao diện đồ họa hiện đại.
 
-Nút `Mở dự án` ở cuối trang dẫn đến toàn bộ mã nguồn.
+GeldPilot có trên Microsoft Store. Nút `Mở dự án` ở cuối trang mở trang của ứng dụng trên Store.
 
 ## Tổng quan
 
@@ -61,43 +61,11 @@ GeldPilot là ứng dụng thân thiện để quản lý thu nhập và chi ti�
 
 ## Cài đặt
 
-### Phiên bản Windows đã biên dịch
+### Windows (Microsoft Store)
 
-1. Tải phiên bản mới nhất từ trang Releases.
-2. Giải nén vào thư mục mong muốn.
-3. Chạy `GeldPilot.exe`.
-
-### Biên dịch từ mã nguồn
-
-Yêu cầu:
-
-- Qt 6.9 trở lên
-- CMake 3.16 trở lên
-- Trình biên dịch tương thích C++17:
-  - Windows: MinGW-w64 hoặc MSVC 2019+
-  - macOS: Xcode 12+
-  - Linux: GCC 9+ hoặc Clang 10+
-
-Các bước biên dịch:
-
-```bash
-git clone https://github.com/username/geldpilot.git
-cd geldpilot
-mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build . --config Release
-```
-
-Khởi chạy ứng dụng:
-
-```bash
-# Windows
-./Release/GeldPilot.exe
-
-# Linux hoặc macOS
-./GeldPilot
-```
+1. Mở [trang GeldPilot trên Microsoft Store](https://www.microsoft.com/store/productId/9NQQXN4P7DJJ?ocid=libraryshare).
+2. Nhấn **Cài đặt**.
+3. Chạy GeldPilot từ menu Start.
 
 ## Bắt đầu sử dụng
 
@@ -260,14 +228,6 @@ Quy ước code:
 - Tên biến tiếng Đức có mô tả rõ ràng
 - Chú thích đầy đủ
 
-Để đóng góp:
-
-1. Fork repository.
-2. Tạo feature branch.
-3. Thực hiện thay đổi.
-4. Kiểm thử kỹ.
-5. Tạo pull request.
-
 Các nội dung đã biết:
 
 - Đã triển khai chọn nhiều giao dịch để xóa.
@@ -278,8 +238,6 @@ Các nội dung đã biết:
 
 Khi cần trợ giúp:
 
-- Tài liệu: đọc toàn bộ README.
-- Issues: báo lỗi trên GitHub.
 - E-mail: `support@geldpilot.de`
 
 Câu hỏi thường gặp:
@@ -296,3 +254,9 @@ Nhà phát triển: Nguyen Nhan Do
 Build: Qt 6.9, MinGW-w64, CMake
 
 Sử dụng GeldPilot để kiểm soát tài chính và chủ động xây dựng tương lai tài chính của bạn.
+
+---
+
+## Mã nguồn
+
+Mã nguồn của dự án này nằm trên GitHub nhưng không được chia sẻ công khai. Nếu bạn quan tâm, hãy liên hệ với tôi qua e-mail donguyennhan.de@gmail.com để tôi chia sẻ.
