@@ -1480,6 +1480,19 @@ function PostDetailPage({ post, onBack, language }) {
               </div>
             </div>
 
+            {/* Gallery (directly under the hero image) */}
+            {normalizeImageList(post.image_gallery).length > 0 && (
+              <div className="px-5 pt-6 sm:px-8 lg:px-10">
+                <p className="mb-4 text-sm font-bold uppercase tracking-widest text-cyan-300">{t.projectImages}</p>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {normalizeImageList(post.image_gallery).map((url, i) => (
+                    <img key={url} src={url} alt={`${t.image} ${i + 1}`} onClick={() => setLightboxIndex(i + 1)}
+                      className="h-36 w-full cursor-zoom-in rounded-2xl object-cover transition hover:brightness-110" />
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="p-5 sm:p-8 lg:p-10">
               {post.is_translation_fallback && (
                 <p className="mb-5 rounded-xl border border-yellow-400/25 bg-yellow-400/10 px-4 py-3 text-sm leading-6 text-yellow-100">{t.translationFallback}</p>
@@ -1516,19 +1529,6 @@ function PostDetailPage({ post, onBack, language }) {
                   {post.content}
                 </ReactMarkdown>
               </div>
-
-              {/* Gallery */}
-              {normalizeImageList(post.image_gallery).length > 0 && (
-                <div className="mt-8">
-                  <p className="mb-4 text-sm font-bold uppercase tracking-widest text-cyan-300">{t.projectImages}</p>
-                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                    {normalizeImageList(post.image_gallery).map((url, i) => (
-                      <img key={url} src={url} alt={`${t.image} ${i + 1}`} onClick={() => setLightboxIndex(i + 1)}
-                        className="h-36 w-full cursor-zoom-in rounded-2xl object-cover transition hover:brightness-110" />
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* Tags */}
               {!!(Array.isArray(post.tags) ? post.tags : []).length && (
