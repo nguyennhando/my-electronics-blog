@@ -26,7 +26,7 @@ read_time: 9 Min.
 published: true
 created_at: '2026-11-10T21:30:00.000Z'
 external_link: 
-project_status: in_progress
+project_status: done
 sort_order: 100
 ---
 
