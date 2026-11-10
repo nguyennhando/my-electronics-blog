@@ -28,7 +28,7 @@ published: true
 created_at: '2026-08-04T21:03:35.667Z'
 external_link: https://demo.tavrion.de/
 project_status: done
-sort_order: 50
+sort_order: 60
 ---
 
 # TABLIO Kasse
