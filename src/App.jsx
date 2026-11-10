@@ -2,8 +2,9 @@ import CookieBanner from "./components/CookieBanner";
 import { createElement, useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { CONTENT_POSTS, GALLERY_IMAGES, HOME_CONTENTS, PERSONAL_WAY, PERSONAL_WAYS, SITE_SETTINGS, getLocalizedContentPosts, getLocalizedHomeContent, getLocalizedPersonalWay, getTranslationLanguages } from "./lib/posts";
-import { getWbText, WB_SKILLS } from "./lib/werkbankText";
+import { CONTENT_POSTS, GALLERY_IMAGES, HOME_CONTENTS, PERSONAL_WAY, PERSONAL_WAYS, SITE_SETTINGS, getLocalizedContentPosts, getLocalizedHomeContent, getLocalizedPersonalWay, getSiteTextOverrides, getTranslationLanguages } from "./lib/posts";
+import { getWbText, getWbSkills } from "./lib/werkbankText";
+import { COOKIE_TEXT, WB_TEXT_GROUPS, UI_TEXT_GROUPS, LONG_TEXT_KEYS, getWbDefaults } from "./lib/siteTexts";
 
 import {
   CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X,
@@ -87,13 +88,35 @@ const UI_TEXT = {
     resumeButton: "Xem sơ yếu lý lịch",
   },
 };
+const UI_OVERRIDE_KEYS = UI_TEXT_GROUPS.flatMap(([, keys]) => keys).filter((key) => !/^(kn_|cookie_)/.test(key));
+
+// Standardwerte der Oberflächentexte (ohne Admin-Überschreibungen), für den Admin-Bereich „Website-Texte“.
+const getUiDefaults = (language) => {
+  const base = UI_TEXT[language] || UI_TEXT.de;
+  const cookie = COOKIE_TEXT[language] || COOKIE_TEXT.de;
+  const out = { ...base, cookie_title: cookie.title, cookie_text: cookie.text, cookie_button: cookie.button };
+  (base.knowledgeNoticeParagraphs || []).forEach((paragraph, index) => { out[`kn_${index + 1}`] = paragraph; });
+  return out;
+};
+
+const applyUiOverrides = (uiText, language) => {
+  const custom = getSiteTextOverrides(language);
+  const out = { ...uiText };
+  UI_OVERRIDE_KEYS.forEach((key) => { if (typeof custom[key] === "string" && custom[key].trim()) out[key] = custom[key].trim(); });
+  if (Array.isArray(uiText.knowledgeNoticeParagraphs)) {
+    out.knowledgeNoticeParagraphs = uiText.knowledgeNoticeParagraphs.map((paragraph, index) => (custom[`kn_${index + 1}`] || "").trim() || paragraph);
+  }
+  return out;
+};
+
 const getUiText = (language) => {
   const uiText = UI_TEXT[language] || UI_TEXT.de;
   const homeContent = getLocalizedHomeContent(language);
+  const stats = [1, 2, 3, 4].map((n) => ({ value: (homeContent?.[`stat_${n}_value`] || "").trim(), label: (homeContent?.[`stat_${n}_label`] || "").trim() }));
 
-  if (!homeContent) return uiText;
+  if (!homeContent) return applyUiOverrides({ ...uiText, stats }, language);
 
-  return {
+  return applyUiOverrides({
     ...uiText,
     heroBadge: homeContent.hero_badge,
     heroTitle: homeContent.hero_title,
@@ -105,7 +128,29 @@ const getUiText = (language) => {
     warningTwo: homeContent.warning_two,
     collaborationTitle: homeContent.collaboration_title,
     collaborationText: homeContent.collaboration_text,
-    stats: [1, 2, 3, 4].map((n) => ({ value: (homeContent[`stat_${n}_value`] || "").trim(), label: (homeContent[`stat_${n}_label`] || "").trim() })),
+    stats,
+  }, language);
+};
+
+// Logo, Name, Porträt, Kontakt-E-Mail und Live-Kacheln aus site-settings.md (Admin → Logo & Website).
+const SITE_DEFAULTS = {
+  logo_image: "",
+  logo_text: "NND",
+  site_name: "Nguyen Nhan Do",
+  hero_image: "/my-electronics-blog/images/posts/Nguyen-main.webp",
+  contact_email: "donguyennhan.de@gmail.com",
+  live_tiles: "gem-restaurant-platform, tablio-kasse-lokales-pos-system-mit-tse-fiskalisierung-von-grund-auf, local-post-1779957810945, voice-transcriber-privacy-policy",
+};
+const getSiteConfig = (settings = SITE_SETTINGS) => {
+  const pick = (key) => String(settings?.[key] ?? "").trim() || SITE_DEFAULTS[key];
+  return {
+    logoImage: String(settings?.logo_image ?? "").trim(),
+    logoText: pick("logo_text"),
+    siteName: pick("site_name"),
+    heroImage: pick("hero_image"),
+    email: pick("contact_email"),
+    liveTiles: pick("live_tiles").split(",").map((item) => item.trim()).filter(Boolean),
+    resumeUrl: String(settings?.resume_url ?? "").trim(),
   };
 };
 
@@ -758,6 +803,12 @@ const createSiteSettingsFile = (siteSettings) => `---
 type: site_settings
 background_image: ${singleLine(siteSettings.background_image)}
 resume_url: ${singleLine(siteSettings.resume_url)}
+logo_image: ${singleLine(siteSettings.logo_image)}
+logo_text: ${singleLine(siteSettings.logo_text)}
+site_name: ${singleLine(siteSettings.site_name)}
+hero_image: ${singleLine(siteSettings.hero_image)}
+contact_email: ${singleLine(siteSettings.contact_email)}
+live_tiles: ${singleLine(siteSettings.live_tiles)}
 ---
 `;
 
@@ -1232,6 +1283,7 @@ function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange
   const [menuOpen, setMenuOpen] = useState(false);
   const t = getUiText(language);
   const w = getWbText(language);
+  const site = getSiteConfig();
 
   const scrollTo = (id) => {
     setMenuOpen(false);
@@ -1251,9 +1303,11 @@ function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange
     <header className="wb fixed top-0 left-0 right-0 z-50 border-b border-[#C9D3CD] bg-[#F3F5F2]/90 backdrop-blur-xl">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-5">
         <button type="button" onClick={goHome} className="flex items-center gap-3 text-left">
-          <span className="wb-head flex h-10 w-10 items-center justify-center rounded-lg bg-[#0B5A44] text-sm font-bold tracking-tight text-white sm:h-11 sm:w-11">NND</span>
+          {site.logoImage
+            ? <img src={site.logoImage} alt={site.siteName} className="h-10 w-10 rounded-lg object-contain sm:h-11 sm:w-11" />
+            : <span className="wb-head flex h-10 w-10 items-center justify-center rounded-lg bg-[#0B5A44] text-sm font-bold tracking-tight text-white sm:h-11 sm:w-11">{site.logoText}</span>}
           <div>
-            <p className="wb-head text-base font-bold text-[#0F1A17] sm:text-lg">Nguyen Nhan Do</p>
+            <p className="wb-head text-base font-bold text-[#0F1A17] sm:text-lg">{site.siteName}</p>
             <p className="text-[10px] leading-tight text-[#4A5A54] sm:text-xs">{t.tagline}</p>
           </div>
         </button>
@@ -1668,10 +1722,57 @@ function DeployStatusBanner({ state, onDismiss, language = "de" }) {
   );
 }
 
+const ALL_TEXT_KEYS = [...WB_TEXT_GROUPS, ...UI_TEXT_GROUPS].flatMap(([, keys]) => keys);
+
+const createSiteTextsFile = (draft, language) => `---
+type: site_texts
+language: ${language}
+${ALL_TEXT_KEYS.filter((key) => String(draft[key] || "").trim()).map((key) => `${key}: ${singleLine(String(draft[key]).trim())}`).join("\n")}
+---
+`;
+
+const normalizeTextDraft = (draft) => Object.fromEntries(
+  ALL_TEXT_KEYS.filter((key) => String(draft?.[key] || "").trim()).map((key) => [key, String(draft[key]).trim()]),
+);
+
+// Beschriftungen der Admin-Bereiche „Website-Texte“ sowie „Logo & Website“ (de / en / vi).
+const SITE_TEXT_UI = {
+  de: {
+    nav: "Website-Texte", sub: "Alle Beschriftungen der Website ändern. Leer lassen = Standardtext",
+    hint: "Jedes Feld zeigt den Standardtext grau an. Nur ausgefüllte Felder ersetzen ihn. Mit „Zurücksetzen“ gilt wieder der Standard.",
+    search: "Feld oder Text suchen…", reset: "Zurücksetzen", none: "Keine passenden Felder.",
+    groups: { groupNav: "Menü", groupHero: "Kopfbereich: Schaltflächen und Hinweise", groupProjects: "Projekte", groupLive: "Live und zum Ausprobieren", groupSkills: "Kompetenzen (Listen mit Komma getrennt)", groupPath: "Mein Weg (Zeitleiste)", groupKnowledge: "Wissen und Forschung (Startseite)", groupContact: "Kontakt und Fußzeile", groupSite: "Allgemein", groupPostPage: "Projektseite", groupKnowledgePage: "Wissensbibliothek", groupContactInfo: "Kontakt-Angaben", groupLegal: "Rechtliches und Zurück", groupCookie: "Datenschutzhinweis (Cookie-Banner)" },
+    logoTitle: "Logo und Name", logoImage: "Logo-Bild", logoImageHint: "Leer = Textlogo", logoText: "Text im Logo (ohne Bild)", siteName: "Name in der Kopfzeile", logoRemove: "Logo-Bild entfernen",
+    heroTitle: "Porträt im Kopfbereich", heroRemove: "Standardbild verwenden",
+    contactTitle: "Kontakt und Live-Kacheln", contactEmail: "Kontakt-E-Mail", liveTiles: "Live-Kacheln (IDs der Beiträge, mit Komma getrennt)", liveTilesHint: "Die ID steht im Beitrag unter „Erweitert“ (gemeinsame Beitrags-ID). Reihenfolge = Reihenfolge auf der Startseite.",
+    legalNote: "Impressum und Datenschutzerklärung sind rechtliche Texte und stehen fest im Programm.",
+  },
+  en: {
+    nav: "Website texts", sub: "Change every label on the website. Empty = default text",
+    hint: "Each field shows the default text in grey. Only filled-in fields replace it. \"Reset\" brings the default back.",
+    search: "Search field or text…", reset: "Reset", none: "No matching fields.",
+    groups: { groupNav: "Menu", groupHero: "Hero: buttons and notes", groupProjects: "Projects", groupLive: "Live and ready to try", groupSkills: "Skills (comma-separated lists)", groupPath: "My path (timeline)", groupKnowledge: "Knowledge and research (home page)", groupContact: "Contact and footer", groupSite: "General", groupPostPage: "Project page", groupKnowledgePage: "Knowledge library", groupContactInfo: "Contact details", groupLegal: "Legal and back", groupCookie: "Privacy notice (cookie banner)" },
+    logoTitle: "Logo and name", logoImage: "Logo image", logoImageHint: "Empty = text logo", logoText: "Text in the logo (without image)", siteName: "Name in the header", logoRemove: "Remove logo image",
+    heroTitle: "Portrait in the hero", heroRemove: "Use the default image",
+    contactTitle: "Contact and live tiles", contactEmail: "Contact e-mail", liveTiles: "Live tiles (post IDs, comma-separated)", liveTilesHint: "The ID is shown in the post under \"Advanced\" (shared post ID). Order = order on the home page.",
+    legalNote: "The legal notice and privacy policy are legal texts and are fixed in the program.",
+  },
+  vi: {
+    nav: "Chữ trên website", sub: "Đổi mọi nhãn của website. Để trống = dùng chữ mặc định",
+    hint: "Mỗi ô hiện chữ mặc định màu xám. Chỉ ô nào có nội dung mới thay thế chữ đó. Bấm \"Đặt lại\" để dùng lại chữ mặc định.",
+    search: "Tìm ô hoặc nội dung…", reset: "Đặt lại", none: "Không có ô phù hợp.",
+    groups: { groupNav: "Menu", groupHero: "Đầu trang: nút và ghi chú", groupProjects: "Dự án", groupLive: "Chạy thật và dùng thử", groupSkills: "Năng lực (danh sách cách nhau bằng dấu phẩy)", groupPath: "Hành trình (dòng thời gian)", groupKnowledge: "Kiến thức và nghiên cứu (trang chủ)", groupContact: "Liên hệ và chân trang", groupSite: "Chung", groupPostPage: "Trang dự án", groupKnowledgePage: "Thư viện kiến thức", groupContactInfo: "Thông tin liên hệ", groupLegal: "Pháp lý và quay lại", groupCookie: "Thông báo quyền riêng tư (cookie)" },
+    logoTitle: "Logo và tên", logoImage: "Ảnh logo", logoImageHint: "Để trống = logo chữ", logoText: "Chữ trong logo (khi không có ảnh)", siteName: "Tên ở thanh đầu trang", logoRemove: "Gỡ ảnh logo",
+    heroTitle: "Ảnh chân dung ở đầu trang", heroRemove: "Dùng ảnh mặc định",
+    contactTitle: "Liên hệ và các ô chạy thật", contactEmail: "E-mail liên hệ", liveTiles: "Các ô chạy thật (ID bài viết, cách nhau bằng dấu phẩy)", liveTilesHint: "ID nằm trong bài viết, mục \"Nâng cao\" (ID bài viết chung). Thứ tự = thứ tự trên trang chủ.",
+    legalNote: "Thông tin pháp lý và chính sách quyền riêng tư là văn bản pháp lý và được cố định trong chương trình.",
+  },
+};
+
 const ADMIN_UI = {
   de: {
     navOverview: "Übersicht", navContent: "Inhalte", navPosts: "Beiträge", navOrder: "Reihenfolge", navHomepage: "Startseite",
-    navHomeText: "Startseiten-Texte", navGallery: "Galerie", navJourney: "Persönlicher Weg", navSite: "Gesamte Website", navLook: "Hintergrund & Lebenslauf", navSettings: "Einstellungen",
+    navHomeText: "Startseiten-Texte", navGallery: "Galerie", navJourney: "Persönlicher Weg", navSite: "Gesamte Website", navLook: "Logo, Porträt & Lebenslauf", navSettings: "Einstellungen",
     pages: {
       home: ["Übersicht", "Was möchten Sie heute tun?"],
       posts: ["Beiträge", "Beitrag zum Bearbeiten wählen oder neu schreiben"],
@@ -1680,7 +1781,7 @@ const ADMIN_UI = {
       hometext: ["Startseiten-Texte", "Titel, Einleitung und Feature-Karten"],
       gallery: ["Galerie", "Bilder im Showcase der Startseite"],
       journey: ["Persönlicher Weg", "Die Karte über Sie auf der Startseite"],
-      look: ["Hintergrund & Lebenslauf", "Hintergrundbild und Lebenslauf-Button"],
+      look: ["Logo, Porträt & Lebenslauf", "Logo, Name, Porträt, Kontakt-E-Mail, Live-Kacheln, Lebenslauf, Hintergrund"],
       settings: ["Einstellungen", "GitHub-Verbindung, Passwort, Sprache"],
     },
     greet: "Willkommen zurück", greetSub: "Wählen Sie eine Aufgabe. Alles andere finden Sie links in der Navigation.",
@@ -1712,7 +1813,7 @@ const ADMIN_UI = {
   },
   en: {
     navOverview: "Overview", navContent: "Content", navPosts: "Posts", navOrder: "Order", navHomepage: "Home page",
-    navHomeText: "Home page text", navGallery: "Gallery", navJourney: "Personal journey", navSite: "Whole site", navLook: "Background & resume", navSettings: "Settings",
+    navHomeText: "Home page text", navGallery: "Gallery", navJourney: "Personal journey", navSite: "Whole site", navLook: "Logo, portrait & resume", navSettings: "Settings",
     pages: {
       home: ["Overview", "What would you like to do today?"],
       posts: ["Posts", "Pick a post to edit or write a new one"],
@@ -1721,7 +1822,7 @@ const ADMIN_UI = {
       hometext: ["Home page text", "Title, intro and feature cards"],
       gallery: ["Gallery", "Images in the home page showcase"],
       journey: ["Personal journey", "The card about you on the home page"],
-      look: ["Background & resume", "Background image and resume button"],
+      look: ["Logo, portrait & resume", "Logo, name, portrait, contact e-mail, live tiles, resume, background"],
       settings: ["Settings", "GitHub connection, password, language"],
     },
     greet: "Welcome back", greetSub: "Pick a task. Everything else is in the navigation on the left.",
@@ -1753,7 +1854,7 @@ const ADMIN_UI = {
   },
   vi: {
     navOverview: "Tổng quan", navContent: "Nội dung", navPosts: "Bài viết", navOrder: "Thứ tự bài", navHomepage: "Trang chủ",
-    navHomeText: "Chữ trang chủ", navGallery: "Gallery", navJourney: "Hành trình", navSite: "Toàn site", navLook: "Nền & CV", navSettings: "Cài đặt",
+    navHomeText: "Chữ trang chủ", navGallery: "Gallery", navJourney: "Hành trình", navSite: "Toàn site", navLook: "Logo, ảnh & CV", navSettings: "Cài đặt",
     pages: {
       home: ["Tổng quan", "Hôm nay bạn muốn làm gì?"],
       posts: ["Bài viết", "Chọn một bài để sửa hoặc viết bài mới"],
@@ -1762,7 +1863,7 @@ const ADMIN_UI = {
       hometext: ["Chữ trang chủ", "Tiêu đề, giới thiệu và các thẻ tính năng"],
       gallery: ["Gallery", "Ảnh hiện ở khu trình diễn trang chủ"],
       journey: ["Hành trình", "Thẻ giới thiệu bản thân trên trang chủ"],
-      look: ["Nền & CV", "Ảnh nền toàn site và nút tải CV"],
+      look: ["Logo, ảnh & CV", "Logo, tên, ảnh chân dung, e-mail liên hệ, ô chạy thật, CV, ảnh nền"],
       settings: ["Cài đặt", "Kết nối GitHub, mật khẩu, ngôn ngữ"],
     },
     greet: "Chào mừng quay lại", greetSub: "Chọn một việc. Mọi thứ khác nằm ở thanh bên trái.",
@@ -1908,6 +2009,10 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   const [homeLang, setHomeLang] = useState("de");
   const [homeDrafts, setHomeDrafts] = useState(() => buildLanguageDrafts(HOME_CONTENTS, getLocalizedHomeContent));
   const [homeBase, setHomeBase] = useState(() => buildLanguageDrafts(HOME_CONTENTS, getLocalizedHomeContent));
+  const [textLang, setTextLang] = useState("de");
+  const [textSearch, setTextSearch] = useState("");
+  const [textDrafts, setTextDrafts] = useState(() => Object.fromEntries(LANGUAGES.map((language) => [language, normalizeTextDraft(getSiteTextOverrides(language))])));
+  const [textBase, setTextBase] = useState(() => Object.fromEntries(LANGUAGES.map((language) => [language, normalizeTextDraft(getSiteTextOverrides(language))])));
   const homeContentForm = homeDrafts[homeLang];
   const setHomeContentForm = (updater) => setHomeDrafts((current) => ({
     ...current,
@@ -1937,6 +2042,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   const [projectOrderIds, setProjectOrderIds] = useState(initialOrderIds);
   const [orderBase, setOrderBase] = useState(initialOrderIds.join("|"));
   const ui = ADMIN_UI[uiLanguage] || ADMIN_UI.de;
+  const stui = SITE_TEXT_UI[uiLanguage] || SITE_TEXT_UI.de;
 
   const update = (key, value) => {
     setForm((current) => {
@@ -2350,6 +2456,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   // ── Unsaved-change tracking (compares every editor against what is currently live) ──
   const postDirty = JSON.stringify(form) !== postBase;
   const homeDirtyLanguages = LANGUAGES.filter((language) => JSON.stringify(homeDrafts[language]) !== JSON.stringify(homeBase[language]));
+  const textDirtyLanguages = LANGUAGES.filter((language) => JSON.stringify(normalizeTextDraft(textDrafts[language])) !== JSON.stringify(normalizeTextDraft(textBase[language])));
   const wayDirtyLanguages = LANGUAGES.filter((language) => JSON.stringify(wayDrafts[language]) !== JSON.stringify(wayBase[language]));
   const siteDirty = JSON.stringify(siteSettingsForm) !== JSON.stringify(siteBase);
   const galleryDirty = splitLines(galleryImagesForm).join("\n") !== splitLines(galleryBase).join("\n");
@@ -2358,6 +2465,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     posts: postDirty,
     order: orderDirty,
     hometext: homeDirtyLanguages.length > 0,
+    sitetexts: textDirtyLanguages.length > 0,
     gallery: galleryDirty,
     journey: wayDirtyLanguages.length > 0,
     look: siteDirty,
@@ -2487,6 +2595,12 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
       markdown: createHomeContentFile({ ...homeDrafts[language], language }),
     }));
 
+    textDirtyLanguages.forEach((language) => addOutput({
+      filename: "site-texts.md",
+      directory: language,
+      markdown: createSiteTextsFile(textDrafts[language], language),
+    }));
+
     for (const language of wayDirtyLanguages) {
       const draft = { ...wayDrafts[language], language };
       if (!draft.title?.trim() || !draft.content?.trim()) {
@@ -2507,6 +2621,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     if (!saved) return;
 
     setHomeBase(homeDrafts);
+    setTextBase(textDrafts);
     setWayBase(wayDrafts);
     setSiteBase(siteSettingsForm);
     setGalleryBase(galleryImagesForm);
@@ -2548,6 +2663,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     setMoreOpen(false);
     if (!dirtyCount || !window.confirm(ui.discardAllConfirm)) return;
     setHomeDrafts(homeBase);
+    setTextDrafts(textBase);
     setWayDrafts(wayBase);
     setSiteSettingsForm(siteBase);
     setGalleryImagesForm(galleryBase);
@@ -2586,13 +2702,14 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     ] },
     { title: ui.navSite, items: [
       { id: "look", icon: Palette, label: ui.navLook },
+      { id: "sitetexts", icon: Pencil, label: stui.nav },
       { id: "settings", icon: Settings, label: ui.navSettings },
     ] },
   ];
 
   const [pageTitle, pageSub] = view === "editor"
     ? [form.title || ui.newPostTitle, ui.pages.editorSub]
-    : ui.pages[view];
+    : view === "sitetexts" ? [stui.nav, stui.sub] : ui.pages[view];
 
   const isGalleryEditorPost = splitLines(form.image_gallery);
 
@@ -2999,8 +3116,86 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
           <DropUpload icon={FileText} accept="application/pdf" label={ui.dropPdf} hint={ui.dropHint} uploadImage={(file) => uploadFileToGithub(file, "documents")} busyLabel={ui.uploading} onUploaded={handleResumeUploaded} />
         )}
       </section>
+      <section className={cardClass}>
+        <h3 className="mb-3 font-black">{stui.logoTitle}</h3>
+        <div className="mb-3 flex items-center gap-3 rounded-xl border border-white/10 bg-[#07111f] p-3">
+          {siteSettingsForm.logo_image
+            ? <img src={siteSettingsForm.logo_image} alt="" className="h-12 w-12 rounded-lg object-contain" />
+            : <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#0B5A44] text-sm font-black text-white">{siteSettingsForm.logo_text || "NND"}</span>}
+          <p className="text-sm font-bold">{siteSettingsForm.site_name || "Nguyen Nhan Do"}</p>
+        </div>
+        <DropUpload compact label={stui.logoImage} hint={stui.logoImageHint} subfolder="logo" uploadImage={uploadImageToGithub} busyLabel={ui.uploading} onUploaded={(url) => setSiteSettingsForm((current) => ({ ...current, logo_image: url }))} />
+        {siteSettingsForm.logo_image && (
+          <button type="button" onClick={() => setSiteSettingsForm((current) => ({ ...current, logo_image: "" }))} className={`${secondaryButton} mt-3 !py-1.5 text-xs`}>{stui.logoRemove}</button>
+        )}
+        <div className="mt-4 grid gap-3">
+          <AdminField label={stui.logoText}><input className={inputClass} value={siteSettingsForm.logo_text || ""} placeholder="NND" onChange={(event) => setSiteSettingsForm((current) => ({ ...current, logo_text: event.target.value }))} /></AdminField>
+          <AdminField label={stui.siteName}><input className={inputClass} value={siteSettingsForm.site_name || ""} placeholder="Nguyen Nhan Do" onChange={(event) => setSiteSettingsForm((current) => ({ ...current, site_name: event.target.value }))} /></AdminField>
+        </div>
+      </section>
+      <section className={cardClass}>
+        <h3 className="mb-3 font-black">{stui.heroTitle}</h3>
+        <div className="mb-3 h-44 overflow-hidden rounded-xl border border-white/10 bg-[#07111f]">
+          <img src={siteSettingsForm.hero_image || SITE_DEFAULTS.hero_image} alt="" className="h-full w-full object-cover object-top" />
+        </div>
+        <DropUpload compact label={ui.dropImage} hint={ui.dropHint} subfolder="portrait" uploadImage={uploadImageToGithub} busyLabel={ui.uploading} onUploaded={(url) => setSiteSettingsForm((current) => ({ ...current, hero_image: url }))} />
+        {siteSettingsForm.hero_image && (
+          <button type="button" onClick={() => setSiteSettingsForm((current) => ({ ...current, hero_image: "" }))} className={`${secondaryButton} mt-3 !py-1.5 text-xs`}>{stui.heroRemove}</button>
+        )}
+      </section>
+      <section className={`${cardClass} md:col-span-2`}>
+        <h3 className="mb-3 font-black">{stui.contactTitle}</h3>
+        <div className="grid gap-3 md:grid-cols-2">
+          <AdminField label={stui.contactEmail}><input className={inputClass} type="email" value={siteSettingsForm.contact_email || ""} placeholder={SITE_DEFAULTS.contact_email} onChange={(event) => setSiteSettingsForm((current) => ({ ...current, contact_email: event.target.value }))} /></AdminField>
+          <AdminField label={stui.liveTiles} help={stui.liveTilesHint}><textarea className={`${inputClass} leading-6`} rows={3} value={siteSettingsForm.live_tiles || ""} placeholder={SITE_DEFAULTS.live_tiles} onChange={(event) => setSiteSettingsForm((current) => ({ ...current, live_tiles: event.target.value }))} /></AdminField>
+        </div>
+      </section>
     </div>
   );
+
+  const renderSiteTexts = () => {
+    const wbDefaults = getWbDefaults(textLang);
+    const uiDefaults = getUiDefaults(textLang);
+    const draft = textDrafts[textLang] || {};
+    const query = textSearch.trim().toLowerCase();
+    const setValue = (key, value) => setTextDrafts((current) => ({ ...current, [textLang]: { ...current[textLang], [key]: value } }));
+    const textLangTabs = LANGUAGES.map((language) => ({ language, state: textLang === language ? "current" : "exists" }));
+    const sections = [
+      ...WB_TEXT_GROUPS.map(([groupKey, keys]) => [groupKey, keys, wbDefaults]),
+      ...UI_TEXT_GROUPS.map(([groupKey, keys]) => [groupKey, keys, uiDefaults]),
+    ].map(([groupKey, keys, defaults]) => [groupKey, keys.filter((key) => {
+      if (!query) return true;
+      return key.toLowerCase().includes(query) || String(defaults[key] || "").toLowerCase().includes(query) || String(draft[key] || "").toLowerCase().includes(query);
+    }), defaults]).filter(([, keys]) => keys.length > 0);
+
+    return (
+      <div className="mx-auto grid max-w-4xl gap-4 p-4 sm:p-6">
+        <AdminLangTabs tabs={textLangTabs} onSelect={setTextLang} />
+        <p className="text-sm text-zinc-400">{stui.hint}</p>
+        <p className="text-xs text-zinc-500">{stui.legalNote}</p>
+        <input className={inputClass} value={textSearch} placeholder={stui.search} onChange={(event) => setTextSearch(event.target.value)} aria-label={stui.search} />
+        {sections.length === 0 && <p className="text-sm text-zinc-500">{stui.none}</p>}
+        {sections.map(([groupKey, keys, defaults], index) => (
+          <details key={groupKey} open={Boolean(query) || index === 0} className="rounded-2xl border border-white/10 bg-[#0a1424] p-4">
+            <summary className="cursor-pointer select-none font-black">{stui.groups[groupKey]}</summary>
+            <div className="mt-4 grid gap-4">
+              {keys.map((key) => (
+                <div key={key}>
+                  <div className="mb-1.5 flex items-center justify-between gap-2">
+                    <span className="font-mono text-xs font-bold text-zinc-400">{key}</span>
+                    {draft[key] && <button type="button" onClick={() => setValue(key, "")} className="text-xs font-bold text-cyan-300 hover:text-cyan-200">{stui.reset}</button>}
+                  </div>
+                  {LONG_TEXT_KEYS.has(key)
+                    ? <textarea className={`${inputClass} leading-6`} rows={3} value={draft[key] || ""} placeholder={String(defaults[key] || "")} onChange={(event) => setValue(key, event.target.value)} />
+                    : <input className={inputClass} value={draft[key] || ""} placeholder={String(defaults[key] || "")} onChange={(event) => setValue(key, event.target.value)} />}
+                </div>
+              ))}
+            </div>
+          </details>
+        ))}
+      </div>
+    );
+  };
 
   const renderSettings = () => (
     <div className="mx-auto grid max-w-3xl gap-4 p-4 sm:p-6">
@@ -3056,6 +3251,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     gallery: renderGallery,
     journey: renderJourney,
     look: renderLook,
+    sitetexts: renderSiteTexts,
     settings: renderSettings,
   }[view]();
 
@@ -3155,13 +3351,6 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
 // ─────────────────────────────────────────────
 // HOME PAGE — "Werkbank"
 // ─────────────────────────────────────────────
-const WB_LIVE_TILES = [
-  { id: "gem-restaurant-platform", host: "online.tavrion.de", kind: "live" },
-  { id: "tablio-kasse-lokales-pos-system-mit-tse-fiskalisierung-von-grund-auf", host: "demo.tavrion.de", kind: "demo", hint: true },
-  { id: "local-post-1779957810945", host: "Microsoft Store", kind: "store" },
-  { id: "voice-transcriber-privacy-policy", host: "Microsoft Store", kind: "store" },
-];
-
 const WB_PILL = {
   live: "bg-[#DDF3E8] text-[#0A5A3A]",
   store: "bg-[#DCE8FA] text-[#1C4A94]",
@@ -3197,7 +3386,9 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
   const t = getUiText(language);
   const w = getWbText(language);
   const personalWay = getPersonalWay(language);
-  const email = "donguyennhan.de@gmail.com";
+  const site = getSiteConfig();
+  const email = site.email;
+  const skills = getWbSkills(language);
 
   const [search, setSearch] = useState("");
   const [field, setField] = useState("all");
@@ -3222,7 +3413,12 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
     });
   }, [sortedPosts, search, field]);
 
-  const liveTiles = WB_LIVE_TILES.map((tile) => ({ ...tile, post: posts.find((p) => p.id === tile.id) })).filter((tile) => tile.post);
+  const liveTiles = site.liveTiles.map((id) => posts.find((p) => p.id === id)).filter(Boolean).map((post) => {
+    const link = String(post.external_link || "");
+    const kind = link.includes("microsoft.com") ? "store" : (link.includes("demo.tavrion.de") || link.includes("provisionpro.tavrion.de")) ? "demo" : "live";
+    const host = link.includes("microsoft.com") ? "Microsoft Store" : link.replace(/^https?:\/\//, "").split("/")[0];
+    return { post, host, kind, hint: link.includes("demo.tavrion.de") };
+  });
   const featured = filteredPosts.find((p) => !["Über mich", "Grundlagen"].includes(p.category));
   const showFeatured = Boolean(featured) && !search.trim();
   const restPosts = showFeatured ? filteredPosts.filter((p) => p.id !== featured.id) : filteredPosts;
@@ -3281,13 +3477,16 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
               <div className="mt-8 flex flex-wrap gap-3">
                 <button type="button" onClick={() => go("projekte")} className="inline-flex items-center gap-2 rounded-xl bg-[#0B5A44] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#083D2F]">{w.cta_projects} <ArrowRight className="h-4 w-4" /></button>
                 <button type="button" onClick={() => go("kontakt")} className="inline-flex items-center gap-2 rounded-xl border border-[#0F1A17] bg-white px-6 py-3.5 text-sm font-semibold text-[#0F1A17] transition hover:bg-[#0F1A17] hover:text-white">{w.cta_contact}</button>
+                {site.resumeUrl && (
+                  <a href={site.resumeUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-[#C9D3CD] bg-white px-6 py-3.5 text-sm font-semibold text-[#0B5A44] transition hover:border-[#0B5A44]"><FileText className="h-4 w-4" /> {t.resumeButton}</a>
+                )}
               </div>
               <p className="mt-6 inline-flex items-center gap-2 text-sm text-[#4A5A54]"><span className="h-2.5 w-2.5 rounded-full bg-[#1FA971] shadow-[0_0_0_4px_rgba(31,169,113,0.18)]" /> {w.available}</p>
             </div>
 
             <div className="relative mx-auto w-full max-w-sm lg:max-w-none">
               <div className="overflow-hidden rounded-3xl border border-[#C9D3CD] bg-white p-3 shadow-[0_30px_60px_-34px_rgba(11,90,68,0.5)]">
-                <img src="/my-electronics-blog/images/posts/Nguyen-main.webp" alt="Nguyen Nhan Do" className="aspect-[4/5] w-full rounded-2xl object-cover object-top" />
+                <img src={site.heroImage} alt={site.siteName} className="aspect-[4/5] w-full rounded-2xl object-cover object-top" />
               </div>
               <div className="absolute -left-2 top-8 flex items-center gap-2.5 rounded-xl border border-[#C9D3CD] bg-white px-3.5 py-2.5 shadow-lg sm:-left-6">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#1FA971]" />
@@ -3400,7 +3599,7 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E1F0E8] text-[#0B5A44]"><Icon className="h-5 w-5" /></div>
                 <h3 className="wb-head mt-5 text-xl font-bold">{title}</h3>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  {WB_SKILLS[key].map((skill) => <span key={skill} className="wb-mono rounded-md border border-[#D5DDD8] bg-[#F3F5F2] px-2.5 py-1 text-xs text-[#33423C]">{skill}</span>)}
+                  {skills[key].map((skill) => <span key={skill} className="wb-mono rounded-md border border-[#D5DDD8] bg-[#F3F5F2] px-2.5 py-1 text-xs text-[#33423C]">{skill}</span>)}
                 </div>
               </div>
             ))}
@@ -3511,7 +3710,7 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 text-sm text-[#4A5A54] sm:px-5 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="max-w-xl text-xs leading-5">{w.foot}</p>
-            <p className="mt-2 text-xs">© {new Date().getFullYear()} Nguyen Nhan Do</p>
+            <p className="mt-2 text-xs">© {new Date().getFullYear()} {site.siteName}</p>
           </div>
           <div className="flex gap-6">
             <button type="button" onClick={onGoImpressum} className="font-medium transition hover:text-[#0B5A44]">{t.legalNotice}</button>

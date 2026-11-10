@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { getSiteTextOverrides } from "../lib/posts";
+import { COOKIE_TEXT } from "../lib/siteTexts";
 
-const TEXT = {
-  de: { title: "Datenschutzhinweis", text: "Diese Website verwendet keine Tracking-Cookies, keine Werbe-Cookies und keine Analyse-Cookies. Es wird lediglich eine lokale Speicherung im Browser verwendet, um diese Datenschutzhinweis-Auswahl zu speichern. Weitere Informationen finden Sie in der Datenschutzerklärung.", button: "Verstanden" },
-  en: { title: "Privacy Notice", text: "This website does not use tracking, advertising or analytics cookies. Browser storage is only used locally to remember this privacy notice selection. More information is available in the privacy policy.", button: "Understood" },
-  vi: { title: "Thông báo quyền riêng tư", text: "Website này không sử dụng cookie theo dõi, quảng cáo hoặc phân tích. Bộ nhớ cục bộ của trình duyệt chỉ được dùng để lưu lựa chọn cho thông báo quyền riêng tư này. Bạn có thể xem thêm thông tin trong chính sách quyền riêng tư.", button: "Đã hiểu" },
-};
 
 export default function CookieBanner({ language = "de" }) {
-  const t = TEXT[language] || TEXT.de;
+  const base = COOKIE_TEXT[language] || COOKIE_TEXT.de;
+  const custom = getSiteTextOverrides(language);
+  const t = {
+    title: (custom.cookie_title || "").trim() || base.title,
+    text: (custom.cookie_text || "").trim() || base.text,
+    button: (custom.cookie_button || "").trim() || base.button,
+  };
   const [visible, setVisible] = useState(
     () => !localStorage.getItem("privacy-notice")
   );

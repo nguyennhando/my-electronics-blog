@@ -109,6 +109,7 @@ const parsedFiles = Object.entries(files)
 export const PERSONAL_WAYS = parsedFiles.filter((entry) => entry.type === "personal_way");
 export const PERSONAL_WAY = PERSONAL_WAYS.find((entry) => entry.language === "de") || PERSONAL_WAYS[0];
 export const HOME_CONTENTS = parsedFiles.filter((entry) => entry.type === "home_content");
+export const SITE_TEXTS = parsedFiles.filter((entry) => entry.type === "site_texts");
 export const SITE_SETTINGS = parsedFiles.find((entry) => entry.type === "site_settings");
 const gallerySettings = parsedFiles.find((entry) => entry.type === "gallery_settings");
 
@@ -117,6 +118,7 @@ const getLocalizedEntry = (entries, language = "de") => entries.find((entry) => 
   || entries[0];
 
 export const getLocalizedPersonalWay = (language = "de") => getLocalizedEntry(PERSONAL_WAYS, language);
+export const getSiteTextOverrides = (language = "de") => SITE_TEXTS.find((entry) => entry.language === language) || {};
 export const getLocalizedHomeContent = (language = "de") => getLocalizedEntry(HOME_CONTENTS, language);
 
 export const GALLERY_IMAGES = (() => {
@@ -131,7 +133,7 @@ export const GALLERY_IMAGES = (() => {
 })();
 
 export const CONTENT_POSTS = parsedFiles
-  .filter((post) => !["personal_way", "home_content", "site_settings", "gallery_settings"].includes(post.type))
+  .filter((post) => !["personal_way", "home_content", "site_settings", "gallery_settings", "site_texts"].includes(post.type))
   .sort((a, b) => {
     const orderA = Number.isFinite(Number(a.sort_order)) ? Number(a.sort_order) : 100;
     const orderB = Number.isFinite(Number(b.sort_order)) ? Number(b.sort_order) : 100;

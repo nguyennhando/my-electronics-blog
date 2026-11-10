@@ -1,3 +1,5 @@
+import { getSiteTextOverrides } from "./posts";
+
 // Texte der Werkbank-Startseite (DE / EN / VI). Die Kopfzeile (Badge, Titel, Text)
 // und der Kontaktblock kommen weiterhin aus src/content/<sprache>/home-content.md.
 export const WB_TEXT = {
@@ -63,4 +65,22 @@ export const WB_SKILLS = {
   sw: ["React", "TypeScript", "NestJS", "PHP", "C++ / Qt", "PostgreSQL · Docker"],
 };
 
-export const getWbText = (language = "de") => WB_TEXT[language] || WB_TEXT.de;
+const cleanOverrides = (overrides) => Object.fromEntries(
+  Object.entries(overrides || {}).filter(([, value]) => typeof value === "string" && value.trim() !== ""),
+);
+
+// Standardtexte, überschrieben von den Einträgen aus dem Admin (src/content/<sprache>/site-texts.md).
+export const getWbText = (language = "de", overrides) => {
+  const base = WB_TEXT[language] || WB_TEXT.de;
+  const custom = cleanOverrides(overrides === undefined ? getSiteTextOverrides(language) : overrides);
+  const out = { ...base };
+  Object.keys(base).forEach((key) => { if (key !== "path" && custom[key]) out[key] = custom[key]; });
+  out.path = base.path.map((step, index) => custom[`path_${index + 1}`] || step);
+  return out;
+};
+
+export const getWbSkills = (language = "de") => {
+  const custom = cleanOverrides(getSiteTextOverrides(language));
+  const list = (key, fallback) => (custom[key] ? custom[key].split(",").map((item) => item.trim()).filter(Boolean) : fallback);
+  return { hw: list("skills_hw", WB_SKILLS.hw), emb: list("skills_emb", WB_SKILLS.emb), sw: list("skills_sw", WB_SKILLS.sw) };
+};
