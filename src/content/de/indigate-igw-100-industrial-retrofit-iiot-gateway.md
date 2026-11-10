@@ -22,8 +22,8 @@ read_time: 5 Min.
 published: true
 created_at: '2026-10-26T17:01:57.523Z'
 external_link: 
-project_status: in_progress
-sort_order: 20
+project_status: done
+sort_order: 30
 ---
 
 # INDIGATE IGW-100
