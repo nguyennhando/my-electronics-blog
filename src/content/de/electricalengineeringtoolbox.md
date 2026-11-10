@@ -4,265 +4,224 @@ slug: electricalengineeringtoolbox
 translation_id: electrical-engineering-toolbox-privacy-policy
 language: de
 content_type: project
-title: ElectricalEngineeringToolbox
+title: Electrical Engineering Toolbox – Offline-Rechner und Projektwerkzeug für die Elektroplanung
 category: Software
 image_url: /my-electronics-blog/images/posts/EEToolbox-main-1.webp
 image_gallery:
 - /my-electronics-blog/images/posts/EEToolbox-main-2.webp
 - /my-electronics-blog/images/posts/EEToolbox-main-3.webp
 - /my-electronics-blog/images/posts/EEToolbox-main-4.webp
-excerpt: Offline electrical engineering calculator suite for cable sizing, voltage drop, breaker selection, motor calculations, transformer sizing, project management, and engineering reports.
+excerpt: Eine Windows-Anwendung für Elektroplaner, Techniker und Studierende. Rechner für Spannungsfall, Kabelquerschnitt, Schutzorgan, Motorstrom und Transformator, dazu Lastlisten mit Kabelliste und PDF-Bericht. Alles läuft offline, ohne Konto und ohne Telemetrie. Im Microsoft Store erhältlich.
 tags:
-- Software
-read_time: 5 Min.
+- C++
+- Qt 6
+- Windows
+- Offline
+- SQLite
+- Microsoft Store
+read_time: 8 Min.
 published: true
 created_at: '2026-06-19T06:29:08.495Z'
-external_link: 
+external_link: https://apps.microsoft.com/detail/9P368QBV3S27?hl=neutral&gl=DE&ocid=pdpshare
 project_status: done
 sort_order: 110
 ---
 
-# Neuer Beitrag
-
-Projektbeschreibung---
-title: Electrical Engineering Toolbox
-description: Official product information and privacy policy for Electrical Engineering Toolbox (Windows).
----
-
 # Electrical Engineering Toolbox
+### Offline-Rechner und Projektwerkzeug für die Elektroplanung
 
-**Professional offline engineering calculator suite for electrical design support**
+**Eine Windows-Anwendung, die die täglichen Rechenaufgaben der Elektroplanung an einem Ort bündelt, schnell, nachvollziehbar und ohne Cloud.**
 
-| | |
-|---|---|
-| **Version** | 1.0.0 |
-| **Platform** | Windows 10 / 11 (64-bit) |
-| **Developer** | Nguyen Nhan Do |
-| **Support** | [nguyennhan.do@outlook.com](mailto:nguyennhan.do@outlook.com) |
-| **Privacy Policy URL** | Use this page URL in Microsoft Partner Center |
-
----
-
-## Product Overview
-
-**Electrical Engineering Toolbox** is a desktop application for electrical engineers, planners, technicians, and students who need fast, reliable calculations **without cloud dependency, subscriptions, or advertisements**.
-
-The application runs entirely on your Windows PC. Core features work **offline** — no user account, no telemetry, and no internet connection is required for everyday use.
-
-### What you can do
-
-- Run dedicated calculators for **Ohm's law**, **power**, **voltage drop**, **cable sizing**, **breaker recommendation**, **motor current**, **transformer sizing**, and **unit conversion**
-- Manage **multi-load projects** with load lists, CSV/Excel import, cable schedule generation, and PDF design reports
-- Use the **IEC Quick Reference** for offline lookup of common electrical reference values
-- Receive **rule-based engineering guidance** from the built-in Smart Assistant (offline, no AI cloud)
-- Save calculations to **local history**, filter entries, export to **CSV** or **PDF**
-- Switch the interface between **English**, **German**, **Vietnamese**, and **Chinese (Simplified)**
-
-### Key characteristics
-
-| Topic | Detail |
-|-------|--------|
-| Connectivity | Fully offline for core features |
-| Data storage | Local only — on your device |
-| Analytics / telemetry | None |
-| Advertising | None |
-| In-app purchases | None |
-| Account required | No |
-
-### System requirements
-
-- **OS:** Windows 10 or Windows 11 (64-bit)
-- **Display:** 1366×768 minimum recommended; 1920×1080 for optimal layout
-- **Storage:** Approximately 150 MB installed
-- **Network:** Not required for calculations, history, settings, or export
-
-### Engineering notice
-
-All calculator outputs, cable schedules, breaker recommendations, reference tables, and assistant messages are **computational aids only**. They do not constitute professional engineering, legal, regulatory, or safety advice.
-
-Final dimensioning, equipment selection, installation, protection coordination, and project approval must be performed by **qualified personnel** in accordance with applicable national and local electrical codes (including but not limited to IEC, DIN, VDE, EN, NEC, and local regulations) and manufacturer documentation.
-
-**You remain solely responsible** for verifying all results before use in real projects.
-
----
-
-## Privacy Policy
-
-**Effective date:** June 18, 2026  
-**Last updated:** June 18, 2026  
-**Application:** Electrical Engineering Toolbox  
+**Technik:** C++17, Qt 6 (Widgets), SQLite, CMake  
+**Plattform:** Windows 10 und 11 (64 Bit)  
+**Sprachen der Oberfläche:** Deutsch, Englisch, Vietnamesisch, Chinesisch (vereinfacht)  
 **Version:** 1.0.0  
-**Developer / Data Controller:** Nguyen Nhan Do  
-**Privacy contact:** [nguyennhan.do@outlook.com](mailto:nguyennhan.do@outlook.com)
-
-This Privacy Policy describes how **Electrical Engineering Toolbox** (“the App”, “we”, “us”) handles information when you install and use the Windows desktop application distributed through Microsoft Store and other channels.
-
-This policy is provided to meet Microsoft Partner Center and applicable privacy requirements for published applications.
-
-### Summary
-
-- The App is an **offline desktop application**
-- We **do not collect**, sell, or transmit personal data during normal use
-- We **do not use** analytics, telemetry, advertising, or cloud sync
-- Project files, history, and settings are stored **locally on your device**
-- If you email us for support, we process only the information you send
-
-### Scope
-
-This policy applies to:
-
-- The **Electrical Engineering Toolbox** Windows application
-- Optional **email communication** when you contact the developer for support, feedback, or legal inquiries
-
-This policy does **not** apply to third-party websites, operating system services, or Microsoft Store platform policies governed by Microsoft.
-
-### Information we do not collect
-
-During normal operation of the App, we do **not** collect, transmit, or sell:
-
-- Name, email address, or contact details (unless you contact us voluntarily)
-- Precise or coarse location data
-- Device identifiers for advertising or cross-app tracking
-- Usage analytics, crash telemetry, or behavioral profiling
-- Calculation inputs, project data, or exported reports to remote servers
-- Photos, contacts, calendar, or microphone data
-
-The App does not require sign-in and does not connect to a developer-operated backend for core functionality.
-
-### Information stored locally on your device
-
-The App stores data **only on your computer** to provide its features:
-
-| Data type | Typical location | Purpose |
-|-----------|------------------|---------|
-| Calculation history | `%LOCALAPPDATA%\ElectricalEngineeringToolbox\electrical_engineering_toolbox.db` | Recall past calculations |
-| Application settings (language, preferences) | `%LOCALAPPDATA%\ElectricalEngineeringToolbox\` (QSettings) | Remember your choices |
-| Project files (`.eetproject`) | User-selected folders | Save and load engineering projects |
-| Exported CSV / PDF files | User-selected folders | Reports and spreadsheets you create |
-| Application log (diagnostics) | `%LOCALAPPDATA%\ElectricalEngineeringToolbox\logs\app.log` | Local troubleshooting only |
-
-The developer **does not receive** this data automatically. Exported files remain under **your control**.
-
-### No telemetry, analytics, or advertising
-
-The App does not include third-party analytics SDKs, advertising networks, or remote logging services tied to user identity.
-
-Diagnostic messages may be written to a **local log file** on your device for troubleshooting. This log is not uploaded by the App.
-
-The App contains **no advertisements** and **no in-app purchases**.
-
-### Optional email contact
-
-If you contact us at [nguyennhan.do@outlook.com](mailto:nguyennhan.do@outlook.com), we process:
-
-- Your email address
-- The content of your message
-- Any attachments you choose to send
-
-**Purpose:** respond to support, feedback, or legal/privacy requests.  
-**Legal basis (GDPR):** Art. 6(1)(b) GDPR (pre-contractual/contractual communication) or Art. 6(1)(f) GDPR (legitimate interest in responding to inquiries).  
-**Retention:** deleted when no longer needed for the request, unless longer retention is required by law.  
-**Marketing:** we do not use support emails for marketing.
-
-### Data controller (GDPR)
-
-**Controller:** Nguyen Nhan Do  
-**Email:** [nguyennhan.do@outlook.com](mailto:nguyennhan.do@outlook.com)
-
-If you are in the European Economic Area, UK, or Switzerland, you may have the right to:
-
-- Access your personal data
-- Rectification, erasure, restriction, and objection
-- Data portability (where applicable)
-- Lodge a complaint with your local supervisory authority
-
-To exercise these rights regarding email correspondence, contact us at the address above.
-
-### Children's privacy
-
-The App is a general-purpose engineering tool and is **not directed at children under 13** (or the applicable age in your jurisdiction). We do not knowingly collect personal information from children through the App.
-
-### Your choices and control
-
-You can:
-
-- **Clear calculation history** in the App (History page)
-- **Delete project files** from your filesystem
-- **Remove all App data** by uninstalling the App and deleting `%LOCALAPPDATA%\ElectricalEngineeringToolbox\`
-- **Stop email processing** by not contacting us, or request deletion of prior correspondence
-
-### Data security
-
-We design the App to minimize data exposure by keeping processing **on-device**. No method of storage or transmission is 100% secure; you are responsible for securing your device, backups, and exported files.
-
-### International transfers
-
-The App does not routinely transfer your project or calculation data internationally. Email you send to us may be processed using email providers in countries where those providers operate.
-
-### Changes to this Privacy Policy
-
-We may update this policy to reflect product, legal, or Microsoft Store requirements. The **Effective date** at the top will change when updates are published. Continued use of the App after an update constitutes acceptance of the revised policy where permitted by law.
-
-Material changes will be reflected on this page and, where appropriate, in future App releases.
-
-### Microsoft Store disclosure
-
-For Microsoft Partner Center listing purposes:
-
-| Field | Value |
-|-------|-------|
-| **Privacy Policy URL** | *URL where this page is hosted* |
-| **Collects personal data** | No (during normal App use) |
-| **Data transmitted off device** | No (during normal App use) |
-| **Uses analytics** | No |
-| **Shows ads** | No |
-| **Supports account sign-in** | No |
+**Verfügbar:** im Microsoft Store (Schaltfläche „Zum Projekt“ am Ende der Seite)
 
 ---
 
-## Terms of Use (Summary)
+## 1. Projektübersicht
 
-By installing and using Electrical Engineering Toolbox, you agree to use it for lawful professional and personal engineering tasks on your devices.
+### Was ist die Toolbox?
 
-The software is provided **“as is”** without warranty of any kind, express or implied, including warranties of merchantability, fitness for a particular purpose, accuracy, or non-infringement, to the fullest extent permitted by applicable law.
+Die Electrical Engineering Toolbox ist ein Desktop-Programm für **Elektroplaner, Techniker, Handwerker und Studierende**. Sie ersetzt die Sammlung aus Excel-Tabellen, Taschenrechner-Formeln und Notizzetteln, mit denen man sonst Kabel, Schutzorgane und Spannungsfall abschätzt.
 
-The developer shall not be liable for direct, indirect, incidental, special, consequential, or punitive damages arising from use of the software, including engineering errors, project delays, or data loss, where permitted by law.
+Das Programm läuft vollständig auf dem eigenen Rechner. Es braucht **kein Konto, keine Internetverbindung und kein Abonnement**, zeigt keine Werbung und sendet keine Nutzungsdaten.
 
-Reverse engineering, decompilation, or redistribution beyond statutory rights requires prior written consent from the developer.
+### Grundidee
 
----
+**Ein Werkzeug, das beim Entwurf Zeit spart und jedes Ergebnis mit Formel und Eingaben nachvollziehbar macht.**
 
-## Contact
-
-**Nguyen Nhan Do**  
-Product support, feedback, and privacy inquiries:  
-[nguyennhan.do@outlook.com](mailto:nguyennhan.do@outlook.com)
-
-When reporting an issue, please include your **Windows version** and **App version (1.0.0)**.
+Die Ergebnisse sind Rechenhilfen für den Vorentwurf. Die endgültige Auslegung bleibt Sache der Fachkraft, nach den geltenden Normen.
 
 ---
 
-## Copyright
+## 2. Funktionen
 
-Copyright © 2026 Nguyen Nhan Do. All rights reserved.
+### Rechner
 
-*Electrical Engineering Toolbox* and associated documentation are proprietary unless otherwise stated.
+- **Ohmsches Gesetz** mit wählbarer Zielgröße: Spannung, Strom, Widerstand oder Leistung.
+- **Leistungsrechner** für Gleich- und Wechselstrom, mit Wirk-, Blind- und Scheinleistung.
+- **Spannungsfall** für einphasige und dreiphasige Leitungen, mit Prozentwert und Spannung am Verbraucher.
+- **Kabelquerschnitt** nach Strom, Verlegeart, Umgebungstemperatur und zulässigem Spannungsfall, mit Alternativen daneben.
+- **Schutzorgan:** Auswahl der nächsten Normgröße von 6 A bis 630 A.
+- **Motorstrom** bei Volllast.
+- **Transformator:** Übersetzung und Scheinleistung.
+- **Einheitenumrechner** für die gängigen elektrischen Größen.
+
+Jeder Rechner zeigt neben dem Ergebnis die **verwendete Formel** und einen kurzen Hinweis zu den Annahmen.
+
+### Projektbereich
+
+Für größere Anlagen gibt es einen eigenen Arbeitsbereich:
+
+1. Projektdaten festlegen: Spannung, Phasensystem, Gleichzeitigkeitsfaktor.
+2. Verbraucher von Hand eintragen oder aus **CSV oder Excel importieren**. Die Spaltenzuordnung erfolgt in einer Vorschau, doppelte Namen werden auf Wunsch umbenannt.
+3. Mit einem Klick eine **Kabelliste** erzeugen: Für jede Last werden Strom, Kabelquerschnitt, Spannungsfall und Schutzorgan berechnet und mit Status (in Ordnung, Warnung, Fehler) versehen.
+4. Kabelliste als CSV oder den kompletten **Bericht als PDF** exportieren.
+
+Die Lastliste ist für große Projekte ausgelegt und bleibt auch bei einigen hundert Einträgen flüssig.
+
+### IEC-Kurzreferenz
+
+Eine Nachschlagehilfe, die ohne Internet funktioniert: Schutzarten (IP), Spannungsebenen, Kabelquerschnitte, Schutzorgan-Reihen, Transformatorleistungen, Leistungsfaktor, Motorwirkungsgrad, Frequenz sowie Formelzeichen und Einheiten. Die Werte liegen lokal im Programm und sind allgemeine Richtwerte, keine Kopie von Normtexten.
+
+### Intelligenter Assistent
+
+Ein regelbasierter Assistent gibt Hinweise zu Lasten, Kabeln und Schutzorganen, zum Beispiel wenn der Spannungsfall zu hoch ist oder das Schutzorgan größer als das Kabel. Er arbeitet **ohne KI-Dienst im Netz**, nur mit festen, prüfbaren Regeln.
+
+### Verlauf
+
+Jede Berechnung lässt sich speichern. Der Verlauf kann gefiltert, als CSV oder PDF exportiert und mehrfach gelöscht werden.
+
+### Oberfläche
+
+Dunkles und helles Design, vier Sprachen mit mehr als 1000 übersetzten Texten, umschaltbar zur Laufzeit.
 
 ---
 
-## Publishing notes (for the developer)
+## 3. So rechnet das Programm
 
-Use this file as the **single public page** for Microsoft Partner Center:
+### Kabelauswahl
 
-1. Host as `index.md` on GitHub Pages (e.g. `https://nguyennhando.github.io/ElectricalEngineeringToolbox/`)
-2. Paste the final URL into Partner Center → **Privacy policy URL**
-3. Keep the same URL in the App’s About section and `docs/PRIVACY.md` for consistency
+Die Kabelauswahl folgt einer einfachen, überprüfbaren Logik:
 
-**Suggested Partner Center URL after publishing:**
+1. Aus Leistung, Spannung, Phasensystem und Leistungsfaktor wird der **Laststrom** bestimmt.
+2. Die Strombelastbarkeit aus einer Referenztabelle nach IEC 60364 wird mit Verlegeart und Umgebungstemperatur **abgemindert**.
+3. Gewählt wird der kleinste Querschnitt, dessen abgeminderte Belastbarkeit den Laststrom erreicht **und** dessen Spannungsfall unter dem erlaubten Wert bleibt (Voreinstellung 3 %).
+4. Zusätzlich werden der nächstgrößere Querschnitt und die Sicherheitsreserve in Prozent angezeigt.
 
-```text
-https://nguyennhando.github.io/ElectricalEngineeringToolbox/
-```
+Der Spannungsfall wird einphasig mit **ΔU = 2 · I · L · R · cos φ** und dreiphasig mit **ΔU = √3 · I · L · R · cos φ** berechnet.
 
-Replace with your actual hosted URL if different.
-...
+### Schutzorgan
+
+1. Der Laststrom wird mit einem Faktor je Lasttyp multipliziert (Motoren und Transformatoren 1,25, andere Lasten 1,0).
+2. Gewählt wird die **kleinste Normgröße**, die den Wert erreicht. Beispiel: 28 A Motorstrom ergeben 35 A und damit ein 40-A-Schutzorgan.
+3. Liegt eine Kabelauswahl vor, wird die **Koordination** geprüft: Das Schutzorgan darf nicht größer sein als die Belastbarkeit des Kabels.
+
+### Grenzen, ehrlich benannt
+
+- Gleichstromlasten werden von der Wechselstrom-Kabelauswahl nicht bewertet.
+- Das Anlaufverhalten von Motoren ist nicht im Detail abgebildet.
+- Alle Ergebnisse sind Schätzwerte für den Vorentwurf und müssen nach den geltenden Vorschriften geprüft werden.
+
+---
+
+## 4. Technik
+
+### Aufbau
+
+- **Sprache und Oberfläche:** C++17 mit Qt 6 (Widgets, SVG, SQL, Übersetzungswerkzeuge)
+- **Build:** CMake 3.16 oder neuer, MSVC 2022
+- **Speicher:** SQLite, lokal, für den Berechnungsverlauf
+- **Installer:** Inno Setup und MSIX für den Microsoft Store
+
+Der Quelltext ist in vier Schichten gegliedert:
+
+- **Kern:** Rechenmodule, Projektmodell, Validierung
+- **Dienste:** Import, Export, Berichte, Sprachen, Verlauf
+- **Oberfläche:** Seiten, Widgets, Abläufe
+- **Daten:** Datenbank sowie Stile, Symbole und Referenztabellen als Ressourcen
+
+### Qualität
+
+Die Anwendung hat eine automatische Testsuite mit **66 Tests**: Einheiten-, Integrations-, Oberflächen- und Simulationstests. Die Rechenmodule sind so getrennt von der Oberfläche, dass sie ohne Fenster geprüft werden können.
+
+---
+
+## 5. Systemanforderungen
+
+- **System:** Windows 10 oder Windows 11 (64 Bit)
+- **Bildschirm:** mindestens 1366 × 768, empfohlen 1920 × 1080
+- **Speicher:** etwa 150 MB
+- **Netzwerk:** nicht erforderlich
+
+---
+
+## 6. Datenschutz
+
+**Stand:** 18. Juni 2026 · **Version:** 1.0.0  
+**Verantwortlich:** Nguyen Nhan Do  
+**Kontakt für Datenschutz und Support:** [nguyennhan.do@outlook.com](mailto:nguyennhan.do@outlook.com)
+
+Diese Seite dient zugleich als Datenschutzerklärung der App für den Microsoft Store.
+
+### Kurz gesagt
+
+- Die App ist ein **Offline-Programm**. Im normalen Betrieb werden **keine personenbezogenen Daten erhoben, verkauft oder übertragen**.
+- Es gibt **keine Analyse, keine Telemetrie, keine Werbung und keine Cloud-Synchronisierung**.
+- Es gibt kein Konto und keine In-App-Käufe.
+- Verlauf, Einstellungen und Projektdateien liegen **nur auf deinem Gerät**.
+
+### Was lokal gespeichert wird
+
+- **Berechnungsverlauf** in einer lokalen Datenbank unter `%LOCALAPPDATA%\ElectricalEngineeringToolbox\`
+- **Einstellungen** wie Sprache und Design am selben Ort
+- **Projektdateien** (`.eetproject`) und **exportierte CSV- und PDF-Dateien** in Ordnern, die du selbst wählst
+- **Diagnoseprotokoll** (`logs\app.log`), nur lokal, wird nicht hochgeladen
+
+Der Entwickler erhält diese Daten nicht. Exportierte Dateien bleiben unter deiner Kontrolle.
+
+### Was nicht erhoben wird
+
+Name, E-Mail-Adresse, Standort, Gerätekennungen für Werbung, Nutzungsstatistiken, Absturzberichte, Berechnungsdaten, Projektdaten, Fotos, Kontakte, Kalender oder Mikrofon.
+
+### E-Mail-Kontakt
+
+Schreibst du mir, verarbeite ich deine E-Mail-Adresse, den Inhalt der Nachricht und mitgeschickte Anhänge, um deine Anfrage zu beantworten (Art. 6 Abs. 1 lit. b oder f DSGVO). Die Daten werden gelöscht, sobald sie dafür nicht mehr nötig sind. Für Werbung nutze ich sie nicht.
+
+### Deine Rechte
+
+Im EWR, in Großbritannien und in der Schweiz hast du das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung, Widerspruch und Datenübertragbarkeit sowie auf Beschwerde bei der zuständigen Aufsichtsbehörde. Wende dich dafür an die oben genannte Adresse.
+
+### Deine Kontrolle
+
+Du kannst den Verlauf in der App löschen, Projektdateien selbst entfernen und mit der Deinstallation samt Löschen des Ordners `%LOCALAPPDATA%\ElectricalEngineeringToolbox\` alle App-Daten entfernen.
+
+### Kinder
+
+Die App ist ein allgemeines Ingenieurwerkzeug und richtet sich nicht an Kinder unter 13 Jahren. Es werden keine Daten von Kindern erhoben.
+
+### Änderungen
+
+Wird diese Erklärung geändert, ändert sich das Datum „Stand“ oben auf dieser Seite.
+
+---
+
+## 7. Hinweise
+
+### Technischer Hinweis
+
+Alle Ergebnisse, Kabellisten, Schutzorgan-Empfehlungen, Referenzwerte und Assistentenhinweise sind **Rechenhilfen** und keine fachliche, rechtliche oder sicherheitstechnische Beratung. Auslegung, Auswahl, Installation, Schutzkoordination und Freigabe müssen durch **qualifiziertes Personal** nach den geltenden Normen und Herstellerangaben erfolgen (zum Beispiel IEC, DIN, VDE, EN, NEC). Die Verantwortung für die Prüfung der Ergebnisse liegt beim Anwender.
+
+### Nutzung
+
+Die Software wird „wie besehen“ bereitgestellt, soweit gesetzlich zulässig ohne Gewährleistung. Für Schäden aus der Nutzung, etwa durch Planungsfehler, Verzögerungen oder Datenverlust, wird im gesetzlich zulässigen Umfang nicht gehaftet. Rückbau, Dekompilierung und Weitergabe über die gesetzlichen Rechte hinaus bedürfen der schriftlichen Zustimmung des Entwicklers.
+
+### Quellcode
+
+Der Quellcode ist nicht öffentlich. Wer meine Arbeitsweise beurteilen möchte, kann ihn **auf Anfrage** einsehen: [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)
+
+---
+
+© 2026 Nguyen Nhan Do. Alle Rechte vorbehalten.
