@@ -21,7 +21,7 @@ published: true
 created_at: '2026-05-28T09:34:36.705Z'
 external_link: 
 project_status: in_progress
-sort_order: 120
+sort_order: 150
 ---
 
 # Concept Project: Energy Monitoring with ESP8266 and Current Sensor
