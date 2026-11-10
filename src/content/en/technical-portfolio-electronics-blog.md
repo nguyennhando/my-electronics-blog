@@ -23,7 +23,7 @@ published: true
 created_at: '2026-05-28T09:30:47.159Z'
 external_link: 
 project_status: done
-sort_order: 90
+sort_order: 160
 ---
 
 # Technical Portfolio & Electronics Blog
