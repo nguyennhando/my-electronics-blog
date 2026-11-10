@@ -916,13 +916,13 @@ function Lightbox({ images, index, onClose }) {
       >
         <img src={imageUrl} alt="Bild" className="max-h-[85vh] w-full rounded-2xl object-contain shadow-2xl" />
         {images.length > 1 && (
-          <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-3">
-            <button onClick={() => setCurrent(p => (p - 1 + images.length) % images.length)} className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"><ChevronLeft className="h-5 w-5" /></button>
-            <span className="flex items-center text-white/60 text-sm">{current + 1} / {images.length}</span>
-            <button onClick={() => setCurrent(p => (p + 1) % images.length)} className="flex h-10 w-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur hover:bg-black/80"><ChevronRight className="h-5 w-5" /></button>
+          <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-3">
+            <button onClick={() => setCurrent(p => (p - 1 + images.length) % images.length)} aria-label="Previous" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/70 bg-white text-[#0B5A44] shadow-lg transition hover:bg-[#F2B279] hover:text-[#0F1A17]"><ChevronLeft className="h-5 w-5 stroke-[3]" /></button>
+            <span className="rounded-full border border-white/70 bg-[#F2B279] px-4 py-2 text-sm font-extrabold tabular-nums text-[#0F1A17] shadow-lg">{current + 1} / {images.length}</span>
+            <button onClick={() => setCurrent(p => (p + 1) % images.length)} aria-label="Next" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/70 bg-white text-[#0B5A44] shadow-lg transition hover:bg-[#F2B279] hover:text-[#0F1A17]"><ChevronRight className="h-5 w-5 stroke-[3]" /></button>
           </div>
         )}
-        <button onClick={onClose} className="absolute -right-4 -top-4 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-400 text-black shadow-xl transition hover:bg-cyan-300">
+        <button onClick={onClose} className="absolute right-2 top-2 flex h-10 w-10 sm:-right-4 sm:-top-4 items-center justify-center rounded-full bg-[#0B5A44] text-white shadow-xl ring-2 ring-white transition hover:bg-[#083D2F]">
           <X className="h-5 w-5 stroke-[3]" />
         </button>
       </motion.div>
