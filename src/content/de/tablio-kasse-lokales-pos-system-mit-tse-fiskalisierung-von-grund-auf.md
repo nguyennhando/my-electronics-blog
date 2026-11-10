@@ -26,7 +26,7 @@ tags:
 read_time: 11 Min.
 published: true
 created_at: '2026-08-04T21:03:35.667Z'
-external_link: 
+external_link: https://demo.tavrion.de/
 project_status: done
 sort_order: 50
 ---
@@ -58,6 +58,16 @@ Alle Daten bleiben im Haus. Es gibt keinen Zwang zu einem Cloud-Konto, keinen Ab
 In Deutschland gelten für Registrierkassen einige der strengsten Regeln Europas. Viele selbstgebaute oder allgemeine Kassenlösungen behandeln sie als Nachrüstung. TABLIO ist von Beginn an so gebaut, dass jede Zahlung, jede Stornierung und jede Rückerstattung durch dieselbe transaktionale Schicht läuft.
 
 > ⚠️ **Wichtig:** Das Projekt ist so, wie es ausgeliefert wird, **noch nicht für rechtskonforme Verkäufe in Deutschland freigegeben**. Die Standard-TSE ist ein Entwicklungsmodul. Details stehen in Abschnitt 6.
+
+### Selbst ausprobieren
+
+Eine Demo läuft auf einem **Linux-Server**: [demo.tavrion.de](https://demo.tavrion.de/)
+
+1. Die Seite öffnen und **WAITER 01** wählen.
+2. Die PIN **2222** eingeben.
+3. Die Oberfläche erkunden.
+
+Der Zugang ist als **Kellner** eingerichtet und bewusst auf die **Grundfunktionen** beschränkt. Weitere Funktionen wie Zahlungen, Berichte oder die Verwaltung sind in diesem Modus nicht verfügbar. Die Demo enthält keine echten Daten.
 
 ---
 

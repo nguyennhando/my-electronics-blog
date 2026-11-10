@@ -26,7 +26,7 @@ tags:
 read_time: 11 min
 published: true
 created_at: '2026-08-04T21:03:35.667Z'
-external_link: 
+external_link: https://demo.tavrion.de/
 project_status: done
 sort_order: 50
 ---
@@ -58,6 +58,16 @@ All data stays on the premises. There is no need for a cloud account, no subscri
 Germany has some of the strictest cash register rules in Europe. Many home-built or generic POS solutions treat them as a retrofit. TABLIO is built from the start so that every payment, every cancellation and every refund runs through the same transactional layer.
 
 > ⚠️ **Important:** As shipped, the project is **not yet cleared for legally compliant sales in Germany**. The default TSE is a development module. Details are in section 6.
+
+### Try it yourself
+
+A demo runs on a **Linux server**: [demo.tavrion.de](https://demo.tavrion.de/)
+
+1. Open the page and choose **WAITER 01**.
+2. Enter the PIN **2222**.
+3. Explore the interface.
+
+The account is set up as a **waiter** and is deliberately limited to the **basic functions**. Further functions such as payments, reports or administration are not available in this mode. The demo contains no real data.
 
 ---
 

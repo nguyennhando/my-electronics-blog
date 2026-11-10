@@ -26,7 +26,7 @@ tags:
 read_time: 11 phút
 published: true
 created_at: '2026-08-04T21:03:35.667Z'
-external_link: 
+external_link: https://demo.tavrion.de/
 project_status: done
 sort_order: 50
 ---
@@ -58,6 +58,16 @@ Mọi dữ liệu nằm ngay tại quán. Không bắt buộc có tài khoản �
 Nước Đức có một số quy định về máy tính tiền nghiêm ngặt nhất châu Âu. Nhiều giải pháp POS tự làm hoặc dùng chung coi đó là việc vá thêm về sau. TABLIO được xây từ đầu sao cho mọi lần thanh toán, hủy và hoàn tiền đều đi qua cùng một lớp giao dịch.
 
 > ⚠️ **Quan trọng:** ở dạng hiện tại, dự án **chưa được phép dùng để bán hàng hợp pháp tại Đức**. TSE mặc định chỉ là mô-đun phát triển. Chi tiết ở mục 6.
+
+### Tự dùng thử
+
+Có một bản demo đang chạy trên **máy chủ Linux**: [demo.tavrion.de](https://demo.tavrion.de/)
+
+1. Mở trang và chọn **WAITER 01**.
+2. Nhập mã PIN **2222**.
+3. Khám phá giao diện.
+
+Tài khoản này được thiết lập ở vai trò **nhân viên phục vụ (waiter)** và cố ý giới hạn ở **các chức năng cơ bản**. Các chức năng khác như thanh toán, báo cáo hay quản trị không dùng được trong chế độ này. Bản demo không chứa dữ liệu thật.
 
 ---
 
