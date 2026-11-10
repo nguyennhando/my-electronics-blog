@@ -19,4 +19,12 @@ warning_one: Projekte mit der Kennzeichnung „Konzept“ befinden sich noch in 
 warning_two: Alle anderen Projekte können über „Beitrag lesen“ geöffnet werden. Am Ende der jeweiligen Projektseite befindet sich die Schaltfläche „Zum Projekt“ mit projektbezogenen Dateien.
 collaboration_title: Lassen Sie uns an Ihrem Projekt arbeiten.
 collaboration_text: Sie suchen Unterstützung für Embedded-Systeme, Leiterplatten, Automatisierung oder Software? Schreiben Sie mir kurz, worum es geht.
+stat_1_value: 
+stat_1_label: Projekte und Beiträge
+stat_2_value: 3
+stat_2_label: Leiterplatten-Designs
+stat_3_value: 3
+stat_3_label: Apps im Microsoft Store
+stat_4_value: 1
+stat_4_label: System live im Restaurant
 ---

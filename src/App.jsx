@@ -105,6 +105,7 @@ const getUiText = (language) => {
     warningTwo: homeContent.warning_two,
     collaborationTitle: homeContent.collaboration_title,
     collaborationText: homeContent.collaboration_text,
+    stats: [1, 2, 3, 4].map((n) => ({ value: (homeContent[`stat_${n}_value`] || "").trim(), label: (homeContent[`stat_${n}_label`] || "").trim() })),
   };
 };
 
@@ -701,6 +702,14 @@ const HOME_CONTENT_FIELDS = [
   ["warning_two", "Projekt-Hinweis: Absatz 2"],
   ["collaboration_title", "Zusammenarbeit: Titel"],
   ["collaboration_text", "Zusammenarbeit: Text"],
+  ["stat_1_value", "Kennzahl 1: Wert (leer = automatisch gezählt)"],
+  ["stat_1_label", "Kennzahl 1: Beschriftung"],
+  ["stat_2_value", "Kennzahl 2: Wert (leer = ausblenden)"],
+  ["stat_2_label", "Kennzahl 2: Beschriftung"],
+  ["stat_3_value", "Kennzahl 3: Wert (leer = ausblenden)"],
+  ["stat_3_label", "Kennzahl 3: Beschriftung"],
+  ["stat_4_value", "Kennzahl 4: Wert (leer = ausblenden)"],
+  ["stat_4_label", "Kennzahl 4: Beschriftung"],
 ];
 
 const HOME_CONTENT_FIELD_LABELS = {
@@ -713,6 +722,10 @@ const HOME_CONTENT_FIELD_LABELS = {
     feature_4_title: "Card 4: Title", feature_4_text: "Card 4: Text",
     warning_one: "Project notice: Paragraph 1", warning_two: "Project notice: Paragraph 2",
     collaboration_title: "Collaboration: Title", collaboration_text: "Collaboration: Text",
+    stat_1_value: "Figure 1: Value (empty = counted automatically)", stat_1_label: "Figure 1: Label",
+    stat_2_value: "Figure 2: Value (empty = hide)", stat_2_label: "Figure 2: Label",
+    stat_3_value: "Figure 3: Value (empty = hide)", stat_3_label: "Figure 3: Label",
+    stat_4_value: "Figure 4: Value (empty = hide)", stat_4_label: "Figure 4: Label",
   },
   vi: {
     hero_badge: "Hero: Nhãn", hero_title: "Hero: Tiêu đề", hero_text: "Hero: Nội dung",
@@ -723,6 +736,10 @@ const HOME_CONTENT_FIELD_LABELS = {
     feature_4_title: "Thẻ 4: Tiêu đề", feature_4_text: "Thẻ 4: Nội dung",
     warning_one: "Lưu ý dự án: Đoạn 1", warning_two: "Lưu ý dự án: Đoạn 2",
     collaboration_title: "Hợp tác: Tiêu đề", collaboration_text: "Hợp tác: Nội dung",
+    stat_1_value: "Số liệu 1: Giá trị (để trống = tự đếm)", stat_1_label: "Số liệu 1: Nhãn",
+    stat_2_value: "Số liệu 2: Giá trị (để trống = ẩn)", stat_2_label: "Số liệu 2: Nhãn",
+    stat_3_value: "Số liệu 3: Giá trị (để trống = ẩn)", stat_3_label: "Số liệu 3: Nhãn",
+    stat_4_value: "Số liệu 4: Giá trị (để trống = ẩn)", stat_4_label: "Số liệu 4: Nhãn",
   },
 };
 
@@ -1686,7 +1703,7 @@ const ADMIN_UI = {
     slugHelp: "Wird aus dem Titel erzeugt. Nur ändern, wenn nötig.", translationHelp: "Verbindet die Sprachversionen desselben Beitrags.",
     orderHint: "Mit den Pfeilen verschieben. Die Reihenfolge gilt für alle drei Sprachen.", galleryHint: "Mehrere Bilder gleichzeitig ablegen. Das erste Bild ist das große Hauptbild.",
     homeTextHint: "Rechts sehen Sie sofort, wie die Startseite aussieht.", journeyHint: "Bilder und Text der Karte über Ihren Weg.",
-    groupHero: "Kopfbereich", groupTransparency: "Transparenz", groupCards: "Feature-Karten", groupNotice: "Projekt-Hinweis", groupCollab: "Zusammenarbeit",
+    groupHero: "Kopfbereich", groupTransparency: "Transparenz", groupCards: "Feature-Karten", groupNotice: "Projekt-Hinweis", groupCollab: "Zusammenarbeit", groupStats: "Kennzahlen-Leiste",
     bgTitle: "Hintergrundbild", bgRemove: "Hintergrund entfernen", resumeTitle: "Lebenslauf (PDF)", resumeLive: "Auf der Website sichtbar", resumeOpen: "Datei öffnen",
     resumeReplace: "Ersetzen", resumeRemove: "Entfernen", resumeNote: "Beim Ersetzen wird die alte Datei automatisch von GitHub gelöscht.",
     setGithubOk: "Verbunden", setGithubMissing: "Nicht verbunden", changeToken: "Token ändern", enterToken: "Token eintragen", hideToken: "Schließen",
@@ -1727,7 +1744,7 @@ const ADMIN_UI = {
     slugHelp: "Generated from the title. Only change if needed.", translationHelp: "Links the language versions of the same post.",
     orderHint: "Move with the arrows. The order applies to all three languages.", galleryHint: "Drop several images at once. The first image is the large main image.",
     homeTextHint: "The preview on the right updates as you type.", journeyHint: "Images and text of the card about your path.",
-    groupHero: "Hero", groupTransparency: "Transparency", groupCards: "Feature cards", groupNotice: "Project notice", groupCollab: "Collaboration",
+    groupHero: "Hero", groupTransparency: "Transparency", groupCards: "Feature cards", groupNotice: "Project notice", groupCollab: "Collaboration", groupStats: "Key figures strip",
     bgTitle: "Background image", bgRemove: "Remove background", resumeTitle: "Resume (PDF)", resumeLive: "Visible on the website", resumeOpen: "Open file",
     resumeReplace: "Replace", resumeRemove: "Remove", resumeNote: "Replacing the file deletes the old one from GitHub automatically.",
     setGithubOk: "Connected", setGithubMissing: "Not connected", changeToken: "Change token", enterToken: "Enter token", hideToken: "Close",
@@ -1768,7 +1785,7 @@ const ADMIN_UI = {
     slugHelp: "Tự tạo từ tiêu đề. Chỉ sửa khi cần.", translationHelp: "Nối các bản ngôn ngữ của cùng một bài.",
     orderHint: "Dùng mũi tên để đổi chỗ. Thứ tự áp dụng cho cả 3 ngôn ngữ.", galleryHint: "Thả nhiều ảnh cùng lúc. Ảnh đầu tiên là ảnh lớn ở khu trình diễn.",
     homeTextHint: "Bên phải cập nhật ngay khi bạn gõ.", journeyHint: "Ảnh và nội dung của thẻ giới thiệu bản thân.",
-    groupHero: "Đầu trang", groupTransparency: "Minh bạch", groupCards: "Thẻ tính năng", groupNotice: "Lưu ý dự án", groupCollab: "Hợp tác",
+    groupHero: "Đầu trang", groupTransparency: "Minh bạch", groupCards: "Thẻ tính năng", groupNotice: "Lưu ý dự án", groupCollab: "Hợp tác", groupStats: "Dải số liệu",
     bgTitle: "Ảnh nền", bgRemove: "Gỡ ảnh nền", resumeTitle: "CV (PDF)", resumeLive: "Đang hiện trên web", resumeOpen: "Mở file",
     resumeReplace: "Thay file", resumeRemove: "Gỡ CV", resumeNote: "Khi thay file, bản cũ tự bị xóa khỏi GitHub.",
     setGithubOk: "Đã kết nối", setGithubMissing: "Chưa kết nối", changeToken: "Đổi token", enterToken: "Nhập token", hideToken: "Đóng",
@@ -1780,6 +1797,7 @@ const ADMIN_UI = {
 const HOME_TEXT_GROUPS = [
   ["groupHero", ["hero_badge", "hero_title", "hero_text"]],
   ["groupNotice", ["warning_one"]],
+  ["groupStats", ["stat_1_value", "stat_1_label", "stat_2_value", "stat_2_label", "stat_3_value", "stat_3_label", "stat_4_value", "stat_4_label"]],
   ["groupCollab", ["collaboration_title", "collaboration_text"]],
 ];
 
@@ -2863,6 +2881,18 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
             <h2 data-preview-hero-title className="wb-head mt-2 text-2xl font-bold leading-tight text-[#0F1A17]">{homeContentForm.hero_title}</h2>
             <p className="mt-2 text-sm leading-6 text-[#33423C]">{homeContentForm.hero_text}</p>
           </div>
+          <div className="grid grid-cols-2 gap-3 rounded-xl border border-[#C9D3CD] bg-white p-3">
+            {[1, 2, 3, 4].map((n) => {
+              const value = (homeContentForm[`stat_${n}_value`] || "").trim() || (n === 1 ? "auto" : "");
+              if (!value) return null;
+              return (
+                <div key={n}>
+                  <p className="wb-head text-2xl font-bold text-[#0B5A44]">{value}</p>
+                  <p className="text-xs text-[#4A5A54]">{homeContentForm[`stat_${n}_label`]}</p>
+                </div>
+              );
+            })}
+          </div>
           <div className="rounded-xl border border-[#C9D3CD] bg-white p-3 text-sm leading-6 text-[#4A5A54]">
             <p>{homeContentForm.warning_one}</p>
           </div>
@@ -3209,9 +3239,9 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
   };
 
   const FIELD_FILTERS = [["all", w.f_all], ["hw", w.f_hw], ["sw", w.f_sw]];
-  const stats = [
-    [String(posts.length) + "+", w.s1], ["3", w.s2], ["3", w.s3], ["1", w.s4],
-  ];
+  const stats = (t.stats || [])
+    .map((item, index) => [item.value || (index === 0 ? String(posts.length) : ""), item.label || [w.s1, w.s2, w.s3, w.s4][index]])
+    .filter(([value]) => value);
 
   const renderCard = (post) => {
     const pill = getWbPill(post, w, language);
@@ -3273,7 +3303,7 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
 
         {/* Proof strip */}
         <section className="border-b border-[#D5DDD8] bg-white">
-          <div className="mx-auto grid max-w-7xl grid-cols-2 gap-y-6 px-4 py-7 sm:px-5 lg:grid-cols-4">
+          <div className={`mx-auto grid max-w-7xl grid-cols-2 gap-y-6 px-4 py-7 sm:px-5 ${stats.length === 3 ? "lg:grid-cols-3" : stats.length === 2 ? "lg:grid-cols-2" : stats.length === 1 ? "lg:grid-cols-1" : "lg:grid-cols-4"}`}>
             {stats.map(([value, label], index) => (
               <div key={label} className={`px-2 sm:px-6 ${index > 0 ? "lg:border-l lg:border-[#D5DDD8]" : ""}`}>
                 <p className="wb-head text-4xl font-bold text-[#0B5A44]">{value}</p>

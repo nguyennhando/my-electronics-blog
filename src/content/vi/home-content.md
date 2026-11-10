@@ -19,4 +19,12 @@ warning_one: Các dự án có nhãn “Ý tưởng” vẫn đang ở giai đo�
 warning_two: Các dự án khác có thể được mở bằng nút “Đọc bài viết”. Cuối mỗi trang dự án có nút “Mở dự án” với các tệp liên quan.
 collaboration_title: Cùng làm việc cho dự án của bạn.
 collaboration_text: Bạn cần hỗ trợ về hệ thống nhúng, bo mạch, tự động hóa hoặc phần mềm? Hãy gửi cho tôi vài dòng về nhu cầu của bạn.
+stat_1_value: 
+stat_1_label: Dự án và bài viết
+stat_2_value: 3
+stat_2_label: Thiết kế bo mạch
+stat_3_value: 3
+stat_3_label: Ứng dụng trên Microsoft Store
+stat_4_value: 1
+stat_4_label: Hệ thống chạy thật tại nhà hàng
 ---

@@ -19,4 +19,12 @@ warning_one: Projects marked as “Concept” are still in the idea or concept p
 warning_two: All other projects can be opened via “Read article”. At the end of each project page, the “Open project” button provides project-related files.
 collaboration_title: Let us work on your project.
 collaboration_text: Looking for support with embedded systems, circuit boards, automation or software? Send me a short note about what you need.
+stat_1_value: 
+stat_1_label: Projects and posts
+stat_2_value: 3
+stat_2_label: PCB designs
+stat_3_value: 3
+stat_3_label: Apps in the Microsoft Store
+stat_4_value: 1
+stat_4_label: System live in a restaurant
 ---
