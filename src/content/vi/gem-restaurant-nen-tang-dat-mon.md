@@ -192,12 +192,6 @@ GEM Restaurant cho thấy phía sau một trang đặt món và đặt bàn “�
 
 ---
 
-## Mã nguồn
-
-Mã nguồn nằm trên GitHub nhưng không được chia sẻ công khai để bảo vệ dự án. Nếu bạn cần xem mã nguồn, chẳng hạn để đánh giá năng lực của người thực hiện dự án, vui lòng liên hệ với tôi qua e-mail donguyennhan.de@gmail.com.
-
----
-
 ### GEM Restaurant
 
 **Phát triển bởi Nguyen Nhan Do**
