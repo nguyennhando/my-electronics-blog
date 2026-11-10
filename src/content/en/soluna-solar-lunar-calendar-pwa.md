@@ -187,12 +187,6 @@ SOLUNA shows that even a seemingly simple tool like a calendar can be built clea
 
 ---
 
-## Source code
-
-The source code is on GitHub but is not shared publicly, in order to protect the project. If you would like to see the source code, for example to assess the developer's skills, please contact me by e-mail at donguyennhan.de@gmail.com.
-
----
-
 ### SOLUNA
 
 **Developed by Nguyen Nhan Do**
