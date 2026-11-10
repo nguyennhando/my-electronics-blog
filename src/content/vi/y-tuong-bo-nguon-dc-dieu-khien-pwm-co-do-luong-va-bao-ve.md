@@ -19,7 +19,7 @@ published: true
 created_at: '2026-05-28T09:33:38.567Z'
 external_link: 
 project_status: idea
-sort_order: 200
+sort_order: 210
 ---
 
 # Ý tưởng bộ nguồn DC điều khiển PWM với chức năng đo lường và bảo vệ
