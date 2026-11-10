@@ -11,7 +11,7 @@ image_gallery:
 - /my-electronics-blog/images/posts/finanzmanager-1.webp
 - /my-electronics-blog/images/posts/finanzmanager-2.webp
 - /my-electronics-blog/images/posts/finanzmanager-3.webp
-excerpt: Personal income and expense management with CSV import and export, real-time data analysis and a modern graphical interface. The complete source code is available through the project link.
+excerpt: Personal income and expense management with CSV import and export, real-time data analysis and a modern graphical interface. The app is available in the Microsoft Store.
 tags:
 - C++
 - Qt 6.9
