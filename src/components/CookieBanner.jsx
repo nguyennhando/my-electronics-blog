@@ -20,28 +20,20 @@ export default function CookieBanner({ language = "de" }) {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-50">
-      <div className="mx-auto max-w-5xl rounded-3xl border border-cyan-500/20 bg-black/90 p-6 shadow-2xl backdrop-blur-xl">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+    <div className="wb fixed bottom-4 left-4 right-4 z-[60] bg-transparent">
+      <div className="mx-auto max-w-4xl rounded-2xl border border-[#C9D3CD] bg-white p-5 shadow-[0_20px_50px_-20px_rgba(15,26,23,0.45)] sm:p-6">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h3 className="text-xl font-bold text-white">
-              {t.title}
-            </h3>
-
-            <p className="mt-2 text-sm leading-7 text-zinc-300">
-              {t.text}
-            </p>
+            <h3 className="wb-head text-lg font-bold text-[#0F1A17]">{t.title}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-[#33423C]">{t.text}</p>
           </div>
-
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={dismissNotice}
-              className="rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-bold text-black transition hover:scale-105"
-            >
-              {t.button}
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={dismissNotice}
+            className="shrink-0 rounded-xl bg-[#0B5A44] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#083D2F]"
+          >
+            {t.button}
+          </button>
         </div>
       </div>
     </div>

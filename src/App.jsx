@@ -1215,7 +1215,6 @@ function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange
   const [menuOpen, setMenuOpen] = useState(false);
   const t = getUiText(language);
   const w = getWbText(language);
-  const light = currentPage === "home";
 
   const scrollTo = (id) => {
     setMenuOpen(false);
@@ -1228,63 +1227,57 @@ function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange
 
   const navItems = [["projekte", w.nav_projects], ["kompetenzen", w.nav_skills], ["weg", w.nav_path], ["kontakt", w.nav_contact]];
   const langButton = (item, compact) => (
-    <button key={item} type="button" onClick={() => onLanguageChange(item)} className={`${compact ? "rounded-lg px-3 py-1.5 text-xs" : "rounded-full px-2.5 py-1 text-[11px]"} font-black uppercase transition ${language === item ? (light ? "bg-[#0B5A44] text-white" : "bg-cyan-400 text-black") : (light ? "text-[#4A5A54] hover:text-[#0F1A17]" : "text-zinc-400 hover:text-white")}`}>{item}</button>
+    <button key={item} type="button" onClick={() => onLanguageChange(item)} className={`${compact ? "rounded-lg px-3 py-1.5 text-xs" : "rounded-full px-2.5 py-1 text-[11px]"} font-black uppercase transition ${language === item ? "bg-[#0B5A44] text-white" : "text-[#4A5A54] hover:text-[#0F1A17]"}`}>{item}</button>
   );
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-xl ${light ? "border-[#C9D3CD] bg-[#F3F5F2]/90" : "border-white/10 bg-[#050816]/85"}`}>
+    <header className="wb fixed top-0 left-0 right-0 z-50 border-b border-[#C9D3CD] bg-[#F3F5F2]/90 backdrop-blur-xl">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-5">
         <button type="button" onClick={goHome} className="flex items-center gap-3 text-left">
-          {light ? (
-            <span className="wb-head flex h-10 w-10 items-center justify-center rounded-lg bg-[#0B5A44] text-sm font-bold tracking-tight text-white sm:h-11 sm:w-11">NND</span>
-          ) : (
-            <div className="flex h-12 w-12 overflow-hidden rounded-2xl sm:h-14 sm:w-14">
-              <img src="/my-electronics-blog/images/logo.webp" alt="Logo" className="h-full w-full scale-110 object-contain brightness-110 contrast-110" />
-            </div>
-          )}
+          <span className="wb-head flex h-10 w-10 items-center justify-center rounded-lg bg-[#0B5A44] text-sm font-bold tracking-tight text-white sm:h-11 sm:w-11">NND</span>
           <div>
-            <p className={`text-base font-black sm:text-lg ${light ? "wb-head text-[#0F1A17]" : "text-white sm:text-xl"}`}>Nguyen Nhan Do</p>
-            <p className={`text-[10px] leading-tight sm:text-xs ${light ? "text-[#4A5A54]" : "text-zinc-400"}`}>{t.tagline}</p>
+            <p className="wb-head text-base font-bold text-[#0F1A17] sm:text-lg">Nguyen Nhan Do</p>
+            <p className="text-[10px] leading-tight text-[#4A5A54] sm:text-xs">{t.tagline}</p>
           </div>
         </button>
 
         <div className="hidden items-center gap-7 md:flex">
           {navItems.map(([id, label]) => (
-            <button key={id} type="button" onClick={() => scrollTo(id)} className={`text-sm font-medium transition ${light ? "text-[#33423C] hover:text-[#0B5A44]" : "text-zinc-300 hover:text-cyan-300"}`}>{label}</button>
+            <button key={id} type="button" onClick={() => scrollTo(id)} className="text-sm font-medium text-[#33423C] transition hover:text-[#0B5A44]">{label}</button>
           ))}
-          <button type="button" onClick={goKnowledge} className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-bold transition ${light ? "border-[#C9D3CD] bg-white text-[#0F1A17] hover:border-[#0B5A44]" : "border-slate-300/30 bg-slate-300/10 text-slate-200 hover:border-slate-200/60 hover:bg-slate-300/20"}`}>
+          <button type="button" onClick={goKnowledge} className="inline-flex items-center gap-2 rounded-full border border-[#C9D3CD] bg-white px-4 py-2 text-sm font-bold text-[#0F1A17] transition hover:border-[#0B5A44]">
             <BookOpen className="h-4 w-4" /> {t.knowledge}
           </button>
-          <div className={`flex rounded-full border p-1 ${light ? "border-[#C9D3CD] bg-white" : "border-white/10 bg-white/5"}`}>
+          <div className="flex rounded-full border border-[#C9D3CD] bg-white p-1">
             {LANGUAGES.map((item) => langButton(item, false))}
           </div>
           {onAdminAccess && (
-            <button type="button" onClick={() => { setMenuOpen(false); onAdminAccess(); }} className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-bold transition ${light ? "border-[#0B5A44]/30 bg-[#0B5A44]/10 text-[#0B5A44] hover:bg-[#0B5A44]/20" : "border-cyan-300/30 bg-cyan-300/10 text-cyan-100 hover:border-cyan-200/60 hover:bg-cyan-300/20"}`}>
+            <button type="button" onClick={() => { setMenuOpen(false); onAdminAccess(); }} className="inline-flex items-center gap-2 rounded-full border border-[#0B5A44]/30 bg-[#0B5A44]/10 px-4 py-2 text-sm font-bold text-[#0B5A44] transition hover:bg-[#0B5A44]/20">
               <LogIn className="h-4 w-4" /> {isAdminAuthenticated ? "Admin" : "Login"}
             </button>
           )}
         </div>
 
-        <button type="button" aria-label="Menu" className={`rounded-xl border p-2 md:hidden ${light ? "border-[#C9D3CD] bg-white text-[#0F1A17]" : "border-white/10 text-white hover:bg-white/10"}`} onClick={() => setMenuOpen(v => !v)}>
+        <button type="button" aria-label="Menu" className="rounded-xl border border-[#C9D3CD] bg-white p-2 text-[#0F1A17] md:hidden" onClick={() => setMenuOpen(v => !v)}>
           {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </nav>
 
       {menuOpen && (
-        <div className={`border-t px-5 py-4 md:hidden ${light ? "border-[#C9D3CD] bg-[#F3F5F2] text-[#0F1A17]" : "border-white/10 bg-[#050816]/95 text-white"}`}>
+        <div className="border-t border-[#C9D3CD] bg-[#F3F5F2] px-5 py-4 text-[#0F1A17] md:hidden">
           <div className="grid gap-2">
             {navItems.map(([id, label]) => (
-              <button key={id} type="button" onClick={() => scrollTo(id)} className={`rounded-xl px-3 py-2 text-left ${light ? "text-[#0F1A17] hover:bg-white" : "text-zinc-200 hover:bg-white/10 hover:text-cyan-300"}`}>{label}</button>
+              <button key={id} type="button" onClick={() => scrollTo(id)} className="rounded-xl px-3 py-2 text-left text-[#0F1A17] hover:bg-white">{label}</button>
             ))}
-            <button type="button" onClick={goKnowledge} className={`mt-2 inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-left font-bold ${light ? "border-[#C9D3CD] bg-white" : "border-slate-300/30 bg-slate-300/10 text-slate-200"}`}>
+            <button type="button" onClick={goKnowledge} className="mt-2 inline-flex items-center gap-2 rounded-xl border border-[#C9D3CD] bg-white px-3 py-2 text-left font-bold">
               <BookOpen className="h-4 w-4" /> {t.knowledge}
             </button>
             {onAdminAccess && (
-              <button type="button" onClick={() => { setMenuOpen(false); onAdminAccess(); }} className={`mt-2 inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-left font-bold ${light ? "border-[#0B5A44]/30 bg-[#0B5A44]/10 text-[#0B5A44]" : "border-cyan-300/30 bg-cyan-300/10 text-cyan-100"}`}>
+              <button type="button" onClick={() => { setMenuOpen(false); onAdminAccess(); }} className="mt-2 inline-flex items-center gap-2 rounded-xl border border-[#0B5A44]/30 bg-[#0B5A44]/10 px-3 py-2 text-left font-bold text-[#0B5A44]">
                 <LogIn className="h-4 w-4" /> {isAdminAuthenticated ? "Admin" : "Login"}
               </button>
             )}
-            <div className={`mt-2 flex w-fit rounded-xl border p-1 ${light ? "border-[#C9D3CD] bg-white" : "border-white/10 bg-white/5"}`}>
+            <div className="mt-2 flex w-fit rounded-xl border border-[#C9D3CD] bg-white p-1">
               {LANGUAGES.map((item) => langButton(item, true))}
             </div>
           </div>
@@ -1297,118 +1290,108 @@ function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange
 // ─────────────────────────────────────────────
 // POST DETAIL PAGE (trang riêng)
 // ─────────────────────────────────────────────
+const WB_MD = {
+  h1: ({ children }) => <h2 className="wb-head mb-4 mt-10 text-2xl font-bold text-[#0F1A17] sm:text-3xl">{children}</h2>,
+  h2: ({ children }) => <h3 className="wb-head mb-3 mt-8 text-xl font-bold text-[#0B5A44] sm:text-2xl">{children}</h3>,
+  h3: ({ children }) => <h4 className="wb-head mb-2 mt-6 text-lg font-bold text-[#0F1A17]">{children}</h4>,
+  p: ({ children }) => <p className="mb-4">{children}</p>,
+  ul: ({ children }) => <ul className="mb-5 ml-6 list-disc space-y-2 marker:text-[#C8691F]">{children}</ul>,
+  ol: ({ children }) => <ol className="mb-5 ml-6 list-decimal space-y-2 marker:font-semibold marker:text-[#0B5A44]">{children}</ol>,
+  li: ({ children }) => <li className="pl-1">{children}</li>,
+  strong: ({ children }) => <strong className="font-bold text-[#0F1A17]">{children}</strong>,
+  hr: () => <hr className="my-8 border-[#D5DDD8]" />,
+  blockquote: ({ children }) => <blockquote className="mb-5 border-l-4 border-[#C8691F] bg-[#F3F5F2] px-5 py-3 text-[#33423C]">{children}</blockquote>,
+  a: ({ children, href }) => <a href={href} target={String(href || "").startsWith("mailto:") ? undefined : "_blank"} rel="noopener noreferrer" className="font-semibold text-[#0B5A44] underline decoration-[#0B5A44]/40 underline-offset-4 hover:text-[#083D2F]">{children}</a>,
+  code: ({ children }) => <code className="wb-mono rounded-md border border-[#D5DDD8] bg-[#F3F5F2] px-1.5 py-0.5 text-[0.9em] text-[#083D2F]">{children}</code>,
+  pre: ({ children }) => <pre className="wb-mono mb-5 overflow-x-auto rounded-xl border border-[#C9D3CD] bg-[#F3F5F2] p-4 text-sm leading-7 text-[#0F1A17]">{children}</pre>,
+};
+
+function WbBackButton({ onClick, children }) {
+  return (
+    <button type="button" onClick={onClick} className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#C9D3CD] bg-white px-5 py-2.5 text-sm font-semibold text-[#0F1A17] transition hover:border-[#0B5A44] hover:text-[#0B5A44]">
+      <ArrowLeft className="h-4 w-4" /> {children}
+    </button>
+  );
+}
+
 function PostDetailPage({ post, onBack, language }) {
   const [lightboxIndex, setLightboxIndex] = useState(null);
-  const allImages = [post.image_url, ...normalizeImageList(post.image_gallery)];
+  const gallery = normalizeImageList(post.image_gallery);
+  const allImages = [post.image_url, ...gallery];
   const t = getUiText(language);
+  const w = getWbText(language);
+  const idea = isIdea(post);
+  const statusPill = getWbPill(post, w, language);
 
   useEffect(() => { window.scrollTo({ top: 0 }); }, [post.id]);
 
   return (
-    <div className="min-h-screen text-white"
-  style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px)", backgroundSize: "60px 60px" }}>
-      <Background />
-      <main className="mx-auto max-w-5xl px-4 pt-[110px] pb-20 sm:px-5">
-        {/* Back Button */}
-        <motion.button initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} type="button" onClick={onBack}
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-bold text-zinc-300 transition hover:bg-white/10 hover:text-cyan-300">
-          <ArrowLeft className="h-4 w-4" /> {t.backBlog}
-        </motion.button>
+    <div className="wb min-h-screen">
+      <main className="mx-auto max-w-5xl px-4 pb-20 pt-[96px] sm:px-5 sm:pt-[104px]">
+        <WbBackButton onClick={onBack}>{t.backBlog}</WbBackButton>
 
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <GradientBorder
-            gradient={isIdea(post) ? "from-zinc-600 via-zinc-500 to-zinc-600" : "from-cyan-400 via-cyan-500 to-cyan-400"}
-            rounded="rounded-[2rem]"
-            innerClassName="overflow-hidden rounded-[1.95rem] bg-[#07111f]/95 backdrop-blur-xl"
-          >
-            {/* Hero image */}
-            <div className="relative">
-              <img src={post.image_url} alt={post.title} onClick={() => setLightboxIndex(0)}
-                className={`h-64 w-full cursor-zoom-in object-cover sm:h-80 lg:h-[420px] ${isIdea(post) ? "grayscale opacity-70" : ""}`} />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#07111f]/80 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
-                <span className="rounded-full bg-cyan-400 px-3 py-1.5 text-xs font-black text-black">{getCategoryLabel(post.category, language)}</span>
-                <span className={`rounded-full border px-3 py-1.5 text-xs font-bold ${getStatusClasses(post.project_status)}`}>{getStatusLabel(post.project_status, language)}</span>
+        <article className="overflow-hidden rounded-3xl border border-[#C9D3CD] bg-white shadow-[0_30px_60px_-44px_rgba(11,90,68,0.45)]">
+          <div className="relative bg-[#E9EEEA]">
+            <img src={post.image_url} alt={post.title} onClick={() => setLightboxIndex(0)}
+              className={`h-64 w-full cursor-zoom-in object-cover sm:h-80 lg:h-[420px] ${idea ? "grayscale opacity-80" : ""}`} />
+            <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
+              <span className="wb-mono rounded-full bg-white/95 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-[#0F1A17] shadow-sm">{getCategoryLabel(post.category, language)}</span>
+              <span className={`rounded-full px-3 py-1.5 text-[11px] font-semibold shadow-sm ${statusPill.cls}`}>{statusPill.label}</span>
+            </div>
+          </div>
+
+          {gallery.length > 0 && (
+            <div className="border-b border-[#E3E9E5] px-5 pb-6 pt-6 sm:px-8 lg:px-10">
+              <p className="wb-mono mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#C8691F]">{t.projectImages}</p>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {gallery.map((url, i) => (
+                  <img key={url} src={url} alt={`${t.image} ${i + 1}`} onClick={() => setLightboxIndex(i + 1)}
+                    className="h-36 w-full cursor-zoom-in rounded-xl border border-[#D5DDD8] object-cover transition hover:brightness-105" />
+                ))}
               </div>
             </div>
+          )}
 
-            {/* Gallery (directly under the hero image) */}
-            {normalizeImageList(post.image_gallery).length > 0 && (
-              <div className="px-5 pt-6 sm:px-8 lg:px-10">
-                <p className="mb-4 text-sm font-bold uppercase tracking-widest text-cyan-300">{t.projectImages}</p>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {normalizeImageList(post.image_gallery).map((url, i) => (
-                    <img key={url} src={url} alt={`${t.image} ${i + 1}`} onClick={() => setLightboxIndex(i + 1)}
-                      className="h-36 w-full cursor-zoom-in rounded-2xl object-cover transition hover:brightness-110" />
-                  ))}
-                </div>
+          <div className="p-5 sm:p-8 lg:p-10">
+            {post.is_translation_fallback && (
+              <p className="mb-5 rounded-xl border border-[#E8CB6B] bg-[#FFF1BF] px-4 py-3 text-sm leading-6 text-[#6B5200]">{t.translationFallback}</p>
+            )}
+            <div className="mb-5 flex flex-wrap gap-4 text-xs text-[#4A5A54]">
+              <span className="inline-flex items-center gap-1.5"><CalendarDays className="h-3.5 w-3.5" />{formatDate(post.created_at, language)}</span>
+              <span className="inline-flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" />{post.read_time || "5 Min."}</span>
+            </div>
+
+            <h1 className="wb-head text-3xl font-bold leading-tight text-[#0F1A17] sm:text-4xl lg:text-5xl">{post.title}</h1>
+            <p className="mt-5 border-l-4 border-[#C8691F] pl-4 text-base font-medium leading-8 text-[#33423C] sm:text-lg">{post.excerpt}</p>
+
+            <div className="mt-8 max-w-3xl text-[15px] leading-8 text-[#33423C] sm:text-base sm:leading-9">
+              <ReactMarkdown components={WB_MD}>{post.content}</ReactMarkdown>
+            </div>
+
+            {!!(Array.isArray(post.tags) ? post.tags : []).length && (
+              <div className="mt-8 flex flex-wrap gap-2">
+                {post.tags.map((tag) => <span key={tag} className="wb-mono rounded-md border border-[#D5DDD8] bg-[#F3F5F2] px-2.5 py-1 text-xs text-[#33423C]">{tag}</span>)}
               </div>
             )}
 
-            <div className="p-5 sm:p-8 lg:p-10">
-              {post.is_translation_fallback && (
-                <p className="mb-5 rounded-xl border border-yellow-400/25 bg-yellow-400/10 px-4 py-3 text-sm leading-6 text-yellow-100">{t.translationFallback}</p>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              {post.external_link && !idea ? (
+                <a href={post.external_link} target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0B5A44] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#083D2F]">
+                  {t.openProject} <ExternalLink className="h-4 w-4" />
+                </a>
+              ) : (
+                <span className="inline-flex items-center justify-center rounded-xl border border-[#C9D3CD] bg-[#F3F5F2] px-6 py-3.5 text-sm font-medium text-[#4A5A54]">
+                  {idea ? t.conceptProject : t.noProjectLink}
+                </span>
               )}
-              {/* Meta */}
-              <div className="mb-5 flex flex-wrap gap-3 text-xs text-zinc-400">
-                <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" />{formatDate(post.created_at, language)}</span>
-                <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{post.read_time || "5 Min."}</span>
-              </div>
-
-              {/* Title */}
-              <h1 className="text-2xl font-black leading-tight text-white sm:text-4xl lg:text-5xl">{post.title}</h1>
-
-              {/* Excerpt */}
-              <p className="mt-5 text-base font-semibold leading-8 text-cyan-100/90 sm:text-lg">{post.excerpt}</p>
-
-              {/* Content */}
-              <div className="mt-6 text-sm leading-8 text-zinc-300 sm:text-base sm:leading-9">
-                <ReactMarkdown
-                  components={{
-                    h1: ({ children }) => <h2 className="mb-4 mt-8 text-2xl font-black text-white sm:text-3xl">{children}</h2>,
-                    h2: ({ children }) => <h3 className="mb-3 mt-7 text-xl font-black text-cyan-100 sm:text-2xl">{children}</h3>,
-                    h3: ({ children }) => <h4 className="mb-2 mt-6 text-lg font-bold text-white">{children}</h4>,
-                    p: ({ children }) => <p className="mb-4 leading-8 sm:leading-9">{children}</p>,
-                    ul: ({ children }) => <ul className="mb-5 ml-6 list-disc space-y-2">{children}</ul>,
-                    ol: ({ children }) => <ol className="mb-5 ml-6 list-decimal space-y-2">{children}</ol>,
-                    li: ({ children }) => <li className="pl-1">{children}</li>,
-                    strong: ({ children }) => <strong className="font-black text-white">{children}</strong>,
-                    a: ({ children, href }) => <a href={href} target="_blank" rel="noopener noreferrer" className="font-bold text-cyan-300 underline decoration-cyan-400/40 underline-offset-4 hover:text-cyan-200">{children}</a>,
-                    code: ({ children }) => <code className="rounded-md border border-white/10 bg-black/30 px-1.5 py-0.5 text-cyan-200">{children}</code>,
-                    pre: ({ children }) => <pre className="mb-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/40 p-4 text-sm leading-7 text-zinc-100">{children}</pre>,
-                  }}
-                >
-                  {post.content}
-                </ReactMarkdown>
-              </div>
-
-              {/* Tags */}
-              {!!(Array.isArray(post.tags) ? post.tags : []).length && (
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {post.tags.map(tag => <span key={tag} className="rounded-full border border-cyan-400/20 bg-cyan-400/8 px-3 py-1 text-xs text-cyan-300">#{tag}</span>)}
-                </div>
-              )}
-
-              {/* Actions */}
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                {post.external_link && !isIdea(post) ? (
-                  <a href={post.external_link} target="_blank" rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-cyan-400 px-6 py-4 font-black text-black transition hover:bg-cyan-300">
-                    {t.openProject} <ExternalLink className="h-5 w-5" />
-                  </a>
-                ) : (
-                  <span className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-6 py-4 font-bold text-zinc-400">
-                    {isIdea(post) ? t.conceptProject : t.noProjectLink}
-                  </span>
-                )}
-                <button type="button" onClick={onBack}
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-6 py-4 font-bold text-zinc-200 transition hover:bg-white/10">
-                  <ArrowLeft className="h-5 w-5" /> {t.backBlog}
-                </button>
-              </div>
+              <button type="button" onClick={onBack}
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#0F1A17] bg-white px-6 py-3.5 text-sm font-semibold text-[#0F1A17] transition hover:bg-[#0F1A17] hover:text-white">
+                <ArrowLeft className="h-4 w-4" /> {t.backBlog}
+              </button>
             </div>
-          </GradientBorder>
-        </motion.div>
+          </div>
+        </article>
       </main>
 
       {lightboxIndex !== null && (
@@ -1437,109 +1420,102 @@ function KnowledgePage({ posts, onOpenPost, getPostUrl, language }) {
   const listPosts = filteredPosts.slice(1);
   const totalPages = Math.max(1, Math.ceil(listPosts.length / POSTS_PER_PAGE));
   const paginatedPosts = listPosts.slice((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE);
+  const openLink = (post) => (event) => {
+    if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+      event.preventDefault();
+      onOpenPost(post.id);
+    }
+  };
 
   useEffect(() => { window.scrollTo({ top: 0 }); }, []);
   useEffect(() => { setCurrentPage(1); }, [search, category]);
 
   return (
-    <div className="min-h-screen text-white">
-      <Background />
-      <main className="mx-auto max-w-7xl px-4 pb-20 pt-[120px] sm:px-5">
-        <section className="relative overflow-hidden rounded-[2rem] border border-slate-300/25 bg-[#0b1023]/95 px-5 py-8 shadow-2xl shadow-slate-950/30 sm:px-8 sm:py-10">
-          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-slate-300/15 blur-3xl" />
+    <div className="wb min-h-screen">
+      <main className="mx-auto max-w-7xl px-4 pb-20 pt-[96px] sm:px-5 sm:pt-[104px]">
+        <section className="relative overflow-hidden rounded-3xl border border-[#C9D3CD] bg-white px-5 py-8 sm:px-10 sm:py-12">
+          <div className="wb-grid wb-grid-fade absolute inset-0 opacity-60" aria-hidden="true" />
           <div className="relative max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-slate-300/30 bg-slate-300/10 px-3 py-1.5 text-xs font-black uppercase tracking-widest text-slate-200">
-              <Library className="h-4 w-4" /> {t.knowledgeLibrary}
-            </div>
-            <h1 className="mt-5 text-3xl font-black leading-tight sm:text-5xl">{t.knowledgeTitle}</h1>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-zinc-300 sm:text-base">{t.knowledgeIntro}</p>
+            <span className="wb-mono inline-flex items-center gap-2 rounded-full border border-[#C9D3CD] bg-white px-3.5 py-1.5 text-xs font-medium text-[#0B5A44]">
+              <Library className="h-3.5 w-3.5" /> {t.knowledgeLibrary}
+            </span>
+            <h1 className="wb-head mt-5 text-3xl font-bold leading-tight text-[#0F1A17] sm:text-5xl">{t.knowledgeTitle}</h1>
+            <p className="mt-4 max-w-2xl text-[15px] leading-7 text-[#33423C] sm:text-base">{t.knowledgeIntro}</p>
           </div>
         </section>
 
-        <section className="mt-5 rounded-2xl border border-slate-300/20 bg-slate-300/[0.07] p-5 sm:p-6">
+        <section className="mt-5 rounded-2xl border border-[#C9D3CD] bg-white p-5 sm:p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-slate-300/25 bg-slate-300/10 text-slate-200">
-              <BookOpen className="h-5 w-5" />
-            </div>
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#E1F0E8] text-[#0B5A44]"><BookOpen className="h-5 w-5" /></div>
             <div>
-              <h2 className="font-black text-slate-100">{t.knowledgeNotice}</h2>
-              <div className="mt-3 space-y-3 text-sm leading-7 text-zinc-300">
+              <h2 className="wb-head font-bold text-[#0F1A17]">{t.knowledgeNotice}</h2>
+              <div className="mt-3 space-y-3 text-sm leading-7 text-[#33423C]">
                 {t.knowledgeNoticeParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
               </div>
             </div>
           </div>
         </section>
 
-        <section className="mt-8 grid gap-3 rounded-2xl border border-white/10 bg-[#07111f]/90 p-4 sm:grid-cols-[1fr_auto]">
+        <section className="mt-8 grid gap-3 sm:grid-cols-[1fr_auto]">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t.knowledgeSearch} className="w-full rounded-xl border border-white/10 bg-black/20 py-3 pl-11 pr-4 text-sm outline-none ring-slate-300/30 placeholder:text-zinc-500 focus:ring-4" />
+            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#4A5A54]" />
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t.knowledgeSearch} className="w-full rounded-full border border-[#C9D3CD] bg-white py-3 pl-11 pr-4 text-sm text-[#0F1A17] outline-none placeholder:text-[#7A8A84] focus:border-[#0B5A44] focus:ring-4 focus:ring-[#0B5A44]/15" />
           </div>
-          <select value={category} onChange={(e) => setCategory(e.target.value)} className="rounded-xl border border-white/10 bg-[#050816] px-5 py-3 text-sm outline-none ring-slate-300/30 focus:ring-4">
+          <select value={category} onChange={(e) => setCategory(e.target.value)} className="rounded-full border border-[#C9D3CD] bg-white px-5 py-3 text-sm text-[#0F1A17] outline-none focus:border-[#0B5A44] focus:ring-4 focus:ring-[#0B5A44]/15">
             <option value="__all__">{t.allTopics}</option>
             {categories.map((item) => <option key={item} value={item}>{getCategoryLabel(item, language)}</option>)}
           </select>
         </section>
 
         {!featuredPost ? (
-          <section className="mt-8 rounded-2xl border border-dashed border-slate-300/30 bg-slate-300/5 px-5 py-16 text-center">
-            <BookOpen className="mx-auto h-10 w-10 text-slate-300" />
-            <h2 className="mt-4 text-xl font-black">{t.noKnowledge}</h2>
-            <p className="mt-2 text-sm text-zinc-400">{t.noKnowledgeText}</p>
+          <section className="mt-8 rounded-2xl border border-dashed border-[#C9D3CD] bg-white px-5 py-16 text-center">
+            <BookOpen className="mx-auto h-10 w-10 text-[#0B5A44]" />
+            <h2 className="wb-head mt-4 text-xl font-bold">{t.noKnowledge}</h2>
+            <p className="mt-2 text-sm text-[#4A5A54]">{t.noKnowledgeText}</p>
           </section>
         ) : (
           <>
             <section className="mt-8">
-              <p className="mb-3 text-xs font-black uppercase tracking-widest text-slate-300">{t.selectedPost}</p>
-              <a href={getPostUrl(featuredPost.id)} onClick={(event) => {
-                if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-                  event.preventDefault();
-                  onOpenPost(featuredPost.id);
-                }
-              }} className="group grid w-full overflow-hidden rounded-[2rem] border border-slate-300/25 bg-[#0b1023]/95 text-left transition hover:border-slate-200/60 lg:grid-cols-[0.42fr_0.58fr]">
-                <div className="h-56 overflow-hidden bg-slate-950/30 lg:h-auto">
-                  {featuredPost.image_url ? <img src={featuredPost.image_url} alt="" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><FlaskConical className="h-14 w-14 text-slate-300/60" /></div>}
+              <p className="wb-mono mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#C8691F]">{t.selectedPost}</p>
+              <a href={getPostUrl(featuredPost.id)} onClick={openLink(featuredPost)} className="group grid w-full overflow-hidden rounded-3xl border border-[#C9D3CD] bg-white text-left transition hover:border-[#0B5A44] hover:shadow-[0_22px_44px_-26px_rgba(11,90,68,0.55)] lg:grid-cols-[0.42fr_0.58fr]">
+                <div className="h-56 overflow-hidden bg-[#E9EEEA] lg:h-auto">
+                  {featuredPost.image_url ? <img src={featuredPost.image_url} alt="" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><FlaskConical className="h-14 w-14 text-[#0B5A44]/50" /></div>}
                 </div>
-                <div className="p-5 sm:p-7">
-                  <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-400">
-                    <span className="rounded-full bg-slate-200 px-3 py-1 font-black text-slate-950">{getCategoryLabel(featuredPost.category, language)}</span>
-                    {featuredPost.is_translation_fallback && <span className="rounded-full border border-yellow-400/25 bg-yellow-400/10 px-3 py-1 font-bold text-yellow-200">{t.translationFallbackShort}</span>}
+                <div className="p-5 sm:p-8">
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-[#4A5A54]">
+                    <span className="wb-mono rounded-full bg-[#E1F0E8] px-3 py-1 font-semibold uppercase tracking-wider text-[#0B5A44]">{getCategoryLabel(featuredPost.category, language)}</span>
+                    {featuredPost.is_translation_fallback && <span className="rounded-full bg-[#FFF1BF] px-3 py-1 font-semibold text-[#6B5200]">{t.translationFallbackShort}</span>}
                     <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {featuredPost.read_time || "5 Min."}</span>
                   </div>
-                  <h2 className="mt-4 text-2xl font-black leading-tight sm:text-3xl">{featuredPost.title}</h2>
-                  <p className="mt-3 line-clamp-3 text-sm leading-7 text-zinc-400 sm:text-base">{featuredPost.excerpt}</p>
-                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-black text-slate-200">{t.readPost} <ArrowRight className="h-4 w-4" /></span>
+                  <h2 className="wb-head mt-4 text-2xl font-bold leading-tight text-[#0F1A17] sm:text-3xl">{featuredPost.title}</h2>
+                  <p className="mt-3 line-clamp-3 text-[15px] leading-7 text-[#33423C]">{featuredPost.excerpt}</p>
+                  <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[#0B5A44]">{t.readPost} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span>
                 </div>
               </a>
             </section>
 
             {listPosts.length > 0 && <section className="mt-10">
               <div className="mb-4 flex items-end justify-between gap-4">
-                <div><p className="text-xs font-black uppercase tracking-widest text-slate-300">{t.archive}</p><h2 className="mt-2 text-2xl font-black">{t.morePosts}</h2></div>
-                <span className="text-sm text-zinc-500">{filteredPosts.length} {t.posts}</span>
+                <div><p className="wb-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#C8691F]">{t.archive}</p><h2 className="wb-head mt-2 text-2xl font-bold">{t.morePosts}</h2></div>
+                <span className="text-sm text-[#4A5A54]">{filteredPosts.length} {t.posts}</span>
               </div>
               <div className="grid gap-3">
                 {paginatedPosts.map((post) => (
-                  <a key={post.id} href={getPostUrl(post.id)} onClick={(event) => {
-                    if (event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-                      event.preventDefault();
-                      onOpenPost(post.id);
-                    }
-                  }} className="group grid gap-4 rounded-2xl border border-white/10 bg-[#07111f]/90 p-4 text-left transition hover:border-slate-300/50 sm:grid-cols-[140px_1fr_auto] sm:items-center">
-                    <div className="hidden h-24 overflow-hidden rounded-xl bg-slate-950/30 sm:block">
-                      {post.image_url ? <img src={post.image_url} alt="" className="h-full w-full object-cover transition group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><GraduationCap className="h-8 w-8 text-slate-300/60" /></div>}
+                  <a key={post.id} href={getPostUrl(post.id)} onClick={openLink(post)} className="group grid gap-4 rounded-2xl border border-[#C9D3CD] bg-white p-4 text-left transition hover:border-[#0B5A44] sm:grid-cols-[140px_1fr_auto] sm:items-center">
+                    <div className="hidden h-24 overflow-hidden rounded-xl bg-[#E9EEEA] sm:block">
+                      {post.image_url ? <img src={post.image_url} alt="" className="h-full w-full object-cover transition group-hover:scale-105" /> : <div className="flex h-full items-center justify-center"><GraduationCap className="h-8 w-8 text-[#0B5A44]/50" /></div>}
                     </div>
                     <div>
-                      <div className="flex flex-wrap gap-2 text-xs text-zinc-500"><span className="font-bold text-slate-300">{getCategoryLabel(post.category, language)}</span><span>{formatDate(post.created_at, language)}</span><span>{post.read_time || "5 Min."}</span></div>
-                      {post.is_translation_fallback && <span className="mt-2 inline-flex rounded-full border border-yellow-400/25 bg-yellow-400/10 px-2.5 py-1 text-xs font-bold text-yellow-200">{t.translationFallbackShort}</span>}
-                      <h3 className="mt-2 text-lg font-black leading-tight group-hover:text-slate-200">{post.title}</h3>
-                      <p className="mt-2 line-clamp-2 text-sm leading-6 text-zinc-400">{post.excerpt}</p>
+                      <div className="flex flex-wrap gap-2 text-xs text-[#4A5A54]"><span className="font-bold text-[#0B5A44]">{getCategoryLabel(post.category, language)}</span><span>{formatDate(post.created_at, language)}</span><span>{post.read_time || "5 Min."}</span></div>
+                      {post.is_translation_fallback && <span className="mt-2 inline-flex rounded-full bg-[#FFF1BF] px-2.5 py-1 text-xs font-semibold text-[#6B5200]">{t.translationFallbackShort}</span>}
+                      <h3 className="wb-head mt-2 text-lg font-bold leading-tight text-[#0F1A17]">{post.title}</h3>
+                      <p className="mt-2 line-clamp-2 text-sm leading-6 text-[#33423C]">{post.excerpt}</p>
                     </div>
-                    <ArrowRight className="hidden h-5 w-5 text-slate-300 sm:block" />
+                    <ArrowRight className="hidden h-5 w-5 text-[#0B5A44] sm:block" />
                   </a>
                 ))}
               </div>
-              {totalPages > 1 && <div className="mt-6 flex justify-center gap-2">{Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => <button key={number} type="button" onClick={() => setCurrentPage(number)} className={`h-10 w-10 rounded-xl text-sm font-black ${currentPage === number ? "bg-slate-200 text-slate-950" : "border border-white/10 bg-white/5 text-zinc-300"}`}>{number}</button>)}</div>}
+              {totalPages > 1 && <div className="mt-6 flex justify-center gap-2">{Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => <button key={number} type="button" onClick={() => setCurrentPage(number)} className={`h-10 w-10 rounded-xl text-sm font-bold ${currentPage === number ? "bg-[#0B5A44] text-white" : "border border-[#C9D3CD] bg-white text-[#33423C]"}`}>{number}</button>)}</div>}
             </section>}
           </>
         )}
@@ -1552,37 +1528,26 @@ function KnowledgeDetailPage({ post, onBack, language }) {
   const t = getUiText(language);
   useEffect(() => { window.scrollTo({ top: 0 }); }, [post.id]);
   return (
-    <div className="min-h-screen text-white">
-      <Background />
-      <main className="mx-auto max-w-4xl px-4 pb-20 pt-[110px] sm:px-5">
-        <button type="button" onClick={onBack} className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-300/25 bg-slate-300/10 px-5 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-slate-300/20"><ArrowLeft className="h-4 w-4" /> {t.backKnowledge}</button>
-        <article className="overflow-hidden rounded-[2rem] border border-slate-300/20 bg-[#07111f]/95 shadow-2xl shadow-slate-950/20">
+    <div className="wb min-h-screen">
+      <main className="mx-auto max-w-4xl px-4 pb-20 pt-[96px] sm:px-5 sm:pt-[104px]">
+        <WbBackButton onClick={onBack}>{t.backKnowledge}</WbBackButton>
+        <article className="overflow-hidden rounded-3xl border border-[#C9D3CD] bg-white shadow-[0_30px_60px_-44px_rgba(11,90,68,0.45)]">
           {post.image_url && <img src={post.image_url} alt={post.title} className="h-56 w-full object-cover sm:h-80" />}
           <div className="p-5 sm:p-8 lg:p-10">
             {post.is_translation_fallback && (
-              <p className="mb-5 rounded-xl border border-yellow-400/25 bg-yellow-400/10 px-4 py-3 text-sm leading-6 text-yellow-100">{t.translationFallback}</p>
+              <p className="mb-5 rounded-xl border border-[#E8CB6B] bg-[#FFF1BF] px-4 py-3 text-sm leading-6 text-[#6B5200]">{t.translationFallback}</p>
             )}
-            <div className="flex flex-wrap gap-3 text-xs text-zinc-400">
-              <span className="rounded-full bg-slate-200 px-3 py-1 font-black text-slate-950">{getCategoryLabel(post.category, language)}</span>
-              <span className="inline-flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at, language)}</span>
-              <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {post.read_time || "5 Min."}</span>
+            <div className="flex flex-wrap items-center gap-3 text-xs text-[#4A5A54]">
+              <span className="wb-mono rounded-full bg-[#E1F0E8] px-3 py-1 font-semibold uppercase tracking-wider text-[#0B5A44]">{getCategoryLabel(post.category, language)}</span>
+              <span className="inline-flex items-center gap-1.5"><CalendarDays className="h-3.5 w-3.5" /> {formatDate(post.created_at, language)}</span>
+              <span className="inline-flex items-center gap-1.5"><Clock className="h-3.5 w-3.5" /> {post.read_time || "5 Min."}</span>
             </div>
-            <h1 className="mt-5 text-3xl font-black leading-tight sm:text-5xl">{post.title}</h1>
-            <p className="mt-5 text-base font-semibold leading-8 text-slate-100/90 sm:text-lg">{post.excerpt}</p>
-            <div className="mt-7 text-sm leading-8 text-zinc-300 sm:text-base sm:leading-9">
-              <ReactMarkdown components={{
-                h1: ({ children }) => <h2 className="mb-4 mt-9 text-2xl font-black text-white sm:text-3xl">{children}</h2>,
-                h2: ({ children }) => <h3 className="mb-3 mt-8 text-xl font-black text-slate-200 sm:text-2xl">{children}</h3>,
-                h3: ({ children }) => <h4 className="mb-2 mt-6 text-lg font-bold text-white">{children}</h4>,
-                p: ({ children }) => <p className="mb-4">{children}</p>,
-                ul: ({ children }) => <ul className="mb-5 ml-6 list-disc space-y-2">{children}</ul>,
-                ol: ({ children }) => <ol className="mb-5 ml-6 list-decimal space-y-2">{children}</ol>,
-                strong: ({ children }) => <strong className="font-black text-white">{children}</strong>,
-                a: ({ children, href }) => <a href={href} target="_blank" rel="noopener noreferrer" className="font-bold text-slate-300 underline underline-offset-4 hover:text-slate-200">{children}</a>,
-                code: ({ children }) => <code className="rounded-md border border-slate-300/20 bg-black/30 px-1.5 py-0.5 text-slate-200">{children}</code>,
-              }}>{post.content}</ReactMarkdown>
+            <h1 className="wb-head mt-5 text-3xl font-bold leading-tight text-[#0F1A17] sm:text-5xl">{post.title}</h1>
+            <p className="mt-5 border-l-4 border-[#C8691F] pl-4 text-base font-medium leading-8 text-[#33423C] sm:text-lg">{post.excerpt}</p>
+            <div className="mt-8 text-[15px] leading-8 text-[#33423C] sm:text-base sm:leading-9">
+              <ReactMarkdown components={WB_MD}>{post.content}</ReactMarkdown>
             </div>
-            {post.external_link && <a href={post.external_link} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex items-center gap-2 rounded-xl bg-slate-200 px-5 py-3 font-black text-slate-950 transition hover:bg-white">{t.externalSource} <ExternalLink className="h-4 w-4" /></a>}
+            {post.external_link && <a href={post.external_link} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#0B5A44] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#083D2F]">{t.externalSource} <ExternalLink className="h-4 w-4" /></a>}
           </div>
         </article>
       </main>
@@ -3537,9 +3502,7 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
 function LegalPageLayout({ title, children, onBack, onNavigate, language, onLanguageChange }) {
   const t = getUiText(language);
   return (
-    <div className="min-h-screen overflow-x-hidden text-white">
-      <Background />
-
+    <div className="wb min-h-screen overflow-x-hidden">
       <SiteHeader
         onNavigate={onNavigate}
         currentPage="legal"
@@ -3547,25 +3510,15 @@ function LegalPageLayout({ title, children, onBack, onNavigate, language, onLang
         onLanguageChange={onLanguageChange}
       />
 
-      <main className="mx-auto max-w-5xl px-4 pt-[110px] pb-20 sm:px-5">
-        <button
-          type="button"
-          onClick={onBack}
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-bold text-zinc-300 transition hover:bg-white/10 hover:text-cyan-300"
-        >
-          <ArrowLeft className="h-4 w-4" /> {t.back}
-        </button>
+      <main className="mx-auto max-w-4xl px-4 pb-20 pt-[96px] sm:px-5 sm:pt-[104px]">
+        <WbBackButton onClick={onBack}>{t.back}</WbBackButton>
 
-        <GradientBorder
-          gradient="from-cyan-400 via-cyan-500 to-cyan-400"
-          rounded="rounded-[2rem]"
-          innerClassName="rounded-[1.95rem] bg-[#07111f]/95 p-6 sm:p-10 backdrop-blur-xl"
-        >
-          <h1 className="text-3xl font-black text-white sm:text-5xl">{title}</h1>
-          <div className="mt-8 space-y-5 text-sm leading-8 text-zinc-300 sm:text-base">
+        <article className="rounded-3xl border border-[#C9D3CD] bg-white p-6 shadow-[0_30px_60px_-44px_rgba(11,90,68,0.45)] sm:p-10">
+          <h1 className="wb-head text-3xl font-bold text-[#0F1A17] sm:text-5xl">{title}</h1>
+          <div className="mt-8 space-y-6 text-[15px] leading-8 text-[#33423C] sm:text-base [&_a]:font-semibold [&_a]:text-[#0B5A44] [&_a]:underline [&_a]:underline-offset-4 [&_h2]:wb-head [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-[#0F1A17] [&_h3]:wb-head [&_h3]:font-bold [&_h3]:text-[#0F1A17]">
             {children}
           </div>
-        </GradientBorder>
+        </article>
       </main>
     </div>
   );
@@ -3596,7 +3549,7 @@ function ImpressumPage({ onBack, onNavigate, language, onLanguageChange }) {
         ["Copyright", "The content and works published on this website are subject to German copyright law. Any use beyond the limits of copyright law requires prior written consent from the respective author or rights holder."],
       ],
     };
-    return <LegalPageLayout title={copy.title} onBack={onBack} onNavigate={onNavigate} language={language} onLanguageChange={onLanguageChange}>{copy.sections.map(([title, text]) => <section key={title}><p className="font-bold text-white">{title}</p><p className="whitespace-pre-line">{text}</p></section>)}</LegalPageLayout>;
+    return <LegalPageLayout title={copy.title} onBack={onBack} onNavigate={onNavigate} language={language} onLanguageChange={onLanguageChange}>{copy.sections.map(([title, text]) => <section key={title}><p className="wb-head font-bold text-[#0F1A17]">{title}</p><p className="whitespace-pre-line">{text}</p></section>)}</LegalPageLayout>;
   }
   return (
     <LegalPageLayout
@@ -3607,7 +3560,7 @@ function ImpressumPage({ onBack, onNavigate, language, onLanguageChange }) {
       onLanguageChange={onLanguageChange}
     >
       <section>
-        <p className="font-bold text-white">Angaben gemäß § 5 DDG</p>
+        <p className="wb-head font-bold text-[#0F1A17]">Angaben gemäß § 5 DDG</p>
         <p>
           Nguyen Nhan Do
           <br />
@@ -3620,12 +3573,12 @@ function ImpressumPage({ onBack, onNavigate, language, onLanguageChange }) {
       </section>
 
       <section>
-        <p className="font-bold text-white">Kontakt</p>
+        <p className="wb-head font-bold text-[#0F1A17]">Kontakt</p>
         <p>
           E-Mail:{" "}
           <a
             href="mailto:donguyennhan.de@gmail.com"
-            className="text-cyan-400 underline hover:text-cyan-300"
+            className="text-[#0B5A44] underline hover:text-[#0B5A44]"
           >
             donguyennhan.de@gmail.com
           </a>
@@ -3633,7 +3586,7 @@ function ImpressumPage({ onBack, onNavigate, language, onLanguageChange }) {
       </section>
 
       <section>
-        <p className="font-bold text-white">
+        <p className="wb-head font-bold text-[#0F1A17]">
           Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
         </p>
         <p>
@@ -3648,7 +3601,7 @@ function ImpressumPage({ onBack, onNavigate, language, onLanguageChange }) {
       </section>
 
       <section>
-        <p className="font-bold text-white">Hinweis zum Inhalt</p>
+        <p className="wb-head font-bold text-[#0F1A17]">Hinweis zum Inhalt</p>
         <p>
           Diese Website ist ein persönliches Portfolio sowie ein technischer
           Blog. Die Inhalte dienen der Dokumentation privater Projekte,
@@ -3662,7 +3615,7 @@ function ImpressumPage({ onBack, onNavigate, language, onLanguageChange }) {
       </section>
 
       <section>
-        <p className="font-bold text-white">Haftung für Inhalte</p>
+        <p className="wb-head font-bold text-[#0F1A17]">Haftung für Inhalte</p>
         <p>
           Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt
           erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der
@@ -3671,7 +3624,7 @@ function ImpressumPage({ onBack, onNavigate, language, onLanguageChange }) {
       </section>
 
       <section>
-        <p className="font-bold text-white">Haftung für Links</p>
+        <p className="wb-head font-bold text-[#0F1A17]">Haftung für Links</p>
         <p>
           Diese Website enthält Links zu externen Websites Dritter. Auf deren
           Inhalte habe ich keinen Einfluss. Für die Inhalte der verlinkten
@@ -3680,7 +3633,7 @@ function ImpressumPage({ onBack, onNavigate, language, onLanguageChange }) {
       </section>
 
       <section>
-        <p className="font-bold text-white">Urheberrecht</p>
+        <p className="wb-head font-bold text-[#0F1A17]">Urheberrecht</p>
         <p>
           Die auf dieser Website veröffentlichten Inhalte und Werke unterliegen
           dem deutschen Urheberrecht. Jede Art der Verwertung außerhalb der
@@ -3717,7 +3670,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
       ["9. Right to lodge a complaint", "You have the right to lodge a complaint with a data protection supervisory authority if you believe that your personal data has been processed in breach of the GDPR. Competent authority: Der Hessische Beauftragte für Datenschutz und Informationsfreiheit, Postfach 3163, 65021 Wiesbaden, Germany."],
       ["10. Updates to this statement", "This privacy statement may be updated if the website, the services used or legal requirements change."],
     ];
-    return <LegalPageLayout title={language === "vi" ? "Quyền riêng tư" : "Privacy Policy"} onBack={onBack} onNavigate={onNavigate} language={language} onLanguageChange={onLanguageChange}>{sections.map(([title, text]) => <section key={title}><p className="font-bold text-white">{title}</p><p className="whitespace-pre-line">{text}</p></section>)}</LegalPageLayout>;
+    return <LegalPageLayout title={language === "vi" ? "Quyền riêng tư" : "Privacy Policy"} onBack={onBack} onNavigate={onNavigate} language={language} onLanguageChange={onLanguageChange}>{sections.map(([title, text]) => <section key={title}><p className="wb-head font-bold text-[#0F1A17]">{title}</p><p className="whitespace-pre-line">{text}</p></section>)}</LegalPageLayout>;
   }
   return (
     <LegalPageLayout
@@ -3728,7 +3681,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
       onLanguageChange={onLanguageChange}
     >
       <section>
-        <p className="font-bold text-white">1. Verantwortlicher</p>
+        <p className="wb-head font-bold text-[#0F1A17]">1. Verantwortlicher</p>
 
         <p>
           Nguyen Nhan Do
@@ -3742,7 +3695,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
           E-Mail:{" "}
           <a
             href="mailto:donguyennhan.de@gmail.com"
-            className="text-cyan-400 underline hover:text-cyan-300"
+            className="text-[#0B5A44] underline hover:text-[#0B5A44]"
           >
             donguyennhan.de@gmail.com
           </a>
@@ -3750,7 +3703,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
       </section>
 
       <section>
-        <p className="font-bold text-white">2. Allgemeine Hinweise</p>
+        <p className="wb-head font-bold text-[#0F1A17]">2. Allgemeine Hinweise</p>
 
         <p>
           Diese Website ist ein persönliches Portfolio sowie ein technischer
@@ -3761,7 +3714,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
       </section>
 
       <section>
-        <p className="font-bold text-white">3. Hosting über GitHub Pages</p>
+        <p className="wb-head font-bold text-[#0F1A17]">3. Hosting über GitHub Pages</p>
 
         <p>
           Diese Website wird über GitHub Pages gehostet, einen Dienst der
@@ -3786,7 +3739,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
             href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-cyan-400 underline hover:text-cyan-300"
+            className="text-[#0B5A44] underline hover:text-[#0B5A44]"
           >
             GitHub Privacy Statement
           </a>
@@ -3795,7 +3748,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
       </section>
 
       <section>
-        <p className="font-bold text-white">
+        <p className="wb-head font-bold text-[#0F1A17]">
           4. Cookies und lokale Speicherung
         </p>
 
@@ -3821,7 +3774,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
       </section>
 
       <section>
-        <p className="font-bold text-white">5. Keine Analyse-Tools</p>
+        <p className="wb-head font-bold text-[#0F1A17]">5. Keine Analyse-Tools</p>
 
         <p>
           Auf dieser Website werden keine Analyse-Tools wie Google Analytics,
@@ -3830,7 +3783,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
       </section>
 
       <section>
-        <p className="font-bold text-white">6. Kontaktaufnahme per E-Mail</p>
+        <p className="wb-head font-bold text-[#0F1A17]">6. Kontaktaufnahme per E-Mail</p>
 
         <p>
           Wenn Sie mich per E-Mail kontaktieren, werden die von Ihnen
@@ -3849,7 +3802,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
       </section>
 
       <section>
-        <p className="font-bold text-white">7. Externe Links</p>
+        <p className="wb-head font-bold text-[#0F1A17]">7. Externe Links</p>
 
         <p>
           Diese Website enthält Links zu externen Websites, insbesondere zu
@@ -3861,7 +3814,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
       </section>
 
       <section>
-        <p className="font-bold text-white">8. Ihre Rechte</p>
+        <p className="wb-head font-bold text-[#0F1A17]">8. Ihre Rechte</p>
 
         <p>
           Sie haben nach der DSGVO das Recht auf Auskunft nach Art. 15 DSGVO,
@@ -3876,7 +3829,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
           kontaktieren:{" "}
           <a
             href="mailto:donguyennhan.de@gmail.com"
-            className="text-cyan-400 underline hover:text-cyan-300"
+            className="text-[#0B5A44] underline hover:text-[#0B5A44]"
           >
             donguyennhan.de@gmail.com
           </a>
@@ -3885,7 +3838,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
       </section>
 
       <section>
-        <p className="font-bold text-white">
+        <p className="wb-head font-bold text-[#0F1A17]">
           9. Beschwerderecht bei der Aufsichtsbehörde
         </p>
 
@@ -3911,7 +3864,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
             href="https://datenschutz.hessen.de"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-cyan-400 underline hover:text-cyan-300"
+            className="text-[#0B5A44] underline hover:text-[#0B5A44]"
           >
             datenschutz.hessen.de
           </a>
@@ -3919,7 +3872,7 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
       </section>
 
       <section>
-        <p className="font-bold text-white">10. Aktualität dieser Erklärung</p>
+        <p className="wb-head font-bold text-[#0F1A17]">10. Aktualität dieser Erklärung</p>
 
         <p>
           Diese Datenschutzerklärung kann angepasst werden, wenn sich die

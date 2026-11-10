@@ -1,7 +1,9 @@
 @import "tailwindcss";
 /* ── Werkbank homepage ── */
+@layer components {
 .wb { font-family: "Inter Variable", "Inter", system-ui, sans-serif; background: #F3F5F2; color: #0F1A17; }
 .wb-head { font-family: "Space Grotesk Variable", "Space Grotesk", system-ui, sans-serif; letter-spacing: -0.02em; }
 .wb-mono { font-family: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace; }
 .wb-grid { background-image: linear-gradient(#DDE4DF 1px, transparent 1px), linear-gradient(90deg, #DDE4DF 1px, transparent 1px); background-size: 44px 44px; background-position: -1px -1px; }
 .wb-grid-fade { mask-image: linear-gradient(to bottom, #000 40%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent 100%); }
+}
