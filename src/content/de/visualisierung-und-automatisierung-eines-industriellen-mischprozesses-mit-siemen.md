@@ -19,7 +19,7 @@ published: true
 created_at: '2026-05-28T09:25:17.991Z'
 external_link: https://drive.google.com/drive/folders/1Vrz5hK6aTVExshjDZIi92ecTgQaFo_kq
 project_status: done
-sort_order: 40
+sort_order: 30
 ---
 
 # Visualisierung und Automatisierung eines industriellen Mischprozesses mit Siemens WinCC
