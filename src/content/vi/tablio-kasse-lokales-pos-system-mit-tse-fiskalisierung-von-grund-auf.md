@@ -6,15 +6,15 @@ language: vi
 content_type: project
 title: TABLIO Kasse – Phần mềm tính tiền nhà hàng chạy cục bộ, xây quanh luật tài chính Đức
 category: Software, POS
-image_url: /my-electronics-blog/images/posts/1785878544700-screenshot-2026-08-04-231005.png
+image_url: /my-electronics-blog/images/posts/1785878544700-screenshot-2026-08-04-231005.webp
 image_gallery:
 - /my-electronics-blog/images/posts/tablio-devices-concept.webp
-- /my-electronics-blog/images/posts/1785878562041-screenshot-2026-08-04-230901.png
-- /my-electronics-blog/images/posts/1785878568627-screenshot-2026-08-04-230914.png
-- /my-electronics-blog/images/posts/1785878575589-screenshot-2026-08-04-230927.png
+- /my-electronics-blog/images/posts/1785878562041-screenshot-2026-08-04-230901.webp
+- /my-electronics-blog/images/posts/1785878568627-screenshot-2026-08-04-230914.webp
+- /my-electronics-blog/images/posts/1785878575589-screenshot-2026-08-04-230927.webp
 - /my-electronics-blog/images/posts/tablio-kitchen-display.webp
 - /my-electronics-blog/images/posts/tablio-tables-mobile.webp
-- /my-electronics-blog/images/posts/1785878581909-screenshot-2026-08-04-230955.png
+- /my-electronics-blog/images/posts/1785878581909-screenshot-2026-08-04-230955.webp
 excerpt: Hệ thống bán hàng chạy cục bộ cho nhà hàng ở Đức, có sơ đồ bàn, màn hình bếp thời gian thực, thanh toán, sổ quỹ và báo cáo. Kiến trúc tài chính với lớp TSE và DSFinV-K được xây sẵn từ đầu. Sản phẩm đã hoàn thành và sẽ được dùng ngay khi gắn được TSE đã chứng nhận.
 tags:
 - POS

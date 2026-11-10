@@ -6,12 +6,12 @@ language: en
 content_type: project
 title: TABLIO Kasse: A POS System That Takes German Fiscal Law Seriously
 category: Softwareentwicklung
-image_url: /my-electronics-blog/images/posts/1785878544700-screenshot-2026-08-04-231005.png
+image_url: /my-electronics-blog/images/posts/1785878544700-screenshot-2026-08-04-231005.webp
 image_gallery:
-- /my-electronics-blog/images/posts/1785878562041-screenshot-2026-08-04-230901.png
-- /my-electronics-blog/images/posts/1785878568627-screenshot-2026-08-04-230914.png
-- /my-electronics-blog/images/posts/1785878575589-screenshot-2026-08-04-230927.png
-- /my-electronics-blog/images/posts/1785878581909-screenshot-2026-08-04-230955.png
+- /my-electronics-blog/images/posts/1785878562041-screenshot-2026-08-04-230901.webp
+- /my-electronics-blog/images/posts/1785878568627-screenshot-2026-08-04-230914.webp
+- /my-electronics-blog/images/posts/1785878575589-screenshot-2026-08-04-230927.webp
+- /my-electronics-blog/images/posts/1785878581909-screenshot-2026-08-04-230955.webp
 excerpt: A local-first POS system for German restaurants with TSE fiscal signing and DSFinV-K export built into its core architecture from day one — no cloud required.
 tags:
 []

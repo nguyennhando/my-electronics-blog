@@ -6,15 +6,15 @@ language: en
 content_type: project
 title: INDIGATE IGW-100 Industrial Retrofit & IIoT Gateway
 category: IoT, PCB
-image_url: /my-electronics-blog/images/posts/1793034606935-screenshot-2026-10-25-233453.png
+image_url: /my-electronics-blog/images/posts/1793034606935-screenshot-2026-10-25-233453.webp
 image_gallery:
-- /my-electronics-blog/images/posts/1793034652491-screenshot-2026-10-25-232347.png
-- /my-electronics-blog/images/posts/1793034662507-screenshot-2026-10-25-232414.png
-- /my-electronics-blog/images/posts/1793034671708-screenshot-2026-10-25-232740.png
-- /my-electronics-blog/images/posts/1793034678020-screenshot-2026-10-25-232725.png
-- /my-electronics-blog/images/posts/1793034684538-screenshot-2026-10-25-233244.png
-- /my-electronics-blog/images/posts/1793034689868-screenshot-2026-10-25-233230.png
-- /my-electronics-blog/images/posts/1793034694960-screenshot-2026-10-25-233308.png
+- /my-electronics-blog/images/posts/1793034652491-screenshot-2026-10-25-232347.webp
+- /my-electronics-blog/images/posts/1793034662507-screenshot-2026-10-25-232414.webp
+- /my-electronics-blog/images/posts/1793034671708-screenshot-2026-10-25-232740.webp
+- /my-electronics-blog/images/posts/1793034678020-screenshot-2026-10-25-232725.webp
+- /my-electronics-blog/images/posts/1793034684538-screenshot-2026-10-25-233244.webp
+- /my-electronics-blog/images/posts/1793034689868-screenshot-2026-10-25-233230.webp
+- /my-electronics-blog/images/posts/1793034694960-screenshot-2026-10-25-233308.webp
 excerpt: An industrial communication and data acquisition gateway for digitalizing existing machines and plants.
 tags:
 []

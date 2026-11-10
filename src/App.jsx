@@ -8,7 +8,7 @@ import { getWbText, getWbSkills } from "./lib/werkbankText";
 import { COOKIE_TEXT, WB_TEXT_GROUPS, UI_TEXT_GROUPS, LONG_TEXT_KEYS, getWbDefaults } from "./lib/siteTexts";
 
 import {
-  CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X,
+  CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X, Pause, Play,
   CalendarDays, ArrowRight, ShieldCheck,
   Wrench, Mail, MonitorSmartphone, AlertTriangle, ExternalLink,
   ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock, Download, FileText, Pencil, Save,
@@ -140,7 +140,8 @@ const SITE_DEFAULTS = {
   site_name: "Nguyen Nhan Do",
   hero_image: "/my-electronics-blog/images/posts/Nguyen-main.webp",
   contact_email: "donguyennhan.de@gmail.com",
-  live_tiles: "gem-restaurant-platform, tablio-kasse-lokales-pos-system-mit-tse-fiskalisierung-von-grund-auf, local-post-1779957810945, voice-transcriber-privacy-policy",
+  live_tiles: "gem-restaurant-platform|Sao Mai Mainz, tablio-kasse-lokales-pos-system-mit-tse-fiskalisierung-von-grund-auf|TABLIO Kasse, provisionpro-saas-restaurant-inventory|ProvisionPro, electrical-engineering-toolbox-privacy-policy|Electrical Engineering Toolbox, local-post-1779957810945|GeldPilot, voice-transcriber-privacy-policy|Voice Transcriber",
+  live_autoplay: "on",
 };
 const getSiteConfig = (settings = SITE_SETTINGS) => {
   const pick = (key) => String(settings?.[key] ?? "").trim() || SITE_DEFAULTS[key];
@@ -150,7 +151,11 @@ const getSiteConfig = (settings = SITE_SETTINGS) => {
     siteName: pick("site_name"),
     heroImage: pick("hero_image"),
     email: pick("contact_email"),
-    liveTiles: pick("live_tiles").split(",").map((item) => item.trim()).filter(Boolean),
+    liveTiles: pick("live_tiles").split(",").map((item) => item.trim()).filter(Boolean).map((item) => {
+      const [id, ...nameParts] = item.split("|");
+      return { id: id.trim(), name: nameParts.join("|").trim() };
+    }),
+    liveAutoplay: String(settings?.live_autoplay ?? "").trim().toLowerCase() !== "off",
     resumeUrl: String(settings?.resume_url ?? "").trim(),
   };
 };
@@ -810,6 +815,7 @@ site_name: ${singleLine(siteSettings.site_name)}
 hero_image: ${singleLine(siteSettings.hero_image)}
 contact_email: ${singleLine(siteSettings.contact_email)}
 live_tiles: ${singleLine(siteSettings.live_tiles)}
+live_autoplay: ${singleLine(siteSettings.live_autoplay)}
 ---
 `;
 
@@ -1749,7 +1755,7 @@ const SITE_TEXT_UI = {
     groups: { groupNav: "Menü", groupHero: "Kopfbereich: Schaltflächen und Hinweise", groupProjects: "Projekte", groupLive: "Live und zum Ausprobieren", groupSkills: "Kompetenzen (Listen mit Komma getrennt)", groupPath: "Mein Weg (Zeitleiste)", groupKnowledge: "Wissen und Forschung (Startseite)", groupContact: "Kontakt und Fußzeile", groupSite: "Allgemein", groupPostPage: "Projektseite", groupKnowledgePage: "Wissensbibliothek", groupContactInfo: "Kontakt-Angaben", groupLegal: "Rechtliches und Zurück", groupCookie: "Datenschutzhinweis (Cookie-Banner)" },
     logoTitle: "Logo und Name", logoImage: "Logo-Bild", logoImageHint: "Leer = Textlogo", logoText: "Text im Logo (ohne Bild)", siteName: "Name in der Kopfzeile", logoRemove: "Logo-Bild entfernen",
     heroTitle: "Porträt im Kopfbereich", heroRemove: "Standardbild verwenden",
-    contactTitle: "Kontakt und Live-Kacheln", contactEmail: "Kontakt-E-Mail", liveTiles: "Live-Kacheln (IDs der Beiträge, mit Komma getrennt)", liveTilesHint: "Die ID steht im Beitrag unter „Erweitert“ (gemeinsame Beitrags-ID). Reihenfolge = Reihenfolge auf der Startseite.",
+    contactTitle: "Kontakt und Live-Kacheln", contactEmail: "Kontakt-E-Mail", liveTiles: "Live-Kacheln (ID oder ID|Kurzname, mit Komma getrennt)", liveAutoplay: "Live-Kacheln langsam automatisch weiterlaufen lassen (6 Sekunden, stoppt bei Mausberührung)", liveTilesHint: "Die ID steht im Beitrag unter „Erweitert“ (gemeinsame Beitrags-ID). Mit „ID|Kurzname“ legen Sie den angezeigten Namen fest, zum Beispiel local-post-1779957810945|GeldPilot. Reihenfolge = Reihenfolge auf der Startseite.",
     legalNote: "Impressum und Datenschutzerklärung sind rechtliche Texte und stehen fest im Programm.",
   },
   en: {
@@ -1759,7 +1765,7 @@ const SITE_TEXT_UI = {
     groups: { groupNav: "Menu", groupHero: "Hero: buttons and notes", groupProjects: "Projects", groupLive: "Live and ready to try", groupSkills: "Skills (comma-separated lists)", groupPath: "My path (timeline)", groupKnowledge: "Knowledge and research (home page)", groupContact: "Contact and footer", groupSite: "General", groupPostPage: "Project page", groupKnowledgePage: "Knowledge library", groupContactInfo: "Contact details", groupLegal: "Legal and back", groupCookie: "Privacy notice (cookie banner)" },
     logoTitle: "Logo and name", logoImage: "Logo image", logoImageHint: "Empty = text logo", logoText: "Text in the logo (without image)", siteName: "Name in the header", logoRemove: "Remove logo image",
     heroTitle: "Portrait in the hero", heroRemove: "Use the default image",
-    contactTitle: "Contact and live tiles", contactEmail: "Contact e-mail", liveTiles: "Live tiles (post IDs, comma-separated)", liveTilesHint: "The ID is shown in the post under \"Advanced\" (shared post ID). Order = order on the home page.",
+    contactTitle: "Contact and live tiles", contactEmail: "Contact e-mail", liveTiles: "Live tiles (ID or ID|short name, comma-separated)", liveAutoplay: "Let the live tiles advance slowly by themselves (6 seconds, stops on mouse-over)", liveTilesHint: "The ID is shown in the post under \"Advanced\" (shared post ID). With \"ID|short name\" you set the displayed name, for example local-post-1779957810945|GeldPilot. Order = order on the home page.",
     legalNote: "The legal notice and privacy policy are legal texts and are fixed in the program.",
   },
   vi: {
@@ -1769,7 +1775,7 @@ const SITE_TEXT_UI = {
     groups: { groupNav: "Menu", groupHero: "Đầu trang: nút và ghi chú", groupProjects: "Dự án", groupLive: "Chạy thật và dùng thử", groupSkills: "Năng lực (danh sách cách nhau bằng dấu phẩy)", groupPath: "Hành trình (dòng thời gian)", groupKnowledge: "Kiến thức và nghiên cứu (trang chủ)", groupContact: "Liên hệ và chân trang", groupSite: "Chung", groupPostPage: "Trang dự án", groupKnowledgePage: "Thư viện kiến thức", groupContactInfo: "Thông tin liên hệ", groupLegal: "Pháp lý và quay lại", groupCookie: "Thông báo quyền riêng tư (cookie)" },
     logoTitle: "Logo và tên", logoImage: "Ảnh logo", logoImageHint: "Để trống = logo chữ", logoText: "Chữ trong logo (khi không có ảnh)", siteName: "Tên ở thanh đầu trang", logoRemove: "Gỡ ảnh logo",
     heroTitle: "Ảnh chân dung ở đầu trang", heroRemove: "Dùng ảnh mặc định",
-    contactTitle: "Liên hệ và các ô chạy thật", contactEmail: "E-mail liên hệ", liveTiles: "Các ô chạy thật (ID bài viết, cách nhau bằng dấu phẩy)", liveTilesHint: "ID nằm trong bài viết, mục \"Nâng cao\" (ID bài viết chung). Thứ tự = thứ tự trên trang chủ.",
+    contactTitle: "Liên hệ và các ô chạy thật", contactEmail: "E-mail liên hệ", liveTiles: "Các ô chạy thật (ID hoặc ID|tên ngắn, cách nhau bằng dấu phẩy)", liveAutoplay: "Cho các ô chạy thật tự chuyển chậm (6 giây, dừng khi rê chuột)", liveTilesHint: "ID nằm trong bài viết, mục \"Nâng cao\" (ID bài viết chung). Dùng \"ID|tên ngắn\" để đặt tên hiển thị, ví dụ local-post-1779957810945|GeldPilot. Thứ tự = thứ tự trên trang chủ.",
     legalNote: "Thông tin pháp lý và chính sách quyền riêng tư là văn bản pháp lý và được cố định trong chương trình.",
   },
 };
@@ -3152,6 +3158,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
         <h3 className="mb-3 font-black">{stui.contactTitle}</h3>
         <div className="grid gap-3 md:grid-cols-2">
           <AdminField label={stui.contactEmail}><input className={inputClass} type="email" value={siteSettingsForm.contact_email || ""} placeholder={SITE_DEFAULTS.contact_email} onChange={(event) => setSiteSettingsForm((current) => ({ ...current, contact_email: event.target.value }))} /></AdminField>
+          <label className="flex items-center gap-3 md:col-span-2"><input type="checkbox" className="h-4 w-4 accent-cyan-400" checked={String(siteSettingsForm.live_autoplay ?? "").trim().toLowerCase() !== "off"} onChange={(event) => setSiteSettingsForm((current) => ({ ...current, live_autoplay: event.target.checked ? "on" : "off" }))} /><span className="text-sm text-zinc-300">{stui.liveAutoplay}</span></label>
           <AdminField label={stui.liveTiles} help={stui.liveTilesHint}><textarea className={`${inputClass} leading-6`} rows={3} value={siteSettingsForm.live_tiles || ""} placeholder={SITE_DEFAULTS.live_tiles} onChange={(event) => setSiteSettingsForm((current) => ({ ...current, live_tiles: event.target.value }))} /></AdminField>
         </div>
       </section>
@@ -3386,6 +3393,99 @@ function WbSectionHead({ eyebrow, title, lead }) {
   );
 }
 
+const liveStep = (track) => {
+  const first = track?.children?.[0];
+  return first ? first.getBoundingClientRect().width + 16 : 0;
+};
+
+function LiveCarousel({ tiles, w, getPostUrl, autoplay }) {
+  const trackRef = useRef(null);
+  const hoverRef = useRef(false);
+  const [active, setActive] = useState(0);
+  const [overflow, setOverflow] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const reduceMotion = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || typeof ResizeObserver === "undefined") return undefined;
+    const update = () => setOverflow(track.scrollWidth > track.clientWidth + 4);
+    const observer = new ResizeObserver(update);
+    observer.observe(track);
+    return () => observer.disconnect();
+  }, [tiles.length]);
+
+  const scrollToIndex = (index) => {
+    const track = trackRef.current;
+    if (!track) return;
+    track.scrollTo({ left: index * liveStep(track), behavior: reduceMotion ? "auto" : "smooth" });
+  };
+  const move = (direction) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    if (direction > 0 && atEnd) scrollToIndex(0);
+    else track.scrollBy({ left: direction * liveStep(track), behavior: reduceMotion ? "auto" : "smooth" });
+  };
+
+  useEffect(() => {
+    if (!autoplay || paused || reduceMotion || !overflow) return undefined;
+    const timer = setInterval(() => {
+      if (hoverRef.current || document.hidden) return;
+      const track = trackRef.current;
+      if (!track) return;
+      const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+      if (atEnd) track.scrollTo({ left: 0, behavior: "smooth" });
+      else track.scrollBy({ left: liveStep(track), behavior: "smooth" });
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [autoplay, paused, reduceMotion, overflow]);
+
+  const onScroll = (event) => {
+    const track = event.currentTarget;
+    const step = liveStep(track) || 1;
+    setActive(Math.min(tiles.length - 1, Math.round(track.scrollLeft / step)));
+  };
+  const controlClass = "flex h-10 w-10 items-center justify-center rounded-full border border-white/40 bg-white text-[#083D2F] shadow transition hover:bg-[#F2B279] disabled:opacity-40";
+
+  return (
+    <div data-live-carousel className="mt-9" onMouseEnter={() => { hoverRef.current = true; }} onMouseLeave={() => { hoverRef.current = false; }} onFocus={() => { hoverRef.current = true; }} onBlur={() => { hoverRef.current = false; }} onTouchStart={() => { hoverRef.current = true; }} onTouchEnd={() => { setTimeout(() => { hoverRef.current = false; }, 4000); }}>
+      <div ref={trackRef} data-live-track onScroll={onScroll} className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {tiles.map(({ post, name, host, kind, hint }) => (
+          <a key={post.id} href={post.external_link || getPostUrl(post.id)} target="_blank" rel="noopener noreferrer" className="group flex shrink-0 basis-[88%] snap-start items-center gap-4 rounded-2xl border border-white/20 bg-white/[0.06] p-4 transition hover:border-[#F2B279] hover:bg-white/[0.1] min-[620px]:basis-[calc(50%-8px)] lg:basis-[calc(25%-12px)]">
+            <img src={post.image_url} alt="" loading="lazy" className="h-[84px] w-[84px] shrink-0 rounded-xl object-cover" />
+            <span className="flex min-w-0 flex-1 flex-col gap-1">
+              <span className="wb-mono inline-flex items-center gap-2 text-[10.5px] uppercase tracking-wider text-white/70"><span className={`h-2 w-2 shrink-0 rounded-full ${kind === "store" ? "bg-[#7FB2F5]" : "bg-[#38D39A]"}`} />{kind === "live" ? w.st_live : kind === "demo" ? w.st_demo : w.st_store}</span>
+              <span className="wb-head text-lg font-bold leading-snug">{name}</span>
+              <span className="wb-mono break-all text-[11px] text-[#F2B279]">{host}</span>
+              {hint && <span className="text-[11px] leading-4 text-white/70">{w.demo_hint}</span>}
+              <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold">{w.open} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span>
+            </span>
+          </a>
+        ))}
+      </div>
+      {overflow && (
+        <div className="mt-5 flex items-center justify-between gap-4">
+          <div className="flex flex-wrap gap-2" role="tablist">
+            {tiles.map(({ post, name }, index) => (
+              <button key={post.id} type="button" role="tab" aria-selected={index === active} aria-label={name} onClick={() => scrollToIndex(index)} className={`h-2.5 rounded-full transition-all ${index === active ? "w-6 bg-[#F2B279]" : "w-2.5 bg-white/40 hover:bg-white/70"}`} />
+            ))}
+          </div>
+          <div className="flex items-center gap-2">
+            {autoplay && !reduceMotion && (
+              <button type="button" onClick={() => setPaused((value) => !value)} aria-label={paused ? w.carousel_play : w.carousel_pause} title={paused ? w.carousel_play : w.carousel_pause} className={controlClass}>
+                {paused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
+              </button>
+            )}
+            <button type="button" onClick={() => move(-1)} aria-label={w.carousel_prev} className={controlClass}><ChevronLeft className="h-5 w-5" /></button>
+            <button type="button" onClick={() => move(1)} aria-label={w.carousel_next} className={controlClass}><ChevronRight className="h-5 w-5" /></button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum, onGoDatenschutz, onGoKnowledge, language }) {
   const INITIAL_COUNT = 9;
   const t = getUiText(language);
@@ -3418,11 +3518,11 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
     });
   }, [sortedPosts, search, field]);
 
-  const liveTiles = site.liveTiles.map((id) => posts.find((p) => p.id === id)).filter(Boolean).map((post) => {
+  const liveTiles = site.liveTiles.map((entry) => ({ entry, post: posts.find((p) => p.id === entry.id) })).filter((item) => item.post).map(({ entry, post }) => {
     const link = String(post.external_link || "");
     const kind = link.includes("microsoft.com") ? "store" : (link.includes("demo.tavrion.de") || link.includes("provisionpro.tavrion.de")) ? "demo" : "live";
     const host = link.includes("microsoft.com") ? "Microsoft Store" : link.replace(/^https?:\/\//, "").split("/")[0];
-    return { post, host, kind, hint: link.includes("demo.tavrion.de") };
+    return { post, name: entry.name || post.title.split(/\s[–—-]\s/)[0], host, kind, hint: link.includes("demo.tavrion.de") };
   });
   const featured = filteredPosts.find((p) => !["Über mich", "Grundlagen"].includes(p.category));
   const showFeatured = Boolean(featured) && !search.trim();
@@ -3577,20 +3677,7 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
               <p className="wb-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#F2B279]">{w.sec_live}</p>
               <h2 className="wb-head mt-2 text-3xl font-bold sm:text-4xl">{w.sec_live}</h2>
               <p className="mt-3 max-w-2xl text-[15px] leading-7 text-white/75">{w.live_sub}</p>
-              <div className="mt-9 grid gap-4 min-[620px]:grid-cols-2 lg:grid-cols-4">
-                {liveTiles.map(({ post, host, kind, hint }) => (
-                  <a key={post.id} href={post.external_link || getPostUrl(post.id)} target="_blank" rel="noopener noreferrer" className="group flex flex-col rounded-2xl border border-white/15 bg-white/[0.06] p-5 transition hover:border-[#F2B279] hover:bg-white/[0.1]">
-                    <div className="flex items-center justify-between">
-                      <span className="wb-mono inline-flex items-center gap-2 text-[11px] uppercase tracking-wider text-white/70"><span className={`h-2 w-2 rounded-full ${kind === "store" ? "bg-[#7FB2F5]" : "bg-[#38D39A]"}`} /> {kind === "live" ? w.st_live : kind === "demo" ? w.st_demo : w.st_store}</span>
-                      <ExternalLink className="h-4 w-4 text-white/60 transition group-hover:text-[#F2B279]" />
-                    </div>
-                    <h3 className="wb-head mt-6 text-xl font-bold leading-snug">{post.title.split(/\s[–—-]\s/)[0]}</h3>
-                    <p className="wb-mono mt-2 text-xs text-[#F2B279]">{host}</p>
-                    {hint && <p className="mt-3 text-xs leading-5 text-white/70">{w.demo_hint}</p>}
-                    <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold">{w.open} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span>
-                  </a>
-                ))}
-              </div>
+              <LiveCarousel tiles={liveTiles} w={w} getPostUrl={getPostUrl} autoplay={site.liveAutoplay} />
             </div>
           </section>
         )}

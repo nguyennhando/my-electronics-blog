@@ -7,7 +7,7 @@ export const WB_TEXT_GROUPS = [
   ["groupNav", ["nav_projects", "nav_skills", "nav_path", "nav_contact"]],
   ["groupHero", ["cta_projects", "cta_contact", "available", "chip_live", "chip_live_sub", "chip_board", "chip_board_sub"]],
   ["groupProjects", ["sec_projects", "f_all", "f_hw", "f_sw", "search", "more", "featured", "read", "none"]],
-  ["groupLive", ["sec_live", "live_sub", "open", "demo_hint", "st_live", "st_store", "st_demo"]],
+  ["groupLive", ["sec_live", "live_sub", "open", "demo_hint", "st_live", "st_store", "st_demo", "carousel_prev", "carousel_next", "carousel_pause", "carousel_play"]],
   ["groupSkills", ["sec_skills", "sk_hw", "skills_hw", "sk_emb", "skills_emb", "sk_sw", "skills_sw"]],
   ["groupPath", ["sec_path", "path_lead", "path_1", "path_2", "path_3", "path_4", "path_5", "path_6", "read_more"]],
   ["groupKnowledge", ["sec_know", "know_text", "know_cta"]],
