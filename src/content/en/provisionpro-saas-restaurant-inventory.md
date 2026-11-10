@@ -152,7 +152,12 @@ Anyone building an inventory system quickly finds that the difficulty is not the
 
 ## 5. Demo
 
-A demo with sample data from a sushi restaurant runs online: [provisionpro.tavrion.de](https://provisionpro.tavrion.de/). For access, please send me a short message and I will send you the demo login.
+A demo with sample data from a sushi restaurant runs online: [provisionpro.tavrion.de](https://provisionpro.tavrion.de/). Demo login:
+
+- **E-mail:** `tan@tavrion.de`
+- **Password:** `Tan123.,` (with a period and a comma at the end)
+
+The demo's trial period may have expired. The application then shows this, and some functions are limited.
 
 The images above show recipes, ingredients and the phone view "Scan & Stock" from this demo.
 

@@ -152,7 +152,12 @@ Ai làm hệ thống kho cũng nhanh chóng nhận ra khó khăn không nằm �
 
 ## 5. Demo
 
-Bản demo với dữ liệu mẫu của một nhà hàng sushi đang chạy trực tuyến: [provisionpro.tavrion.de](https://provisionpro.tavrion.de/). Để vào xem, hãy nhắn cho tôi vài dòng, tôi sẽ gửi tài khoản demo.
+Bản demo với dữ liệu mẫu của một nhà hàng sushi đang chạy trực tuyến: [provisionpro.tavrion.de](https://provisionpro.tavrion.de/). Tài khoản demo:
+
+- **E-mail:** `tan@tavrion.de`
+- **Mật khẩu:** `Tan123.,` (kết thúc bằng dấu chấm và dấu phẩy)
+
+Thời gian dùng thử của bản demo có thể đã hết. Khi đó ứng dụng sẽ hiển thị như vậy và một số chức năng bị giới hạn.
 
 Các hình ở trên là trang công thức, nguyên liệu và giao diện điện thoại "Quét mã & Kho" từ bản demo này.
 

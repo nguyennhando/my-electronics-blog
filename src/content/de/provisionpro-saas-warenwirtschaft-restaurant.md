@@ -152,7 +152,12 @@ Wer eine Warenwirtschaft baut, merkt schnell, dass die Schwierigkeit nicht im Bi
 
 ## 5. Demo
 
-Eine Demo mit Beispieldaten eines Sushi-Restaurants läuft online: [provisionpro.tavrion.de](https://provisionpro.tavrion.de/). Für den Zugang schreibe mir bitte kurz, ich schicke dir die Zugangsdaten für die Demo.
+Eine Demo mit Beispieldaten eines Sushi-Restaurants läuft online: [provisionpro.tavrion.de](https://provisionpro.tavrion.de/). Zugangsdaten für die Demo:
+
+- **E-Mail:** `tan@tavrion.de`
+- **Passwort:** `Tan123.,` (mit Punkt und Komma am Ende)
+
+Die Testphase der Demo kann abgelaufen sein. Dann zeigt die Anwendung das an, und einzelne Funktionen sind eingeschränkt.
 
 Die Bilder oben zeigen Rezepte, Zutaten und die Telefonansicht „Scan & Lager“ aus dieser Demo.
 
