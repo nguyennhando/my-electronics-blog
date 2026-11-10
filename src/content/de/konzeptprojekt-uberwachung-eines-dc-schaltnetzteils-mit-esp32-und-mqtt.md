@@ -18,7 +18,7 @@ published: true
 created_at: '2026-05-28T09:35:50.659Z'
 external_link: 
 project_status: idea
-sort_order: 140
+sort_order: 150
 ---
 
 # Konzeptprojekt: Überwachung eines DC-Schaltnetzteils mit ESP32 und MQTT
