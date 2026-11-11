@@ -6,14 +6,12 @@ language: de
 content_type: project
 title: SOLUNA – Sonnen- und Mondkalender als Progressive Web App
 category: Web, Software
-image_url: /my-electronics-blog/images/posts/soluna-today-desktop.webp
+image_url: /my-electronics-blog/images/posts/1794385818754-7gaszjfi.jpg
 image_gallery:
-- /my-electronics-blog/images/posts/soluna-month-desktop.webp
-- /my-electronics-blog/images/posts/soluna-month-mobile.webp
-- /my-electronics-blog/images/posts/soluna-month-dark.webp
-- /my-electronics-blog/images/posts/soluna-converter-mobile.webp
-- /my-electronics-blog/images/posts/soluna-today-mobile.webp
-- /my-electronics-blog/images/posts/soluna-settings.webp
+- /my-electronics-blog/images/posts/1794385836490-1yqerabu.jpg
+- /my-electronics-blog/images/posts/1794385838022-bhpso-0y.jpg
+- /my-electronics-blog/images/posts/1794385839418-fkleexok.jpg
+- /my-electronics-blog/images/posts/1794385840723-y5yn5zop.jpg
 excerpt: Eine installierbare Kalender-App, die den gregorianischen Kalender und den astronomisch berechneten Mondkalender nebeneinander zeigt. Sie läuft auf iPhone, Android und im Browser, auch offline, und kommt ohne Konto und ohne Server aus.
 tags:
 - PWA
