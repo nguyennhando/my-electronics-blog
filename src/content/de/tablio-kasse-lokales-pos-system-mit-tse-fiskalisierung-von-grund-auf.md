@@ -19,6 +19,7 @@ read_time: 5 Min.
 published: true
 created_at: '2026-08-04T21:03:35.667Z'
 external_link: https://demo.tavrion.de/
+pdf_url: /my-electronics-blog/documents/steckbrief/tablio-de.pdf
 project_status: done
 sort_order: 60
 ---

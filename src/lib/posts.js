@@ -100,6 +100,7 @@ const parsedFiles = Object.entries(files)
       tags: toArray(data.tags),
       published: data.published !== false,
       external_link: data.external_link || null,
+      pdf_url: data.pdf_url || null,
       created_at: data.created_at || new Date().toISOString(),
       sort_order: Number.isFinite(Number(data.sort_order))
         ? Number(data.sort_order)

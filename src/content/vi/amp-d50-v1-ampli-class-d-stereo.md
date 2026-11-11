@@ -27,6 +27,7 @@ read_time: 9 phút
 published: true
 created_at: '2026-11-10T18:00:00.000Z'
 external_link: 
+pdf_url: /my-electronics-blog/documents/steckbrief/amp-v1-vi.pdf
 project_status: in_progress
 sort_order: 30
 ---

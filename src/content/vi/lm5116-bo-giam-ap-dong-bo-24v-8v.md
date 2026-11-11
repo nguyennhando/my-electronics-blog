@@ -26,6 +26,7 @@ read_time: 12 Min.
 published: true
 created_at: '2026-11-10T23:00:00.000Z'
 external_link: 
+pdf_url: /my-electronics-blog/documents/steckbrief/lm5116-vi.pdf
 project_status: in_progress
 sort_order: 35
 ---

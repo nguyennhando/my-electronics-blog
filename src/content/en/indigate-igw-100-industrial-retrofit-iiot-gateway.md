@@ -22,6 +22,7 @@ read_time: 5 min.
 published: true
 created_at: '2026-10-26T17:01:57.523Z'
 external_link: 
+pdf_url: /my-electronics-blog/documents/steckbrief/indigate-en.pdf
 project_status: in_progress
 sort_order: 20
 ---

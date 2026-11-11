@@ -40,7 +40,7 @@ const UI_TEXT = {
     collaborationTitle: "Zusammenarbeit an modernen Elektronikprojekten.", collaborationText: "Sie suchen Unterstützung für Embedded-Systeme, Sensorik, Robotik oder industrielle Automatisierung? Kontaktieren Sie mich für technische Zusammenarbeit oder individuelle Entwicklungen.", privacy: "Datenschutz", legalNotice: "Impressum", back: "Zurück", country: "Deutschland",
     knowledgeNoticeParagraphs: ["Viele Grundlagen und technische Informationen in diesem Bereich sind bereits in Fachbüchern, Dokumentationen oder anderen Quellen verfügbar.", "Der Schwerpunkt dieser Wissensbibliothek liegt daher nicht nur auf der Sammlung von Lernmaterialien. Ich möchte vor allem Themen genauer analysieren, die aus meiner Sicht an anderen Stellen nicht immer verständlich oder ausreichend nachvollziehbar erklärt werden.", "Die Beiträge spiegeln meinen persönlichen Lernprozess und mein aktuelles technisches Verständnis wider. Sie sollen Zusammenhänge Schritt für Schritt greifbarer machen und zugleich als Grundlage für weitere Untersuchungen dienen."],
     noKnowledge: "Noch keine passenden Beiträge", noKnowledgeText: "Neue Lernnotizen und Analysen werden hier nach und nach ergänzt.", footer: "© 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.",
-    conceptProject: "Konzeptprojekt – noch nicht umgesetzt", noProjectLink: "Kein Projektlink hinterlegt",
+    conceptProject: "Konzeptprojekt – noch nicht umgesetzt", noProjectLink: "Kein Projektlink hinterlegt", downloadPdf: "PDF herunterladen",
     heroBadge: "Elektrokonstruktion · Prüftechnik · Software", docs: "Dokumente", sourceCode: "Quellcode", focusValue: "IoT · Automatisierung", tools: "Werkzeuge", toolsValue: "SPS · AutoCAD · EPLAN · C++ · Qt", translationFallbackShort: "Deutsch", translationFallback: "Dieser Beitrag ist noch nicht in der gewählten Sprache verfügbar. Die deutsche Version wird angezeigt.",
     resumeButton: "Lebenslauf ansehen",
   },
@@ -62,7 +62,7 @@ const UI_TEXT = {
     collaborationTitle: "Collaboration on modern electronics projects.", collaborationText: "Are you looking for support with embedded systems, sensors, robotics or industrial automation? Contact me for technical collaboration or individual developments.", privacy: "Privacy", legalNotice: "Legal Notice", back: "Back", country: "Germany",
     knowledgeNoticeParagraphs: ["Many fundamentals and technical details in this section are already available in textbooks, documentation or other sources.", "The focus of this knowledge library is therefore not merely collecting learning material. I especially want to analyse topics that, from my perspective, are not always explained clearly or comprehensibly elsewhere.", "The articles reflect my personal learning process and my current technical understanding. They aim to make connections easier to grasp step by step and provide a basis for further investigation."],
     noKnowledge: "No matching articles yet", noKnowledgeText: "New learning notes and analyses will gradually be added here.", footer: "© 2026 ElektronikLab — Modern electronics and automation projects.",
-    conceptProject: "Concept project – not yet implemented", noProjectLink: "No project link provided",
+    conceptProject: "Concept project – not yet implemented", noProjectLink: "No project link provided", downloadPdf: "Download PDF",
     heroBadge: "Electrical Design · Testing · Software", docs: "Documents", sourceCode: "Source Code", focusValue: "IoT · Automation", tools: "Tools", toolsValue: "PLC · AutoCAD · EPLAN · C++ · Qt", translationFallbackShort: "German version", translationFallback: "This article is not yet available in the selected language. The German version is shown.",
     resumeButton: "View resume",
   },
@@ -84,7 +84,7 @@ const UI_TEXT = {
     collaborationTitle: "Hợp tác trong các dự án điện tử hiện đại.", collaborationText: "Bạn cần hỗ trợ về hệ thống nhúng, cảm biến, robot hoặc tự động hóa công nghiệp? Hãy liên hệ với tôi để hợp tác kỹ thuật hoặc phát triển giải pháp riêng.", privacy: "Quyền riêng tư", legalNotice: "Thông tin pháp lý", back: "Quay lại", country: "Đức",
     knowledgeNoticeParagraphs: ["Nhiều kiến thức nền tảng và thông tin kỹ thuật trong khu vực này đã có trong sách chuyên ngành, tài liệu hoặc các nguồn khác.", "Vì vậy, trọng tâm của thư viện kiến thức không chỉ là tập hợp tài liệu học tập. Tôi muốn phân tích kỹ hơn những chủ đề mà theo góc nhìn của mình chưa được giải thích thật sự rõ ràng hoặc dễ hiểu ở những nơi khác.", "Các bài viết phản ánh quá trình học tập và hiểu biết kỹ thuật hiện tại của tôi. Mục tiêu là làm rõ các mối liên hệ từng bước và tạo nền tảng cho những nghiên cứu tiếp theo."],
     noKnowledge: "Chưa có bài viết phù hợp", noKnowledgeText: "Các ghi chú học tập và phân tích mới sẽ được bổ sung dần tại đây.", footer: "© 2026 ElektronikLab — Các dự án điện tử và tự động hóa hiện đại.",
-    conceptProject: "Dự án ý tưởng – chưa được triển khai", noProjectLink: "Chưa có liên kết dự án",
+    conceptProject: "Dự án ý tưởng – chưa được triển khai", noProjectLink: "Chưa có liên kết dự án", downloadPdf: "Tải PDF",
     heroBadge: "Thiết kế điện · Kiểm thử · Phần mềm", docs: "Tài liệu", sourceCode: "Mã nguồn", focusValue: "IoT · Tự động hóa", tools: "Công cụ", toolsValue: "PLC · AutoCAD · EPLAN · C++ · Qt", translationFallbackShort: "Bản tiếng Đức", translationFallback: "Bài viết này chưa có bản dịch theo ngôn ngữ đã chọn. Website đang hiển thị bản tiếng Đức.",
     resumeButton: "Xem sơ yếu lý lịch",
   },
@@ -718,6 +718,7 @@ read_time: ${singleLine(post.read_time)}
 published: ${post.published}
 created_at: '${post.created_at}'
 external_link: ${singleLine(post.external_link)}
+pdf_url: ${singleLine(post.pdf_url)}
 project_status: ${post.project_status}
 sort_order: ${Number(post.sort_order) || 100}
 ---
@@ -857,6 +858,7 @@ const emptyEditorForm = () => ({
   published: true,
   created_at: new Date().toISOString(),
   external_link: "",
+  pdf_url: "",
   project_status: "done",
   sort_order: 100,
   content: "# Neuer Beitrag\n\nProjektbeschreibung...",
@@ -878,6 +880,7 @@ const postToEditorForm = (post) => ({
   published: post.published !== false,
   created_at: post.created_at || new Date().toISOString(),
   external_link: post.external_link || "",
+  pdf_url: post.pdf_url || "",
   project_status: normalizeStatus(post.project_status),
   sort_order: Number.isFinite(Number(post.sort_order)) ? Number(post.sort_order) : 100,
   content: post.content || "",
@@ -1407,8 +1410,23 @@ function PostDetailPage({ post, onBack, language }) {
   const w = getWbText(language);
   const idea = isIdea(post);
   const statusPill = getWbPill(post, w, language);
+  const [pdfInfo, setPdfInfo] = useState({ url: "", size: "" });
 
   useEffect(() => { window.scrollTo({ top: 0 }); }, [post.id]);
+
+  useEffect(() => {
+    if (!post.pdf_url) return undefined;
+    let live = true;
+    fetch(post.pdf_url, { method: "HEAD" })
+      .then((response) => {
+        const bytes = Number(response.headers.get("content-length"));
+        if (!live || !bytes) return;
+        const size = bytes >= 1048576 ? `${(bytes / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`;
+        setPdfInfo({ url: post.pdf_url, size });
+      })
+      .catch(() => {});
+    return () => { live = false; };
+  }, [post.pdf_url]);
 
   return (
     <div className="wb min-h-screen">
@@ -1465,10 +1483,16 @@ function PostDetailPage({ post, onBack, language }) {
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0B5A44] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#083D2F]">
                   {t.openProject} <ExternalLink className="h-4 w-4" />
                 </a>
-              ) : (
+              ) : (idea || !post.pdf_url) && (
                 <span className="inline-flex items-center justify-center rounded-xl border border-[#C9D3CD] bg-[#F3F5F2] px-6 py-3.5 text-sm font-medium text-[#4A5A54]">
                   {idea ? t.conceptProject : t.noProjectLink}
                 </span>
+              )}
+              {post.pdf_url && (
+                <a href={post.pdf_url} download target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#0B5A44] bg-[#E1F0E8] px-6 py-3.5 text-sm font-semibold text-[#083D2F] transition hover:bg-[#0B5A44] hover:text-white">
+                  <Download className="h-4 w-4" /> {t.downloadPdf}{pdfInfo.url === post.pdf_url && pdfInfo.size ? ` · ${pdfInfo.size}` : ""}
+                </a>
               )}
               <button type="button" onClick={onBack}
                 className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#0F1A17] bg-white px-6 py-3.5 text-sm font-semibold text-[#0F1A17] transition hover:bg-[#0F1A17] hover:text-white">
@@ -1760,6 +1784,7 @@ const SITE_TEXT_UI = {
     heroTitle: "Porträt im Kopfbereich", heroRemove: "Standardbild verwenden", heroHint: "Am besten im Hochformat (4:5), mindestens 1000 Pixel breit. Das Bild wird im Rahmen zugeschnitten.", heroFocus: "Bildausschnitt", heroFocusTop: "oben (für Porträts)", heroFocusCenter: "Mitte", heroFocusBottom: "unten",
     contactTitle: "Kontakt und Live-Kacheln", contactEmail: "Kontakt-E-Mail", liveTiles: "Live-Kacheln (ID oder ID|Kurzname, mit Komma getrennt)", liveAutoplay: "Live-Kacheln langsam automatisch weiterlaufen lassen (6 Sekunden, stoppt bei Mausberührung)", liveTilesHint: "Die ID steht im Beitrag unter „Erweitert“ (gemeinsame Beitrags-ID). Mit „ID|Kurzname“ legen Sie den angezeigten Namen fest, zum Beispiel local-post-1779957810945|GeldPilot. Reihenfolge = Reihenfolge auf der Startseite.",
     legalNote: "Impressum und Datenschutzerklärung sind rechtliche Texte und stehen fest im Programm.",
+    pdfLabel: "PDF zum Herunterladen (optional)", pdfHelp: "Erscheint als Schaltfläche „PDF herunterladen“ unter dem Beitrag. Empfohlen: ein kurzer Projektsteckbrief unter 1 MB.", pdfOpen: "PDF öffnen", pdfRemove: "PDF entfernen",
   },
   en: {
     nav: "Website texts", sub: "Change every label on the website. Empty = default text",
@@ -1770,6 +1795,7 @@ const SITE_TEXT_UI = {
     heroTitle: "Portrait in the hero", heroRemove: "Use the default image", heroHint: "Best in portrait format (4:5), at least 1000 pixels wide. The image is cropped to fit the frame.", heroFocus: "Image crop", heroFocusTop: "top (for portraits)", heroFocusCenter: "middle", heroFocusBottom: "bottom",
     contactTitle: "Contact and live tiles", contactEmail: "Contact e-mail", liveTiles: "Live tiles (ID or ID|short name, comma-separated)", liveAutoplay: "Let the live tiles advance slowly by themselves (6 seconds, stops on mouse-over)", liveTilesHint: "The ID is shown in the post under \"Advanced\" (shared post ID). With \"ID|short name\" you set the displayed name, for example local-post-1779957810945|GeldPilot. Order = order on the home page.",
     legalNote: "The legal notice and privacy policy are legal texts and are fixed in the program.",
+    pdfLabel: "PDF for download (optional)", pdfHelp: "Appears as a \"Download PDF\" button below the post. Recommended: a short project fact sheet under 1 MB.", pdfOpen: "Open PDF", pdfRemove: "Remove PDF",
   },
   vi: {
     nav: "Chữ trên website", sub: "Đổi mọi nhãn của website. Để trống = dùng chữ mặc định",
@@ -1780,6 +1806,7 @@ const SITE_TEXT_UI = {
     heroTitle: "Ảnh chân dung ở đầu trang", heroRemove: "Dùng ảnh mặc định", heroHint: "Tốt nhất là ảnh dọc (tỷ lệ 4:5), rộng ít nhất 1000 px. Ảnh sẽ được cắt vừa khung.", heroFocus: "Vị trí cắt ảnh", heroFocusTop: "phía trên (cho ảnh chân dung)", heroFocusCenter: "ở giữa", heroFocusBottom: "phía dưới",
     contactTitle: "Liên hệ và các ô chạy thật", contactEmail: "E-mail liên hệ", liveTiles: "Các ô chạy thật (ID hoặc ID|tên ngắn, cách nhau bằng dấu phẩy)", liveAutoplay: "Cho các ô chạy thật tự chuyển chậm (6 giây, dừng khi rê chuột)", liveTilesHint: "ID nằm trong bài viết, mục \"Nâng cao\" (ID bài viết chung). Dùng \"ID|tên ngắn\" để đặt tên hiển thị, ví dụ local-post-1779957810945|GeldPilot. Thứ tự = thứ tự trên trang chủ.",
     legalNote: "Thông tin pháp lý và chính sách quyền riêng tư là văn bản pháp lý và được cố định trong chương trình.",
+    pdfLabel: "PDF để tải về (tùy chọn)", pdfHelp: "Hiện thành nút \"Tải PDF\" dưới bài viết. Khuyến nghị: một tờ tóm tắt dự án ngắn dưới 1 MB.", pdfOpen: "Mở PDF", pdfRemove: "Gỡ PDF",
   },
 };
 
@@ -2878,6 +2905,18 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
         </div>
         <AdminField label={form.content_type === "knowledge" ? t.externalLinkLabelKnowledge : t.externalLinkLabelProject}>
           <input className={inputClass} value={form.external_link} onChange={(event) => update("external_link", event.target.value)} placeholder="https://..." />
+        </AdminField>
+        <AdminField label={stui.pdfLabel} help={stui.pdfHelp} plain>
+          {form.pdf_url ? (
+            <div className="flex flex-wrap items-center gap-3 rounded-xl border border-white/10 bg-[#07111f] p-3">
+              <FileText className="h-7 w-7 shrink-0 text-cyan-300" />
+              <p data-pdf-name className="min-w-0 flex-1 truncate text-sm font-bold">{form.pdf_url.split("/").pop()}</p>
+              <a href={form.pdf_url} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} !px-3 !py-1.5 text-xs`}><ExternalLink className="h-3.5 w-3.5" /> {stui.pdfOpen}</a>
+              <button type="button" onClick={() => update("pdf_url", "")} className="inline-flex items-center gap-2 rounded-xl border border-red-400/30 px-3 py-1.5 text-xs font-bold text-red-200 hover:bg-red-400/10"><Trash2 className="h-3.5 w-3.5" /> {stui.pdfRemove}</button>
+            </div>
+          ) : (
+            <DropUpload compact icon={FileText} accept="application/pdf" label={ui.dropPdf} hint={ui.dropHint} uploadImage={(file) => uploadFileToGithub(file, "documents/steckbrief")} busyLabel={ui.uploading} onUploaded={(url) => update("pdf_url", url)} />
+          )}
         </AdminField>
         <AdminField label={t.markdownContentLabelRequired} help={ui.bodyHelp}>
           <textarea id="post-content" className={`${inputClass} min-h-[380px] font-mono leading-6`} value={form.content} onChange={(event) => update("content", event.target.value)} />

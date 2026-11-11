@@ -17,7 +17,7 @@ export const WB_TEXT_GROUPS = [
 // Schlüssel der allgemeinen Oberflächentexte (UI_TEXT in App.jsx).
 export const UI_TEXT_GROUPS = [
   ["groupSite", ["tagline", "knowledge", "technicalBlog", "gallery", "projectImages", "enlarge", "image"]],
-  ["groupPostPage", ["backBlog", "openProject", "readPost", "conceptProject", "noProjectLink", "translationFallback", "externalSource", "resumeButton"]],
+  ["groupPostPage", ["backBlog", "openProject", "downloadPdf", "readPost", "conceptProject", "noProjectLink", "translationFallback", "externalSource", "resumeButton"]],
   ["groupKnowledgePage", ["knowledgeLibrary", "knowledgeTitle", "knowledgeIntro", "knowledgeNotice", "kn_1", "kn_2", "kn_3", "knowledgeSearch", "allTopics", "selectedPost", "archive", "morePosts", "posts", "backKnowledge", "noKnowledge", "noKnowledgeText"]],
   ["groupContactInfo", ["location", "country", "focus", "focusValue", "tools", "toolsValue"]],
   ["groupLegal", ["legalNotice", "privacy", "back"]],

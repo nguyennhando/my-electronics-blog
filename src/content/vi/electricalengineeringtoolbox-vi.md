@@ -23,6 +23,7 @@ read_time: 8 Min.
 published: true
 created_at: '2026-06-19T06:29:08.495Z'
 external_link: https://apps.microsoft.com/detail/9P368QBV3S27?hl=neutral&gl=DE&ocid=pdpshare
+pdf_url: /my-electronics-blog/documents/steckbrief/eet-vi.pdf
 project_status: done
 sort_order: 50
 ---

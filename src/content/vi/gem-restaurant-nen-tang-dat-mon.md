@@ -27,6 +27,7 @@ read_time: 10 phút
 published: true
 created_at: '2026-11-10T20:30:00.000Z'
 external_link: https://online.tavrion.de/
+pdf_url: /my-electronics-blog/documents/steckbrief/saomai-vi.pdf
 project_status: in_progress
 sort_order: 70
 ---
