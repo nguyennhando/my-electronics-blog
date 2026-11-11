@@ -6,7 +6,7 @@ language: de
 content_type: project
 title: Elektronik • Test • Reparatur
 category: Über mich
-image_url: /my-electronics-blog/images/posts/1794386684767-bild3.jpg
+image_url: /my-electronics-blog/images/posts/1794386963943-screenshot-2026-11-11-094855.png
 image_gallery:
 []
 excerpt: Elektroingenieur mit großem Interesse an Elektrokonstruktion und Softwareentwicklung. Lernbereit, feinmotorisch und motiviert, meine praktischen Erfahrungen kontinuierlich zu erweitern.
