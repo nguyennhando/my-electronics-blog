@@ -980,14 +980,14 @@ function Lightbox({ images, index, onClose }) {
       >
         <img src={imageUrl} alt="Bild" className="min-h-0 max-h-[80vh] w-full rounded-2xl object-contain shadow-2xl" />
         {images.length > 1 && (
-          <div className="mt-4 flex shrink-0 items-center gap-3">
-            <button onClick={() => setCurrent(p => (p - 1 + images.length) % images.length)} aria-label="Previous" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/70 bg-white text-[#0B5A44] shadow-lg transition hover:bg-[#F2B279] hover:text-[#0F1A17]"><ChevronLeft className="h-5 w-5 stroke-[3]" /></button>
-            <span className="rounded-full border border-white/70 bg-[#F2B279] px-4 py-2 text-sm font-extrabold tabular-nums text-[#0F1A17] shadow-lg">{current + 1} / {images.length}</span>
-            <button onClick={() => setCurrent(p => (p + 1) % images.length)} aria-label="Next" className="flex h-11 w-11 items-center justify-center rounded-full border border-white/70 bg-white text-[#0B5A44] shadow-lg transition hover:bg-[#F2B279] hover:text-[#0F1A17]"><ChevronRight className="h-5 w-5 stroke-[3]" /></button>
+          <div className="mt-3 flex shrink-0 items-center gap-3 text-white">
+            <button onClick={() => setCurrent(p => (p - 1 + images.length) % images.length)} aria-label="Previous" className="flex h-8 w-8 items-center justify-center rounded-full border border-white/60 transition hover:bg-white/15"><ChevronLeft className="h-4 w-4 stroke-[1.75]" /></button>
+            <span className="min-w-[3.2rem] text-center text-sm font-medium tabular-nums">{current + 1} / {images.length}</span>
+            <button onClick={() => setCurrent(p => (p + 1) % images.length)} aria-label="Next" className="flex h-8 w-8 items-center justify-center rounded-full border border-white/60 transition hover:bg-white/15"><ChevronRight className="h-4 w-4 stroke-[1.75]" /></button>
           </div>
         )}
-        <button onClick={onClose} className="absolute right-2 top-2 flex h-10 w-10 sm:-right-4 sm:-top-4 items-center justify-center rounded-full bg-[#0B5A44] text-white shadow-xl ring-2 ring-white transition hover:bg-[#083D2F]">
-          <X className="h-5 w-5 stroke-[3]" />
+        <button onClick={onClose} className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full border border-white/60 bg-black/50 text-white backdrop-blur transition hover:bg-white/20 sm:-right-3 sm:-top-3">
+          <X className="h-4 w-4 stroke-[1.75]" />
         </button>
       </motion.div>
     </div>
