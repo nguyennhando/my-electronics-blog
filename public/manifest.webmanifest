@@ -1,0 +1,15 @@
+{
+  "name": "Nguyen Nhan Do",
+  "short_name": "NND",
+  "description": "Portfolio: Elektronik und Software",
+  "start_url": "/my-electronics-blog/",
+  "scope": "/my-electronics-blog/",
+  "display": "standalone",
+  "background_color": "#0B5A44",
+  "theme_color": "#0B5A44",
+  "icons": [
+    { "src": "/my-electronics-blog/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/my-electronics-blog/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/my-electronics-blog/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
