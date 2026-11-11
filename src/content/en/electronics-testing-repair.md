@@ -3,10 +3,10 @@ id: electronics-testing-repair
 slug: electronics-testing-repair
 translation_id: demo-1
 language: en
-content_type: 
+content_type: project
 title: Electronics - Testing - Repair
 category: Über mich
-image_url: /my-electronics-blog/images/posts/Nguyen-main.webp
+image_url: /my-electronics-blog/images/posts/1794412934036-234.png
 image_gallery:
 []
 excerpt: Electrical engineer with a strong interest in electrical design and software development. Eager to learn, dexterous and motivated to continuously expand my practical experience.
@@ -19,6 +19,7 @@ read_time: 8 Min.
 published: true
 created_at: '2026-05-14T12:00:00Z'
 external_link: 
+pdf_url: 
 project_status: done
 sort_order: 10
 ---
