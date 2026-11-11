@@ -1985,6 +1985,10 @@ function AdminLangTabs({ tabs, onSelect }) {
   );
 }
 
+// Freshly uploaded files are not live on GitHub Pages for 1–2 minutes, so the admin shows the local copy until then.
+const LOCAL_PREVIEWS = new Map();
+const adminSrc = (url) => LOCAL_PREVIEWS.get(url) || url;
+
 function ImageListEditor({ images, onChange, onAdd, uploadImage, subfolder, ui, hint }) {
   const move = (index, direction) => {
     const target = index + direction;
@@ -2000,7 +2004,7 @@ function ImageListEditor({ images, onChange, onAdd, uploadImage, subfolder, ui, 
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {images.map((image, index) => (
             <div key={`${image}-${index}`} data-gallery-item className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-white/10 bg-black/30">
-              <img src={image} alt="" className="h-full w-full object-cover" />
+              <img src={adminSrc(image)} alt="" className="h-full w-full object-cover" />
               {index === 0 && <span className="absolute left-2 top-2 rounded-full bg-cyan-400 px-2 py-0.5 text-[10px] font-black text-black">{ui.mainImageBadge}</span>}
               <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-1 bg-gradient-to-t from-black/85 to-transparent p-1.5 sm:opacity-0 sm:transition sm:group-focus-within:opacity-100 sm:group-hover:opacity-100">
                 <div className="flex gap-1">
@@ -2340,6 +2344,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
       }
 
       const publicUrl = `/my-electronics-blog/${folder}/${path.split("/").pop()}`;
+      LOCAL_PREVIEWS.set(publicUrl, URL.createObjectURL(file));
       setSaveMessage(t.fileUploadedMessage(publicUrl));
       watchDeployment(previousRun?.id ?? null);
       return publicUrl;
@@ -2764,7 +2769,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
         return (
           <div key={group.id} data-post-row className="flex flex-wrap items-center gap-3 border-t border-white/10 px-4 py-3 first:border-t-0 hover:bg-white/[0.03] sm:flex-nowrap">
             {post.image_url
-              ? <img src={post.image_url} alt="" className="h-11 w-16 shrink-0 rounded-lg object-cover" />
+              ? <img src={adminSrc(post.image_url)} alt="" className="h-11 w-16 shrink-0 rounded-lg object-cover" />
               : <div className="flex h-11 w-16 shrink-0 items-center justify-center rounded-lg bg-cyan-400/10 text-[10px] font-black text-cyan-200">{String(post.category || "").slice(0, 4).toUpperCase()}</div>}
             <div className="min-w-0 flex-1">
               <p className="truncate font-bold">{post.title}</p>
@@ -2879,7 +2884,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
         <AdminField label={t.mainImageLabel} plain>
           {form.image_url && (
             <div className="relative mb-2 h-36 overflow-hidden rounded-xl border border-white/10">
-              <img src={form.image_url} alt="" className="h-full w-full object-cover" />
+              <img src={adminSrc(form.image_url)} alt="" className="h-full w-full object-cover" />
               <button type="button" onClick={() => update("image_url", "")} aria-label={ui.remove} className="absolute right-2 top-2 rounded-md bg-black/70 p-1"><X className="h-4 w-4" /></button>
             </div>
           )}
@@ -2959,7 +2964,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
         >
           <div className="h-44 w-full shrink-0 bg-black/30 sm:h-52">
             {form.image_url ? (
-              <img src={form.image_url} alt="" className={`h-full w-full object-cover ${previewIsIdea ? "grayscale opacity-70" : ""}`} />
+              <img src={adminSrc(form.image_url)} alt="" className={`h-full w-full object-cover ${previewIsIdea ? "grayscale opacity-70" : ""}`} />
             ) : (
               <div className="flex h-full items-center justify-center text-sm text-zinc-600">{t.noMainImageText}</div>
             )}
@@ -3004,7 +3009,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
         {projectOrderPosts.map((post, index) => (
           <div key={post.translation_id} data-order-item className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#0a1424] p-3">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/5 text-sm font-black">{index + 1}</span>
-            {post.image_url && <img src={post.image_url} alt="" className="h-12 w-[4.5rem] shrink-0 rounded-lg object-cover" />}
+            {post.image_url && <img src={adminSrc(post.image_url)} alt="" className="h-12 w-[4.5rem] shrink-0 rounded-lg object-cover" />}
             <div className="min-w-0 flex-1">
               <p className="truncate font-bold">{post.title}</p>
               <p className="text-xs text-zinc-500">{getCategoryLabel(post.category, projectOrderLanguage)} · {getStatusLabel(post.project_status, projectOrderLanguage)}</p>
@@ -3103,7 +3108,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
             <AdminField key={key} label={label} plain>
               {personalWayForm[key] && (
                 <div className="relative mb-2 h-28 overflow-hidden rounded-xl border border-white/10">
-                  <img src={personalWayForm[key]} alt="" className="h-full w-full object-cover" />
+                  <img src={adminSrc(personalWayForm[key])} alt="" className="h-full w-full object-cover" />
                 </div>
               )}
               <DropUpload compact label={ui.dropImage} subfolder="personal-way" uploadImage={uploadImageToGithub} busyLabel={ui.uploading} onUploaded={(url) => setPersonalWayForm((current) => ({ ...current, [key]: url }))} />
@@ -3118,8 +3123,8 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
         <p className="mb-3 text-xs font-bold uppercase text-zinc-500">{t.previewLabel}</p>
         <div className="grid gap-4">
           <div className="grid grid-cols-2 gap-3">
-            {personalWayForm.image_1 && <img src={personalWayForm.image_1} alt="" className="h-36 w-full rounded-xl object-cover" />}
-            {personalWayForm.image_2 && <img src={personalWayForm.image_2} alt="" className="h-36 w-full rounded-xl object-cover" />}
+            {personalWayForm.image_1 && <img src={adminSrc(personalWayForm.image_1)} alt="" className="h-36 w-full rounded-xl object-cover" />}
+            {personalWayForm.image_2 && <img src={adminSrc(personalWayForm.image_2)} alt="" className="h-36 w-full rounded-xl object-cover" />}
           </div>
           <div>
             <p className="text-xs font-bold uppercase text-cyan-300">{t.personalWayPreviewLabel}</p>
@@ -3139,7 +3144,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
         <h3 className="mb-3 font-black">{ui.bgTitle}</h3>
         <div className="relative mb-3 h-40 overflow-hidden rounded-xl border border-white/10 bg-[#07111f]">
           {siteSettingsForm.background_image
-            ? <img src={siteSettingsForm.background_image} alt="" className="h-full w-full object-cover opacity-70" />
+            ? <img src={adminSrc(siteSettingsForm.background_image)} alt="" className="h-full w-full object-cover opacity-70" />
             : <div className="flex h-full items-center justify-center px-3 text-center text-sm text-zinc-500">{t.noBackgroundText}</div>}
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-900/30 to-fuchsia-600/20" />
         </div>
@@ -3173,7 +3178,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
         <h3 className="mb-3 font-black">{stui.logoTitle}</h3>
         <div className="mb-3 flex items-center gap-3 rounded-xl border border-white/10 bg-[#07111f] p-3">
           {siteSettingsForm.logo_image
-            ? <img src={siteSettingsForm.logo_image} alt="" className="h-12 w-12 rounded-lg object-contain" />
+            ? <img src={adminSrc(siteSettingsForm.logo_image)} alt="" className="h-12 w-12 rounded-lg object-contain" />
             : <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#0B5A44] text-sm font-black text-white">{siteSettingsForm.logo_text || "NND"}</span>}
           <p className="text-sm font-bold">{siteSettingsForm.site_name || "Nguyen Nhan Do"}</p>
         </div>
@@ -3189,7 +3194,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
       <section className={cardClass}>
         <h3 className="mb-3 font-black">{stui.heroTitle}</h3>
         <div className="mb-3 h-44 overflow-hidden rounded-xl border border-white/10 bg-[#07111f]">
-          <img src={siteSettingsForm.hero_image || SITE_DEFAULTS.hero_image} alt="" className="h-full w-full object-cover" style={{ objectPosition: ["top", "center", "bottom"].includes(siteSettingsForm.hero_focus) ? siteSettingsForm.hero_focus : "top" }} />
+          <img src={adminSrc(siteSettingsForm.hero_image || SITE_DEFAULTS.hero_image)} alt="" className="h-full w-full object-cover" style={{ objectPosition: ["top", "center", "bottom"].includes(siteSettingsForm.hero_focus) ? siteSettingsForm.hero_focus : "top" }} />
         </div>
         <DropUpload compact label={ui.dropImage} hint={ui.dropHint} subfolder="portrait" uploadImage={uploadImageToGithub} busyLabel={ui.uploading} onUploaded={(url) => setSiteSettingsForm((current) => ({ ...current, hero_image: url }))} />
         {siteSettingsForm.hero_image && (
