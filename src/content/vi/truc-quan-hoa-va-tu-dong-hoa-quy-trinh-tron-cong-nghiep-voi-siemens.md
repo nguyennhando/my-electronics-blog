@@ -17,7 +17,7 @@ tags:
 read_time: 5 phút
 published: true
 created_at: '2026-05-28T09:25:17.991Z'
-external_link: https://drive.google.com/drive/folders/1Vrz5hK6aTVExshjDZIi92ecTgQaFo_kq
+external_link: 
 project_status: done
 sort_order: 110
 ---
@@ -44,4 +44,4 @@ Dự án bao gồm:
 
 Sự kết hợp giữa công nghệ PLC Siemens và WinCC Runtime Advanced tạo ra hệ thống HMI mạnh mẽ để tối ưu quy trình sản xuất và tăng độ an toàn vận hành.
 
-Nhấn `Mở dự án` để xem tài liệu đầy đủ và thông tin chi tiết.
+Tài liệu đầy đủ và thông tin chi tiết được gửi khi có yêu cầu: [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)

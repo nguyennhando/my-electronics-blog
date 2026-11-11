@@ -18,7 +18,7 @@ tags:
 read_time: 5 Min.
 published: true
 created_at: '2026-04-29T12:00:00Z'
-external_link: https://drive.google.com/drive/folders/1WgBLk6R1F-_J_oisAxwNgQyFdcKVzb-m
+external_link: 
 project_status: done
 sort_order: 120
 ---
@@ -37,4 +37,4 @@ The software structure contains several function blocks for operating modes, out
 
 The project demonstrates the practical implementation of industrial automation with PLCs, sensors, actuators and sequence control in Siemens TIA Portal.
 
-**Click `Open project` to view the complete documentation and project files.**
+**The complete documentation and the project files are available on request:** [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)

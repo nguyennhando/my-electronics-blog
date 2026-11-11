@@ -18,7 +18,7 @@ tags:
 read_time: 5 phút
 published: true
 created_at: '2026-04-29T12:00:00Z'
-external_link: https://drive.google.com/drive/folders/1WgBLk6R1F-_J_oisAxwNgQyFdcKVzb-m
+external_link: 
 project_status: done
 sort_order: 120
 ---
@@ -37,4 +37,4 @@ Cấu trúc phần mềm gồm nhiều khối chức năng cho chế độ vận
 
 Dự án thể hiện việc triển khai thực tế tự động hóa công nghiệp với PLC, cảm biến, cơ cấu chấp hành và điều khiển tuần tự trong Siemens TIA Portal.
 
-**Nhấn `Mở dự án` để xem tài liệu và tệp dự án đầy đủ.**
+**Tài liệu và tệp dự án đầy đủ được gửi khi có yêu cầu:** [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)

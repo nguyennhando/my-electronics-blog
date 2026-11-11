@@ -18,7 +18,7 @@ tags:
 read_time: 6 phút
 published: true
 created_at: '2026-05-08T12:00:00Z'
-external_link: https://drive.google.com/drive/folders/1GDWUKT5mLYHnSlSns5oKxpMZrkY9WENy
+external_link: 
 project_status: done
 sort_order: 150
 ---
@@ -51,7 +51,7 @@ Vật liệu sử dụng:
 
 Một dự án khác là thiết kế hệ thống ròng rọc cơ khí với bánh đôi và móc khóa an toàn. Mô hình CAD 3D này phục vụ việc nâng vật nặng với lực kéo nhỏ hơn.
 
-Nút `Mở dự án` dẫn đến toàn bộ tệp dự án, bao gồm các tệp AutoCAD `.dwg`.
+Toàn bộ tệp dự án, bao gồm các tệp AutoCAD `.dwg`, được gửi khi có yêu cầu: [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)
 
 Thời gian khóa học: 19.01.2026 - 13.02.2026  
 Phần mềm: AutoCAD 2026  

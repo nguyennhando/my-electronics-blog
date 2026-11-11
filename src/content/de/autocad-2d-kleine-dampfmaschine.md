@@ -18,7 +18,7 @@ tags:
 read_time: 6 Min.
 published: true
 created_at: '2026-05-08T12:00:00Z'
-external_link: https://drive.google.com/drive/folders/1GDWUKT5mLYHnSlSns5oKxpMZrkY9WENy
+external_link: 
 project_status: done
 sort_order: 150
 ---
@@ -58,7 +58,7 @@ Verwendete Materialien:
 Ein weiteres Projekt ist die Entwicklung eines mechanischen Flaschenzugs mit Doppelrolle und Sicherheitsverschluss-Haken.
 Die Konstruktion wurde als 3D-CAD-Modell entwickelt und dient zum Heben schwerer Lasten mit reduzierter Zugkraft.
 
-Über den Button „Zum Projekt“ erhalten Sie Zugriff auf sämtliche Projektdateien, einschließlich der AutoCAD-Dateien im .dwg-Format.
+Sämtliche Projektdateien, einschließlich der AutoCAD-Dateien im .dwg-Format, sind auf Anfrage erhältlich: [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)
 
 Kurszeitraum:
 19.01.2026 – 13.02.2026

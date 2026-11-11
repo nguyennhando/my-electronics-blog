@@ -18,7 +18,7 @@ tags:
 read_time: 6 Min.
 published: true
 created_at: '2026-05-08T12:00:00Z'
-external_link: https://drive.google.com/drive/folders/1GDWUKT5mLYHnSlSns5oKxpMZrkY9WENy
+external_link: 
 project_status: done
 sort_order: 150
 ---
@@ -51,7 +51,7 @@ Materials used:
 
 Another project is the design of a mechanical pulley block with a double pulley and safety hook. It was developed as a 3D CAD model for lifting heavy loads with reduced pulling force.
 
-The `Open project` button provides access to all project files, including the AutoCAD `.dwg` files.
+All project files, including the AutoCAD `.dwg` files, are available on request: [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)
 
 Course period: 19 January 2026 - 13 February 2026  
 Software: AutoCAD 2026  

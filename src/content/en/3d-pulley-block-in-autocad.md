@@ -19,7 +19,7 @@ tags:
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:29:56.593Z'
-external_link: https://drive.google.com/drive/folders/1fN_hc6jaddMzTqEt0iIS4YxpiPdT8JFR?usp=drive_link
+external_link: 
 project_status: done
 sort_order: 140
 ---
@@ -47,3 +47,5 @@ Key aspects:
 - Realistic component design
 
 The finished model can be used for technical presentations, learning purposes or as a basis for further mechanical development.
+
+The project files (AutoCAD) are available on request: [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)

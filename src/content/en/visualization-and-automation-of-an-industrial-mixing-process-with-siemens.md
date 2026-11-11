@@ -17,7 +17,7 @@ tags:
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:25:17.991Z'
-external_link: https://drive.google.com/drive/folders/1Vrz5hK6aTVExshjDZIi92ecTgQaFo_kq
+external_link: 
 project_status: done
 sort_order: 110
 ---
@@ -44,4 +44,4 @@ The project includes:
 
 Combining Siemens PLC technology with WinCC Runtime Advanced creates a powerful HMI system for optimizing production workflows and improving operational safety.
 
-Click `Open project` to view the complete documentation and further details.
+The complete documentation and further details are available on request: [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)

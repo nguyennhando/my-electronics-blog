@@ -17,7 +17,7 @@ tags:
 read_time: 5 phút
 published: true
 created_at: '2026-05-28T09:27:49.574Z'
-external_link: https://drive.google.com/drive/folders/1XwbZqMA_neR7FqreJCQsHW4ddtIEpOKi?usp=drive_link
+external_link: 
 project_status: done
 sort_order: 130
 ---
@@ -36,3 +36,5 @@ Các chức năng được triển khai:
 - Trực quan hóa HMI bằng WinCC
 
 Giao tiếp được thực hiện qua Profinet. Hệ thống hiện đang trong giai đoạn hoàn thiện và tối ưu.
+
+Tệp dự án được gửi khi có yêu cầu: [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)

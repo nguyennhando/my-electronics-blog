@@ -17,7 +17,7 @@ tags:
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:25:17.991Z'
-external_link: https://drive.google.com/drive/folders/1Vrz5hK6aTVExshjDZIi92ecTgQaFo_kq
+external_link: 
 project_status: done
 sort_order: 110
 ---
@@ -46,4 +46,4 @@ Das Projekt beinhaltet außerdem:
 
 Ziel des Projekts ist die Entwicklung einer zuverlässigen und effizienten Lösung für industrielle Automatisierungsprozesse. Durch die Kombination aus Siemens SPS-Technologie und WinCC Runtime Advanced entsteht ein leistungsfähiges HMI-System zur Optimierung von Produktionsabläufen und zur Erhöhung der Betriebssicherheit.
 
-Klicken Sie auf die Schaltfläche „Zum Projekt“, um die vollständige Projektdokumentation und weitere Details zum HMI-System anzuzeigen.
+Die vollständige Projektdokumentation und weitere Details zum HMI-System sind auf Anfrage erhältlich: [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)

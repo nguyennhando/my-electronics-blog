@@ -19,7 +19,7 @@ tags:
 read_time: 5 phút
 published: true
 created_at: '2026-05-28T09:29:56.593Z'
-external_link: https://drive.google.com/drive/folders/1fN_hc6jaddMzTqEt0iIS4YxpiPdT8JFR?usp=drive_link
+external_link: 
 project_status: done
 sort_order: 140
 ---
@@ -47,3 +47,5 @@ Các trọng tâm:
 - Thiết kế chi tiết sát với thực tế
 
 Mô hình hoàn thiện có thể dùng cho thuyết trình kỹ thuật, học tập hoặc làm nền tảng cho những phát triển cơ khí tiếp theo.
+
+Tệp dự án (AutoCAD) được gửi khi có yêu cầu: [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)

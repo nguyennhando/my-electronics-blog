@@ -18,7 +18,7 @@ tags:
 read_time: 5 Min.
 published: true
 created_at: '2026-04-29T12:00:00Z'
-external_link: https://drive.google.com/drive/folders/1WgBLk6R1F-_J_oisAxwNgQyFdcKVzb-m
+external_link: 
 project_status: done
 sort_order: 120
 ---
@@ -41,4 +41,4 @@ Zur Verbesserung der Übersichtlichkeit wurden symbolische Variablen, Datenbaust
 
 Das Projekt demonstriert praxisnah die Umsetzung industrieller Automatisierungstechnik mit SPS, Sensorik, Aktorik und Ablaufsteuerung im Siemens TIA Portal.
 
-**Zum Projekte klicken, um die vollständige Dokumentation und Projektdateien im Detail anzusehen.**
+**Die vollständige Dokumentation und die Projektdateien sind auf Anfrage erhältlich:** [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)

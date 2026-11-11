@@ -19,7 +19,7 @@ tags:
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:29:56.593Z'
-external_link: https://drive.google.com/drive/folders/1fN_hc6jaddMzTqEt0iIS4YxpiPdT8JFR?usp=drive_link
+external_link: 
 project_status: done
 sort_order: 140
 ---
@@ -47,3 +47,5 @@ Visualisierung der Mechanik in verschiedenen Ansichten
 Realistische Konstruktion der Bauteile
 
 Das fertige Modell kann für technische Präsentationen, Lernzwecke oder als Grundlage für weitere mechanische Entwicklungen verwendet werden.
+
+Die Projektdateien (AutoCAD) sind auf Anfrage erhältlich: [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)

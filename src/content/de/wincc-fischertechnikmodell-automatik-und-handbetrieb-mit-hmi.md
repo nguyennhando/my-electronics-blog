@@ -17,7 +17,7 @@ tags:
 read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:27:49.574Z'
-external_link: https://drive.google.com/drive/folders/1XwbZqMA_neR7FqreJCQsHW4ddtIEpOKi?usp=drive_link
+external_link: 
 project_status: done
 sort_order: 130
 ---
@@ -39,3 +39,5 @@ HMI-Visualisierung über WinCC
 
 Die Kommunikation erfolgt über Profinet.
 Das System befindet sich aktuell noch in der Fertigstellung und Optimierung. ⚙️
+
+Die Projektdateien sind auf Anfrage erhältlich: [donguyennhan.de@gmail.com](mailto:donguyennhan.de@gmail.com)
