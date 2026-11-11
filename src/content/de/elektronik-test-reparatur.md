@@ -6,7 +6,7 @@ language: de
 content_type: project
 title: Elektronik • Test • Reparatur
 category: Über mich
-image_url: /my-electronics-blog/images/posts/Nguyen-main.webp
+image_url: /my-electronics-blog/images/posts/1794386684767-bild3.jpg
 image_gallery:
 []
 excerpt: Elektroingenieur mit großem Interesse an Elektrokonstruktion und Softwareentwicklung. Lernbereit, feinmotorisch und motiviert, meine praktischen Erfahrungen kontinuierlich zu erweitern.
