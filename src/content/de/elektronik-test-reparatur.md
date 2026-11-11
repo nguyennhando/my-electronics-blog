@@ -3,7 +3,7 @@ id: elektronik-test-reparatur
 slug: elektronik-test-reparatur
 translation_id: demo-1
 language: de
-content_type: 
+content_type: project
 title: Elektronik • Test • Reparatur
 category: Über mich
 image_url: /my-electronics-blog/images/posts/Nguyen-main.webp
@@ -19,6 +19,7 @@ read_time: 8 Min.
 published: true
 created_at: '2026-05-14T12:00:00Z'
 external_link: 
+pdf_url: /my-electronics-blog/documents/steckbrief/1794386608470-kompetenzprofil-nguyen-nhan-do.pdf
 project_status: done
 sort_order: 10
 ---
