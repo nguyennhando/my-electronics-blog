@@ -3,7 +3,7 @@ id: autocad-2d-kleine-dampfmaschine
 slug: autocad-2d-kleine-dampfmaschine
 translation_id: demo-2
 language: de
-content_type: 
+content_type: project
 title: AutoCAD 2D – Kleine Dampfmaschine
 category: Maschinenbau
 image_url: /my-electronics-blog/images/posts/Dampfmaschine-main.webp
@@ -19,6 +19,7 @@ read_time: 6 Min.
 published: true
 created_at: '2026-05-08T12:00:00Z'
 external_link: 
+pdf_url: /my-electronics-blog/documents/steckbrief/1794385281072-projekt-nguyennhando-cad.pdf
 project_status: done
 sort_order: 150
 ---
