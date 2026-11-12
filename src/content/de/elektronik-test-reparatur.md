@@ -19,7 +19,7 @@ read_time: 8 Min.
 published: true
 created_at: '2026-05-14T12:00:00Z'
 external_link: 
-pdf_url: 
+pdf_url: /my-electronics-blog/documents/steckbrief/1794525615980-kompetenzprofil-1-nguyen-nhan-do.pdf
 project_status: done
 sort_order: 10
 ---
