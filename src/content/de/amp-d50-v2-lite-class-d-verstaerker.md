@@ -31,7 +31,7 @@ created_at: '2026-11-10T19:30:00.000Z'
 external_link: 
 pdf_url: /my-electronics-blog/documents/steckbrief/amp-v2-de.pdf
 project_status: in_progress
-sort_order: 40
+sort_order: 50
 ---
 
 # AMP-D50-V2-LITE
