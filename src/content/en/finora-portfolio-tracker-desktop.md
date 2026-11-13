@@ -25,7 +25,7 @@ created_at: '2026-11-10T22:30:00.000Z'
 external_link: 
 pdf_url: /my-electronics-blog/documents/steckbrief/finora-en.pdf
 project_status: in_progress
-sort_order: 46
+sort_order: 90
 ---
 
 # Finora
