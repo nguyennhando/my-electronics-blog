@@ -7,6 +7,8 @@ content_type: project
 title: GwenTTS – Ein lokales Sprachstudio für Windows
 category: Software, KI
 image_url: /my-electronics-blog/images/posts/gwentts-logo.png
+image_gallery:
+[]
 excerpt: Vom Skript zur Audiodatei. GwenTTS erzeugt Sprechertexte und Dialoge in sieben Sprachen direkt auf dem Windows-PC.
 tags:
 - Text-to-Speech
@@ -16,7 +18,10 @@ tags:
 read_time: 3 Min.
 published: true
 created_at: '2026-11-13T12:00:00.000Z'
-project_status: done
+external_link: 
+pdf_url: 
+project_status: in_progress
+sort_order: 110
 ---
 
 > **Ein Skript, zwei Stimmen, eine fertige Audiodatei.** GwenTTS bringt mehrsprachige KI-Sprachsynthese auf den eigenen Windows-PC.
@@ -24,10 +29,6 @@ project_status: done
 **Plattform** · Windows\
 **Ausgabe** · WAV und MP3\
 **Technik** · Tauri 2, Rust, React, TypeScript und Python
-
-## Hörprobe
-
-GwenTTS ist fertiggestellt. [Hörprobe öffnen](https://investing.tavrion.de/articles/cd97180b-dfdb-470e-8aac-9e0473addca6) und im Audioplayer auf **Play** drücken.
 
 ## 1. Die Idee
 
