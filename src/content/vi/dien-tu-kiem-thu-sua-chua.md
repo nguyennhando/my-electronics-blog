@@ -19,6 +19,7 @@ read_time: 8 phút
 published: true
 created_at: '2026-05-14T12:00:00Z'
 external_link: 
+pdf_url: 
 project_status: done
 sort_order: 10
 ---
