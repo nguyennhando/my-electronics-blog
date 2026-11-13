@@ -16,7 +16,7 @@ tags:
 read_time: 3 Min.
 published: true
 created_at: '2026-11-13T12:00:00.000Z'
-project_status: in_progress
+project_status: done
 ---
 
 > **Ein Skript, zwei Stimmen, eine fertige Audiodatei.** GwenTTS bringt mehrsprachige KI-Sprachsynthese auf den eigenen Windows-PC.
@@ -24,6 +24,10 @@ project_status: in_progress
 **Plattform** · Windows\
 **Ausgabe** · WAV und MP3\
 **Technik** · Tauri 2, Rust, React, TypeScript und Python
+
+## Hörprobe
+
+GwenTTS ist fertiggestellt. [Hörprobe öffnen](https://investing.tavrion.de/articles/cd97180b-dfdb-470e-8aac-9e0473addca6) und im Audioplayer auf **Play** drücken.
 
 ## 1. Die Idee
 
