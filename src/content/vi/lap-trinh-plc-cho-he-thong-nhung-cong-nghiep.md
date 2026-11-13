@@ -19,8 +19,9 @@ read_time: 5 phút
 published: true
 created_at: '2026-04-29T12:00:00Z'
 external_link: 
+pdf_url: 
 project_status: done
-sort_order: 120
+sort_order: 160
 ---
 
 # Lập trình PLC cho hệ thống nhúng công nghiệp
