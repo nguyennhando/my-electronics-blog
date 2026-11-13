@@ -29,7 +29,7 @@ created_at: '2026-11-10T20:30:00.000Z'
 external_link: https://online.tavrion.de/
 pdf_url: /my-electronics-blog/documents/steckbrief/saomai-de.pdf
 project_status: in_progress
-sort_order: 70
+sort_order: 100
 ---
 
 # Sao Mai Mainz
