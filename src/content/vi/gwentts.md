@@ -7,6 +7,8 @@ content_type: project
 title: GwenTTS – Phòng thu giọng nói AI trên Windows
 category: Phần mềm, AI
 image_url: /my-electronics-blog/images/posts/gwentts-logo.png
+image_gallery:
+[]
 excerpt: Từ kịch bản đến tệp âm thanh. GwenTTS tạo lời thuyết minh và hội thoại bằng bảy ngôn ngữ ngay trên máy tính Windows.
 tags:
 - Text-to-Speech
@@ -16,7 +18,10 @@ tags:
 read_time: 3 phút
 published: true
 created_at: '2026-11-13T12:00:00.000Z'
-project_status: done
+external_link: 
+pdf_url: 
+project_status: in_progress
+sort_order: 110
 ---
 
 > **Một kịch bản, hai giọng nói, một tệp âm thanh hoàn chỉnh.** GwenTTS đưa công nghệ tổng hợp giọng nói đa ngôn ngữ lên máy tính Windows.
@@ -24,10 +29,6 @@ project_status: done
 **Nền tảng** · Windows\
 **Định dạng xuất** · WAV và MP3\
 **Công nghệ** · Tauri 2, Rust, React, TypeScript và Python
-
-## Nghe thử GwenTTS
-
-GwenTTS đã hoàn thiện. [Mở trang nghe thử](https://investing.tavrion.de/articles/cd97180b-dfdb-470e-8aac-9e0473addca6) rồi nhấn **Play** trên trình phát để nghe giọng đọc mẫu.
 
 ## 1. Ý tưởng dự án
 
