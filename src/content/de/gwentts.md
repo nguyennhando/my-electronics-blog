@@ -6,7 +6,7 @@ language: de
 content_type: project
 title: GwenTTS – Ein lokales Sprachstudio für Windows
 category: Software, KI
-image_url: /my-electronics-blog/images/posts/gwentts-logo.png
+image_url: /my-electronics-blog/images/posts/1794606412037-screenshot-2026-11-13-203621.png
 image_gallery:
 []
 excerpt: Vom Skript zur Audiodatei. GwenTTS erzeugt Sprechertexte und Dialoge in sieben Sprachen direkt auf dem Windows-PC.
