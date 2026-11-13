@@ -17,8 +17,9 @@ read_time: 5 phút
 published: true
 created_at: '2026-05-28T09:35:50.659Z'
 external_link: 
+pdf_url: 
 project_status: idea
-sort_order: 170
+sort_order: 210
 ---
 
 # Dự án ý tưởng: Giám sát bộ nguồn xung DC với ESP32 và MQTT
