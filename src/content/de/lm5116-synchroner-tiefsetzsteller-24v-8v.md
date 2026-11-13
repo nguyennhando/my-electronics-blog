@@ -28,7 +28,7 @@ created_at: '2026-11-10T23:00:00.000Z'
 external_link: 
 pdf_url: /my-electronics-blog/documents/steckbrief/lm5116-de.pdf
 project_status: in_progress
-sort_order: 35
+sort_order: 40
 ---
 
 # LM5116 Tiefsetzsteller
