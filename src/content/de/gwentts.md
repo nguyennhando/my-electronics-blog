@@ -20,8 +20,8 @@ published: true
 created_at: '2026-11-13T12:00:00.000Z'
 external_link: 
 pdf_url: 
-project_status: in_progress
-sort_order: 110
+project_status: done
+sort_order: 100
 ---
 
 > **Ein Skript, zwei Stimmen, eine fertige Audiodatei.** GwenTTS bringt mehrsprachige KI-Sprachsynthese auf den eigenen Windows-PC.
