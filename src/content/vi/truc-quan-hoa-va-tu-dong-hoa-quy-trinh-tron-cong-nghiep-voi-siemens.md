@@ -18,8 +18,9 @@ read_time: 5 phút
 published: true
 created_at: '2026-05-28T09:25:17.991Z'
 external_link: 
+pdf_url: 
 project_status: done
-sort_order: 110
+sort_order: 150
 ---
 
 # Trực quan hóa và tự động hóa quy trình trộn công nghiệp với Siemens WinCC
