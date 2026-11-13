@@ -6,9 +6,11 @@ language: vi
 content_type: project
 title: Voice Studio – Phòng thu giọng nói AI trên Windows
 category: Phần mềm, AI
-image_url: /my-electronics-blog/images/posts/gwentts-logo.png
+image_url: /my-electronics-blog/images/posts/1794608885469-screenshot-2026-11-13-225321.png
 image_gallery:
-[]
+- /my-electronics-blog/images/posts/1794608893534-screenshot-2026-11-13-225341.png
+- /my-electronics-blog/images/posts/1794608899089-screenshot-2026-11-13-225441.png
+- /my-electronics-blog/images/posts/1794608903527-screenshot-2026-11-13-225507.png
 excerpt: Từ kịch bản đến tệp âm thanh. Voice Studio tạo lời thuyết minh và hội thoại bằng bảy ngôn ngữ ngay trên máy tính Windows.
 tags:
 - Text-to-Speech
