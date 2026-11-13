@@ -18,8 +18,9 @@ read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:33:38.567Z'
 external_link: 
+pdf_url: 
 project_status: idea
-sort_order: 210
+sort_order: 250
 ---
 
 # Konzept eines PWM-geregelten DC-Netzteils mit Mess- und Schutzfunktionen
