@@ -24,7 +24,7 @@ published: true
 created_at: '2026-11-10T22:30:00.000Z'
 external_link: 
 pdf_url: /my-electronics-blog/documents/steckbrief/finora-de.pdf
-project_status: in_progress
+project_status: done
 sort_order: 90
 ---
 
