@@ -18,8 +18,9 @@ read_time: 5 phút
 published: true
 created_at: '2026-05-28T09:27:49.574Z'
 external_link: 
+pdf_url: 
 project_status: done
-sort_order: 130
+sort_order: 170
 ---
 
 # WinCC mô hình Fischertechnik - Vận hành tự động và thủ công với HMI
