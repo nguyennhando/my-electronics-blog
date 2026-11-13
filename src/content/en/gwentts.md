@@ -18,13 +18,15 @@ tags:
 read_time: 3 min
 published: true
 created_at: '2026-11-13T12:00:00.000Z'
-external_link: 
+external_link: https://investing.tavrion.de/articles/cd97180b-dfdb-470e-8aac-9e0473addca6
 pdf_url: 
-project_status: in_progress
+project_status: done
 sort_order: 110
 ---
 
 > **One script, two voices, one finished audio file.** GwenTTS brings multilingual AI speech generation to your Windows PC.
+
+GwenTTS is complete. [▶ Open the audio sample](https://investing.tavrion.de/articles/cd97180b-dfdb-470e-8aac-9e0473addca6) and press **Play** on that page.
 
 **Platform** · Windows\
 **Export** · WAV and MP3\

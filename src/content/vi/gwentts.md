@@ -18,13 +18,15 @@ tags:
 read_time: 3 phút
 published: true
 created_at: '2026-11-13T12:00:00.000Z'
-external_link: 
+external_link: https://investing.tavrion.de/articles/cd97180b-dfdb-470e-8aac-9e0473addca6
 pdf_url: 
-project_status: in_progress
+project_status: done
 sort_order: 110
 ---
 
 > **Một kịch bản, hai giọng nói, một tệp âm thanh hoàn chỉnh.** GwenTTS đưa công nghệ tổng hợp giọng nói đa ngôn ngữ lên máy tính Windows.
+
+GwenTTS đã hoàn thiện. [▶ Mở trang nghe thử](https://investing.tavrion.de/articles/cd97180b-dfdb-470e-8aac-9e0473addca6) rồi nhấn **Play** để nghe giọng đọc mẫu.
 
 **Nền tảng** · Windows\
 **Định dạng xuất** · WAV và MP3\
