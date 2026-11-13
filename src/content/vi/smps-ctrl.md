@@ -6,6 +6,7 @@ language: vi
 content_type: knowledge
 title: SMPS-CTRL – Bộ nguồn DC để bàn dạng mô-đun dùng STM32
 category: Power
+image_url: /my-electronics-blog/images/posts/smps-ctrl-cover.webp
 excerpt: Nghiên cứu đang hoàn thiện về bộ nguồn DC bốn đầu ra độc lập, được điều khiển và giám sát tập trung bằng STM32.
 tags:
 - SMPS

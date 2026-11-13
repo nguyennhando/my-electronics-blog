@@ -6,6 +6,7 @@ language: de
 content_type: knowledge
 title: SMPS-CTRL – Modulares DC-Labornetzteil mit STM32
 category: Power
+image_url: /my-electronics-blog/images/posts/smps-ctrl-cover.webp
 excerpt: Ein Forschungs- und Entwurfsprojekt für ein modulares Labornetzteil mit vier Ausgängen und zentraler Überwachung per STM32.
 tags:
 - SMPS

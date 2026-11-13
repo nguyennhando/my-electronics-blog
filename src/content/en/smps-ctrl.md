@@ -6,6 +6,7 @@ language: en
 content_type: knowledge
 title: SMPS-CTRL – Modular DC bench power supply with STM32
 category: Power
+image_url: /my-electronics-blog/images/posts/smps-ctrl-cover.webp
 excerpt: An ongoing research and design project for a four-output bench power supply with centralized STM32 monitoring.
 tags:
 - SMPS
