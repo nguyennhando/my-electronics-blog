@@ -21,7 +21,7 @@ created_at: '2026-08-04T21:03:35.667Z'
 external_link: https://demo.tavrion.de/
 pdf_url: /my-electronics-blog/documents/steckbrief/tablio-en.pdf
 project_status: done
-sort_order: 60
+sort_order: 70
 ---
 
 # TABLIO Kasse — A POS System That Takes German Fiscal Law Seriously
