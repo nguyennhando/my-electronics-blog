@@ -4,12 +4,14 @@ slug: gwentts
 translation_id: gwentts
 language: de
 content_type: project
-title: Voice Studio – Ein lokales Sprachstudio für Windows
+title: GwenTTS – Ein lokales Sprachstudio für Windows
 category: Software, KI
-image_url: /my-electronics-blog/images/posts/1794606412037-screenshot-2026-11-13-203621.png
+image_url: /my-electronics-blog/images/posts/1794606974143-screenshot-2026-11-13-225321.png
 image_gallery:
-- /my-electronics-blog/images/posts/1794606431105-screenshot-2026-11-13-203621.png
-excerpt: Vom Skript zur Audiodatei. Voice Studio erzeugt Sprechertexte und Dialoge in sieben Sprachen direkt auf dem Windows-PC.
+- /my-electronics-blog/images/posts/1794606979253-screenshot-2026-11-13-225341.png
+- /my-electronics-blog/images/posts/1794606985330-screenshot-2026-11-13-225441.png
+- /my-electronics-blog/images/posts/1794606990158-screenshot-2026-11-13-225507.png
+excerpt: Vom Skript zur Audiodatei. GwenTTS erzeugt Sprechertexte und Dialoge in sieben Sprachen direkt auf dem Windows-PC.
 tags:
 - Text-to-Speech
 - Windows
@@ -24,9 +26,9 @@ project_status: done
 sort_order: 100
 ---
 
-> **Ein Skript, zwei Stimmen, eine fertige Audiodatei.** Voice Studio bringt mehrsprachige KI-Sprachsynthese auf den eigenen Windows-PC.
+> **Ein Skript, zwei Stimmen, eine fertige Audiodatei.** GwenTTS bringt mehrsprachige KI-Sprachsynthese auf den eigenen Windows-PC.
 
-Voice Studio ist fertiggestellt. [▶ Hörprobe öffnen](https://investing.tavrion.de/articles/cd97180b-dfdb-470e-8aac-9e0473addca6), dort **Deutsch (DE)** auswählen und auf **Play** drücken, um die deutsche Sprachausgabe zu hören.
+GwenTTS ist fertiggestellt. [▶ Hörprobe öffnen](https://investing.tavrion.de/articles/cd97180b-dfdb-470e-8aac-9e0473addca6), dort **Deutsch (DE)** auswählen und auf **Play** drücken, um die deutsche Sprachausgabe zu hören.
 
 **Plattform** · Windows\
 **Ausgabe** · WAV und MP3\
@@ -34,7 +36,7 @@ Voice Studio ist fertiggestellt. [▶ Hörprobe öffnen](https://investing.tavri
 
 ## 1. Die Idee
 
-Ein Video braucht einen Sprechertext, ein Sprachkurs eine Hörübung, ein Podcast-Entwurf zwei unterschiedliche Stimmen. Voice Studio bündelt diese Aufgaben in einem Studio. Dort lassen sich Texte vertonen, Ergebnisse anhören und Audiodateien für die Weiterverarbeitung exportieren.
+Ein Video braucht einen Sprechertext, ein Sprachkurs eine Hörübung, ein Podcast-Entwurf zwei unterschiedliche Stimmen. GwenTTS bündelt diese Aufgaben in einem Studio. Dort lassen sich Texte vertonen, Ergebnisse anhören und Audiodateien für die Weiterverarbeitung exportieren.
 
 Die Sprachsynthese läuft lokal, sobald das passende Modell eingerichtet ist. Skripte und Referenzaufnahmen bleiben während der Verarbeitung auf dem Gerät.
 
@@ -44,7 +46,7 @@ Die Sprachsynthese läuft lokal, sobald das passende Modell eingerichtet ist. Sk
 2. **Stimmen auswählen.** Eine vorhandene Stimme wählen oder aus einer Referenzaufnahme mit entsprechender Einwilligung ein wiederverwendbares Stimmprofil erstellen.
 3. **Anhören und exportieren.** Das Ergebnis im Studio prüfen, im Verlauf wiederfinden und als WAV oder MP3 ausgeben. Für MP3 verwendet die App FFmpeg.
 
-Im Dialogmodus erzeugt Voice Studio die einzelnen Redebeiträge und setzt sie zu einer gemeinsamen Audiodatei zusammen. Kurze Reaktionen wie „Mhm“ lassen sich gezielt einfügen, damit ein Gespräch lebendiger klingt.
+Im Dialogmodus erzeugt GwenTTS die einzelnen Redebeiträge und setzt sie zu einer gemeinsamen Audiodatei zusammen. Kurze Reaktionen wie „Mhm“ lassen sich gezielt einfügen, damit ein Gespräch lebendiger klingt.
 
 ## 3. Sieben Sprachen, zwei integrierte Engines
 
@@ -55,4 +57,4 @@ Im Dialogmodus erzeugt Voice Studio die einzelnen Redebeiträge und setzt sie zu
 
 ## 4. Technischer Aufbau
 
-React und TypeScript bilden die Oberfläche. Tauri verbindet sie über einen lokalen JSON-Datenstrom mit dem Python-Backend, das Stimmen, Generierung und Verlauf verwaltet. Die beiden integrierten Engines laufen in getrennten Python-Umgebungen. Über ein dokumentiertes Protokoll kann Voice Studio weitere lokal installierte Sprach-Engines als eigene Prozesse anbinden.
+React und TypeScript bilden die Oberfläche. Tauri verbindet sie über einen lokalen JSON-Datenstrom mit dem Python-Backend, das Stimmen, Generierung und Verlauf verwaltet. Die beiden integrierten Engines laufen in getrennten Python-Umgebungen. Über ein dokumentiertes Protokoll kann GwenTTS weitere lokal installierte Sprach-Engines als eigene Prozesse anbinden.
