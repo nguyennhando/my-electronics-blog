@@ -6,9 +6,11 @@ language: en
 content_type: project
 title: Voice Studio – A local voice studio for Windows
 category: Software, AI
-image_url: /my-electronics-blog/images/posts/gwentts-logo.png
+image_url: /my-electronics-blog/images/posts/1794608857765-screenshot-2026-11-13-225321.png
 image_gallery:
-[]
+- /my-electronics-blog/images/posts/1794608831420-screenshot-2026-11-13-225341.png
+- /my-electronics-blog/images/posts/1794608846022-screenshot-2026-11-13-225507.png
+- /my-electronics-blog/images/posts/1794608853137-screenshot-2026-11-13-225441.png
 excerpt: From script to audio. Voice Studio creates narration and dialogue in seven languages directly on your Windows PC.
 tags:
 - Text-to-Speech
