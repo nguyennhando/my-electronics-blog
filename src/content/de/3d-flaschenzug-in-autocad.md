@@ -20,8 +20,9 @@ read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:29:56.593Z'
 external_link: 
+pdf_url: 
 project_status: done
-sort_order: 140
+sort_order: 180
 ---
 
 # 3D-Flaschenzug in AutoCAD
