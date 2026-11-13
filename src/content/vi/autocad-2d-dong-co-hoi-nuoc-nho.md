@@ -19,8 +19,9 @@ read_time: 6 phút
 published: true
 created_at: '2026-05-08T12:00:00Z'
 external_link: 
+pdf_url: 
 project_status: done
-sort_order: 150
+sort_order: 190
 ---
 
 # AutoCAD 2D - Động cơ hơi nước nhỏ
