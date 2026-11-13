@@ -17,8 +17,9 @@ read_time: 5 phút
 published: true
 created_at: '2026-05-28T09:31:31.288Z'
 external_link: 
+pdf_url: 
 project_status: idea
-sort_order: 180
+sort_order: 220
 ---
 
 # Dự án ý tưởng: IoT Gateway ESP32 cho tín hiệu 4-20 mA với MQTT và RS485
