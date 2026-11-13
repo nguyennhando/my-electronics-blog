@@ -17,8 +17,9 @@ read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:31:31.288Z'
 external_link: 
+pdf_url: 
 project_status: idea
-sort_order: 180
+sort_order: 220
 ---
 
 # Concept Project: ESP32-Based 4-20 mA IoT Gateway with MQTT and RS485
