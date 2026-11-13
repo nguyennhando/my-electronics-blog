@@ -17,8 +17,9 @@ read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:35:13.660Z'
 external_link: 
+pdf_url: 
 project_status: in_progress
-sort_order: 190
+sort_order: 230
 ---
 
 # Konzeptprojekt: ESP32-basierte MQTT-Sensorüberwachung für Smart-Home-Anwendungen
