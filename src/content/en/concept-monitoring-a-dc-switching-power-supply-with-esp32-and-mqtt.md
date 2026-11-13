@@ -17,8 +17,9 @@ read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:35:50.659Z'
 external_link: 
+pdf_url: 
 project_status: idea
-sort_order: 170
+sort_order: 210
 ---
 
 # Concept Project: Monitoring a DC Switching Power Supply with ESP32 and MQTT
