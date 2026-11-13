@@ -17,8 +17,9 @@ read_time: 5 phút
 published: true
 created_at: '2026-05-28T09:35:13.660Z'
 external_link: 
+pdf_url: 
 project_status: in_progress
-sort_order: 190
+sort_order: 230
 ---
 
 # Dự án ý tưởng: Giám sát cảm biến MQTT bằng ESP32 cho ứng dụng Smart Home
