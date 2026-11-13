@@ -22,8 +22,9 @@ read_time: 5 Min.
 published: true
 created_at: '2026-05-28T09:30:47.159Z'
 external_link: 
+pdf_url: 
 project_status: done
-sort_order: 160
+sort_order: 200
 ---
 
 # Technical Portfolio & Electronics Blog
