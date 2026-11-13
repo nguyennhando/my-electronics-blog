@@ -21,7 +21,7 @@ created_at: '2026-05-08T12:00:00Z'
 external_link: 
 pdf_url: /my-electronics-blog/documents/steckbrief/1794385281072-projekt-nguyennhando-cad.pdf
 project_status: done
-sort_order: 150
+sort_order: 190
 ---
 
 # AutoCAD 2D – Kleine Dampfmaschine
