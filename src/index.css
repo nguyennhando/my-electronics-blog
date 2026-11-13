@@ -1,4 +1,7 @@
 @import "tailwindcss";
+
+html.pull-to-refresh { overscroll-behavior-y: none; }
+
 /* ── Werkbank homepage ── */
 @layer components {
 .wb { font-family: "Inter Variable", "Inter", system-ui, sans-serif; background: #F3F5F2; color: #0F1A17; }

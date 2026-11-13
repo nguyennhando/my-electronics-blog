@@ -1,4 +1,5 @@
 import CookieBanner from "./components/CookieBanner";
+import PullToRefresh from "./components/PullToRefresh";
 import { createElement, useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
@@ -970,7 +971,7 @@ function Lightbox({ images, index, onClose }) {
   const imageUrl = typeof images[current] === "object" ? images[current].image_url : images[current];
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 px-4 backdrop-blur-md" onClick={onClose}>
+    <div role="dialog" aria-modal="true" aria-label="Bild" className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 px-4 backdrop-blur-md" onClick={onClose}>
       <motion.div
         initial={{ opacity: 0, scale: 0.88 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -4418,7 +4419,8 @@ if (page === "datenschutz") {
 
   return (
     <>
-     <CookieBanner language={language} />
+      <PullToRefresh language={language} />
+      <CookieBanner language={language} />
       <SiteHeader onNavigate={navigate} currentPage={page} language={language} onLanguageChange={setLanguage} onAdminAccess={openAdminAccess} isAdminAuthenticated={isAdminAuthenticated} />
 
       {page === "post" && currentPost ? (
