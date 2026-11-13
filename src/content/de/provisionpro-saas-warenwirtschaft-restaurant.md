@@ -25,7 +25,7 @@ created_at: '2026-11-10T22:00:00.000Z'
 external_link: https://provisionpro.tavrion.de/
 pdf_url: /my-electronics-blog/documents/steckbrief/provisionpro-de.pdf
 project_status: done
-sort_order: 45
+sort_order: 80
 ---
 
 # ProvisionPro
