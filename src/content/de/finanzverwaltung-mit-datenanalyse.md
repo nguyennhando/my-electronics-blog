@@ -22,7 +22,7 @@ created_at: '2026-05-28T08:43:30.945Z'
 external_link: https://www.microsoft.com/store/productId/9NQQXN4P7DJJ?ocid=libraryshare
 pdf_url: /my-electronics-blog/documents/steckbrief/geldpilot-de.pdf
 project_status: done
-sort_order: 80
+sort_order: 120
 ---
 
 💰 GeldPilot – Persönliche Finanzverwaltung
