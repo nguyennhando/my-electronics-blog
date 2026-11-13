@@ -26,7 +26,7 @@ sort_order: 100
 
 > **Ein Skript, zwei Stimmen, eine fertige Audiodatei.** GwenTTS bringt mehrsprachige KI-Sprachsynthese auf den eigenen Windows-PC.
 
-GwenTTS ist fertiggestellt. [▶ Hörprobe öffnen](https://investing.tavrion.de/articles/cd97180b-dfdb-470e-8aac-9e0473addca6) und dort auf **Play** drücken.
+GwenTTS ist fertiggestellt. [▶ Hörprobe öffnen](https://investing.tavrion.de/articles/cd97180b-dfdb-470e-8aac-9e0473addca6), dort **Deutsch (DE)** auswählen und auf **Play** drücken, um die deutsche Sprachausgabe zu hören.
 
 **Plattform** · Windows\
 **Ausgabe** · WAV und MP3\

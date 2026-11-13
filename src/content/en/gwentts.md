@@ -26,7 +26,7 @@ sort_order: 110
 
 > **One script, two voices, one finished audio file.** GwenTTS brings multilingual AI speech generation to your Windows PC.
 
-GwenTTS is complete. [▶ Open the audio sample](https://investing.tavrion.de/articles/cd97180b-dfdb-470e-8aac-9e0473addca6) and press **Play** on that page.
+GwenTTS is complete. [▶ Open the audio sample](https://investing.tavrion.de/articles/cd97180b-dfdb-470e-8aac-9e0473addca6), select **Deutsch (DE)** on that page, then press **Play** to hear the German narration.
 
 **Platform** · Windows\
 **Export** · WAV and MP3\

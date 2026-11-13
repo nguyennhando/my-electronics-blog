@@ -26,7 +26,7 @@ sort_order: 110
 
 > **Một kịch bản, hai giọng nói, một tệp âm thanh hoàn chỉnh.** GwenTTS đưa công nghệ tổng hợp giọng nói đa ngôn ngữ lên máy tính Windows.
 
-GwenTTS đã hoàn thiện. [▶ Mở trang nghe thử](https://investing.tavrion.de/articles/cd97180b-dfdb-470e-8aac-9e0473addca6) rồi nhấn **Play** để nghe giọng đọc mẫu.
+GwenTTS đã hoàn thiện. [▶ Mở trang nghe thử](https://investing.tavrion.de/articles/cd97180b-dfdb-470e-8aac-9e0473addca6), chọn **Deutsch (DE)** trên trang đó, rồi nhấn **Play** để nghe giọng đọc tiếng Đức.
 
 **Nền tảng** · Windows\
 **Định dạng xuất** · WAV và MP3\
