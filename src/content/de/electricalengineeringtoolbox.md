@@ -11,6 +11,9 @@ image_gallery:
 - /my-electronics-blog/images/posts/EEToolbox-main-2.webp
 - /my-electronics-blog/images/posts/EEToolbox-main-3.webp
 - /my-electronics-blog/images/posts/EEToolbox-main-4.webp
+- /my-electronics-blog/images/posts/1794651608994-eetoolbox-2.png
+- /my-electronics-blog/images/posts/1794651612181-eetoolbox-8.png
+- /my-electronics-blog/images/posts/1794651614665-eetoolbox-1.png
 excerpt: Eine Windows-Anwendung für Elektroplaner, Techniker und Studierende. Rechner für Spannungsfall, Kabelquerschnitt, Schutzorgan, Motorstrom und Transformator, dazu Lastlisten mit Kabelliste und PDF-Bericht. Alles läuft offline, ohne Konto und ohne Telemetrie. Im Microsoft Store erhältlich.
 tags:
 - C++
