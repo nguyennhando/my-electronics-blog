@@ -236,7 +236,13 @@ export default {
     const { pathname } = url;
     const lang = ["de", "en", "vi"].includes(url.searchParams.get("lang")) ? url.searchParams.get("lang") : "de";
     const { method } = request;
-    if (!["GET", "HEAD"].includes(method) && request.headers.get("Origin") !== url.origin) {
+    const origin = request.headers.get("Origin");
+    // Forms opened before the referrer policy change can still send Origin: null.
+    const sameOriginForm = method === "POST" &&
+      (pathname === "/auth/password" || pathname === "/settings/password") &&
+      (origin === null || origin === "null") &&
+      request.headers.get("Sec-Fetch-Site") === "same-origin";
+    if (!["GET", "HEAD"].includes(method) && origin !== url.origin && !sameOriginForm) {
       return json(403, "Origin not allowed");
     }
     try {
