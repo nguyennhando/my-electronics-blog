@@ -1,6 +1,6 @@
 import { createHmac, randomBytes, sign, timingSafeEqual } from "node:crypto";
 import { Buffer } from "node:buffer";
-import { loginPage, passwordSettingsPage } from "./login.js";
+import { loginPage, MIN_PASSWORD_LENGTH, passwordSettingsPage } from "./login.js";
 export { BlogAccount } from "./account.js";
 
 const blog = "https://nguyennhando.github.io/my-electronics-blog/";
@@ -172,7 +172,7 @@ async function passwordLogin(request, env, lang) {
   const credentials = account(env);
   if (!await credentials.version()) return redirect(loginUrl(lang, "unavailable"));
   const password = fields.get("password");
-  if (!(password?.length >= 16 && password.length <= 128) || fields.get("username")?.trim().toLowerCase() !== "nguyennhando") {
+  if (!(password?.length >= MIN_PASSWORD_LENGTH && password.length <= 128) || fields.get("username")?.trim().toLowerCase() !== "nguyennhando") {
     return redirect(loginUrl(lang, "password"));
   }
   const version = await credentials.verify(password);
@@ -189,7 +189,7 @@ async function passwordSettings(request, env, lang, session) {
   if (request.method === "GET") return passwordSettingsPage(lang, blogPath);
   const fields = await readLoginForm(request);
   const password = fields?.get("password");
-  if (!(password?.length >= 16 && password.length <= 128) || password !== fields.get("confirm")) {
+  if (!(password?.length >= MIN_PASSWORD_LENGTH && password.length <= 128) || password !== fields.get("confirm")) {
     return passwordSettingsPage(lang, blogPath, "invalid");
   }
   await account(env).setPassword(password);

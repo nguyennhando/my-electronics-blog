@@ -1,3 +1,5 @@
+export const MIN_PASSWORD_LENGTH = 10;
+
 const copy = {
   de: {
     title: "Admin-Anmeldung", github: "Mit GitHub anmelden", passwordMode: "Mit Blog-Konto anmelden",
@@ -8,8 +10,8 @@ const copy = {
     rateError: "Zu viele Versuche. Bitte in einer Minute erneut versuchen.",
     unavailableError: "Die Anmeldung mit dem Blog-Konto ist noch nicht eingerichtet.",
     passwordTitle: "Blog-Passwort festlegen", confirm: "Passwort wiederholen", save: "Passwort speichern",
-    passwordHint: "Benutzername: nguyennhando. Verwenden Sie mindestens 16 Zeichen.",
-    passwordInvalid: "Das Passwort muss mindestens 16 Zeichen lang sein und beide Eingaben müssen übereinstimmen.",
+    passwordHint: `Benutzername: nguyennhando. Verwenden Sie mindestens ${MIN_PASSWORD_LENGTH} Zeichen.`,
+    passwordInvalid: `Das Passwort muss mindestens ${MIN_PASSWORD_LENGTH} Zeichen lang sein und beide Eingaben müssen übereinstimmen.`,
     passwordSaved: "Das Blog-Passwort wurde gespeichert.", backEditor: "Zurück zum Editor",
   },
   en: {
@@ -21,8 +23,8 @@ const copy = {
     rateError: "Too many attempts. Please try again in a minute.",
     unavailableError: "Blog account sign-in has yet to be configured.",
     passwordTitle: "Set blog password", confirm: "Confirm password", save: "Save password",
-    passwordHint: "Username: nguyennhando. Use at least 16 characters.",
-    passwordInvalid: "Use at least 16 characters and enter the same password twice.",
+    passwordHint: `Username: nguyennhando. Use at least ${MIN_PASSWORD_LENGTH} characters.`,
+    passwordInvalid: `Use at least ${MIN_PASSWORD_LENGTH} characters and enter the same password twice.`,
     passwordSaved: "Your blog password was saved.", backEditor: "Back to editor",
   },
   vi: {
@@ -34,8 +36,8 @@ const copy = {
     rateError: "Bạn đã thử quá nhiều lần. Vui lòng thử lại sau một phút.",
     unavailableError: "Tài khoản blog chưa được thiết lập.",
     passwordTitle: "Đặt mật khẩu blog", confirm: "Nhập lại mật khẩu", save: "Lưu mật khẩu",
-    passwordHint: "Tên tài khoản là nguyennhando. Mật khẩu cần ít nhất 16 ký tự.",
-    passwordInvalid: "Mật khẩu cần ít nhất 16 ký tự và hai lần nhập phải giống nhau.",
+    passwordHint: `Tên tài khoản là nguyennhando. Mật khẩu cần ít nhất ${MIN_PASSWORD_LENGTH} ký tự.`,
+    passwordInvalid: `Mật khẩu cần ít nhất ${MIN_PASSWORD_LENGTH} ký tự và hai lần nhập phải giống nhau.`,
     passwordSaved: "Đã lưu mật khẩu blog.", backEditor: "Quay lại editor",
   },
 };
@@ -120,8 +122,8 @@ export function passwordSettingsPage(lang, blogPath, state) {
     ${state === "invalid" ? `<p role="alert">${t.passwordInvalid}</p>` : ""}
     <form method="post" action="/settings/password?lang=${lang}">
       <input type="hidden" name="username" autocomplete="username" value="nguyennhando">
-      <label>${t.password}<input type="password" name="password" autocomplete="new-password" minlength="16" maxlength="128" required></label>
-      <label>${t.confirm}<input type="password" name="confirm" autocomplete="new-password" minlength="16" maxlength="128" required></label>
+      <label>${t.password}<input type="password" name="password" autocomplete="new-password" minlength="${MIN_PASSWORD_LENGTH}" maxlength="128" required></label>
+      <label>${t.confirm}<input type="password" name="confirm" autocomplete="new-password" minlength="${MIN_PASSWORD_LENGTH}" maxlength="128" required></label>
       <button type="submit">${t.save}</button>
     </form>`}
     <p><a href="${blogPath}?admin=1&amp;lang=${lang}">${t.backEditor}</a></p>`);
