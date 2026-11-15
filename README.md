@@ -73,31 +73,24 @@ npm run build
 
 Blog posts, knowledge articles and localized homepage content are stored in `src/content/de/`, `src/content/en/` and `src/content/vi/`. Article images are stored in `public/images/posts/`. Free-form gallery images are stored separately in `public/images/galerie/`.
 
-Start the local Markdown editor:
+Open [the admin editor](https://nguyennhando.github.io/my-electronics-blog/?admin=1) and sign in with GitHub as `nguyennhando`. Under **Settings → Set blog password**, you can set or change the password for the separate blog account. That account also uses the username `nguyennhando` and works in another browser or on another device. Changing its password expires sessions created with the previous password.
 
-```bash
-npm run admin
-```
-
-The editor is intentionally available only during local development. It is removed from the production bundle and cannot be opened through the public GitHub Pages website.
-
-In Chrome or Edge:
-
-1. Create a new post or select an existing post.
-2. Choose whether it is a project article or a knowledge article.
-3. Edit the content and preview the result.
-4. Click `In Ordner speichern`.
-5. Select exactly `src/content/` the first time. Do not select `src/content/de/`, `src/content/en/` or `src/content/vi/`. The editor creates or uses the selected language subfolder automatically.
-6. Add referenced article images to `public/images/posts/`.
-7. Deploy the updated website.
-
-Use `Startseiten-Inhalte bearbeiten` and `Persönlicher Weg bearbeiten` in the local editor to update localized homepage content. The editor stores each file in the selected language subfolder, for example `src/content/de/home-content.md` and `src/content/de/personal-way.md`.
+Create or select a post, edit it in the Markdown preview, and select **Publish**. The editor commits the selected changes through the GitHub App and displays the progress of the GitHub Pages deployment. The homepage content and personal journey editors store localized files such as `src/content/de/home-content.md` and `src/content/de/personal-way.md`.
 
 Use `Reihenfolge der Projektkarten bearbeiten` to reorder blog cards visually. Saving the order updates the `sort_order` value consistently across all available language versions.
 
 Use `Website-Hintergrund bearbeiten` to update the optional website background image. Its path is stored in `src/content/site-settings.md`. Leave the field empty to keep the default gradient background.
 
 Use `Projektgalerie bearbeiten` to manage the free-form homepage gallery. Add one image path per line in the desired order. Gallery images are stored in `public/images/galerie/`, and the image list is stored in `src/content/gallery-settings.md`.
+
+### Admin service deployment
+
+1. Deploy the Cloudflare Worker with `wrangler deploy --config admin-worker/wrangler.toml`.
+2. Create a private GitHub App with the Worker URL followed by `/auth/github/callback` as its redirect URI. Set the repository permission **Contents** to **Read and write**, disable webhooks, and install the app on `nguyennhando/my-electronics-blog`.
+3. Set the Worker secrets `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `GITHUB_PRIVATE_KEY` (the GitHub App PEM), `GITHUB_INSTALLATION_ID`, and `SESSION_KEY` (a random 32-byte key encoded as base64url).
+4. Set the GitHub Actions repository variable `VITE_ADMIN_ORIGIN` to the HTTPS Worker origin, then run the GitHub Pages deployment. To open admin from a local Vite preview, set the same variable in `.env.local` before running `npm run admin`.
+
+The GitHub App's installation token is held by the Worker and restricted to the blog repository. The Worker serves the admin page on its own origin so its session cookie works without third-party cookies.
 
 ## Markdown Format
 
@@ -215,8 +208,7 @@ The Vite base path is configured for:
 
 ## Security Notes
 
-- The public website is static and does not expose an admin login, database or write API.
-- The local Markdown editor is removed from production builds.
+- GitHub Pages serves the public website. The Worker authenticates the editor and limits writes to the blog's content and asset directories.
 - A Content Security Policy is defined in `index.html`.
 - Published images are stripped of metadata before deployment.
 - Never commit credentials, API keys, private documents or environment files.

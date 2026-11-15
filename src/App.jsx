@@ -12,9 +12,9 @@ import {
   CircuitBoard, Cpu, RadioTower, Bot, Globe, Gauge, Search, Menu, X, Pause, Play,
   CalendarDays, ArrowRight, ShieldCheck,
   Wrench, Mail, MonitorSmartphone, AlertTriangle, ExternalLink,
-  ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock, Download, FileText, Pencil, Save,
+  ChevronLeft, ChevronRight, Code2, ArrowLeft, Clock, Download, FileText, Pencil,
   BookOpen, Library, FlaskConical, GraduationCap, ChevronUp, ChevronDown,
-  LogIn, LogOut, LockKeyhole, KeyRound,
+  LogIn, LogOut, LockKeyhole,
   LayoutDashboard, Newspaper, ListOrdered, PenLine, Images, Route, Palette, Settings, Plus, Upload, Ellipsis, Trash2, Check,
 } from "lucide-react";
 
@@ -174,51 +174,13 @@ const DEFAULT_GALLERY_IMAGES = [
 // ─────────────────────────────────────────────
 // DATA HELPERS
 // ─────────────────────────────────────────────
-const ADMIN_AUTH_KEY = "electronics-blog-admin-auth-v1";
-const ADMIN_SESSION_KEY = "electronics-blog-admin-session-v1";
-const GITHUB_TOKEN_KEY = "electronics-blog-github-token-v1";
 const ADMIN_UI_LANGUAGE_KEY = "electronics-blog-admin-ui-language-v1";
 const GITHUB_REPO_OWNER = "nguyennhando";
 const GITHUB_REPO_NAME = "my-electronics-blog";
 const GITHUB_REPO_BRANCH = "main";
 
-const bytesToHex = (bytes) => Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
-
-const createAdminSalt = () => {
-  const bytes = new Uint8Array(16);
-  window.crypto.getRandomValues(bytes);
-  return bytesToHex(bytes);
-};
-
-const createRecoveryCode = () => {
-  const bytes = new Uint8Array(9);
-  window.crypto.getRandomValues(bytes);
-  const token = bytesToHex(bytes).toUpperCase().match(/.{1,6}/g).join("-");
-  return `ADMIN-${token}`;
-};
-
-const hashAdminSecret = async (secret, salt) => {
-  const data = new TextEncoder().encode(`${salt}:${secret}`);
-  const digest = await window.crypto.subtle.digest("SHA-256", data);
-  return bytesToHex(new Uint8Array(digest));
-};
-
-const readAdminConfig = () => {
-  try {
-    return JSON.parse(window.localStorage.getItem(ADMIN_AUTH_KEY) || "null");
-  } catch {
-    return null;
-  }
-};
-
-const saveAdminConfig = (config) => {
-  window.localStorage.setItem(ADMIN_AUTH_KEY, JSON.stringify(config));
-};
-
-const setAdminSession = (active) => {
-  if (active) window.localStorage.setItem(ADMIN_SESSION_KEY, "active");
-  else window.localStorage.removeItem(ADMIN_SESSION_KEY);
-};
+const BLOG_URL = "https://nguyennhando.github.io/my-electronics-blog/";
+const ADMIN_ORIGIN = import.meta.env.VITE_ADMIN_ORIGIN?.trim().replace(/\/$/, "");
 
 const bytesToBase64 = (bytes) => {
   let binary = "";
@@ -246,120 +208,9 @@ const encodeGithubPath = (path) => path.split("/").map(encodeURIComponent).join(
 const getGithubContentPath = (output) => `src/content/${output.directory ? `${output.directory}/` : ""}${output.filename}`;
 
 const ADMIN_TEXT = {
-  de: {
-    title: "Admin Login",
-    intro: "Nur Admins dürfen sich anmelden. Wenn Sie kein Admin sind, kehren Sie bitte zur Startseite zurück.",
-    notice: "Diese Anmeldung wird lokal in Ihrem Browser gespeichert. Auf GitHub Pages kann der Admin-Editor die Oberfläche öffnen, aber ohne Backend keine Dateien automatisch nach GitHub schreiben.",
-    backBlog: "Zurück zum Blog",
-    recoveryCode: "Wiederherstellungscode",
-    saveRecovery: "Bitte speichern Sie diesen Code, falls Sie Ihr Passwort vergessen.",
-    enterAdmin: "Admin öffnen",
-    firstSetup: "Ersteinrichtung",
-    forgotPassword: "Passwort vergessen",
-    adminAuth: "Admin-Prüfung",
-    createPasswordTitle: "Admin-Passwort erstellen",
-    resetPasswordTitle: "Wiederherstellungscode eingeben und Passwort neu setzen",
-    loginTitle: "Passwort eingeben, um den Editor zu oeffnen",
-    password: "Passwort",
-    recoveryCodeLabel: "Wiederherstellungscode",
-    newPassword: "Neues Passwort",
-    confirmPassword: "Passwort wiederholen",
-    createPassword: "Passwort erstellen",
-    resetPassword: "Passwort neu setzen",
-    login: "Anmelden",
-    backLogin: "Zurück zur Anmeldung",
-    forgot: "Passwort vergessen",
-    resetLocal: "Lokale Konfiguration loeschen",
-    passwordTooShort: "Das Passwort muss mindestens 8 Zeichen lang sein.",
-    confirmMismatch: "Die Passwortbestätigung stimmt nicht überein.",
-    setupDone: "Admin-Passwort erstellt. Bitte speichern Sie den Wiederherstellungscode unten.",
-    wrongPassword: "Falsches Passwort. Nur Admins duerfen sich anmelden.",
-    newPasswordTooShort: "Das neue Passwort muss mindestens 8 Zeichen lang sein.",
-    wrongRecovery: "Der Wiederherstellungscode ist nicht korrekt.",
-    passwordChanged: "Passwort geändert. Bitte speichern Sie den neuen Wiederherstellungscode.",
-    localReset: "Admin-Konfiguration in diesem Browser gelöscht. Bitte erstellen Sie ein neues Passwort.",
-    changePasswordTitle: "Passwort ändern",
-    currentPassword: "Aktuelles Passwort",
-    currentPasswordWrong: "Aktuelles Passwort ist falsch.",
-    noAdminConfig: "Keine Admin-Konfiguration vorhanden.",
-    savePasswordButton: "Neues Passwort speichern",
-  },
-  en: {
-    title: "Admin Login",
-    intro: "Only admins are allowed to sign in. If you are not an admin, please return to the home page.",
-    notice: "This login is stored locally in your browser. On GitHub Pages, the admin editor can open the interface, but cannot automatically write files to GitHub without a backend.",
-    backBlog: "Back to Blog",
-    recoveryCode: "Recovery Code",
-    saveRecovery: "Please save this code in case you forget your password.",
-    enterAdmin: "Open admin",
-    firstSetup: "First setup",
-    forgotPassword: "Forgot password",
-    adminAuth: "Admin authentication",
-    createPasswordTitle: "Create an admin password",
-    resetPasswordTitle: "Enter your recovery code to reset the password",
-    loginTitle: "Enter your password to open the editor",
-    password: "Password",
-    recoveryCodeLabel: "Recovery code",
-    newPassword: "New password",
-    confirmPassword: "Confirm password",
-    createPassword: "Create password",
-    resetPassword: "Reset password",
-    login: "Sign in",
-    backLogin: "Back to sign in",
-    forgot: "Forgot password",
-    resetLocal: "Clear local setup",
-    passwordTooShort: "Password must be at least 8 characters.",
-    confirmMismatch: "Password confirmation does not match.",
-    setupDone: "Admin password created. Please save the recovery code below.",
-    wrongPassword: "Wrong password. Only admins are allowed to sign in.",
-    newPasswordTooShort: "New password must be at least 8 characters.",
-    wrongRecovery: "The recovery code is not correct.",
-    passwordChanged: "Password changed. Please save the new recovery code.",
-    localReset: "Admin setup was cleared in this browser. Please create a new password.",
-    changePasswordTitle: "Change password",
-    currentPassword: "Current password",
-    currentPasswordWrong: "Current password is incorrect.",
-    noAdminConfig: "No admin configuration found.",
-    savePasswordButton: "Save new password",
-  },
-  vi: {
-    title: "Đăng nhập Admin",
-    intro: "Chỉ admin mới được quyền đăng nhập. Nếu bạn không phải admin, vui lòng quay lại trang chủ.",
-    notice: "Đăng nhập này được lưu cục bộ trên trình duyệt. Trên GitHub Pages, admin editor có thể mở giao diện nhưng chưa thể tự động ghi file lên GitHub nếu chưa có backend.",
-    backBlog: "Quay lại Blog",
-    recoveryCode: "Mã khôi phục",
-    saveRecovery: "Hãy lưu mã này để dùng khi quên mật khẩu.",
-    enterAdmin: "Vào admin",
-    firstSetup: "Thiết lập lần đầu",
-    forgotPassword: "Quên mật khẩu",
-    adminAuth: "Xác thực admin",
-    createPasswordTitle: "Tạo mật khẩu admin",
-    resetPasswordTitle: "Nhập mã khôi phục để đặt lại mật khẩu",
-    loginTitle: "Nhập mật khẩu để vào editor",
-    password: "Mật khẩu",
-    recoveryCodeLabel: "Mã khôi phục",
-    newPassword: "Mật khẩu mới",
-    confirmPassword: "Nhập lại mật khẩu",
-    createPassword: "Tạo mật khẩu",
-    resetPassword: "Đặt lại mật khẩu",
-    login: "Đăng nhập",
-    backLogin: "Quay lại đăng nhập",
-    forgot: "Quên mật khẩu",
-    resetLocal: "Xóa cấu hình local",
-    passwordTooShort: "Mật khẩu cần ít nhất 8 ký tự.",
-    confirmMismatch: "Mật khẩu xác nhận không khớp.",
-    setupDone: "Đã tạo mật khẩu admin. Hãy lưu mã khôi phục bên dưới.",
-    wrongPassword: "Sai mật khẩu. Chỉ admin mới được quyền đăng nhập.",
-    newPasswordTooShort: "Mật khẩu mới cần ít nhất 8 ký tự.",
-    wrongRecovery: "Mã khôi phục không đúng.",
-    passwordChanged: "Đã đổi mật khẩu. Hãy lưu mã khôi phục mới.",
-    localReset: "Đã xóa cấu hình admin trên trình duyệt này. Hãy tạo mật khẩu mới.",
-    changePasswordTitle: "Đổi mật khẩu",
-    currentPassword: "Mật khẩu hiện tại",
-    currentPasswordWrong: "Mật khẩu hiện tại không đúng.",
-    noAdminConfig: "Chưa có cấu hình admin.",
-    savePasswordButton: "Lưu mật khẩu mới",
-  },
+  de: { title: "Admin-Anmeldung", connecting: "Admin-Anmeldung wird geöffnet…", unavailable: "Die Admin-Anmeldung ist noch nicht eingerichtet.", signIn: "Erneut anmelden", expired: "Die Sitzung ist abgelaufen. Melden Sie sich in einem neuen Tab erneut an und versuchen Sie es dann noch einmal.", back: "Zurück zum Blog", password: "Blog-Passwort festlegen", logoutError: "Abmelden fehlgeschlagen. Bitte erneut versuchen." },
+  en: { title: "Admin sign-in", connecting: "Opening admin sign-in…", unavailable: "Admin sign-in has yet to be configured.", signIn: "Sign in again", expired: "Your session expired. Sign in again in a new tab, then retry.", back: "Back to blog", password: "Set blog password", logoutError: "Sign-out failed. Please try again." },
+  vi: { title: "Đăng nhập quản trị", connecting: "Đang mở trang đăng nhập…", unavailable: "Trang đăng nhập quản trị chưa được cấu hình.", signIn: "Đăng nhập lại", expired: "Phiên đã hết hạn. Hãy đăng nhập lại trong tab mới, rồi thử lại thao tác.", back: "Quay lại blog", password: "Đặt mật khẩu blog", logoutError: "Đăng xuất thất bại. Vui lòng thử lại." },
 };
 
 const EDITOR_TEXT = {
@@ -368,10 +219,6 @@ const EDITOR_TEXT = {
     passwordButton: "Passwort", logoutButton: "Logout", blogButton: "Blog",
     badgeWebsite: "Website", badgeStartseite: "Startseite", badgeBlog: "Blog",
     githubSectionTitle: "Direkt auf GitHub speichern",
-    githubTokenIntroPre: "Tragen Sie einen GitHub fine-grained token mit ",
-    githubTokenIntroMid: " fuer ",
-    githubTokenIntroPost: " ein. Der Token wird nur lokal in diesem Browser gespeichert.",
-    saveTokenButton: "Token speichern", testTokenButton: "Token testen",
     websiteSectionTitle: "Website-Einstellungen bearbeiten", backgroundImageLabel: "Hintergrundbild", noBackgroundText: "Standard-Hintergrund ohne Bild",
     saveGithubButton: "Auf GitHub speichern", exportMdButton: "MD exportieren", uploadButton: "Hochladen",
     gallerySectionTitle: "Projektgalerie bearbeiten", galleryInstructionsTitle: "So fügen Sie neue Galeriebilder hinzu",
@@ -422,14 +269,10 @@ const EDITOR_TEXT = {
     validationRequiredFields: "Titel, Slug, Kurzbeschreibung und Inhalt sind Pflichtfelder.",
     personalWayValidation: "Titel und Inhalt sind Pflichtfelder.",
     deleteConfirm: (title, path) => `"${title}" wirklich unwiderruflich von GitHub löschen (${path})?`,
-    noTokenMessage: "Bitte zuerst einen GitHub token eintragen.",
-    tokenRemovedMessage: "GitHub token wurde entfernt.", tokenSavedMessage: "GitHub token wurde lokal im Browser gespeichert.",
-    tokenTestFailedPrefix: "Token-Test fehlgeschlagen", noGithubDetails: "Keine Details von GitHub.",
-    tokenWorksMessage: "Token funktioniert. GitHub API ist erreichbar.",
     githubBlockedMessage: "GitHub API ist vom Browser blockiert oder nicht erreichbar. Bitte Chrome/Edge testen, Adblock/Tracking-Schutz pruefen, oder MD exportieren verwenden.",
     githubBlockedMessageShort: "GitHub API ist vom Browser blockiert oder nicht erreichbar. Bitte Chrome/Edge testen, Adblock/Tracking-Schutz pruefen.",
     savedFilesMessage: (count) => `${count} Datei(en) wurden auf GitHub gespeichert.`,
-    githubSaveFailedGeneric: "GitHub speichern ist fehlgeschlagen.", noGithubTokenError: "Kein GitHub Token hinterlegt.",
+    githubSaveFailedGeneric: "GitHub speichern ist fehlgeschlagen.",
     fileUploadFailedPrefix: "Datei-Upload fehlgeschlagen", fileUploadedMessage: (url) => `Datei hochgeladen: ${url}`,
     resumeLabel: "Lebenslauf (PDF)", resumeButton: "Lebenslauf ansehen", uploadingLabel: "Lädt hoch...",
     directorySaveUnsupported: "Direktes Speichern wird von diesem Browser nicht unterstützt. Bitte verwenden Sie MD exportieren.",
@@ -452,10 +295,6 @@ const EDITOR_TEXT = {
     passwordButton: "Password", logoutButton: "Logout", blogButton: "Blog",
     badgeWebsite: "Website", badgeStartseite: "Home page", badgeBlog: "Blog",
     githubSectionTitle: "Save directly to GitHub",
-    githubTokenIntroPre: "Enter a GitHub fine-grained token with ",
-    githubTokenIntroMid: " for ",
-    githubTokenIntroPost: " here. The token is stored locally in this browser only.",
-    saveTokenButton: "Save token", testTokenButton: "Test token",
     websiteSectionTitle: "Edit website settings", backgroundImageLabel: "Background image", noBackgroundText: "Default background, no image",
     saveGithubButton: "Save to GitHub", exportMdButton: "Export MD", uploadButton: "Upload",
     gallerySectionTitle: "Edit project gallery", galleryInstructionsTitle: "How to add new gallery images",
@@ -506,14 +345,10 @@ const EDITOR_TEXT = {
     validationRequiredFields: "Title, slug, excerpt and content are required fields.",
     personalWayValidation: "Title and content are required fields.",
     deleteConfirm: (title, path) => `Permanently delete "${title}" from GitHub (${path})?`,
-    noTokenMessage: "Please enter a GitHub token first.",
-    tokenRemovedMessage: "GitHub token removed.", tokenSavedMessage: "GitHub token saved locally in this browser.",
-    tokenTestFailedPrefix: "Token test failed", noGithubDetails: "No details from GitHub.",
-    tokenWorksMessage: "Token works. GitHub API is reachable.",
     githubBlockedMessage: "GitHub API is blocked by the browser or unreachable. Please try Chrome/Edge, check ad/tracking blockers, or use Export MD instead.",
     githubBlockedMessageShort: "GitHub API is blocked by the browser or unreachable. Please try Chrome/Edge and check ad/tracking blockers.",
     savedFilesMessage: (count) => `${count} file(s) saved to GitHub.`,
-    githubSaveFailedGeneric: "Saving to GitHub failed.", noGithubTokenError: "No GitHub token stored.",
+    githubSaveFailedGeneric: "Saving to GitHub failed.",
     fileUploadFailedPrefix: "File upload failed", fileUploadedMessage: (url) => `File uploaded: ${url}`,
     resumeLabel: "Resume (PDF)", resumeButton: "View resume", uploadingLabel: "Uploading...",
     directorySaveUnsupported: "Direct saving isn't supported by this browser. Please use Export MD.",
@@ -536,10 +371,6 @@ const EDITOR_TEXT = {
     passwordButton: "Mật khẩu", logoutButton: "Đăng xuất", blogButton: "Blog",
     badgeWebsite: "Website", badgeStartseite: "Trang chủ", badgeBlog: "Blog",
     githubSectionTitle: "Lưu trực tiếp lên GitHub",
-    githubTokenIntroPre: "Nhập một GitHub fine-grained token có quyền ",
-    githubTokenIntroMid: " cho ",
-    githubTokenIntroPost: " vào đây. Token chỉ được lưu cục bộ trên trình duyệt này.",
-    saveTokenButton: "Lưu token", testTokenButton: "Kiểm tra token",
     websiteSectionTitle: "Chỉnh sửa cài đặt website", backgroundImageLabel: "Hình nền", noBackgroundText: "Hình nền mặc định, không có ảnh",
     saveGithubButton: "Lưu lên GitHub", exportMdButton: "Xuất MD", uploadButton: "Tải lên",
     gallerySectionTitle: "Chỉnh sửa thư viện ảnh dự án", galleryInstructionsTitle: "Cách thêm ảnh mới vào thư viện",
@@ -590,14 +421,10 @@ const EDITOR_TEXT = {
     validationRequiredFields: "Tiêu đề, slug, mô tả ngắn và nội dung là các trường bắt buộc.",
     personalWayValidation: "Tiêu đề và nội dung là các trường bắt buộc.",
     deleteConfirm: (title, path) => `Xóa vĩnh viễn "${title}" khỏi GitHub (${path})?`,
-    noTokenMessage: "Vui lòng nhập GitHub token trước.",
-    tokenRemovedMessage: "Đã xóa GitHub token.", tokenSavedMessage: "Đã lưu GitHub token cục bộ trên trình duyệt này.",
-    tokenTestFailedPrefix: "Kiểm tra token thất bại", noGithubDetails: "Không có thông tin chi tiết từ GitHub.",
-    tokenWorksMessage: "Token hoạt động tốt. GitHub API có thể truy cập được.",
     githubBlockedMessage: "GitHub API bị trình duyệt chặn hoặc không thể truy cập. Hãy thử Chrome/Edge, kiểm tra tiện ích chặn quảng cáo/theo dõi, hoặc dùng Xuất MD thay thế.",
     githubBlockedMessageShort: "GitHub API bị trình duyệt chặn hoặc không thể truy cập. Hãy thử Chrome/Edge và kiểm tra tiện ích chặn quảng cáo/theo dõi.",
     savedFilesMessage: (count) => `Đã lưu ${count} file lên GitHub.`,
-    githubSaveFailedGeneric: "Lưu lên GitHub thất bại.", noGithubTokenError: "Chưa có GitHub token.",
+    githubSaveFailedGeneric: "Lưu lên GitHub thất bại.",
     fileUploadFailedPrefix: "Tải file lên thất bại", fileUploadedMessage: (url) => `Đã tải file lên: ${url}`,
     resumeLabel: "Sơ yếu lý lịch (PDF)", resumeButton: "Xem sơ yếu lý lịch", uploadingLabel: "Đang tải lên...",
     directorySaveUnsupported: "Trình duyệt này không hỗ trợ lưu trực tiếp. Vui lòng dùng Xuất MD.",
@@ -998,302 +825,25 @@ function Lightbox({ images, index, onClose }) {
 // ─────────────────────────────────────────────
 // HEADER
 // ─────────────────────────────────────────────
-function AdminAccessPanel({ language = "de", onLanguageChange = () => {}, onAuthenticated, onBack }) {
-  const [config, setConfig] = useState(() => readAdminConfig());
-  const [mode, setMode] = useState(() => readAdminConfig() ? "login" : "setup");
-  const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [recoveryCode, setRecoveryCode] = useState("");
-  const [newRecoveryCode, setNewRecoveryCode] = useState("");
-  const [message, setMessage] = useState("");
-  const isSetup = mode === "setup";
-  const isForgot = mode === "forgot";
-  const t = ADMIN_TEXT[language] || ADMIN_TEXT.de;
-
-  const resetFields = () => {
-    setPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-    setRecoveryCode("");
-    setMessage("");
-  };
-
-  const completeAuth = () => {
-    setAdminSession(true);
-    onAuthenticated();
-  };
-
-  const saveNewPassword = async (plainPassword) => {
-    const salt = createAdminSalt();
-    const recovery = createRecoveryCode();
-    const nextConfig = {
-      salt,
-      passwordHash: await hashAdminSecret(plainPassword, salt),
-      recoveryHash: await hashAdminSecret(recovery, salt),
-      updatedAt: new Date().toISOString(),
-    };
-
-    saveAdminConfig(nextConfig);
-    setConfig(nextConfig);
-    setNewRecoveryCode(recovery);
-  };
-
-  const handleSetup = async (event) => {
-    event.preventDefault();
-    if (newPassword.length < 8) {
-      setMessage(t.passwordTooShort);
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      setMessage(t.confirmMismatch);
-      return;
-    }
-
-    await saveNewPassword(newPassword);
-    resetFields();
-    setMessage(t.setupDone);
-  };
-
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    if (!config) {
-      setMode("setup");
-      return;
-    }
-
-    const passwordHash = await hashAdminSecret(password, config.salt);
-    if (passwordHash !== config.passwordHash) {
-      setMessage(t.wrongPassword);
-      return;
-    }
-
-    completeAuth();
-  };
-
-  const handleForgot = async (event) => {
-    event.preventDefault();
-    if (!config) {
-      setMode("setup");
-      return;
-    }
-    if (newPassword.length < 8) {
-      setMessage(t.newPasswordTooShort);
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      setMessage(t.confirmMismatch);
-      return;
-    }
-
-    const recoveryHash = await hashAdminSecret(recoveryCode.trim(), config.salt);
-    if (recoveryHash !== config.recoveryHash) {
-      setMessage(t.wrongRecovery);
-      return;
-    }
-
-    await saveNewPassword(newPassword);
-    resetFields();
-    setMode("login");
-    setMessage(t.passwordChanged);
-  };
-
-  const resetLocalAdmin = () => {
-    window.localStorage.removeItem(ADMIN_AUTH_KEY);
-    setAdminSession(false);
-    setConfig(null);
-    setNewRecoveryCode("");
-    resetFields();
-    setMode("setup");
-    setMessage(t.localReset);
-  };
-
+function AdminAccessPanel({ language, loginUrl }) {
+  const t = ADMIN_TEXT[language];
   return (
-    <div className="min-h-screen overflow-x-hidden text-white">
+    <div className="min-h-screen text-white">
       <Background />
-      <main className="mx-auto flex min-h-screen max-w-5xl items-center px-4 py-24 sm:px-5">
-        <section className="w-full overflow-hidden rounded-[2rem] border border-white/10 bg-[#07111f]/95 shadow-2xl shadow-black/30 backdrop-blur-xl">
-          <div className="flex justify-end border-b border-white/10 px-6 py-4 sm:px-8">
-            <div className="flex rounded-full border border-white/10 bg-white/5 p-1">
-              {LANGUAGES.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => onLanguageChange(item)}
-                  className={`rounded-full px-3 py-1.5 text-xs font-black uppercase transition ${language === item ? "bg-cyan-400 text-black" : "text-zinc-400 hover:text-white"}`}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
-            <div className="border-b border-white/10 bg-white/[0.03] p-6 sm:p-8 lg:border-b-0 lg:border-r">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-300/30 bg-cyan-300/10 text-cyan-200">
-                <LockKeyhole className="h-6 w-6" />
-              </div>
-              <h1 className="mt-5 text-2xl font-black sm:text-4xl">{t.title}</h1>
-              <p className="mt-4 text-sm leading-7 text-zinc-300">
-                {t.intro}
-              </p>
-              <p className="mt-4 rounded-2xl border border-yellow-300/25 bg-yellow-300/10 p-4 text-sm leading-6 text-yellow-100">
-                {t.notice}
-              </p>
-              <button type="button" onClick={onBack} className="mt-6 inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:bg-white/10 hover:text-white">
-                <ArrowLeft className="h-4 w-4" /> {t.backBlog}
-              </button>
-            </div>
-
-            <div className="p-6 sm:p-8">
-              {newRecoveryCode ? (
-                <div className="space-y-5">
-                  <div>
-                    <p className="text-xs font-bold uppercase text-cyan-300">{t.recoveryCode}</p>
-                    <h2 className="mt-2 text-xl font-black">{t.saveRecovery}</h2>
-                  </div>
-                  <div className="rounded-2xl border border-emerald-300/25 bg-emerald-300/10 p-4 font-mono text-sm font-bold text-emerald-100 sm:text-base">
-                    {newRecoveryCode}
-                  </div>
-                  <button type="button" onClick={completeAuth} className="inline-flex items-center gap-2 rounded-xl bg-cyan-300 px-5 py-3 font-black text-slate-950 transition hover:bg-white">
-                    <LogIn className="h-4 w-4" /> {t.enterAdmin}
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={isSetup ? handleSetup : isForgot ? handleForgot : handleLogin} className="space-y-5">
-                  <div>
-                    <p className="text-xs font-bold uppercase text-cyan-300">
-                      {isSetup ? t.firstSetup : isForgot ? t.forgotPassword : t.adminAuth}
-                    </p>
-                    <h2 className="mt-2 text-xl font-black">
-                      {isSetup ? t.createPasswordTitle : isForgot ? t.resetPasswordTitle : t.loginTitle}
-                    </h2>
-                  </div>
-
-                  {!isSetup && !isForgot && (
-                    <div>
-                      <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">{t.password}</label>
-                      <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" autoFocus />
-                    </div>
-                  )}
-
-                  {(isSetup || isForgot) && (
-                    <>
-                      {isForgot && (
-                        <div>
-                          <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">{t.recoveryCodeLabel}</label>
-                          <input value={recoveryCode} onChange={(event) => setRecoveryCode(event.target.value)} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" placeholder="ADMIN-XXXXXX-XXXXXX-XXXXXX" />
-                        </div>
-                      )}
-                      <div>
-                        <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">{t.newPassword}</label>
-                        <input type="password" value={newPassword} onChange={(event) => setNewPassword(event.target.value)} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
-                      </div>
-                      <div>
-                        <label className="mb-2 block text-xs font-bold uppercase text-zinc-400">{t.confirmPassword}</label>
-                        <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
-                      </div>
-                    </>
-                  )}
-
-                  {message && <p className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-zinc-200">{message}</p>}
-
-                  <div className="flex flex-wrap gap-3">
-                    <button type="submit" className="inline-flex items-center gap-2 rounded-xl bg-cyan-300 px-5 py-3 font-black text-slate-950 transition hover:bg-white">
-                      {isForgot ? <KeyRound className="h-4 w-4" /> : <LogIn className="h-4 w-4" />}
-                      {isSetup ? t.createPassword : isForgot ? t.resetPassword : t.login}
-                    </button>
-                    {!isSetup && (
-                      <button type="button" onClick={() => { resetFields(); setMode(isForgot ? "login" : "forgot"); }} className="rounded-xl border border-white/10 px-5 py-3 text-sm font-bold text-zinc-300 transition hover:bg-white/10 hover:text-white">
-                        {isForgot ? t.backLogin : t.forgot}
-                      </button>
-                    )}
-                    {isForgot && (
-                      <button type="button" onClick={resetLocalAdmin} className="rounded-xl border border-red-300/20 px-5 py-3 text-sm font-bold text-red-100 transition hover:bg-red-300/10">
-                        {t.resetLocal}
-                      </button>
-                    )}
-                  </div>
-                </form>
-              )}
-            </div>
-          </div>
+      <main className="relative mx-auto flex min-h-screen max-w-lg items-center px-5">
+        <section className="w-full rounded-[2rem] border border-white/10 bg-[#07111f] p-6 sm:p-8">
+          <LockKeyhole className="mb-4 h-6 w-6 text-cyan-300" />
+          <h1 className="text-2xl font-black">{t.title}</h1>
+          <p role="status" className="my-4 text-zinc-300">{loginUrl ? t.connecting : t.unavailable}</p>
+          {loginUrl && <a href={loginUrl} className="mr-4 text-cyan-300 underline">{t.title}</a>}
+          <a href={BLOG_URL} className="text-zinc-300 underline">{t.back}</a>
         </section>
       </main>
     </div>
   );
 }
 
-function AdminPasswordModal({ onClose, language = "de" }) {
-  const t = ADMIN_TEXT[language] || ADMIN_TEXT.de;
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [recoveryCode, setRecoveryCode] = useState("");
-  const [message, setMessage] = useState("");
-
-  const changePassword = async (event) => {
-    event.preventDefault();
-    const config = readAdminConfig();
-    if (!config) {
-      setMessage(t.noAdminConfig);
-      return;
-    }
-    if (newPassword.length < 8) {
-      setMessage(t.newPasswordTooShort);
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      setMessage(t.confirmMismatch);
-      return;
-    }
-
-    const currentHash = await hashAdminSecret(currentPassword, config.salt);
-    if (currentHash !== config.passwordHash) {
-      setMessage(t.currentPasswordWrong);
-      return;
-    }
-
-    const salt = createAdminSalt();
-    const nextRecoveryCode = createRecoveryCode();
-    saveAdminConfig({
-      salt,
-      passwordHash: await hashAdminSecret(newPassword, salt),
-      recoveryHash: await hashAdminSecret(nextRecoveryCode, salt),
-      updatedAt: new Date().toISOString(),
-    });
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-    setRecoveryCode(nextRecoveryCode);
-    setMessage(t.passwordChanged);
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
-      <form onSubmit={changePassword} className="w-full max-w-lg rounded-2xl border border-white/10 bg-[#07111f] p-6 text-white shadow-2xl">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-xs font-bold uppercase text-cyan-300">Admin</p>
-            <h2 className="mt-1 text-xl font-black">{t.changePasswordTitle}</h2>
-          </div>
-          <button type="button" onClick={onClose} className="rounded-xl border border-white/10 p-2 text-zinc-300 hover:bg-white/10"><X className="h-4 w-4" /></button>
-        </div>
-        <div className="mt-5 grid gap-4">
-          <input type="password" value={currentPassword} onChange={(event) => setCurrentPassword(event.target.value)} placeholder={t.currentPassword} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
-          <input type="password" value={newPassword} onChange={(event) => setNewPassword(event.target.value)} placeholder={t.newPassword} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
-          <input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} placeholder={t.confirmPassword} className="w-full rounded-xl border border-white/10 bg-[#050816] px-4 py-3 text-sm text-white outline-none ring-cyan-400/30 focus:ring-4" />
-          {recoveryCode && <div className="rounded-xl border border-emerald-300/25 bg-emerald-300/10 p-3 font-mono text-sm font-bold text-emerald-100">{recoveryCode}</div>}
-          {message && <p className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-zinc-200">{message}</p>}
-          <button type="submit" className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-300 px-5 py-3 font-black text-slate-950 transition hover:bg-white">
-            <Save className="h-4 w-4" /> {t.savePasswordButton}
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-}
-
-function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange = () => {}, onAdminAccess = null, isAdminAuthenticated = false }) {
+function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange = () => {}, onAdminAccess = null }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const t = getUiText(language);
   const w = getWbText(language);
@@ -1338,7 +888,7 @@ function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange
           </div>
           {onAdminAccess && (
             <button type="button" onClick={() => { setMenuOpen(false); onAdminAccess(); }} className="inline-flex items-center gap-2 rounded-full border border-[#0B5A44]/30 bg-[#0B5A44]/10 px-4 py-2 text-sm font-bold text-[#0B5A44] transition hover:bg-[#0B5A44]/20">
-              <LogIn className="h-4 w-4" /> {isAdminAuthenticated ? "Admin" : "Login"}
+              <LogIn className="h-4 w-4" /> Login
             </button>
           )}
         </div>
@@ -1359,7 +909,7 @@ function SiteHeader({ onNavigate, currentPage, language = "de", onLanguageChange
             </button>
             {onAdminAccess && (
               <button type="button" onClick={() => { setMenuOpen(false); onAdminAccess(); }} className="mt-2 inline-flex items-center gap-2 rounded-xl border border-[#0B5A44]/30 bg-[#0B5A44]/10 px-3 py-2 text-left font-bold text-[#0B5A44]">
-                <LogIn className="h-4 w-4" /> {isAdminAuthenticated ? "Admin" : "Login"}
+                <LogIn className="h-4 w-4" /> Login
               </button>
             )}
             <div className="mt-2 flex w-fit rounded-xl border border-[#C9D3CD] bg-white p-1">
@@ -1830,7 +1380,7 @@ const ADMIN_UI = {
       gallery: ["Galerie", "Bilder im Showcase der Startseite"],
       journey: ["Persönlicher Weg", "Die Karte über Sie auf der Startseite"],
       look: ["Logo, Porträt & Lebenslauf", "Logo, Name, Porträt, Kontakt-E-Mail, Live-Kacheln, Lebenslauf, Hintergrund"],
-      settings: ["Einstellungen", "GitHub-Verbindung, Passwort, Sprache"],
+      settings: ["Einstellungen", "GitHub und Sprache"],
     },
     greet: "Willkommen zurück", greetSub: "Wählen Sie eine Aufgabe. Alles andere finden Sie links in der Navigation.",
     tileNew: "Neuen Beitrag schreiben", tileNewSub: "Projekt oder Wissen, in 3 Sprachen",
@@ -1844,7 +1394,7 @@ const ADMIN_UI = {
     menuExport: "Als .md exportieren", menuDiscard: "Alle Änderungen verwerfen", menuLogout: "Abmelden",
     discardConfirm: "Ungespeicherte Änderungen an diesem Beitrag gehen verloren. Fortfahren?",
     discardAllConfirm: "Wirklich alle ungespeicherten Änderungen verwerfen?",
-    githubOk: "GitHub verbunden", githubMissing: "GitHub nicht verbunden", viewSite: "Website ansehen", reload: "Neu laden",
+    viewSite: "Website ansehen", reload: "Neu laden",
     dropImage: "Bild hier ablegen oder klicken", dropHint: "Wird automatisch hochgeladen", dropPdf: "PDF hier ablegen oder klicken", dropMulti: "Bilder hier ablegen oder klicken",
     uploading: "Lädt hoch…", remove: "Entfernen", mainImageBadge: "Hauptbild", moveLeft: "Nach vorne", moveRight: "Nach hinten",
     addLanguageHint: "Noch nicht übersetzt – klicken, um die Version anzulegen", saveFirstHint: "Erst den Beitrag veröffentlichen, dann können weitere Sprachen angelegt werden.",
@@ -1855,8 +1405,7 @@ const ADMIN_UI = {
     groupHero: "Kopfbereich", groupTransparency: "Transparenz", groupCards: "Feature-Karten", groupNotice: "Projekt-Hinweis", groupCollab: "Zusammenarbeit", groupStats: "Kennzahlen-Leiste",
     bgTitle: "Hintergrundbild", bgRemove: "Hintergrund entfernen", resumeTitle: "Lebenslauf (PDF)", resumeLive: "Auf der Website sichtbar", resumeOpen: "Datei öffnen",
     resumeReplace: "Ersetzen", resumeRemove: "Entfernen", resumeNote: "Beim Ersetzen wird die alte Datei automatisch von GitHub gelöscht.",
-    setGithubOk: "Verbunden", setGithubMissing: "Nicht verbunden", changeToken: "Token ändern", enterToken: "Token eintragen", hideToken: "Schließen",
-    passwordTitle: "Admin-Passwort", passwordDesc: "Wird nur in diesem Browser gespeichert.", passwordBtn: "Passwort ändern", uiLangTitle: "Sprache der Admin-Oberfläche",
+    uiLangTitle: "Sprache der Admin-Oberfläche",
     typeLabel: "Typ", openNav: "Menü öffnen",
   },
   en: {
@@ -1871,7 +1420,7 @@ const ADMIN_UI = {
       gallery: ["Gallery", "Images in the home page showcase"],
       journey: ["Personal journey", "The card about you on the home page"],
       look: ["Logo, portrait & resume", "Logo, name, portrait, contact e-mail, live tiles, resume, background"],
-      settings: ["Settings", "GitHub connection, password, language"],
+      settings: ["Settings", "GitHub and language"],
     },
     greet: "Welcome back", greetSub: "Pick a task. Everything else is in the navigation on the left.",
     tileNew: "Write a new post", tileNewSub: "Project or knowledge, in 3 languages",
@@ -1885,7 +1434,7 @@ const ADMIN_UI = {
     menuExport: "Export as .md", menuDiscard: "Discard all changes", menuLogout: "Log out",
     discardConfirm: "Unsaved changes to this post will be lost. Continue?",
     discardAllConfirm: "Really discard all unsaved changes?",
-    githubOk: "GitHub connected", githubMissing: "GitHub not connected", viewSite: "View website", reload: "Reload",
+    viewSite: "View website", reload: "Reload",
     dropImage: "Drop an image here or click", dropHint: "Uploads automatically", dropPdf: "Drop a PDF here or click", dropMulti: "Drop images here or click",
     uploading: "Uploading…", remove: "Remove", mainImageBadge: "Main", moveLeft: "Move earlier", moveRight: "Move later",
     addLanguageHint: "Not translated yet – click to create this version", saveFirstHint: "Publish the post first, then you can add more languages.",
@@ -1896,8 +1445,7 @@ const ADMIN_UI = {
     groupHero: "Hero", groupTransparency: "Transparency", groupCards: "Feature cards", groupNotice: "Project notice", groupCollab: "Collaboration", groupStats: "Key figures strip",
     bgTitle: "Background image", bgRemove: "Remove background", resumeTitle: "Resume (PDF)", resumeLive: "Visible on the website", resumeOpen: "Open file",
     resumeReplace: "Replace", resumeRemove: "Remove", resumeNote: "Replacing the file deletes the old one from GitHub automatically.",
-    setGithubOk: "Connected", setGithubMissing: "Not connected", changeToken: "Change token", enterToken: "Enter token", hideToken: "Close",
-    passwordTitle: "Admin password", passwordDesc: "Stored only in this browser.", passwordBtn: "Change password", uiLangTitle: "Admin interface language",
+    uiLangTitle: "Admin interface language",
     typeLabel: "Type", openNav: "Open menu",
   },
   vi: {
@@ -1912,7 +1460,7 @@ const ADMIN_UI = {
       gallery: ["Gallery", "Ảnh hiện ở khu trình diễn trang chủ"],
       journey: ["Hành trình", "Thẻ giới thiệu bản thân trên trang chủ"],
       look: ["Logo, ảnh & CV", "Logo, tên, ảnh chân dung, e-mail liên hệ, ô chạy thật, CV, ảnh nền"],
-      settings: ["Cài đặt", "Kết nối GitHub, mật khẩu, ngôn ngữ"],
+      settings: ["Cài đặt", "GitHub và ngôn ngữ"],
     },
     greet: "Chào mừng quay lại", greetSub: "Chọn một việc. Mọi thứ khác nằm ở thanh bên trái.",
     tileNew: "Viết bài mới", tileNewSub: "Dự án hoặc kiến thức, 3 ngôn ngữ",
@@ -1926,7 +1474,7 @@ const ADMIN_UI = {
     menuExport: "Xuất file .md", menuDiscard: "Hủy mọi thay đổi", menuLogout: "Đăng xuất",
     discardConfirm: "Các thay đổi chưa lưu của bài này sẽ mất. Tiếp tục?",
     discardAllConfirm: "Hủy toàn bộ thay đổi chưa lưu?",
-    githubOk: "GitHub đã kết nối", githubMissing: "GitHub chưa kết nối", viewSite: "Xem trang web", reload: "Tải lại",
+    viewSite: "Xem trang web", reload: "Tải lại",
     dropImage: "Thả ảnh vào đây hoặc bấm chọn", dropHint: "Tự động tải lên", dropPdf: "Thả file PDF vào đây hoặc bấm chọn", dropMulti: "Thả nhiều ảnh vào đây hoặc bấm chọn",
     uploading: "Đang tải lên…", remove: "Gỡ", mainImageBadge: "Ảnh chính", moveLeft: "Đưa lên trước", moveRight: "Đưa ra sau",
     addLanguageHint: "Chưa dịch – bấm để tạo bản này", saveFirstHint: "Hãy đăng bài trước, sau đó mới thêm được ngôn ngữ khác.",
@@ -1937,8 +1485,7 @@ const ADMIN_UI = {
     groupHero: "Đầu trang", groupTransparency: "Minh bạch", groupCards: "Thẻ tính năng", groupNotice: "Lưu ý dự án", groupCollab: "Hợp tác", groupStats: "Dải số liệu",
     bgTitle: "Ảnh nền", bgRemove: "Gỡ ảnh nền", resumeTitle: "CV (PDF)", resumeLive: "Đang hiện trên web", resumeOpen: "Mở file",
     resumeReplace: "Thay file", resumeRemove: "Gỡ CV", resumeNote: "Khi thay file, bản cũ tự bị xóa khỏi GitHub.",
-    setGithubOk: "Đã kết nối", setGithubMissing: "Chưa kết nối", changeToken: "Đổi token", enterToken: "Nhập token", hideToken: "Đóng",
-    passwordTitle: "Mật khẩu admin", passwordDesc: "Chỉ lưu trong trình duyệt này.", passwordBtn: "Đổi mật khẩu", uiLangTitle: "Ngôn ngữ giao diện admin",
+    uiLangTitle: "Ngôn ngữ giao diện admin",
     typeLabel: "Loại", openNav: "Mở menu",
   },
 };
@@ -2035,9 +1582,9 @@ const buildLanguageDrafts = (entries, getLocalized) => Object.fromEntries(
   LANGUAGES.map((language) => [language, { ...(entries.find((entry) => entry.language === language) || getLocalized(language)), language }]),
 );
 
-function MarkdownEditorPage({ onLogout = () => {} }) {
+function MarkdownEditorPage() {
   const [uiLanguage, setUiLanguage] = useState(() => {
-    const saved = window.localStorage.getItem(ADMIN_UI_LANGUAGE_KEY);
+    const saved = window.localStorage.getItem(ADMIN_UI_LANGUAGE_KEY) || new URLSearchParams(window.location.search).get("lang");
     return LANGUAGES.includes(saved) ? saved : "de";
   });
   const t = EDITOR_TEXT[uiLanguage] || EDITOR_TEXT.de;
@@ -2048,9 +1595,6 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   const [form, setForm] = useState(emptyEditorForm);
   const [slugEdited, setSlugEdited] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
-  const [githubToken, setGithubToken] = useState(() => window.localStorage.getItem(GITHUB_TOKEN_KEY) || "");
-  const [showGithubToken, setShowGithubToken] = useState(() => !window.localStorage.getItem(GITHUB_TOKEN_KEY));
-  const [tokenSaved, setTokenSaved] = useState(() => !!window.localStorage.getItem(GITHUB_TOKEN_KEY));
   const [view, setView] = useState("home");
   const [navOpen, setNavOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
@@ -2084,7 +1628,6 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   const initialGallery = (GALLERY_IMAGES.length ? GALLERY_IMAGES : DEFAULT_GALLERY_IMAGES).join("\n");
   const [galleryImagesForm, setGalleryImagesForm] = useState(initialGallery);
   const [galleryBase, setGalleryBase] = useState(initialGallery);
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showAdvancedFields, setShowAdvancedFields] = useState(false);
   const [deployState, setDeployState] = useState(null);
   const [projectOrderLanguage, setProjectOrderLanguage] = useState("de");
@@ -2128,22 +1671,8 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     downloadTextFile(output.filename, output.markdown);
   };
 
-  const saveGithubToken = () => {
-    const token = githubToken.trim();
-    if (!token) {
-      window.localStorage.removeItem(GITHUB_TOKEN_KEY);
-      setTokenSaved(false);
-      setSaveMessage(t.tokenRemovedMessage);
-      return;
-    }
-
-    window.localStorage.setItem(GITHUB_TOKEN_KEY, token);
-    setTokenSaved(true);
-    setShowGithubToken(false);
-    setSaveMessage(t.tokenSavedMessage);
-  };
-
   const getGithubErrorMessage = async (response, fallback) => {
+    if (response.status === 401) return ADMIN_TEXT[uiLanguage].expired;
     try {
       const data = await response.json();
       return `${fallback} (${response.status}): ${data.message || t.noGithubDetails}`;
@@ -2152,55 +1681,14 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     }
   };
 
-  const testGithubToken = async () => {
-    const token = githubToken.trim() || window.localStorage.getItem(GITHUB_TOKEN_KEY);
-    if (!token) {
-      setShowGithubToken(true);
-      setView("settings");
-      setSaveMessage(t.noTokenMessage);
-      return;
-    }
-
+  const logout = async () => {
     try {
-      const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}`, {
-        headers: {
-          Accept: "application/vnd.github+json",
-          Authorization: `Bearer ${token}`,
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(await getGithubErrorMessage(response, t.tokenTestFailedPrefix));
-      }
-
-      setSaveMessage(t.tokenWorksMessage);
-    } catch (error) {
-      setSaveMessage(
-        error instanceof TypeError
-          ? t.githubBlockedMessage
-          : error.message
-      );
+      const response = await fetch("/auth/logout", { method: "POST" });
+      if (!response.ok) throw new Error();
+      window.location.assign(BLOG_URL);
+    } catch {
+      setSaveMessage(ADMIN_TEXT[uiLanguage].logoutError);
     }
-  };
-
-  const getGithubAuth = () => {
-    const token = githubToken.trim() || window.localStorage.getItem(GITHUB_TOKEN_KEY);
-    if (!token) {
-      setShowGithubToken(true);
-      setView("settings");
-      setSaveMessage(t.noTokenMessage);
-      return null;
-    }
-
-    return {
-      token,
-      headers: {
-        Accept: "application/vnd.github+json",
-        Authorization: `Bearer ${token}`,
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
-    };
   };
 
   const fetchLatestActionsRun = async () => {
@@ -2241,18 +1729,15 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   };
 
   const saveOutputsToGitHub = async (outputs, commitMessage) => {
-    const auth = getGithubAuth();
-    if (!auth) return false;
-
     const previousRun = await fetchLatestActionsRun();
 
     try {
       for (const output of outputs) {
         const path = getGithubContentPath(output);
         const apiPath = encodeGithubPath(path);
-        const fileUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${apiPath}?ref=${GITHUB_REPO_BRANCH}`;
+        const fileUrl = `/api/contents/${apiPath}`;
         let sha = null;
-        const currentFile = await fetch(fileUrl, { headers: auth.headers });
+        const currentFile = await fetch(fileUrl);
 
         if (currentFile.ok) {
           const currentData = await currentFile.json();
@@ -2261,14 +1746,10 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
           throw new Error(await getGithubErrorMessage(currentFile, `GitHub konnte ${path} nicht lesen`));
         }
 
-        const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${apiPath}`, {
+        const response = await fetch(`/api/contents/${apiPath}`, {
           method: "PUT",
-          headers: {
-            ...auth.headers,
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            branch: GITHUB_REPO_BRANCH,
             message: commitMessage || `Update ${path}`,
             content: textToBase64(output.markdown),
             ...(sha ? { sha } : {}),
@@ -2297,12 +1778,9 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     saveOutputsToGitHub([output], `Update ${getGithubContentPath(output)}`);
 
   const deleteGithubFile = async (path, commitMessage) => {
-    const auth = getGithubAuth();
-    if (!auth) throw new Error(t.noGithubTokenError);
-
     const apiPath = encodeGithubPath(path);
-    const fileUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${apiPath}?ref=${GITHUB_REPO_BRANCH}`;
-    const currentFile = await fetch(fileUrl, { headers: auth.headers });
+    const fileUrl = `/api/contents/${apiPath}`;
+    const currentFile = await fetch(fileUrl);
 
     if (currentFile.status === 404) return;
     if (!currentFile.ok) {
@@ -2310,11 +1788,10 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     }
 
     const { sha } = await currentFile.json();
-    const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${apiPath}`, {
+    const response = await fetch(`/api/contents/${apiPath}`, {
       method: "DELETE",
-      headers: { ...auth.headers, "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        branch: GITHUB_REPO_BRANCH,
         message: commitMessage || `Delete ${path}`,
         sha,
       }),
@@ -2326,20 +1803,16 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
   };
 
   const uploadFileToGithub = async (file, folder) => {
-    const auth = getGithubAuth();
-    if (!auth) return null;
-
     const path = `public/${folder}/${Date.now()}-${slugifyFilename(file.name)}`;
     const apiPath = encodeGithubPath(path);
     const previousRun = await fetchLatestActionsRun();
 
     try {
       const buffer = await file.arrayBuffer();
-      const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${apiPath}`, {
+      const response = await fetch(`/api/contents/${apiPath}`, {
         method: "PUT",
-        headers: { ...auth.headers, "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          branch: GITHUB_REPO_BRANCH,
           message: `Upload file ${path}`,
           content: bytesToBase64(new Uint8Array(buffer)),
         }),
@@ -3277,35 +2750,17 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
     <div className="mx-auto grid max-w-3xl gap-4 p-4 sm:p-6">
       <section className={cardClass}>
         <div className="flex flex-wrap items-center gap-3">
-          <span className={`h-2.5 w-2.5 rounded-full ${tokenSaved ? "bg-emerald-400" : "bg-red-400"}`} />
           <div className="flex-1">
             <h3 className="font-black">GitHub</h3>
-            <p data-github-status className="text-xs text-zinc-400">{tokenSaved ? ui.setGithubOk : ui.setGithubMissing}</p>
+            <p className="text-xs text-zinc-400">@{GITHUB_REPO_OWNER}/{GITHUB_REPO_NAME}</p>
           </div>
-          <button type="button" onClick={() => setShowGithubToken((current) => !current)} className={secondaryButton}>
-            {showGithubToken ? ui.hideToken : tokenSaved ? ui.changeToken : ui.enterToken}
-          </button>
-          <button type="button" onClick={testGithubToken} className={secondaryButton}><Code2 className="h-4 w-4" /> {t.testTokenButton}</button>
+          <a href={`/login?lang=${uiLanguage}`} target="_blank" rel="noopener" className={secondaryButton}>
+            {ADMIN_TEXT[uiLanguage].signIn}
+          </a>
+          <a href={`/settings/password?lang=${uiLanguage}`} target="_blank" rel="noopener" className={secondaryButton}>
+            {ADMIN_TEXT[uiLanguage].password}
+          </a>
         </div>
-        {showGithubToken && (
-          <div className="mt-4 grid gap-3 border-t border-white/10 pt-4">
-            <p className="text-sm leading-6 text-zinc-300">
-              {t.githubTokenIntroPre}<span className="font-bold text-white">Contents: Read and write</span>{t.githubTokenIntroMid}<span className="font-bold text-white">{GITHUB_REPO_OWNER}/{GITHUB_REPO_NAME}</span>{t.githubTokenIntroPost}
-            </p>
-            <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
-              <input type="password" aria-label="GitHub token" value={githubToken} onChange={(event) => setGithubToken(event.target.value)} className={inputClass} placeholder="github_pat_..." />
-              <button type="button" onClick={saveGithubToken} className="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-400 px-4 py-2 text-sm font-black text-black hover:bg-sky-300"><Save className="h-4 w-4" /> {t.saveTokenButton}</button>
-            </div>
-          </div>
-        )}
-      </section>
-      <section className={`${cardClass} flex flex-wrap items-center gap-3`}>
-        <KeyRound className="h-5 w-5 text-cyan-300" />
-        <div className="flex-1">
-          <h3 className="font-black">{ui.passwordTitle}</h3>
-          <p className="text-xs text-zinc-400">{ui.passwordDesc}</p>
-        </div>
-        <button type="button" onClick={() => setShowPasswordModal(true)} className={secondaryButton}>{ui.passwordBtn}</button>
       </section>
       <section className={`${cardClass} flex flex-wrap items-center gap-3`}>
         <h3 className="flex-1 font-black">{ui.uiLangTitle}</h3>
@@ -3364,11 +2819,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
           </div>
         ))}
         <div className="mt-auto grid gap-1 border-t border-white/10 px-2 pt-3 text-xs text-zinc-400">
-          <button type="button" onClick={() => goTo("settings")} className="flex items-center gap-2 text-left hover:text-white">
-            <span className={`h-2 w-2 rounded-full ${tokenSaved ? "bg-emerald-400" : "bg-red-400"}`} />
-            {tokenSaved ? ui.githubOk : ui.githubMissing}
-          </button>
-          <a href={`/${GITHUB_REPO_NAME}/`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-bold text-cyan-300 hover:text-cyan-200">{ui.viewSite} <ExternalLink className="h-3 w-3" /></a>
+          <a href={BLOG_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-bold text-cyan-300 hover:text-cyan-200">{ui.viewSite} <ExternalLink className="h-3 w-3" /></a>
         </div>
       </aside>
 
@@ -3391,7 +2842,7 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
                 <div className="absolute right-0 top-full z-20 mt-2 grid w-60 gap-0.5 rounded-xl border border-white/10 bg-[#0c1627] p-1.5 shadow-2xl">
                   {canExport && <button type="button" onClick={exportCurrent} className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"><Download className="h-4 w-4" /> {ui.menuExport}</button>}
                   <button type="button" disabled={!dirtyCount} onClick={discardAll} className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10 disabled:opacity-40"><X className="h-4 w-4" /> {ui.menuDiscard}</button>
-                  <button type="button" onClick={onLogout} className="flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"><LogOut className="h-4 w-4" /> {ui.menuLogout}</button>
+                  <button type="button" onClick={logout} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10"><LogOut className="h-4 w-4" /> {ui.menuLogout}</button>
                 </div>
               </>
             )}
@@ -3416,7 +2867,6 @@ function MarkdownEditorPage({ onLogout = () => {} }) {
           <button type="button" aria-label="Close" onClick={() => setSaveMessage("")} className="rounded-md p-1 hover:bg-white/10"><X className="h-4 w-4" /></button>
         </div>
       )}
-      {showPasswordModal && <AdminPasswordModal onClose={() => setShowPasswordModal(false)} language={uiLanguage} />}
     </div>
   );
 }
@@ -4274,14 +3724,13 @@ function DatenschutzPage({ onBack, onNavigate, language, onLanguageChange }) {
 // APP ROOT (routing + state)
 // ─────────────────────────────────────────────
 function App() {
-  const isAdminRequest = new URLSearchParams(window.location.search).get("admin") === "1";
-  const isMarkdownEditor = isAdminRequest;
-  const [showAdminAccess, setShowAdminAccess] = useState(false);
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => window.localStorage.getItem(ADMIN_SESSION_KEY) === "active");
+  const params = new URLSearchParams(window.location.search);
+  const isAdminRequest = params.get("admin") === "1";
+  const isMarkdownEditor = isAdminRequest && !!document.querySelector('meta[name="blog-admin-origin"]');
   const [page, setPage] = useState("home"); // "home" | "post" | "knowledge" | "knowledge-post" | "impressum" | "datenschutz"
   const [currentPostId, setCurrentPostId] = useState(null);
   const [language, setLanguage] = useState(() => {
-    const savedLanguage = window.localStorage.getItem("site-language");
+    const savedLanguage = (isMarkdownEditor && params.get("lang")) || window.localStorage.getItem("site-language");
     return LANGUAGES.includes(savedLanguage) ? savedLanguage : "de";
   });
 
@@ -4289,6 +3738,11 @@ function App() {
     window.localStorage.setItem("site-language", language);
     document.documentElement.lang = language;
   }, [language]);
+
+  const loginUrl = ADMIN_ORIGIN ? `${ADMIN_ORIGIN}/login?lang=${language}` : null;
+  useEffect(() => {
+    if (isAdminRequest && !isMarkdownEditor && loginUrl) window.location.replace(loginUrl);
+  }, [isAdminRequest, isMarkdownEditor, loginUrl]);
 
   // ── Data state ──
   const localizedContentPosts = useMemo(() => getLocalizedContentPosts(language), [language]);
@@ -4368,38 +3822,11 @@ function App() {
   const goDatenschutz = useCallback(() => setRouteState("datenschutz", null), [setRouteState]);
 
   const openAdminAccess = useCallback(() => {
-    if (isAdminAuthenticated) {
-      window.location.assign(`${window.location.pathname}?admin=1`);
-      return;
-    }
-
-    setShowAdminAccess(true);
-  }, [isAdminAuthenticated]);
-
-  const handleAdminAuthenticated = useCallback(() => {
-    setIsAdminAuthenticated(true);
-    window.location.assign(`${window.location.pathname}?admin=1`);
+    window.location.assign(`${import.meta.env.BASE_URL}?admin=1`);
   }, []);
 
-  const handleAdminLogout = useCallback(() => {
-    setAdminSession(false);
-    setIsAdminAuthenticated(false);
-    window.location.assign(window.location.pathname);
-  }, []);
-
-  const closeAdminAccess = useCallback(() => {
-    setShowAdminAccess(false);
-    if (isAdminRequest) window.location.assign(window.location.pathname);
-  }, [isAdminRequest]);
-
-  if (isMarkdownEditor) {
-    if (isAdminAuthenticated) return <MarkdownEditorPage onLogout={handleAdminLogout} />;
-    return <AdminAccessPanel language={language} onLanguageChange={setLanguage} onAuthenticated={handleAdminAuthenticated} onBack={closeAdminAccess} />;
-  }
-
-  if (showAdminAccess) {
-    return <AdminAccessPanel language={language} onLanguageChange={setLanguage} onAuthenticated={handleAdminAuthenticated} onBack={closeAdminAccess} />;
-  }
+  if (isMarkdownEditor) return <MarkdownEditorPage />;
+  if (isAdminRequest) return <AdminAccessPanel language={language} loginUrl={loginUrl} />;
 
   if (page === "impressum") {
   return (
@@ -4427,7 +3854,7 @@ if (page === "datenschutz") {
     <>
       <PullToRefresh language={language} />
       <CookieBanner language={language} />
-      <SiteHeader onNavigate={navigate} currentPage={page} language={language} onLanguageChange={setLanguage} onAdminAccess={openAdminAccess} isAdminAuthenticated={isAdminAuthenticated} />
+      <SiteHeader onNavigate={navigate} currentPage={page} language={language} onLanguageChange={setLanguage} onAdminAccess={openAdminAccess} />
 
       {page === "post" && currentPost ? (
         <PostDetailPage post={currentPost} onBack={goHome} language={language} />
