@@ -5,7 +5,7 @@ resume_url:
 logo_image: /my-electronics-blog/images/logo/1794387802742-logo.png
 logo_text: 
 site_name: 
-hero_image: /my-electronics-blog/images/portrait/1794352484801-bild3.jpg
+hero_image: /my-electronics-blog/images/portrait/1794944500753-screenshot-2026-11-17-204116.png
 hero_focus: 
 contact_email: 
 live_tiles: 
