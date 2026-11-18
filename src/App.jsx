@@ -43,7 +43,7 @@ const UI_TEXT = {
     noKnowledge: "Noch keine passenden Beiträge", noKnowledgeText: "Neue Lernnotizen und Analysen werden hier nach und nach ergänzt.", footer: "© 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.",
     conceptProject: "Konzeptprojekt – noch nicht umgesetzt", noProjectLink: "Kein Projektlink hinterlegt", readPdf: "PDF lesen", downloadPdf: "PDF herunterladen",
     heroBadge: "Elektrokonstruktion · Prüftechnik · Software", docs: "Dokumente", sourceCode: "Quellcode", focusValue: "IoT · Automatisierung", tools: "Werkzeuge", toolsValue: "SPS · AutoCAD · EPLAN · C++ · Qt", translationFallbackShort: "Deutsch", translationFallback: "Dieser Beitrag ist noch nicht in der gewählten Sprache verfügbar. Die deutsche Version wird angezeigt.",
-    resumeButton: "Lebenslauf ansehen",
+    resumeButton: "Kompetenzprofil ansehen",
   },
   en: {
     tagline: "Technology · Development · Learning", gallery: "Gallery", contact: "Contact", knowledge: "Knowledge & Research",
@@ -65,7 +65,7 @@ const UI_TEXT = {
     noKnowledge: "No matching articles yet", noKnowledgeText: "New learning notes and analyses will gradually be added here.", footer: "© 2026 ElektronikLab — Modern electronics and automation projects.",
     conceptProject: "Concept project – not yet implemented", noProjectLink: "No project link provided", readPdf: "Read PDF", downloadPdf: "Download PDF",
     heroBadge: "Electrical Design · Testing · Software", docs: "Documents", sourceCode: "Source Code", focusValue: "IoT · Automation", tools: "Tools", toolsValue: "PLC · AutoCAD · EPLAN · C++ · Qt", translationFallbackShort: "German version", translationFallback: "This article is not yet available in the selected language. The German version is shown.",
-    resumeButton: "View resume",
+    resumeButton: "View competence profile",
   },
   vi: {
     tagline: "Kỹ thuật · Phát triển · Học hỏi", gallery: "Thư viện ảnh", contact: "Liên hệ", knowledge: "Kiến thức & Nghiên cứu",
@@ -87,7 +87,7 @@ const UI_TEXT = {
     noKnowledge: "Chưa có bài viết phù hợp", noKnowledgeText: "Các ghi chú học tập và phân tích mới sẽ được bổ sung dần tại đây.", footer: "© 2026 ElektronikLab — Các dự án điện tử và tự động hóa hiện đại.",
     conceptProject: "Dự án ý tưởng – chưa được triển khai", noProjectLink: "Chưa có liên kết dự án", readPdf: "Đọc PDF", downloadPdf: "Tải PDF",
     heroBadge: "Thiết kế điện · Kiểm thử · Phần mềm", docs: "Tài liệu", sourceCode: "Mã nguồn", focusValue: "IoT · Tự động hóa", tools: "Công cụ", toolsValue: "PLC · AutoCAD · EPLAN · C++ · Qt", translationFallbackShort: "Bản tiếng Đức", translationFallback: "Bài viết này chưa có bản dịch theo ngôn ngữ đã chọn. Website đang hiển thị bản tiếng Đức.",
-    resumeButton: "Xem sơ yếu lý lịch",
+    resumeButton: "Xem hồ sơ năng lực",
   },
 };
 const UI_OVERRIDE_KEYS = UI_TEXT_GROUPS.flatMap(([, keys]) => keys).filter((key) => !/^(kn_|cookie_)/.test(key));
@@ -274,7 +274,7 @@ const EDITOR_TEXT = {
     savedFilesMessage: (count) => `${count} Datei(en) wurden auf GitHub gespeichert.`,
     githubSaveFailedGeneric: "GitHub speichern ist fehlgeschlagen.",
     fileUploadFailedPrefix: "Datei-Upload fehlgeschlagen", fileUploadedMessage: (url) => `Datei hochgeladen: ${url}`,
-    resumeLabel: "Lebenslauf (PDF)", resumeButton: "Lebenslauf ansehen", uploadingLabel: "Lädt hoch...",
+    resumeLabel: "Kompetenzprofil (PDF)", resumeButton: "Kompetenzprofil ansehen", uploadingLabel: "Lädt hoch...",
     directorySaveUnsupported: "Direktes Speichern wird von diesem Browser nicht unterstützt. Bitte verwenden Sie MD exportieren.",
     wrongDirectoryAlert: "Bitte wählen Sie genau den Ordner src/content aus, nicht einen Sprachordner wie de, en oder vi.",
     directorySavedMessage: (name) => `${name} wurde gespeichert.`,
@@ -350,7 +350,7 @@ const EDITOR_TEXT = {
     savedFilesMessage: (count) => `${count} file(s) saved to GitHub.`,
     githubSaveFailedGeneric: "Saving to GitHub failed.",
     fileUploadFailedPrefix: "File upload failed", fileUploadedMessage: (url) => `File uploaded: ${url}`,
-    resumeLabel: "Resume (PDF)", resumeButton: "View resume", uploadingLabel: "Uploading...",
+    resumeLabel: "Competence profile (PDF)", resumeButton: "View competence profile", uploadingLabel: "Uploading...",
     directorySaveUnsupported: "Direct saving isn't supported by this browser. Please use Export MD.",
     wrongDirectoryAlert: "Please select exactly the src/content folder, not a language folder such as de, en or vi.",
     directorySavedMessage: (name) => `${name} saved.`,
@@ -426,7 +426,7 @@ const EDITOR_TEXT = {
     savedFilesMessage: (count) => `Đã lưu ${count} file lên GitHub.`,
     githubSaveFailedGeneric: "Lưu lên GitHub thất bại.",
     fileUploadFailedPrefix: "Tải file lên thất bại", fileUploadedMessage: (url) => `Đã tải file lên: ${url}`,
-    resumeLabel: "Sơ yếu lý lịch (PDF)", resumeButton: "Xem sơ yếu lý lịch", uploadingLabel: "Đang tải lên...",
+    resumeLabel: "Hồ sơ năng lực (PDF)", resumeButton: "Xem hồ sơ năng lực", uploadingLabel: "Đang tải lên...",
     directorySaveUnsupported: "Trình duyệt này không hỗ trợ lưu trực tiếp. Vui lòng dùng Xuất MD.",
     wrongDirectoryAlert: "Vui lòng chọn đúng thư mục src/content, không phải thư mục ngôn ngữ như de, en hoặc vi.",
     directorySavedMessage: (name) => `Đã lưu ${name}.`,
@@ -1370,7 +1370,7 @@ const SITE_TEXT_UI = {
 const ADMIN_UI = {
   de: {
     navOverview: "Übersicht", navContent: "Inhalte", navPosts: "Beiträge", navOrder: "Reihenfolge", navHomepage: "Startseite",
-    navHomeText: "Startseiten-Texte", navGallery: "Galerie", navJourney: "Persönlicher Weg", navSite: "Gesamte Website", navLook: "Logo, Porträt & Lebenslauf", navSettings: "Einstellungen",
+    navHomeText: "Startseiten-Texte", navGallery: "Galerie", navJourney: "Persönlicher Weg", navSite: "Gesamte Website", navLook: "Logo, Porträt & Kompetenzprofil", navSettings: "Einstellungen",
     pages: {
       home: ["Übersicht", "Was möchten Sie heute tun?"],
       posts: ["Beiträge", "Beitrag zum Bearbeiten wählen oder neu schreiben"],
@@ -1379,13 +1379,13 @@ const ADMIN_UI = {
       hometext: ["Startseiten-Texte", "Titel, Einleitung und Feature-Karten"],
       gallery: ["Galerie", "Bilder im Showcase der Startseite"],
       journey: ["Persönlicher Weg", "Die Karte über Sie auf der Startseite"],
-      look: ["Logo, Porträt & Lebenslauf", "Logo, Name, Porträt, Kontakt-E-Mail, Live-Kacheln, Lebenslauf, Hintergrund"],
+      look: ["Logo, Porträt & Kompetenzprofil", "Logo, Name, Porträt, Kontakt-E-Mail, Live-Kacheln, Kompetenzprofil, Hintergrund"],
       settings: ["Einstellungen", "GitHub und Sprache"],
     },
     greet: "Willkommen zurück", greetSub: "Wählen Sie eine Aufgabe. Alles andere finden Sie links in der Navigation.",
     tileNew: "Neuen Beitrag schreiben", tileNewSub: "Projekt oder Wissen, in 3 Sprachen",
     tileHome: "Startseite bearbeiten", tileHomeSub: "Texte, Galerie, persönlicher Weg",
-    tileLook: "Logo, Porträt oder Lebenslauf ändern", tileLookSub: "Eine Datei ablegen, fertig",
+    tileLook: "Logo, Porträt oder Kompetenzprofil ändern", tileLookSub: "Eine Datei ablegen, fertig",
     tileOrder: "Beiträge sortieren", tileOrderSub: "Welcher Beitrag steht oben?",
     recent: "Zuletzt erstellt", viewAll: "Alle anzeigen",
     searchPosts: "Beitrag suchen…", filterAll: "Alle", filterProjects: "Projekte", filterKnowledge: "Wissen", newPost: "Neuer Beitrag", noPostsFound: "Keine Beiträge gefunden.", edit: "Bearbeiten",
@@ -1403,14 +1403,14 @@ const ADMIN_UI = {
     orderHint: "Mit den Pfeilen verschieben. Die Reihenfolge gilt für alle drei Sprachen.", galleryHint: "Mehrere Bilder gleichzeitig ablegen. Das erste Bild ist das große Hauptbild.",
     homeTextHint: "Rechts sehen Sie sofort, wie die Startseite aussieht.", journeyHint: "Bilder und Text der Karte über Ihren Weg.",
     groupHero: "Kopfbereich", groupTransparency: "Transparenz", groupCards: "Feature-Karten", groupNotice: "Projekt-Hinweis", groupCollab: "Zusammenarbeit", groupStats: "Kennzahlen-Leiste",
-    bgTitle: "Hintergrundbild", bgRemove: "Hintergrund entfernen", resumeTitle: "Lebenslauf (PDF)", resumeLive: "Auf der Website sichtbar", resumeOpen: "Datei öffnen",
+    bgTitle: "Hintergrundbild", bgRemove: "Hintergrund entfernen", resumeTitle: "Kompetenzprofil (PDF)", resumeLive: "Auf der Website sichtbar", resumeOpen: "Datei öffnen",
     resumeReplace: "Ersetzen", resumeRemove: "Entfernen", resumeNote: "Beim Ersetzen wird die alte Datei automatisch von GitHub gelöscht.",
     uiLangTitle: "Sprache der Admin-Oberfläche",
     typeLabel: "Typ", openNav: "Menü öffnen",
   },
   en: {
     navOverview: "Overview", navContent: "Content", navPosts: "Posts", navOrder: "Order", navHomepage: "Home page",
-    navHomeText: "Home page text", navGallery: "Gallery", navJourney: "Personal journey", navSite: "Whole site", navLook: "Logo, portrait & resume", navSettings: "Settings",
+    navHomeText: "Home page text", navGallery: "Gallery", navJourney: "Personal journey", navSite: "Whole site", navLook: "Logo, portrait & competence profile", navSettings: "Settings",
     pages: {
       home: ["Overview", "What would you like to do today?"],
       posts: ["Posts", "Pick a post to edit or write a new one"],
@@ -1419,13 +1419,13 @@ const ADMIN_UI = {
       hometext: ["Home page text", "Title, intro and feature cards"],
       gallery: ["Gallery", "Images in the home page showcase"],
       journey: ["Personal journey", "The card about you on the home page"],
-      look: ["Logo, portrait & resume", "Logo, name, portrait, contact e-mail, live tiles, resume, background"],
+      look: ["Logo, portrait & competence profile", "Logo, name, portrait, contact e-mail, live tiles, competence profile, background"],
       settings: ["Settings", "GitHub and language"],
     },
     greet: "Welcome back", greetSub: "Pick a task. Everything else is in the navigation on the left.",
     tileNew: "Write a new post", tileNewSub: "Project or knowledge, in 3 languages",
     tileHome: "Edit the home page", tileHomeSub: "Text, gallery, personal journey",
-    tileLook: "Change logo, portrait or resume", tileLookSub: "Drop one file and you are done",
+    tileLook: "Change logo, portrait or competence profile", tileLookSub: "Drop one file and you are done",
     tileOrder: "Sort posts", tileOrderSub: "Which post goes first?",
     recent: "Recently created", viewAll: "View all",
     searchPosts: "Search posts…", filterAll: "All", filterProjects: "Projects", filterKnowledge: "Knowledge", newPost: "New post", noPostsFound: "No posts found.", edit: "Edit",
@@ -1443,7 +1443,7 @@ const ADMIN_UI = {
     orderHint: "Move with the arrows. The order applies to all three languages.", galleryHint: "Drop several images at once. The first image is the large main image.",
     homeTextHint: "The preview on the right updates as you type.", journeyHint: "Images and text of the card about your path.",
     groupHero: "Hero", groupTransparency: "Transparency", groupCards: "Feature cards", groupNotice: "Project notice", groupCollab: "Collaboration", groupStats: "Key figures strip",
-    bgTitle: "Background image", bgRemove: "Remove background", resumeTitle: "Resume (PDF)", resumeLive: "Visible on the website", resumeOpen: "Open file",
+    bgTitle: "Background image", bgRemove: "Remove background", resumeTitle: "Competence profile (PDF)", resumeLive: "Visible on the website", resumeOpen: "Open file",
     resumeReplace: "Replace", resumeRemove: "Remove", resumeNote: "Replacing the file deletes the old one from GitHub automatically.",
     uiLangTitle: "Admin interface language",
     typeLabel: "Type", openNav: "Open menu",
@@ -1483,8 +1483,8 @@ const ADMIN_UI = {
     orderHint: "Dùng mũi tên để đổi chỗ. Thứ tự áp dụng cho cả 3 ngôn ngữ.", galleryHint: "Thả nhiều ảnh cùng lúc. Ảnh đầu tiên là ảnh lớn ở khu trình diễn.",
     homeTextHint: "Bên phải cập nhật ngay khi bạn gõ.", journeyHint: "Ảnh và nội dung của thẻ giới thiệu bản thân.",
     groupHero: "Đầu trang", groupTransparency: "Minh bạch", groupCards: "Thẻ tính năng", groupNotice: "Lưu ý dự án", groupCollab: "Hợp tác", groupStats: "Dải số liệu",
-    bgTitle: "Ảnh nền", bgRemove: "Gỡ ảnh nền", resumeTitle: "CV (PDF)", resumeLive: "Đang hiện trên web", resumeOpen: "Mở file",
-    resumeReplace: "Thay file", resumeRemove: "Gỡ CV", resumeNote: "Khi thay file, bản cũ tự bị xóa khỏi GitHub.",
+    bgTitle: "Ảnh nền", bgRemove: "Gỡ ảnh nền", resumeTitle: "Hồ sơ năng lực (PDF)", resumeLive: "Đang hiện trên web", resumeOpen: "Mở file",
+    resumeReplace: "Thay file", resumeRemove: "Gỡ hồ sơ năng lực", resumeNote: "Khi thay file, bản cũ tự bị xóa khỏi GitHub.",
     uiLangTitle: "Ngôn ngữ giao diện admin",
     typeLabel: "Loại", openNav: "Mở menu",
   },
@@ -2619,7 +2619,7 @@ function MarkdownEditorPage() {
   );
 
   const renderLook = () => (
-    <div className="mx-auto grid max-w-4xl gap-6 p-4 sm:p-6 md:grid-cols-2">
+    <div className="mx-auto grid w-full min-w-0 max-w-4xl gap-6 overflow-x-hidden p-4 sm:p-6 md:grid-cols-2 [&>section]:min-w-0">
       <section className={cardClass}>
         <h3 className="mb-3 font-black">{ui.bgTitle}</h3>
         <div className="relative mb-3 h-40 overflow-hidden rounded-xl border border-white/10 bg-[#07111f]">
@@ -2637,21 +2637,21 @@ function MarkdownEditorPage() {
         <h3 className="mb-3 font-black">{ui.resumeTitle}</h3>
         {siteSettingsForm.resume_url ? (
           <div className="grid gap-3">
-            <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#07111f] p-3">
+            <div className="flex min-w-0 flex-wrap items-center gap-3 rounded-xl border border-white/10 bg-[#07111f] p-3 sm:flex-nowrap">
               <FileText className="h-8 w-8 shrink-0 text-cyan-300" />
               <div className="min-w-0 flex-1">
                 <p data-resume-name className="truncate text-sm font-bold">{siteSettingsForm.resume_url.split("/").pop()}</p>
                 <span className="mt-1 inline-block rounded-full bg-emerald-400/15 px-2 py-0.5 text-[11px] font-bold text-emerald-300">{ui.resumeLive}</span>
               </div>
-              <a href={siteSettingsForm.resume_url} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} !px-3 !py-1.5 text-xs`}><ExternalLink className="h-3.5 w-3.5" /> {ui.resumeOpen}</a>
+              <a href={adminSrc(siteSettingsForm.resume_url)} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} shrink-0 !px-3 !py-1.5 text-xs`}><ExternalLink className="h-3.5 w-3.5" /> {ui.resumeOpen}</a>
             </div>
-            <DropUpload compact icon={FileText} accept="application/pdf" label={ui.resumeReplace} hint={ui.dropPdf} uploadImage={(file) => uploadFileToGithub(file, "documents")} busyLabel={ui.uploading} onUploaded={handleResumeUploaded} />
+            <DropUpload compact icon={FileText} accept="application/pdf" label={ui.resumeReplace} hint={ui.dropPdf} uploadImage={(file) => uploadFileToGithub(file, "documents/steckbrief")} busyLabel={ui.uploading} onUploaded={handleResumeUploaded} />
             <button type="button" onClick={deleteResumeFromGithub} className="inline-flex w-fit items-center gap-2 rounded-xl border border-red-400/30 px-3 py-1.5 text-xs font-bold text-red-200 hover:bg-red-400/10"><Trash2 className="h-3.5 w-3.5" /> {ui.resumeRemove}</button>
             <p className="text-xs text-zinc-500">{ui.resumeNote}</p>
-            <a href={siteSettingsForm.resume_url} target="_blank" rel="noopener noreferrer" className="inline-flex w-fit items-center gap-2 rounded-full bg-gradient-to-r from-emerald-400 to-lime-300 px-4 py-2 text-sm font-black text-black"><FileText className="h-4 w-4" /> {t.resumeButton}</a>
+            <a href={adminSrc(siteSettingsForm.resume_url)} target="_blank" rel="noopener noreferrer" className="inline-flex w-fit items-center gap-2 rounded-full bg-gradient-to-r from-emerald-400 to-lime-300 px-4 py-2 text-sm font-black text-black"><FileText className="h-4 w-4" /> {t.resumeButton}</a>
           </div>
         ) : (
-          <DropUpload icon={FileText} accept="application/pdf" label={ui.dropPdf} hint={ui.dropHint} uploadImage={(file) => uploadFileToGithub(file, "documents")} busyLabel={ui.uploading} onUploaded={handleResumeUploaded} />
+          <DropUpload icon={FileText} accept="application/pdf" label={ui.dropPdf} hint={ui.dropHint} uploadImage={(file) => uploadFileToGithub(file, "documents/steckbrief")} busyLabel={ui.uploading} onUploaded={handleResumeUploaded} />
         )}
       </section>
       <section className={cardClass}>
@@ -2858,7 +2858,7 @@ function MarkdownEditorPage() {
           </button>
         </header>
         <DeployStatusBanner state={deployState} onDismiss={() => setDeployState(null)} language={uiLanguage} />
-        <main className="min-h-0 flex-1 overflow-y-auto">{viewBody}</main>
+        <main className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto">{viewBody}</main>
       </div>
 
       {saveMessage && (
