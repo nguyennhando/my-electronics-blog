@@ -3366,8 +3366,9 @@ function ImpressumPage({ onBack, onNavigate, language, onLanguageChange }) {
         ["Chịu trách nhiệm về nội dung theo § 18 khoản 2 MStV", "Nguyen Nhan Do\nHugo-Sinzheimerstr. 15\n60437 Frankfurt am Main\nĐức"],
         ["Lưu ý về nội dung", "Website này là portfolio cá nhân và blog kỹ thuật. Nội dung được sử dụng để ghi lại các dự án riêng, thử nghiệm kỹ thuật, nghiên cứu, quá trình học tập và trao đổi chuyên môn. Website không cung cấp hoặc bán hàng hóa hay dịch vụ."],
         ["Trách nhiệm đối với nội dung", "Nội dung website được xây dựng cẩn thận nhất có thể. Tuy nhiên, tôi không thể đảm bảo tính chính xác, đầy đủ và cập nhật của toàn bộ nội dung."],
-        ["Trách nhiệm đối với liên kết", "Website có chứa liên kết đến các website bên ngoài của bên thứ ba. Tôi không kiểm soát nội dung của các trang đó. Đơn vị vận hành từng website chịu trách nhiệm về nội dung được liên kết."],
+        ["Trách nhiệm đối với liên kết", "Website có chứa liên kết đến các website và dịch vụ bên ngoài của bên thứ ba, chẳng hạn như GitHub và Google Drive. Tôi không kiểm soát nội dung của các trang và dịch vụ đó. Đơn vị vận hành tương ứng hoàn toàn chịu trách nhiệm về nội dung được liên kết."],
         ["Bản quyền", "Nội dung và tác phẩm được công bố trên website tuân theo luật bản quyền Đức. Mọi hình thức sử dụng ngoài phạm vi luật bản quyền cần có sự đồng ý trước bằng văn bản của tác giả hoặc chủ sở hữu quyền."],
+        ["Nguồn hình ảnh và lưu ý về AI", "Trừ khi có ghi chú khác, ảnh chụp và hình minh họa được sử dụng trên website này do chủ website thực hiện. Một số hình minh họa được tạo hoặc chỉnh sửa bằng AI tạo sinh. Hình ảnh do AI tạo chỉ phục vụ mục đích minh họa và không được hiểu là ảnh tư liệu."],
       ],
     } : {
       title: "Legal Notice",
@@ -3377,8 +3378,9 @@ function ImpressumPage({ onBack, onNavigate, language, onLanguageChange }) {
         ["Responsible for content pursuant to § 18 para. 2 MStV", "Nguyen Nhan Do\nHugo-Sinzheimerstr. 15\n60437 Frankfurt am Main\nGermany"],
         ["Content notice", "This website is a personal portfolio and technical blog. Its content documents private projects, technical experiments, research, continuing education and professional exchange. No goods or services are offered or sold through this website."],
         ["Liability for content", "The content of this website has been prepared with the greatest possible care. However, no guarantee can be given for its accuracy, completeness or timeliness."],
-        ["Liability for links", "This website contains links to external third-party websites. I have no control over their content. The respective operators are solely responsible for the content of linked pages."],
+        ["Liability for links", "This website contains links to external third-party websites and services, such as GitHub and Google Drive. I have no control over their content. The respective operators are solely responsible for the content of linked pages and services."],
         ["Copyright", "The content and works published on this website are subject to German copyright law. Any use beyond the limits of copyright law requires prior written consent from the respective author or rights holder."],
+        ["Image credits and AI notice", "Unless otherwise indicated, the photographs and illustrations used on this website originate from the website operator. Individual illustrations were created or edited using generative AI. AI-generated depictions are for illustrative purposes and should not be understood as documentary photographs."],
       ],
     };
     return <LegalPageLayout title={copy.title} onBack={onBack} onNavigate={onNavigate} language={language} onLanguageChange={onLanguageChange}>{copy.sections.map(([title, text]) => <section key={title}><p className="wb-head font-bold text-[#0F1A17]">{title}</p><p className="whitespace-pre-line">{text}</p></section>)}</LegalPageLayout>;
@@ -3458,9 +3460,10 @@ function ImpressumPage({ onBack, onNavigate, language, onLanguageChange }) {
       <section>
         <p className="wb-head font-bold text-[#0F1A17]">Haftung für Links</p>
         <p>
-          Diese Website enthält Links zu externen Websites Dritter. Auf deren
-          Inhalte habe ich keinen Einfluss. Für die Inhalte der verlinkten
-          Seiten sind ausschließlich deren jeweilige Betreiber verantwortlich.
+          Diese Website enthält Links zu externen Websites und Diensten
+          Dritter, beispielsweise GitHub und Google Drive. Auf deren Inhalte
+          habe ich keinen Einfluss. Für die Inhalte der verlinkten Seiten und
+          Dienste sind ausschließlich deren jeweilige Betreiber verantwortlich.
         </p>
       </section>
 
@@ -3471,6 +3474,19 @@ function ImpressumPage({ onBack, onNavigate, language, onLanguageChange }) {
           dem deutschen Urheberrecht. Jede Art der Verwertung außerhalb der
           Grenzen des Urheberrechts bedarf der vorherigen schriftlichen
           Zustimmung des jeweiligen Autors bzw. Rechteinhabers.
+        </p>
+      </section>
+
+      <section>
+        <p className="wb-head font-bold text-[#0F1A17]">
+          Bildnachweise und KI-Hinweis
+        </p>
+        <p>
+          Soweit nicht anders gekennzeichnet, stammen die auf dieser Website
+          verwendeten Fotografien und Abbildungen vom Websitebetreiber.
+          Einzelne Abbildungen wurden mithilfe generativer KI erstellt oder
+          bearbeitet. KI-generierte Darstellungen dienen der Illustration und
+          sind nicht als dokumentarische Fotografien zu verstehen.
         </p>
       </section>
     </LegalPageLayout>
