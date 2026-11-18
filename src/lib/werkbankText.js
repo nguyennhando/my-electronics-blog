@@ -5,7 +5,7 @@ import { getSiteTextOverrides } from "./posts";
 export const WB_TEXT = {
   de: {
     nav_projects: "Projekte", nav_skills: "Kompetenzen", nav_path: "Mein Weg", nav_contact: "Kontakt", nav_gallery: "Galerie",
-    cta_projects: "Projekte ansehen", cta_contact: "Kontakt aufnehmen", available: "Offen für Zusammenarbeit",
+    cta_projects: "Projekte", cta_contact: "Kontakt", available: "Offen für Zusammenarbeit",
     chip_live: "Live", chip_live_sub: "Sao Mai · Mainz", chip_board: "Platine gefertigt", chip_board_sub: "AMP-D50-V2-LITE",
     s1: "Projekte und Beiträge", s2: "Leiterplatten-Designs", s3: "Apps im Microsoft Store", s4: "System live im Restaurant",
     sec_projects: "Ausgewählte Projekte", f_all: "Alle", f_hw: "Hardware & PCB", f_sw: "Software & Web",
@@ -24,7 +24,7 @@ export const WB_TEXT = {
   },
   en: {
     nav_projects: "Projects", nav_skills: "Skills", nav_path: "My path", nav_contact: "Contact", nav_gallery: "Gallery",
-    cta_projects: "View projects", cta_contact: "Get in touch", available: "Open to collaboration",
+    cta_projects: "Projects", cta_contact: "Contact", available: "Open to collaboration",
     chip_live: "Live", chip_live_sub: "Sao Mai · Mainz", chip_board: "PCB manufactured", chip_board_sub: "AMP-D50-V2-LITE",
     s1: "Projects and posts", s2: "PCB designs", s3: "Apps in the Microsoft Store", s4: "System live in a restaurant",
     sec_projects: "Selected projects", f_all: "All", f_hw: "Hardware & PCB", f_sw: "Software & Web",
@@ -43,7 +43,7 @@ export const WB_TEXT = {
   },
   vi: {
     nav_projects: "Dự án", nav_skills: "Năng lực", nav_path: "Hành trình", nav_contact: "Liên hệ", nav_gallery: "Thư viện ảnh",
-    cta_projects: "Xem dự án", cta_contact: "Liên hệ", available: "Sẵn sàng hợp tác",
+    cta_projects: "Dự án", cta_contact: "Liên hệ", available: "Sẵn sàng hợp tác",
     chip_live: "Đang chạy", chip_live_sub: "Sao Mai · Mainz", chip_board: "Đã chế tạo bo", chip_board_sub: "AMP-D50-V2-LITE",
     s1: "Dự án và bài viết", s2: "Thiết kế bo mạch", s3: "Ứng dụng trên Microsoft Store", s4: "Hệ thống chạy thật tại nhà hàng",
     sec_projects: "Dự án chọn lọc", f_all: "Tất cả", f_hw: "Phần cứng & PCB", f_sw: "Phần mềm & Web",

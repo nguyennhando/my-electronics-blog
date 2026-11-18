@@ -43,7 +43,7 @@ const UI_TEXT = {
     noKnowledge: "Noch keine passenden Beiträge", noKnowledgeText: "Neue Lernnotizen und Analysen werden hier nach und nach ergänzt.", footer: "© 2026 ElektronikLab — Moderne Elektronik- und Automatisierungsprojekte.",
     conceptProject: "Konzeptprojekt – noch nicht umgesetzt", noProjectLink: "Kein Projektlink hinterlegt", readPdf: "PDF lesen", downloadPdf: "PDF herunterladen",
     heroBadge: "Elektrokonstruktion · Prüftechnik · Software", docs: "Dokumente", sourceCode: "Quellcode", focusValue: "IoT · Automatisierung", tools: "Werkzeuge", toolsValue: "SPS · AutoCAD · EPLAN · C++ · Qt", translationFallbackShort: "Deutsch", translationFallback: "Dieser Beitrag ist noch nicht in der gewählten Sprache verfügbar. Die deutsche Version wird angezeigt.",
-    resumeButton: "Kompetenzprofil ansehen",
+    resumeButton: "Kompetenzprofil",
   },
   en: {
     tagline: "Technology · Development · Learning", gallery: "Gallery", contact: "Contact", knowledge: "Knowledge & Research",
@@ -65,7 +65,7 @@ const UI_TEXT = {
     noKnowledge: "No matching articles yet", noKnowledgeText: "New learning notes and analyses will gradually be added here.", footer: "© 2026 ElektronikLab — Modern electronics and automation projects.",
     conceptProject: "Concept project – not yet implemented", noProjectLink: "No project link provided", readPdf: "Read PDF", downloadPdf: "Download PDF",
     heroBadge: "Electrical Design · Testing · Software", docs: "Documents", sourceCode: "Source Code", focusValue: "IoT · Automation", tools: "Tools", toolsValue: "PLC · AutoCAD · EPLAN · C++ · Qt", translationFallbackShort: "German version", translationFallback: "This article is not yet available in the selected language. The German version is shown.",
-    resumeButton: "View competence profile",
+    resumeButton: "Competence profile",
   },
   vi: {
     tagline: "Kỹ thuật · Phát triển · Học hỏi", gallery: "Thư viện ảnh", contact: "Liên hệ", knowledge: "Kiến thức & Nghiên cứu",
@@ -87,7 +87,7 @@ const UI_TEXT = {
     noKnowledge: "Chưa có bài viết phù hợp", noKnowledgeText: "Các ghi chú học tập và phân tích mới sẽ được bổ sung dần tại đây.", footer: "© 2026 ElektronikLab — Các dự án điện tử và tự động hóa hiện đại.",
     conceptProject: "Dự án ý tưởng – chưa được triển khai", noProjectLink: "Chưa có liên kết dự án", readPdf: "Đọc PDF", downloadPdf: "Tải PDF",
     heroBadge: "Thiết kế điện · Kiểm thử · Phần mềm", docs: "Tài liệu", sourceCode: "Mã nguồn", focusValue: "IoT · Tự động hóa", tools: "Công cụ", toolsValue: "PLC · AutoCAD · EPLAN · C++ · Qt", translationFallbackShort: "Bản tiếng Đức", translationFallback: "Bài viết này chưa có bản dịch theo ngôn ngữ đã chọn. Website đang hiển thị bản tiếng Đức.",
-    resumeButton: "Xem hồ sơ năng lực",
+    resumeButton: "Hồ sơ năng lực",
   },
 };
 const UI_OVERRIDE_KEYS = UI_TEXT_GROUPS.flatMap(([, keys]) => keys).filter((key) => !/^(kn_|cookie_)/.test(key));
