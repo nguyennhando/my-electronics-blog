@@ -3108,9 +3108,26 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
               <div className="overflow-hidden rounded-3xl border border-[#C9D3CD] bg-white p-3 shadow-[0_30px_60px_-34px_rgba(11,90,68,0.5)]">
                 <img src={site.heroImage} alt={site.siteName} className="aspect-[4/5] w-full rounded-2xl object-cover" style={{ objectPosition: site.heroFocus }} />
               </div>
-              <div className="absolute -left-2 top-8 flex items-center gap-2.5 rounded-xl border border-[#C9D3CD] bg-white px-3.5 py-2.5 shadow-lg sm:-left-6">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#1FA971]" />
-                <div><p className="text-xs font-bold text-[#0F1A17]">{w.chip_live}</p><p className="wb-mono text-[11px] text-[#4A5A54]">{w.chip_live_sub}</p></div>
+              <div aria-hidden="true" className="absolute -left-2 top-8 h-[4.5rem] w-28 overflow-hidden rounded-2xl border border-[#C9D3CD] bg-white/95 shadow-lg backdrop-blur-sm sm:-left-6 sm:h-20 sm:w-32">
+                <div className="absolute -left-5 -top-6 h-16 w-16 rounded-full bg-[#1FA971]/15 blur-xl" />
+                <svg viewBox="0 0 128 80" className="relative h-full w-full" fill="none">
+                  <defs>
+                    <pattern id="hero-circuit-grid" width="12" height="12" patternUnits="userSpaceOnUse">
+                      <path d="M12 0H0V12" stroke="#D5DDD8" strokeWidth="0.7" />
+                    </pattern>
+                  </defs>
+                  <rect width="128" height="80" fill="url(#hero-circuit-grid)" opacity="0.62" />
+                  <path d="M-4 55H25L38 42H67L80 29H105" stroke="#0B5A44" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M16 18H43L55 30V60H92L104 48H132" stroke="#A8540F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M80 29V14H116" stroke="#0B5A44" strokeWidth="1.5" strokeLinecap="round" />
+                  <circle cx="25" cy="55" r="4" fill="white" stroke="#0B5A44" strokeWidth="2" />
+                  <circle cx="67" cy="42" r="3.5" fill="#0B5A44" />
+                  <circle cx="55" cy="60" r="4" fill="white" stroke="#A8540F" strokeWidth="2" />
+                  <circle cx="104" cy="48" r="3.5" fill="#A8540F" />
+                  <circle cx="105" cy="29" r="4" fill="white" stroke="#0B5A44" strokeWidth="2" />
+                  <rect x="12" y="12" width="8" height="8" rx="2" fill="#0B5A44" />
+                  <rect x="108" y="10" width="9" height="9" rx="2" fill="#F2B279" stroke="#A8540F" />
+                </svg>
               </div>
               <div className="absolute -right-2 bottom-10 flex items-center gap-2.5 rounded-xl border border-[#0B5A44] bg-[#0B5A44] px-3.5 py-2.5 text-white shadow-lg sm:-right-6">
                 <CircuitBoard className="h-4 w-4 text-[#F2B279]" />
