@@ -3107,10 +3107,10 @@ function HomePage({ posts, galleryImages, onOpenPost, getPostUrl, onGoImpressum,
             <div className="relative mx-auto w-full max-w-sm lg:max-w-none">
               <div className="relative overflow-hidden rounded-3xl border border-[#C9D3CD] bg-white p-3 shadow-[0_30px_60px_-34px_rgba(11,90,68,0.5)]">
                 <img src={site.heroImage} alt={site.siteName} className="aspect-[4/5] w-full rounded-2xl object-cover" style={{ objectPosition: site.heroFocus }} />
-                <span aria-hidden="true" className="absolute left-1.5 top-1.5 h-3 w-3 rounded-full border border-[#A8540F] bg-[#F2B279] shadow-[inset_0_0_0_2px_#fff]" />
-                <span aria-hidden="true" className="absolute right-1.5 top-1.5 h-3 w-3 rounded-full border border-[#A8540F] bg-[#F2B279] shadow-[inset_0_0_0_2px_#fff]" />
-                <span aria-hidden="true" className="absolute bottom-1.5 left-1.5 h-3 w-3 rounded-full border border-[#A8540F] bg-[#F2B279] shadow-[inset_0_0_0_2px_#fff]" />
-                <span aria-hidden="true" className="absolute bottom-1.5 right-1.5 h-3 w-3 rounded-full border border-[#A8540F] bg-[#F2B279] shadow-[inset_0_0_0_2px_#fff]" />
+                <span aria-hidden="true" className="absolute left-1 top-1 h-3.5 w-3.5 rounded-full bg-[radial-gradient(circle_at_center,#0F1A17_0_22%,#F2B279_24%_48%,#A8540F_50%_62%,#0B5A44_64%_100%)] shadow-[0_1px_2px_rgba(15,26,23,0.35)]" />
+                <span aria-hidden="true" className="absolute right-1 top-1 h-3.5 w-3.5 rounded-full bg-[radial-gradient(circle_at_center,#0F1A17_0_22%,#F2B279_24%_48%,#A8540F_50%_62%,#0B5A44_64%_100%)] shadow-[0_1px_2px_rgba(15,26,23,0.35)]" />
+                <span aria-hidden="true" className="absolute bottom-1 left-1 h-3.5 w-3.5 rounded-full bg-[radial-gradient(circle_at_center,#0F1A17_0_22%,#F2B279_24%_48%,#A8540F_50%_62%,#0B5A44_64%_100%)] shadow-[0_1px_2px_rgba(15,26,23,0.35)]" />
+                <span aria-hidden="true" className="absolute bottom-1 right-1 h-3.5 w-3.5 rounded-full bg-[radial-gradient(circle_at_center,#0F1A17_0_22%,#F2B279_24%_48%,#A8540F_50%_62%,#0B5A44_64%_100%)] shadow-[0_1px_2px_rgba(15,26,23,0.35)]" />
               </div>
               <div className="absolute -right-2 bottom-10 flex items-center gap-2.5 rounded-xl border border-[#0B5A44] bg-[#0B5A44] px-3.5 py-2.5 text-white shadow-lg sm:-right-6">
                 <CircuitBoard className="h-4 w-4 text-[#F2B279]" />
